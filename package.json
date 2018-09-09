@@ -10,6 +10,6 @@
     "*.js"
   ],
   "main": "index.js",
-  "name": "bayrell-lang",
+  "name": "bayrell-lang-nodejs",
   "version": "0.4.2"
 }
