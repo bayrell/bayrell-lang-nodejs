@@ -46,7 +46,6 @@ module.exports = {
 		'BaseOpCode': require("./OpCodes/BaseOpCode.js"),
 		'OpAdd': require("./OpCodes/OpAdd.js"),
 		'OpAnd': require("./OpCodes/OpAnd.js"),
-		'OpArray': require("./OpCodes/OpArray.js"),
 		'OpAssign': require("./OpCodes/OpAssign.js"),
 		'OpAssignDeclare': require("./OpCodes/OpAssignDeclare.js"),
 		'OpBitAnd': require("./OpCodes/OpBitAnd.js"),

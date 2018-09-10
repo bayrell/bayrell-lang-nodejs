@@ -16,13 +16,13 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-var rtl = require('BayrellRuntime').rtl;
-var Map = require('BayrellRuntime').Map;
-var Vector = require('BayrellRuntime').Vector;
-var CoreObject = require('BayrellRuntime').CoreObject;
-var ContextObject = require('BayrellRuntime').ContextObject;
-var FactoryInterface = require('BayrellRuntime').Interfaces.FactoryInterface;
-var BayrellCommonUtils = require('BayrellCommon').Utils;
+var rtl = require('bayrell-runtime-nodejs').rtl;
+var Map = require('bayrell-runtime-nodejs').Map;
+var Vector = require('bayrell-runtime-nodejs').Vector;
+var CoreObject = require('bayrell-runtime-nodejs').CoreObject;
+var ContextObject = require('bayrell-runtime-nodejs').ContextObject;
+var FactoryInterface = require('bayrell-runtime-nodejs').Interfaces.FactoryInterface;
+var BayrellCommonUtils = require('bayrell-common-nodejs').Utils;
 var ParserBay = require('./LangBay/ParserBay.js');
 var TranslatorES6 = require('./LangES6/TranslatorES6.js');
 var CommonParser = require('./CommonParser.js');

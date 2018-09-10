@@ -16,11 +16,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-var rtl = require('BayrellRuntime').rtl;
-var Map = require('BayrellRuntime').Map;
-var Vector = require('BayrellRuntime').Vector;
-var re = require('BayrellRuntime').re;
-var rs = require('BayrellRuntime').rs;
+var rtl = require('bayrell-runtime-nodejs').rtl;
+var Map = require('bayrell-runtime-nodejs').Map;
+var Vector = require('bayrell-runtime-nodejs').Vector;
+var re = require('bayrell-runtime-nodejs').re;
+var rs = require('bayrell-runtime-nodejs').rs;
 var OpIdentifier = require('../OpCodes/OpIdentifier.js');
 var OpPreprocessorCase = require('../OpCodes/OpPreprocessorCase.js');
 var TranslatorES6 = require('../LangES6/TranslatorES6.js');
@@ -49,7 +49,7 @@ class TranslatorNodeJS extends TranslatorES6{
 		this.current_module_name = arr.item(0);
 		this.modules.clear();
 		if (this.current_module_name != "Runtime"){
-			return "var rtl = require('BayrellRuntime').rtl;"+rtl.toString(this.s("var Map = require('BayrellRuntime').Map;"))+rtl.toString(this.s("var Vector = require('BayrellRuntime').Vector;"));
+			return "var rtl = require('bayrell-runtime-nodejs').rtl;"+rtl.toString(this.s("var Map = require('bayrell-runtime-nodejs').Map;"))+rtl.toString(this.s("var Vector = require('bayrell-runtime-nodejs').Vector;"));
 		}
 		return "";
 	}
@@ -101,6 +101,7 @@ class TranslatorNodeJS extends TranslatorES6{
 			if (module_name == "Runtime"){
 				module_name = "BayrellRuntime";
 			}
+			module_name = rtl.convertNodeJSModuleName(module_name);
 			res = "var "+rtl.toString(class_name)+" = require('"+rtl.toString(module_name)+"')."+rtl.toString(module_path)+";";
 		}
 		return res;

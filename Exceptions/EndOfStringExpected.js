@@ -16,11 +16,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-var rtl = require('BayrellRuntime').rtl;
-var Map = require('BayrellRuntime').Map;
-var Vector = require('BayrellRuntime').Vector;
-var Utils = require('BayrellRuntime').Utils;
-var ParserError = require('BayrellParser').Exceptions.ParserError;
+var rtl = require('bayrell-runtime-nodejs').rtl;
+var Map = require('bayrell-runtime-nodejs').Map;
+var Vector = require('bayrell-runtime-nodejs').Vector;
+var Utils = require('bayrell-runtime-nodejs').Utils;
+var ParserError = require('bayrell-parser-nodejs').Exceptions.ParserError;
 var LangConstant = require('../LangConstant.js');
 class EndOfStringExpected extends ParserError{
 	getClassName(){return "BayrellLang.Exceptions.EndOfStringExpected";}

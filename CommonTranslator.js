@@ -16,11 +16,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-var rtl = require('BayrellRuntime').rtl;
-var Map = require('BayrellRuntime').Map;
-var Vector = require('BayrellRuntime').Vector;
-var rs = require('BayrellRuntime').rs;
-var ContextObject = require('BayrellRuntime').ContextObject;
+var rtl = require('bayrell-runtime-nodejs').rtl;
+var Map = require('bayrell-runtime-nodejs').Map;
+var Vector = require('bayrell-runtime-nodejs').Vector;
+var rs = require('bayrell-runtime-nodejs').rs;
+var ContextObject = require('bayrell-runtime-nodejs').ContextObject;
 var BaseOpCode = require('./OpCodes/BaseOpCode.js');
 var OpAdd = require('./OpCodes/OpAdd.js');
 var OpAnd = require('./OpCodes/OpAnd.js');

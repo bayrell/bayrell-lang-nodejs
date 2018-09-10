@@ -16,10 +16,10 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-var rtl = require('BayrellRuntime').rtl;
-var Map = require('BayrellRuntime').Map;
-var Vector = require('BayrellRuntime').Vector;
-var rs = require('BayrellRuntime').rs;
+var rtl = require('bayrell-runtime-nodejs').rtl;
+var Map = require('bayrell-runtime-nodejs').Map;
+var Vector = require('bayrell-runtime-nodejs').Vector;
+var rs = require('bayrell-runtime-nodejs').rs;
 var CommonParser = require('../CommonParser.js');
 var BaseOpCode = require('../OpCodes/BaseOpCode.js');
 var OpAdd = require('../OpCodes/OpAdd.js');
@@ -89,7 +89,7 @@ var ParserBayToken = require('./ParserBayToken.js');
 var ParserBayNameToken = require('./ParserBayNameToken.js');
 var HexNumberExpected = require('../Exceptions/HexNumberExpected.js');
 var TwiceDeclareElseError = require('../Exceptions/TwiceDeclareElseError.js');
-var ParserError = require('BayrellParser').Exceptions.ParserError;
+var ParserError = require('bayrell-parser-nodejs').Exceptions.ParserError;
 class ParserBay extends CommonParser{
 	getClassName(){return "BayrellLang.LangBay.ParserBay";}
 	static getParentClassName(){return "CommonParser";}

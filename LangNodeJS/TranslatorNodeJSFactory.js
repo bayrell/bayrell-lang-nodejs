@@ -16,13 +16,13 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-var rtl = require('BayrellRuntime').rtl;
-var Map = require('BayrellRuntime').Map;
-var Vector = require('BayrellRuntime').Vector;
-var CoreObject = require('BayrellRuntime').CoreObject;
-var ContextObject = require('BayrellRuntime').ContextObject;
-var ContextInterface = require('BayrellRuntime').Interfaces.ContextInterface;
-var FactoryInterface = require('BayrellRuntime').Interfaces.FactoryInterface;
+var rtl = require('bayrell-runtime-nodejs').rtl;
+var Map = require('bayrell-runtime-nodejs').Map;
+var Vector = require('bayrell-runtime-nodejs').Vector;
+var CoreObject = require('bayrell-runtime-nodejs').CoreObject;
+var ContextObject = require('bayrell-runtime-nodejs').ContextObject;
+var ContextInterface = require('bayrell-runtime-nodejs').Interfaces.ContextInterface;
+var FactoryInterface = require('bayrell-runtime-nodejs').Interfaces.FactoryInterface;
 var TranslatorNodeJS = require('./TranslatorNodeJS.js');
 class TranslatorNodeJSFactory extends ContextObject{
 	getClassName(){return "BayrellLang.LangNodeJS.TranslatorNodeJSFactory";}

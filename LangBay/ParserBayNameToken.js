@@ -16,13 +16,13 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-var rtl = require('BayrellRuntime').rtl;
-var Map = require('BayrellRuntime').Map;
-var Vector = require('BayrellRuntime').Vector;
-var rs = require('BayrellRuntime').rs;
-var ParserToken = require('BayrellParser').ParserToken;
-var ParserEOF = require('BayrellParser').Exceptions.ParserEOF;
-var ParserExpected = require('BayrellParser').Exceptions.ParserExpected;
+var rtl = require('bayrell-runtime-nodejs').rtl;
+var Map = require('bayrell-runtime-nodejs').Map;
+var Vector = require('bayrell-runtime-nodejs').Vector;
+var rs = require('bayrell-runtime-nodejs').rs;
+var ParserToken = require('bayrell-parser-nodejs').ParserToken;
+var ParserEOF = require('bayrell-parser-nodejs').Exceptions.ParserEOF;
+var ParserExpected = require('bayrell-parser-nodejs').Exceptions.ParserExpected;
 var EndOfStringExpected = require('../Exceptions/EndOfStringExpected.js');
 class ParserBayNameToken extends ParserToken{
 	getClassName(){return "BayrellLang.LangBay.ParserBayNameToken";}
