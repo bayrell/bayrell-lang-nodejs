@@ -19,18 +19,18 @@
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Vector = require('bayrell-runtime-nodejs').Vector;
-var Utils = require('bayrell-runtime-nodejs').Utils;
+var RuntimeUtils = require('bayrell-runtime-nodejs').RuntimeUtils;
 var ParserError = require('bayrell-parser-nodejs').Exceptions.ParserError;
 var LangConstant = require('../LangConstant.js');
 class TwiceDeclareElseError extends ParserError{
 	getClassName(){return "BayrellLang.Exceptions.TwiceDeclareElseError";}
 	static getParentClassName(){return "ParserError";}
-	constructor(context, line, col, prev){
+	constructor(line, col, context, prev){
 		if (prev == undefined) prev=null;
 		if (context == null){
-			context = Utils.globalContext();
+			context = RuntimeUtils.globalContext();
 		}
-		super(context, context.translate("ERROR_TWICE_DECLARE_ERROR"), LangConstant.ERROR_TWICE_DECLARE_ERROR, prev);
+		super(context.translate("ERROR_TWICE_DECLARE_ERROR"), LangConstant.ERROR_TWICE_DECLARE_ERROR, context, prev);
 		this.line = line;
 		this.pos = col;
 		this.buildMessage();

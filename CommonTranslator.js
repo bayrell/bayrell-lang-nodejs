@@ -127,7 +127,7 @@ class CommonTranslator extends ContextObject{
 	 */
 	levelInc(){
 		if (!this.isOneLine()){
-			this.indent_level++
+			this.indent_level++;
 		}
 	}
 	/**
@@ -135,7 +135,7 @@ class CommonTranslator extends ContextObject{
 	 */
 	levelDec(){
 		if (!this.isOneLine()){
-			this.indent_level--
+			this.indent_level--;
 		}
 	}
 	/**

@@ -31,6 +31,7 @@ module.exports = {
 		'ParserBayToken': require("./LangBay/ParserBayToken.js"),
 	},
 	'LangES6': {
+		'FunctionStack': require("./LangES6/FunctionStack.js"),
 		'TranslatorES6': require("./LangES6/TranslatorES6.js"),
 		'TranslatorES6Factory': require("./LangES6/TranslatorES6Factory.js"),
 	},

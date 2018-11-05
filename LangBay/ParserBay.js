@@ -417,9 +417,6 @@ class ParserBay extends CommonParser{
 		if (this.findNextToken("new")){
 			return this.readNewInstance();
 		}
-		else if (this.findNextToken("await")){
-			return this.readCallAwait();
-		}
 		else if (this.findNextToken("clone")){
 			return this.readClone();
 		}
@@ -754,7 +751,12 @@ class ParserBay extends CommonParser{
 			var pos = this.findNextTokenVector(v);
 			var op_name = v.item(pos);
 			this.matchNextToken(op_name);
-			op_exp = this.readExpression();
+			if (this.findNextToken("await")){
+				op_exp = this.readCallAwait();
+			}
+			else {
+				op_exp = this.readExpression();
+			}
 			return new OpAssign(op_ident, op_exp, op_name);
 		}
 		this.popRollbackToken();
@@ -780,7 +782,12 @@ class ParserBay extends CommonParser{
 			this.popToken();
 			if (this.findNextToken("=")){
 				this.matchNextToken("=");
-				op_exp = this.readExpression();
+				if (this.findNextToken("await")){
+					op_exp = this.readCallAwait();
+				}
+				else {
+					op_exp = this.readExpression();
+				}
 			}
 			return new OpAssignDeclare(op_type, op_ident_name, op_exp);
 		}
@@ -1132,7 +1139,14 @@ class ParserBay extends CommonParser{
 			alias_name = this.readIdentifierName();
 		}
 		this.matchNextToken(";");
-		this.modules.set(name, alias_name);
+		if (alias_name != ""){
+			this.modules.set(alias_name, name);
+		}
+		else {
+			var arr = rs.explode(".", name);
+			var last_name = arr.pop();
+			this.modules.set(last_name, name);
+		}
 		return new OpUse(name, alias_name);
 	}
 	/**

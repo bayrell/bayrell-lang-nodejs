@@ -40,7 +40,7 @@ class ModuleDescription{
 	 * @return string
 	 */
 	static getModuleVersion(){
-		return "0.5.0";
+		return "0.5.1";
 	}
 	/**
 	 * Init context
