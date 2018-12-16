@@ -19,6 +19,7 @@
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var CoreObject = require('bayrell-runtime-nodejs').CoreObject;
 var ContextObject = require('bayrell-runtime-nodejs').ContextObject;
 var FactoryInterface = require('bayrell-runtime-nodejs').Interfaces.FactoryInterface;
@@ -28,8 +29,6 @@ var TranslatorES6 = require('./LangES6/TranslatorES6.js');
 var CommonParser = require('./CommonParser.js');
 var CommonTranslator = require('./CommonTranslator.js');
 class Utils extends ContextObject{
-	getClassName(){return "BayrellLang.Utils";}
-	static getParentClassName(){return "ContextObject";}
 	/**
 	 * Transcompile one language to other
 	 * @string string parser_factory_name
@@ -116,5 +115,8 @@ class Utils extends ContextObject{
 		#endswitch
 		*/
 	}
+	/* ======================= Class Init Functions ======================= */
+	getClassName(){return "BayrellLang.Utils";}
+	static getParentClassName(){return "ContextObject";}
 }
 module.exports = Utils;

@@ -19,39 +19,9 @@
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var BaseOpCode = require('./BaseOpCode.js');
 class OpWhile extends BaseOpCode{
-	getClassName(){return "BayrellLang.OpCodes.OpWhile";}
-	static getParentClassName(){return "BaseOpCode";}
-	_init(){
-		super._init();
-		this.op = "op_while";
-		this.condition = null;
-		this.childs = null;
-	}
-	assignValue(variable_name, value){
-		if (variable_name == "condition") this.condition = rtl.correct(value, "BaseOpCode", null, "");
-		else if (variable_name == "childs") this.childs = rtl.correct(value, "Vector", null, "BaseOpCode");
-		else super.assignValue(variable_name, value);
-	}
-	takeValue(variable_name, default_value){
-		if (default_value == undefined) default_value = null;
-		if (variable_name == "condition") return this.condition;
-		else if (variable_name == "childs") return this.childs;
-		return super.takeValue(variable_name, default_value);
-	}
-	getVariablesNames(names){
-		super.getVariablesNames(names);
-		names.push("condition");
-		names.push("childs");
-	}
-	/**
-	 * Returns classname of the object
-	 * @return string
-	 */
-	getClassName(){
-		return "BayrellLang.OpCodes.OpWhile";
-	}
 	/**
 	 * Constructor
 	 */
@@ -67,6 +37,40 @@ class OpWhile extends BaseOpCode{
 	 */
 	destructor(){
 		super.destructor();
+	}
+	/* ======================= Class Init Functions ======================= */
+	getClassName(){return "BayrellLang.OpCodes.OpWhile";}
+	static getParentClassName(){return "BaseOpCode";}
+	_init(){
+		super._init();
+		this.op = "op_while";
+		this.condition = null;
+		this.childs = null;
+	}
+	assignObject(obj){
+		if (obj instanceof OpWhile){
+			this.condition = rtl._clone(obj.condition);
+			this.childs = rtl._clone(obj.childs);
+		}
+		super.assignObject(obj);
+	}
+	assignValue(variable_name, value){
+		if (variable_name == "condition") this.condition = rtl.correct(value, "BayrellLang.OpCodes.BaseOpCode", null, "");
+		else if (variable_name == "childs") this.childs = rtl.correct(value, "Vector", null, "BayrellLang.OpCodes.BaseOpCode");
+		else super.assignValue(variable_name, value);
+	}
+	takeValue(variable_name, default_value){
+		if (default_value == undefined) default_value = null;
+		if (variable_name == "condition") return this.condition;
+		else if (variable_name == "childs") return this.childs;
+		return super.takeValue(variable_name, default_value);
+	}
+	static getFieldsList(names){
+		names.push("condition");
+		names.push("childs");
+	}
+	static getFieldInfoByName(field_name){
+		return null;
 	}
 }
 module.exports = OpWhile;

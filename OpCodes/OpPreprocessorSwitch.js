@@ -19,13 +19,21 @@
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var OpChilds = require('./OpChilds.js');
 class OpPreprocessorSwitch extends OpChilds{
+	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.OpCodes.OpPreprocessorSwitch";}
 	static getParentClassName(){return "OpChilds";}
 	_init(){
 		super._init();
 		this.op = "op_preprocessor_switch";
+	}
+	assignObject(obj){
+		if (obj instanceof OpPreprocessorSwitch){
+			this.op = rtl._clone(obj.op);
+		}
+		super.assignObject(obj);
 	}
 	assignValue(variable_name, value){
 		if (variable_name == "op") this.op = rtl.correct(value, "string", "op_preprocessor_switch", "");
@@ -36,16 +44,11 @@ class OpPreprocessorSwitch extends OpChilds{
 		if (variable_name == "op") return this.op;
 		return super.takeValue(variable_name, default_value);
 	}
-	getVariablesNames(names){
-		super.getVariablesNames(names);
+	static getFieldsList(names){
 		names.push("op");
 	}
-	/**
-	 * Returns classname of the object
-	 * @return string
-	 */
-	getClassName(){
-		return "BayrellLang.OpCodes.OpPreprocessorSwitch";
+	static getFieldInfoByName(field_name){
+		return null;
 	}
 }
 module.exports = OpPreprocessorSwitch;

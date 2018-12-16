@@ -19,11 +19,13 @@
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var rs = require('bayrell-runtime-nodejs').rs;
 var CommonParser = require('../CommonParser.js');
 var BaseOpCode = require('../OpCodes/BaseOpCode.js');
 var OpAdd = require('../OpCodes/OpAdd.js');
 var OpAnd = require('../OpCodes/OpAnd.js');
+var OpAnnotation = require('../OpCodes/OpAnnotation.js');
 var OpAssign = require('../OpCodes/OpAssign.js');
 var OpAssignDeclare = require('../OpCodes/OpAssignDeclare.js');
 var OpBitAnd = require('../OpCodes/OpBitAnd.js');
@@ -76,6 +78,7 @@ var OpShiftRight = require('../OpCodes/OpShiftRight.js');
 var OpStatic = require('../OpCodes/OpStatic.js');
 var OpString = require('../OpCodes/OpString.js');
 var OpStringItem = require('../OpCodes/OpStringItem.js');
+var OpStructDeclare = require('../OpCodes/OpStructDeclare.js');
 var OpSub = require('../OpCodes/OpSub.js');
 var OpTemplateIdentifier = require('../OpCodes/OpTemplateIdentifier.js');
 var OpTernary = require('../OpCodes/OpTernary.js');
@@ -91,15 +94,6 @@ var HexNumberExpected = require('../Exceptions/HexNumberExpected.js');
 var TwiceDeclareElseError = require('../Exceptions/TwiceDeclareElseError.js');
 var ParserError = require('bayrell-parser-nodejs').Exceptions.ParserError;
 class ParserBay extends CommonParser{
-	getClassName(){return "BayrellLang.LangBay.ParserBay";}
-	static getParentClassName(){return "CommonParser";}
-	_init(){
-		super._init();
-		this.current_namespace = "";
-		this.current_class_name = "";
-		this.is_interface = false;
-		this.modules = null;
-	}
 	/**
 	 * Tokens Fabric
 	 * @return BayrellParserToken
@@ -1170,6 +1164,19 @@ class ParserBay extends CommonParser{
 		return flags;
 	}
 	/**
+	 * Read annotation
+	 */
+	readAnnotation(){
+		this.matchNextToken("@");
+		var op_annotation = new OpAnnotation();
+		op_annotation.kind = this.readTemplateIdentifier();
+		op_annotation.options = this.readMap();
+		if (this.annotations == null){
+			this.annotations = new Vector();
+		}
+		this.annotations.push(op_annotation);
+	}
+	/**
 	 * Read declare class arguments
 	 * @return BaseOpCode
 	 */
@@ -1315,10 +1322,16 @@ class ParserBay extends CommonParser{
 		if (flags != null && flags.p_declare || this.is_interface){
 			is_declare_function = true;
 		}
+		if (this.findNextToken("@")){
+			this.readAnnotation();
+			return ;
+		}
 		op_code = this.readDeclareArrowFunction(true, is_declare_function);
-		if (op_code){
+		if (op_code && op_code instanceof OpFunctionDeclare){
+			op_code.annotations = this.annotations;
 			op_code.flags = flags;
 			res.childs.push(op_code);
+			this.annotations = null;
 			return ;
 		}
 		op_code = this.readOperatorAssign();
@@ -1326,9 +1339,11 @@ class ParserBay extends CommonParser{
 			throw this.parserError("Assign are not alowed here");
 		}
 		else if (op_code instanceof OpAssignDeclare){
+			op_code.annotations = this.annotations;
 			op_code.flags = flags;
-			res.class_variables.push(op_code);
+			res.childs.push(op_code);
 			this.matchNextToken(";");
+			this.annotations = null;
 			return ;
 		}
 		throw this.parserError("Unknown operator");
@@ -1387,7 +1402,7 @@ class ParserBay extends CommonParser{
 		this.matchNextToken("}");
 	}
 	/**
-	 * Read operator namespace
+	 * Read class
 	 * @return BaseOpCode
 	 */
 	readDeclareClass(class_flags){
@@ -1398,7 +1413,7 @@ class ParserBay extends CommonParser{
 		return res;
 	}
 	/**
-	 * Read operator namespace
+	 * Read interface
 	 * @return BaseOpCode
 	 */
 	readDeclareInterface(class_flags){
@@ -1407,6 +1422,21 @@ class ParserBay extends CommonParser{
 		this.is_interface = true;
 		this.readClassHead(res);
 		this.is_interface = false;
+		res.flags = class_flags;
+		return res;
+	}
+	/**
+	 * Read struct
+	 * @return BaseOpCode
+	 */
+	readDeclareStruct(class_flags){
+		var res = new OpStructDeclare();
+		this.matchNextToken("struct");
+		if (this.findNextToken("readonly")){
+			this.matchNextToken("readonly");
+			res.is_readonly = true;
+		}
+		this.readClassHead(res);
 		res.flags = class_flags;
 		return res;
 	}
@@ -1482,10 +1512,16 @@ class ParserBay extends CommonParser{
 			}
 			var flags = this.readFlags();
 			if (this.findNextToken("class")){
+				this.annotations = null;
 				res.push(this.readDeclareClass(flags));
 			}
 			else if (this.findNextToken("interface")){
+				this.annotations = null;
 				res.push(this.readDeclareInterface(flags));
+			}
+			else if (this.findNextToken("struct")){
+				this.annotations = null;
+				res.push(this.readDeclareStruct(flags));
 			}
 			else {
 				throw this.parserError("Unknown token "+rtl.toString(this.lookNextToken()));
@@ -1505,6 +1541,17 @@ class ParserBay extends CommonParser{
 	 */
 	runParser(){
 		this._result = new OpNope(this.readProgram());
+	}
+	/* ======================= Class Init Functions ======================= */
+	getClassName(){return "BayrellLang.LangBay.ParserBay";}
+	static getParentClassName(){return "CommonParser";}
+	_init(){
+		super._init();
+		this.current_namespace = "";
+		this.current_class_name = "";
+		this.is_interface = false;
+		this.modules = null;
+		this.annotations = null;
 	}
 }
 module.exports = ParserBay;

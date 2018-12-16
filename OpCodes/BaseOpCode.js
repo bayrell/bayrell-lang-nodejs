@@ -19,30 +19,10 @@
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var CoreObject = require('bayrell-runtime-nodejs').CoreObject;
 var SerializeInterface = require('bayrell-runtime-nodejs').Interfaces.SerializeInterface;
 class BaseOpCode extends CoreObject{
-	getClassName(){return "BayrellLang.OpCodes.BaseOpCode";}
-	static getParentClassName(){return "CoreObject";}
-	_init(){
-		super._init();
-		this.op = "";
-		if (this.__implements__ == undefined){this.__implements__ = [];}
-		this.__implements__.push(SerializeInterface);
-	}
-	assignValue(variable_name, value){
-		if (variable_name == "op") this.op = rtl.correct(value, "string", "", "");
-		else super.assignValue(variable_name, value);
-	}
-	takeValue(variable_name, default_value){
-		if (default_value == undefined) default_value = null;
-		if (variable_name == "op") return this.op;
-		return super.takeValue(variable_name, default_value);
-	}
-	getVariablesNames(names){
-		super.getVariablesNames(names);
-		names.push("op");
-	}
 	/**
 	 * Constructor
 	 */
@@ -55,6 +35,36 @@ class BaseOpCode extends CoreObject{
 	 */
 	getClassName(){
 		return "BayrellLang.OpCodes.BaseOpCode";
+	}
+	/* ======================= Class Init Functions ======================= */
+	getClassName(){return "BayrellLang.OpCodes.BaseOpCode";}
+	static getParentClassName(){return "CoreObject";}
+	_init(){
+		super._init();
+		this.op = "";
+		if (this.__implements__ == undefined){this.__implements__ = [];}
+		this.__implements__.push(SerializeInterface);
+	}
+	assignObject(obj){
+		if (obj instanceof BaseOpCode){
+			this.op = rtl._clone(obj.op);
+		}
+		super.assignObject(obj);
+	}
+	assignValue(variable_name, value){
+		if (variable_name == "op") this.op = rtl.correct(value, "string", "", "");
+		else super.assignValue(variable_name, value);
+	}
+	takeValue(variable_name, default_value){
+		if (default_value == undefined) default_value = null;
+		if (variable_name == "op") return this.op;
+		return super.takeValue(variable_name, default_value);
+	}
+	static getFieldsList(names){
+		names.push("op");
+	}
+	static getFieldInfoByName(field_name){
+		return null;
 	}
 }
 BaseOpCode.__static_implements__ = [];

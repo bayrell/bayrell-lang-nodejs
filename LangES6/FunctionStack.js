@@ -19,20 +19,10 @@
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var rs = require('bayrell-runtime-nodejs').rs;
 var CoreObject = require('bayrell-runtime-nodejs').CoreObject;
 class FunctionStack extends CoreObject{
-	getClassName(){return "BayrellLang.LangES6.FunctionStack";}
-	static getParentClassName(){return "CoreObject";}
-	_init(){
-		super._init();
-		this.name = "";
-		this.is_async = false;
-		this.async_ctx = "";
-		this.async_jump = "";
-		this.async_jump_pos = new Vector();
-		this.async_stop_pos = new Vector();
-	}
 	/**
 	 * Returns jump string from arr
 	 * @param Vector<int> arr
@@ -120,6 +110,18 @@ class FunctionStack extends CoreObject{
 		}
 		var obj = this.async_stop_pos.item(sz - 1);
 		return obj.get("end", "", "string");
+	}
+	/* ======================= Class Init Functions ======================= */
+	getClassName(){return "BayrellLang.LangES6.FunctionStack";}
+	static getParentClassName(){return "CoreObject";}
+	_init(){
+		super._init();
+		this.name = "";
+		this.is_async = false;
+		this.async_ctx = "";
+		this.async_jump = "";
+		this.async_jump_pos = new Vector();
+		this.async_stop_pos = new Vector();
 	}
 }
 module.exports = FunctionStack;

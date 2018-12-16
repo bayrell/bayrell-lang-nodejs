@@ -20,35 +20,46 @@ var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Vector = require('bayrell-runtime-nodejs').Vector;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
-var OpValueString = require('./OpValueString.js');
-class OpString extends OpValueString{
+var BaseOpCode = require('./BaseOpCode.js');
+var OpMap = require('./OpMap.js');
+class OpAnnotation extends BaseOpCode{
 	/* ======================= Class Init Functions ======================= */
-	getClassName(){return "BayrellLang.OpCodes.OpString";}
-	static getParentClassName(){return "OpValueString";}
+	getClassName(){return "BayrellLang.OpCodes.OpAnnotation";}
+	static getParentClassName(){return "BaseOpCode";}
 	_init(){
 		super._init();
-		this.op = "op_string";
+		this.op = "op_annotation";
+		this.kind = null;
+		this.options = null;
 	}
 	assignObject(obj){
-		if (obj instanceof OpString){
+		if (obj instanceof OpAnnotation){
 			this.op = rtl._clone(obj.op);
+			this.kind = rtl._clone(obj.kind);
+			this.options = rtl._clone(obj.options);
 		}
 		super.assignObject(obj);
 	}
 	assignValue(variable_name, value){
-		if (variable_name == "op") this.op = rtl.correct(value, "string", "op_string", "");
+		if (variable_name == "op") this.op = rtl.correct(value, "string", "op_annotation", "");
+		else if (variable_name == "kind") this.kind = rtl.correct(value, "BayrellLang.OpCodes.BaseOpCode", null, "");
+		else if (variable_name == "options") this.options = rtl.correct(value, "BayrellLang.OpCodes.OpMap", null, "");
 		else super.assignValue(variable_name, value);
 	}
 	takeValue(variable_name, default_value){
 		if (default_value == undefined) default_value = null;
 		if (variable_name == "op") return this.op;
+		else if (variable_name == "kind") return this.kind;
+		else if (variable_name == "options") return this.options;
 		return super.takeValue(variable_name, default_value);
 	}
 	static getFieldsList(names){
 		names.push("op");
+		names.push("kind");
+		names.push("options");
 	}
 	static getFieldInfoByName(field_name){
 		return null;
 	}
 }
-module.exports = OpString;
+module.exports = OpAnnotation;

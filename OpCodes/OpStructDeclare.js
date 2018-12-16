@@ -20,35 +20,41 @@ var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Vector = require('bayrell-runtime-nodejs').Vector;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
-var OpValueString = require('./OpValueString.js');
-class OpString extends OpValueString{
+var BaseOpCode = require('./BaseOpCode.js');
+var OpClassDeclare = require('./OpClassDeclare.js');
+class OpStructDeclare extends OpClassDeclare{
 	/* ======================= Class Init Functions ======================= */
-	getClassName(){return "BayrellLang.OpCodes.OpString";}
-	static getParentClassName(){return "OpValueString";}
+	getClassName(){return "BayrellLang.OpCodes.OpStructDeclare";}
+	static getParentClassName(){return "OpClassDeclare";}
 	_init(){
 		super._init();
-		this.op = "op_string";
+		this.op = "op_struct";
+		this.is_readonly = false;
 	}
 	assignObject(obj){
-		if (obj instanceof OpString){
+		if (obj instanceof OpStructDeclare){
 			this.op = rtl._clone(obj.op);
+			this.is_readonly = rtl._clone(obj.is_readonly);
 		}
 		super.assignObject(obj);
 	}
 	assignValue(variable_name, value){
-		if (variable_name == "op") this.op = rtl.correct(value, "string", "op_string", "");
+		if (variable_name == "op") this.op = rtl.correct(value, "string", "op_struct", "");
+		else if (variable_name == "is_readonly") this.is_readonly = rtl.correct(value, "bool", false, "");
 		else super.assignValue(variable_name, value);
 	}
 	takeValue(variable_name, default_value){
 		if (default_value == undefined) default_value = null;
 		if (variable_name == "op") return this.op;
+		else if (variable_name == "is_readonly") return this.is_readonly;
 		return super.takeValue(variable_name, default_value);
 	}
 	static getFieldsList(names){
 		names.push("op");
+		names.push("is_readonly");
 	}
 	static getFieldInfoByName(field_name){
 		return null;
 	}
 }
-module.exports = OpString;
+module.exports = OpStructDeclare;

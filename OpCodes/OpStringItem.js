@@ -19,14 +19,22 @@
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var BaseOpCode = require('./BaseOpCode.js');
 var OpValue2 = require('./OpValue2.js');
 class OpStringItem extends OpValue2{
+	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.OpCodes.OpStringItem";}
 	static getParentClassName(){return "OpValue2";}
 	_init(){
 		super._init();
 		this.op = "op_string_item";
+	}
+	assignObject(obj){
+		if (obj instanceof OpStringItem){
+			this.op = rtl._clone(obj.op);
+		}
+		super.assignObject(obj);
 	}
 	assignValue(variable_name, value){
 		if (variable_name == "op") this.op = rtl.correct(value, "string", "op_string_item", "");
@@ -37,16 +45,11 @@ class OpStringItem extends OpValue2{
 		if (variable_name == "op") return this.op;
 		return super.takeValue(variable_name, default_value);
 	}
-	getVariablesNames(names){
-		super.getVariablesNames(names);
+	static getFieldsList(names){
 		names.push("op");
 	}
-	/**
-	 * Returns classname of the object
-	 * @return string
-	 */
-	getClassName(){
-		return "BayrellLang.OpCodes.OpStringItem";
+	static getFieldInfoByName(field_name){
+		return null;
 	}
 }
 module.exports = OpStringItem;

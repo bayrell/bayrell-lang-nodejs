@@ -19,8 +19,10 @@
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var RuntimeConstant = require('bayrell-runtime-nodejs').RuntimeConstant;
 class LangConstant{
+	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.LangConstant";}
 	static getParentClassName(){return "";}
 }

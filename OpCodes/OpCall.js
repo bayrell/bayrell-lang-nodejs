@@ -19,46 +19,9 @@
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var BaseOpCode = require('./BaseOpCode.js');
 class OpCall extends BaseOpCode{
-	getClassName(){return "BayrellLang.OpCodes.OpCall";}
-	static getParentClassName(){return "BaseOpCode";}
-	_init(){
-		super._init();
-		this.op = "op_call";
-		this.value = null;
-		this.args = null;
-		this.is_await = false;
-	}
-	assignValue(variable_name, value){
-		if (variable_name == "op") this.op = rtl.correct(value, "string", "op_call", "");
-		else if (variable_name == "value") this.value = rtl.correct(value, "BaseOpCode", null, "");
-		else if (variable_name == "args") this.args = rtl.correct(value, "Vector", null, "BaseOpCode");
-		else if (variable_name == "is_await") this.is_await = rtl.correct(value, "bool", false, "");
-		else super.assignValue(variable_name, value);
-	}
-	takeValue(variable_name, default_value){
-		if (default_value == undefined) default_value = null;
-		if (variable_name == "op") return this.op;
-		else if (variable_name == "value") return this.value;
-		else if (variable_name == "args") return this.args;
-		else if (variable_name == "is_await") return this.is_await;
-		return super.takeValue(variable_name, default_value);
-	}
-	getVariablesNames(names){
-		super.getVariablesNames(names);
-		names.push("op");
-		names.push("value");
-		names.push("args");
-		names.push("is_await");
-	}
-	/**
-	 * Returns classname of the object
-	 * @return string
-	 */
-	getClassName(){
-		return "BayrellLang.OpCodes.OpCall";
-	}
 	/**
 	 * Constructor
 	 */
@@ -74,6 +37,49 @@ class OpCall extends BaseOpCode{
 	 */
 	destructor(){
 		super.destructor();
+	}
+	/* ======================= Class Init Functions ======================= */
+	getClassName(){return "BayrellLang.OpCodes.OpCall";}
+	static getParentClassName(){return "BaseOpCode";}
+	_init(){
+		super._init();
+		this.op = "op_call";
+		this.value = null;
+		this.args = null;
+		this.is_await = false;
+	}
+	assignObject(obj){
+		if (obj instanceof OpCall){
+			this.op = rtl._clone(obj.op);
+			this.value = rtl._clone(obj.value);
+			this.args = rtl._clone(obj.args);
+			this.is_await = rtl._clone(obj.is_await);
+		}
+		super.assignObject(obj);
+	}
+	assignValue(variable_name, value){
+		if (variable_name == "op") this.op = rtl.correct(value, "string", "op_call", "");
+		else if (variable_name == "value") this.value = rtl.correct(value, "BayrellLang.OpCodes.BaseOpCode", null, "");
+		else if (variable_name == "args") this.args = rtl.correct(value, "Vector", null, "BayrellLang.OpCodes.BaseOpCode");
+		else if (variable_name == "is_await") this.is_await = rtl.correct(value, "bool", false, "");
+		else super.assignValue(variable_name, value);
+	}
+	takeValue(variable_name, default_value){
+		if (default_value == undefined) default_value = null;
+		if (variable_name == "op") return this.op;
+		else if (variable_name == "value") return this.value;
+		else if (variable_name == "args") return this.args;
+		else if (variable_name == "is_await") return this.is_await;
+		return super.takeValue(variable_name, default_value);
+	}
+	static getFieldsList(names){
+		names.push("op");
+		names.push("value");
+		names.push("args");
+		names.push("is_await");
+	}
+	static getFieldInfoByName(field_name){
+		return null;
 	}
 }
 module.exports = OpCall;

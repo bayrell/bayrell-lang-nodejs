@@ -19,10 +19,12 @@
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var BaseOpCode = require('./BaseOpCode.js');
 var OpFunctionDeclare = require('./OpFunctionDeclare.js');
 var OpFlags = require('./OpFlags.js');
 class OpFunctionArrowDeclare extends OpFunctionDeclare{
+	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.OpCodes.OpFunctionArrowDeclare";}
 	static getParentClassName(){return "OpFunctionDeclare";}
 	_init(){
@@ -30,9 +32,16 @@ class OpFunctionArrowDeclare extends OpFunctionDeclare{
 		this.op = "op_arrow_function";
 		this.return_function = null;
 	}
+	assignObject(obj){
+		if (obj instanceof OpFunctionArrowDeclare){
+			this.op = rtl._clone(obj.op);
+			this.return_function = rtl._clone(obj.return_function);
+		}
+		super.assignObject(obj);
+	}
 	assignValue(variable_name, value){
 		if (variable_name == "op") this.op = rtl.correct(value, "string", "op_arrow_function", "");
-		else if (variable_name == "return_function") this.return_function = rtl.correct(value, "OpFunctionDeclare", null, "");
+		else if (variable_name == "return_function") this.return_function = rtl.correct(value, "BayrellLang.OpCodes.OpFunctionDeclare", null, "");
 		else super.assignValue(variable_name, value);
 	}
 	takeValue(variable_name, default_value){
@@ -41,17 +50,12 @@ class OpFunctionArrowDeclare extends OpFunctionDeclare{
 		else if (variable_name == "return_function") return this.return_function;
 		return super.takeValue(variable_name, default_value);
 	}
-	getVariablesNames(names){
-		super.getVariablesNames(names);
+	static getFieldsList(names){
 		names.push("op");
 		names.push("return_function");
 	}
-	/**
-	 * Returns classname of the object
-	 * @return string
-	 */
-	getClassName(){
-		return "BayrellLang.OpCodes.OpFunctionArrowDeclare";
+	static getFieldInfoByName(field_name){
+		return null;
 	}
 }
 module.exports = OpFunctionArrowDeclare;

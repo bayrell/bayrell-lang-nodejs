@@ -19,15 +19,10 @@
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var ContextInterface = require('bayrell-runtime-nodejs').Interfaces.ContextInterface;
 var ModuleDescriptionInterface = require('bayrell-runtime-nodejs').Interfaces.ModuleDescriptionInterface;
 class ModuleDescription{
-	getClassName(){return "BayrellLang.ModuleDescription";}
-	static getParentClassName(){return "";}
-	_init(){
-		if (this.__implements__ == undefined){this.__implements__ = [];}
-		this.__implements__.push(ModuleDescriptionInterface);
-	}
 	/**
 	 * Returns module name
 	 * @return string
@@ -40,7 +35,7 @@ class ModuleDescription{
 	 * @return string
 	 */
 	static getModuleVersion(){
-		return "0.5.1";
+		return "0.6.0";
 	}
 	/**
 	 * Init context
@@ -67,6 +62,13 @@ class ModuleDescription{
 	 */
 	static getRequiredModules(context){
 		return (new Map()).set("Runtime", ">=0.2 <1.0").set("BayrellParser", ">=0.1 <1.0");
+	}
+	/* ======================= Class Init Functions ======================= */
+	getClassName(){return "BayrellLang.ModuleDescription";}
+	static getParentClassName(){return "";}
+	_init(){
+		if (this.__implements__ == undefined){this.__implements__ = [];}
+		this.__implements__.push(ModuleDescriptionInterface);
 	}
 }
 ModuleDescription.__static_implements__ = [];

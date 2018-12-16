@@ -19,6 +19,7 @@
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var re = require('bayrell-runtime-nodejs').re;
 var rs = require('bayrell-runtime-nodejs').rs;
 var CommonTranslator = require('../CommonTranslator.js');
@@ -75,6 +76,7 @@ var OpShiftRight = require('../OpCodes/OpShiftRight.js');
 var OpStatic = require('../OpCodes/OpStatic.js');
 var OpString = require('../OpCodes/OpString.js');
 var OpStringItem = require('../OpCodes/OpStringItem.js');
+var OpStructDeclare = require('../OpCodes/OpStructDeclare.js');
 var OpSub = require('../OpCodes/OpSub.js');
 var OpTemplateIdentifier = require('../OpCodes/OpTemplateIdentifier.js');
 var OpTernary = require('../OpCodes/OpTernary.js');
@@ -84,19 +86,6 @@ var OpTryCatchChilds = require('../OpCodes/OpTryCatchChilds.js');
 var OpUse = require('../OpCodes/OpUse.js');
 var OpWhile = require('../OpCodes/OpWhile.js');
 class TranslatorPHP extends CommonTranslator{
-	getClassName(){return "BayrellLang.LangPHP.TranslatorPHP";}
-	static getParentClassName(){return "CommonTranslator";}
-	_init(){
-		super._init();
-		this.modules = null;
-		this.current_namespace = "";
-		this.current_class_name = "";
-		this.current_function_name = null;
-		this.current_function_is_static = false;
-		this.current_module_name = "";
-		this.is_static = false;
-		this.is_interface = false;
-	}
 	/**
 	 * Get name
 	 */
@@ -572,14 +561,18 @@ class TranslatorPHP extends CommonTranslator{
 		if (op_code.isFlag("const")){
 			ch_var = "";
 		}
+		var var_prefix = "";
+		if (this.struct_read_only && this.is_struct && op_code.isFlag("public") && !op_code.isFlag("static")){
+			var_prefix = "__";
+		}
 		if (op_code.value == null || !output_value && !op_code.isFlag("static") && !op_code.isFlag("const")){
 			this.pushOneLine(true);
-			res = rtl.toString(ch_var)+rtl.toString(op_code.name);
+			res = rtl.toString(ch_var)+rtl.toString(var_prefix)+rtl.toString(op_code.name);
 			this.popOneLine();
 		}
 		else {
 			this.pushOneLine(true);
-			res = rtl.toString(ch_var)+rtl.toString(op_code.name)+" = ";
+			res = rtl.toString(ch_var)+rtl.toString(var_prefix)+rtl.toString(op_code.name)+" = ";
 			this.popOneLine();
 			this.current_opcode_level = 0;
 			this.levelInc();
@@ -790,9 +783,11 @@ class TranslatorPHP extends CommonTranslator{
 			res += this.s("use Runtime\\rtl;");
 			res += this.s("use Runtime\\Map;");
 			res += this.s("use Runtime\\Vector;");
+			res += this.s("use Runtime\\IntrospectionInfo;");
 			this.modules.set("rtl", "Runtime.rtl");
 			this.modules.set("Map", "Runtime.Map");
 			this.modules.set("Vector", "Runtime.Vector");
+			this.modules.set("IntrospectionInfo", "Runtime.IntrospectionInfo");
 		}
 		return res;
 	}
@@ -997,36 +992,52 @@ class TranslatorPHP extends CommonTranslator{
 		return res;
 	}
 	/**
-	 * Class declare footer
+	 * Class declare variables
 	 */
 	OpClassDeclareVariables(op_code){
 		var res = "";
-		for (var i = 0; i < op_code.class_variables.count(); i++){
-			var variable = op_code.class_variables.item(i);
-			if (variable.flags != null){
-				var old_is_operation = this.beginOperation();
-				var s = "";
-				if (variable.isFlag("const")){
-					s += "const ";
-				}
-				else {
-					if (variable.isFlag("static")){
-						s += "static ";
-					}
-					if (variable.isFlag("protected")){
-						s += "protected ";
-					}
-					else {
-						s += "public ";
-					}
-				}
-				s += this.OpAssignDeclare(variable, false);
-				s += ";";
-				this.endOperation(old_is_operation);
-				res += this.s(s);
+		for (var i = 0; i < op_code.childs.count(); i++){
+			var variable = op_code.childs.item(i);
+			if (!(variable instanceof OpAssignDeclare)){
+				continue;
+			}
+			var s = this.OpClassDeclareVariable(variable);
+			if (s != ""){
+				res += this.s(this.OpClassDeclareVariable(variable));
 			}
 		}
 		return res;
+	}
+	/**
+	 * Class declare variable
+	 */
+	OpClassDeclareVariable(op_code){
+		if (op_code.flags != null){
+			var old_is_operation = this.beginOperation();
+			var s = "";
+			if (op_code.isFlag("const")){
+				s += "const ";
+			}
+			else {
+				if (op_code.isFlag("static")){
+					s += "static ";
+				}
+				if (op_code.isFlag("protected")){
+					s += "protected ";
+				}
+				else if (this.struct_read_only && this.is_struct && op_code.isFlag("public") && !op_code.isFlag("static")){
+					s += "protected ";
+				}
+				else {
+					s += "public ";
+				}
+			}
+			s += this.OpAssignDeclare(op_code, false);
+			s += ";";
+			this.endOperation(old_is_operation);
+			return s;
+		}
+		return "";
 	}
 	/**
 	 * Returns declare type
@@ -1082,7 +1093,7 @@ class TranslatorPHP extends CommonTranslator{
 	 * Class init functions
 	 */
 	OpClassInit(op_code){
-		var class_variables = op_code.class_variables;
+		var childs = op_code.childs;
 		var class_implements = op_code.class_implements;
 		var class_extends = "";
 		if (op_code.class_extends){
@@ -1098,21 +1109,46 @@ class TranslatorPHP extends CommonTranslator{
 		var has_variables = false;
 		var has_serializable = false;
 		var has_cloneable = false;
+		var has_methods_annotations = false;
+		var has_fields_annotations = false;
+		res += this.s("/* ======================= Class Init Functions ======================= */");
 		if (!this.is_interface){
 			res += this.s("public function getClassName(){"+"return "+rtl.toString(this.convertString(rtl.toString(this.current_namespace)+"."+rtl.toString(this.current_class_name)))+";}");
 			res += this.s("public static function getParentClassName(){"+"return "+rtl.toString(this.convertString(class_extends))+";}");
 		}
-		for (var i = 0; i < class_variables.count(); i++){
-			var variable = class_variables.item(i);
-			if (variable.isFlag("serializable")){
-				has_serializable = true;
+		if (this.is_struct){
+			has_serializable = true;
+			has_cloneable = true;
+		}
+		for (var i = 0; i < childs.count(); i++){
+			var variable = childs.item(i);
+			if (variable instanceof OpAssignDeclare){
+				if (variable.isFlag("serializable")){
+					has_serializable = true;
+					has_cloneable = true;
+				}
+				if (variable.isFlag("cloneable")){
+					has_cloneable = true;
+				}
+				if (variable.isFlag("assignable")){
+					has_serializable = true;
+				}
+				if (!variable.isFlag("static") && !variable.isFlag("const")){
+					has_variables = true;
+				}
+				if (variable.hasAnnotations()){
+					has_methods_annotations = true;
+				}
 			}
-			if (variable.isFlag("cloneable")){
-				has_cloneable = true;
+			if (variable instanceof OpFunctionDeclare){
+				if (variable.hasAnnotations()){
+					has_fields_annotations = true;
+				}
 			}
-			if (!variable.isFlag("static") && !variable.isFlag("const")){
-				has_variables = true;
-			}
+		}
+		var var_prefix = "";
+		if (this.struct_read_only && this.is_struct){
+			var_prefix = "__";
 		}
 		if (this.current_module_name != "Runtime" || this.current_class_name != "CoreObject"){
 			if (has_variables){
@@ -1121,12 +1157,15 @@ class TranslatorPHP extends CommonTranslator{
 				if (class_extends != ""){
 					res += this.s("parent::_init();");
 				}
-				if (class_variables != null){
-					for (var i = 0; i < class_variables.count(); i++){
-						var variable = class_variables.item(i);
+				if (childs != null){
+					for (var i = 0; i < childs.count(); i++){
+						var variable = childs.item(i);
+						if (!(variable instanceof OpAssignDeclare)){
+							continue;
+						}
 						if (!variable.isFlag("static") && !variable.isFlag("const")){
 							this.beginOperation();
-							var s = "$this->"+rtl.toString(variable.name)+" = "+rtl.toString(this.translateRun(variable.value))+";";
+							var s = "$this->"+rtl.toString(var_prefix)+rtl.toString(variable.name)+" = "+rtl.toString(this.translateRun(variable.value))+";";
 							this.endOperation();
 							res += this.s(s);
 						}
@@ -1136,14 +1175,22 @@ class TranslatorPHP extends CommonTranslator{
 				res += this.s("}");
 			}
 			if (has_cloneable){
-				res += this.s("public function assignObject($obj){");
+				var s1 = "public";
+				if (this.struct_read_only){
+					s1 = "protected";
+				}
+				res += this.s(rtl.toString(s1)+" function assignObject($obj){");
 				this.levelInc();
 				res += this.s("if ($obj instanceof "+rtl.toString(this.getName(this.current_class_name))+"){");
 				this.levelInc();
-				for (var i = 0; i < class_variables.count(); i++){
-					var variable = class_variables.item(i);
-					if (variable.isFlag("cloneable")){
-						res += this.s("$this->"+rtl.toString(variable.name)+" = "+rtl.toString(this.getName("rtl"))+"::_clone("+"$obj->"+rtl.toString(variable.name)+");");
+				for (var i = 0; i < childs.count(); i++){
+					var variable = childs.item(i);
+					if (!(variable instanceof OpAssignDeclare)){
+						continue;
+					}
+					var is_struct = this.is_struct && !variable.isFlag("static") && !variable.isFlag("const");
+					if (variable.isFlag("public") && (variable.isFlag("cloneable") || variable.isFlag("serializable") || is_struct)){
+						res += this.s("$this->"+rtl.toString(var_prefix)+rtl.toString(variable.name)+" = "+rtl.toString(this.getName("rtl"))+"::_clone("+"$obj->"+rtl.toString(var_prefix)+rtl.toString(variable.name)+");");
 					}
 				}
 				this.levelDec();
@@ -1154,12 +1201,20 @@ class TranslatorPHP extends CommonTranslator{
 			}
 			if (has_serializable){
 				var class_variables_serializable_count = 0;
-				res += this.s("public function assignValue($variable_name, $value){");
+				var s1 = "public";
+				if (this.struct_read_only){
+					s1 = "protected";
+				}
+				res += this.s(rtl.toString(s1)+" function assignValue($variable_name, $value){");
 				this.levelInc();
 				class_variables_serializable_count = 0;
-				for (var i = 0; i < class_variables.count(); i++){
-					var variable = class_variables.item(i);
-					if (variable.isFlag("serializable")){
+				for (var i = 0; i < childs.count(); i++){
+					var variable = childs.item(i);
+					if (!(variable instanceof OpAssignDeclare)){
+						continue;
+					}
+					var is_struct = this.is_struct && !variable.isFlag("static") && !variable.isFlag("const");
+					if (variable.isFlag("public") && (variable.isFlag("serializable") || variable.isFlag("assignable") || is_struct)){
 						var type_value = this.getAssignDeclareTypeValue(variable);
 						var type_template = this.getAssignDeclareTypeTemplate(variable);
 						var def_val = "null";
@@ -1167,7 +1222,7 @@ class TranslatorPHP extends CommonTranslator{
 							def_val = this.translateRun(variable.value);
 						}
 						var s = "if ($variable_name == "+rtl.toString(this.convertString(variable.name))+") ";
-						s += "$this->"+rtl.toString(variable.name)+" = ";
+						s += "$this->"+rtl.toString(var_prefix)+rtl.toString(variable.name)+" = ";
 						s += "rtl::correct($value, \""+rtl.toString(type_value)+"\", "+rtl.toString(def_val)+", \""+rtl.toString(type_template)+"\");";
 						if (class_variables_serializable_count == 0){
 							res += this.s(s);
@@ -1178,16 +1233,25 @@ class TranslatorPHP extends CommonTranslator{
 						class_variables_serializable_count++;
 					}
 				}
-				res += this.s("else parent::assignValue($variable_name, $value);");
+				if (class_variables_serializable_count == 0){
+					res += this.s("parent::assignValue($variable_name, $value);");
+				}
+				else {
+					res += this.s("else parent::assignValue($variable_name, $value);");
+				}
 				this.levelDec();
 				res += this.s("}");
 				res += this.s("public function takeValue($variable_name, $default_value = null){");
 				this.levelInc();
 				class_variables_serializable_count = 0;
-				for (var i = 0; i < class_variables.count(); i++){
-					var variable = class_variables.item(i);
-					if (variable.isFlag("serializable")){
-						var take_value_s = "if ($variable_name == "+rtl.toString(this.convertString(variable.name))+") "+"return $this->"+rtl.toString(variable.name)+";";
+				for (var i = 0; i < childs.count(); i++){
+					var variable = childs.item(i);
+					if (!(variable instanceof OpAssignDeclare)){
+						continue;
+					}
+					var is_struct = this.is_struct && !variable.isFlag("static") && !variable.isFlag("const");
+					if (variable.isFlag("public") && (variable.isFlag("serializable") || variable.isFlag("assignable") || is_struct)){
+						var take_value_s = "if ($variable_name == "+rtl.toString(this.convertString(variable.name))+") "+"return $this->"+rtl.toString(var_prefix)+rtl.toString(variable.name)+";";
 						if (class_variables_serializable_count == 0){
 							res += this.s(take_value_s);
 						}
@@ -1200,17 +1264,116 @@ class TranslatorPHP extends CommonTranslator{
 				res += this.s("return parent::takeValue($variable_name, $default_value);");
 				this.levelDec();
 				res += this.s("}");
-				res += this.s("public function getVariablesNames($names){");
+			}
+			if (has_serializable || has_fields_annotations){
+				res += this.s("public static function getFieldsList($names){");
 				this.levelInc();
-				res += this.s("parent::getVariablesNames($names);");
-				for (var i = 0; i < class_variables.count(); i++){
-					var variable = class_variables.item(i);
-					if (variable.isFlag("serializable")){
+				for (var i = 0; i < childs.count(); i++){
+					var variable = childs.item(i);
+					if (!(variable instanceof OpAssignDeclare)){
+						continue;
+					}
+					var is_struct = this.is_struct && !variable.isFlag("static") && !variable.isFlag("const");
+					if (variable.isFlag("public") && (variable.isFlag("serializable") || variable.isFlag("assignable") || is_struct || variable.hasAnnotations())){
 						res += this.s("$names->push("+rtl.toString(this.convertString(variable.name))+");");
 					}
 				}
 				this.levelDec();
 				res += this.s("}");
+				res += this.s("public static function getFieldInfoByName($field_name){");
+				this.levelInc();
+				for (var i = 0; i < childs.count(); i++){
+					var variable = childs.item(i);
+					if (!(variable instanceof OpAssignDeclare)){
+						continue;
+					}
+					var is_struct = this.is_struct && !variable.isFlag("static") && !variable.isFlag("const");
+					if (variable.isFlag("public") && variable.hasAnnotations()){
+						res += this.s("if ($field_name == "+rtl.toString(this.convertString(variable.name))+"){");
+						this.levelInc();
+						res += this.s("return new "+rtl.toString(this.getName("IntrospectionInfo"))+"(");
+						this.levelInc();
+						res += this.s("(new "+rtl.toString(this.getName("Map"))+"())");
+						res += this.s("->set(\"kind\", \"field\")");
+						res += this.s("->set(\"name\", "+rtl.toString(this.convertString(variable.name))+")");
+						res += this.s("->set(\"annotations\", ");
+						this.levelInc();
+						res += this.s("(new "+rtl.toString(this.getName("Vector"))+"())");
+						for (var j = 0; j < variable.annotations.count(); j++){
+							var annotation = variable.annotations.item(j);
+							this.pushOneLine(true);
+							var s_kind = this.translateRun(annotation.kind);
+							var s_options = this.translateRun(annotation.options);
+							this.popOneLine();
+							res += this.s("->push(new "+rtl.toString(s_kind)+"("+rtl.toString(s_options)+"))");
+						}
+						this.levelDec();
+						res += this.s(")");
+						this.levelDec();
+						res += this.s(");");
+						this.levelDec();
+						res += this.s("}");
+					}
+				}
+				res += this.s("return null;");
+				this.levelDec();
+				res += this.s("}");
+			}
+			if (has_methods_annotations){
+				res += this.s("public static function getMethodsList($names){");
+				this.levelInc();
+				for (var i = 0; i < childs.count(); i++){
+					var variable = childs.item(i);
+					if (!(variable instanceof OpFunctionDeclare)){
+						continue;
+					}
+					if (variable.isFlag("public") && variable.hasAnnotations()){
+						res += this.s("$names->push("+rtl.toString(this.convertString(variable.name))+");");
+					}
+				}
+				this.levelDec();
+				res += this.s("}");
+				res += this.s("public static function getMethodInfoByName($method_name){");
+				this.levelInc();
+				for (var i = 0; i < childs.count(); i++){
+					var variable = childs.item(i);
+					if (!(variable instanceof OpFunctionDeclare)){
+						continue;
+					}
+					if (variable.isFlag("public") && variable.hasAnnotations()){
+						res += this.s("if ($method_name == "+rtl.toString(this.convertString(variable.name))+"){");
+						this.levelInc();
+						res += this.s("return new "+rtl.toString(this.getName("IntrospectionInfo"))+"(");
+						this.levelInc();
+						res += this.s("(new "+rtl.toString(this.getName("Map"))+"())");
+						res += this.s("->set(\"kind\", \"method\")");
+						res += this.s("->set(\"name\", "+rtl.toString(this.convertString(variable.name))+")");
+						res += this.s("->set(\"annotations\", ");
+						this.levelInc();
+						res += this.s("(new "+rtl.toString(this.getName("Vector"))+"())");
+						for (var j = 0; j < variable.annotations.count(); j++){
+							var annotation = variable.annotations.item(j);
+							this.pushOneLine(true);
+							var s_kind = this.translateRun(annotation.kind);
+							var s_options = this.translateRun(annotation.options);
+							this.popOneLine();
+							res += this.s("->push(new "+rtl.toString(s_kind)+"("+rtl.toString(s_options)+"))");
+						}
+						this.levelDec();
+						res += this.s(")");
+						this.levelDec();
+						res += this.s(");");
+						this.levelDec();
+						res += this.s("}");
+					}
+				}
+				res += this.s("return null;");
+				this.levelDec();
+				res += this.s("}");
+			}
+			if (this.struct_read_only && this.is_struct){
+				res += this.s("public function __get($key){ return $this->takeValue($key); }");
+				res += this.s("public function __set($key, $value){}");
 			}
 		}
 		return res;
@@ -1231,12 +1394,17 @@ class TranslatorPHP extends CommonTranslator{
 		}
 		res += this.OpClassDeclareHeader(op_code);
 		/* Variables */
-		res += this.OpClassDeclareVariables(op_code);
-		res += this.OpClassInit(op_code);
-		/* Class functions */
+		/*res ~= this.OpClassDeclareVariables(op_code);*/
+		/* Class body */
 		for (var i = 0; i < op_code.childs.count(); i++){
 			var op_code2 = op_code.childs.item(i);
-			if (op_code2 instanceof OpFunctionArrowDeclare){
+			if (op_code2 instanceof OpAssignDeclare){
+				var s_assign_variable = this.OpClassDeclareVariable(op_code2);
+				if (s_assign_variable){
+					res += this.s(s_assign_variable);
+				}
+			}
+			else if (op_code2 instanceof OpFunctionArrowDeclare){
 				res += this.s(this.OpFunctionArrowDeclare(op_code2));
 			}
 			else if (op_code2 instanceof OpFunctionDeclare){
@@ -1249,6 +1417,8 @@ class TranslatorPHP extends CommonTranslator{
 				res += this.s(this.OpComment(op_code2));
 			}
 		}
+		/* Class Init */
+		res += this.OpClassInit(op_code);
 		/* Footer class */
 		this.levelDec();
 		res += this.s("}");
@@ -1261,6 +1431,16 @@ class TranslatorPHP extends CommonTranslator{
 		this.is_interface = true;
 		var res = this.OpClassDeclare(op_code);
 		this.is_interface = false;
+		return res;
+	}
+	/**
+	 * Struct declare
+	 */
+	OpStructDeclare(op_code){
+		this.is_struct = true;
+		this.struct_read_only = op_code.is_readonly;
+		var res = this.OpClassDeclare(op_code);
+		this.is_struct = false;
 		return res;
 	}
 	/** =========================== Preprocessor ========================== */
@@ -1305,6 +1485,22 @@ class TranslatorPHP extends CommonTranslator{
 		var s = "<?php"+rtl.toString(this.crlf);
 		s += this.translateRun(op_code);
 		return s;
+	}
+	/* ======================= Class Init Functions ======================= */
+	getClassName(){return "BayrellLang.LangPHP.TranslatorPHP";}
+	static getParentClassName(){return "CommonTranslator";}
+	_init(){
+		super._init();
+		this.modules = null;
+		this.current_namespace = "";
+		this.current_class_name = "";
+		this.current_function_name = null;
+		this.current_function_is_static = false;
+		this.current_module_name = "";
+		this.is_static = false;
+		this.is_interface = false;
+		this.is_struct = false;
+		this.struct_read_only = false;
 	}
 }
 module.exports = TranslatorPHP;

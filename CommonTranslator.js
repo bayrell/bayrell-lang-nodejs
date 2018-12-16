@@ -19,6 +19,7 @@
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var rs = require('bayrell-runtime-nodejs').rs;
 var ContextObject = require('bayrell-runtime-nodejs').ContextObject;
 var BaseOpCode = require('./OpCodes/BaseOpCode.js');
@@ -75,6 +76,7 @@ var OpShiftRight = require('./OpCodes/OpShiftRight.js');
 var OpStatic = require('./OpCodes/OpStatic.js');
 var OpString = require('./OpCodes/OpString.js');
 var OpStringItem = require('./OpCodes/OpStringItem.js');
+var OpStructDeclare = require('./OpCodes/OpStructDeclare.js');
 var OpSub = require('./OpCodes/OpSub.js');
 var OpTemplateIdentifier = require('./OpCodes/OpTemplateIdentifier.js');
 var OpTernary = require('./OpCodes/OpTernary.js');
@@ -84,19 +86,6 @@ var OpUse = require('./OpCodes/OpUse.js');
 var OpVector = require('./OpCodes/OpVector.js');
 var OpWhile = require('./OpCodes/OpWhile.js');
 class CommonTranslator extends ContextObject{
-	getClassName(){return "BayrellLang.CommonTranslator";}
-	static getParentClassName(){return "ContextObject";}
-	_init(){
-		super._init();
-		this.one_lines = null;
-		this.is_operation = false;
-		this.current_opcode_level = 0;
-		this.max_opcode_level = 100;
-		this.indent_level = 0;
-		this.indent = "\t";
-		this.space = " ";
-		this.crlf = "\n";
-	}
 	/**
 	 * Constructor
 	 */
@@ -178,8 +167,9 @@ class CommonTranslator extends ContextObject{
 	/**
 	 * Output string
 	 */
-	s(s){
-		if (s == ""){
+	s(s, force){
+		if (force == undefined) force=false;
+		if (s == "" && !force){
 			return "";
 		}
 		if (this.isOneLine()){
@@ -346,6 +336,9 @@ class CommonTranslator extends ContextObject{
 	OpStringItem(op_code){
 		return "";
 	}
+	OpStructDeclare(op_code){
+		return "";
+	}
 	OpSub(op_code){
 		return "";
 	}
@@ -406,6 +399,9 @@ class CommonTranslator extends ContextObject{
 		}
 		else if (op_code instanceof OpInterfaceDeclare){
 			return this.OpInterfaceDeclare(op_code);
+		}
+		else if (op_code instanceof OpStructDeclare){
+			return this.OpStructDeclare(op_code);
 		}
 		else if (op_code instanceof OpAdd){
 			return this.OpAdd(op_code);
@@ -598,6 +594,20 @@ class CommonTranslator extends ContextObject{
 	translate(op_code){
 		this.resetTranslator();
 		return this.translateRun(op_code);
+	}
+	/* ======================= Class Init Functions ======================= */
+	getClassName(){return "BayrellLang.CommonTranslator";}
+	static getParentClassName(){return "ContextObject";}
+	_init(){
+		super._init();
+		this.one_lines = null;
+		this.is_operation = false;
+		this.current_opcode_level = 0;
+		this.max_opcode_level = 100;
+		this.indent_level = 0;
+		this.indent = "\t";
+		this.space = " ";
+		this.crlf = "\n";
 	}
 }
 module.exports = CommonTranslator;

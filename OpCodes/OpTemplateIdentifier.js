@@ -19,23 +19,9 @@
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var BaseOpCode = require('./BaseOpCode.js');
 class OpTemplateIdentifier extends BaseOpCode{
-	getClassName(){return "BayrellLang.OpCodes.OpTemplateIdentifier";}
-	static getParentClassName(){return "BaseOpCode";}
-	_init(){
-		super._init();
-		this.op = "op_template_identifier";
-		this.t = null;
-		this.childs = null;
-	}
-	/**
-	 * Returns classname of the object
-	 * @return string
-	 */
-	getClassName(){
-		return "BayrellLang.OpCodes.OpTemplateIdentifier";
-	}
 	/**
 	 * Constructor
 	 */
@@ -91,6 +77,15 @@ class OpTemplateIdentifier extends BaseOpCode{
 		else {
 			super.assignValue(variable_name, value);
 		}
+	}
+	/* ======================= Class Init Functions ======================= */
+	getClassName(){return "BayrellLang.OpCodes.OpTemplateIdentifier";}
+	static getParentClassName(){return "BaseOpCode";}
+	_init(){
+		super._init();
+		this.op = "op_template_identifier";
+		this.t = null;
+		this.childs = null;
 	}
 }
 module.exports = OpTemplateIdentifier;

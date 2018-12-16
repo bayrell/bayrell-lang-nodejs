@@ -19,31 +19,9 @@
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var BaseOpCode = require('./BaseOpCode.js');
 class OpFlags extends BaseOpCode{
-	getClassName(){return "BayrellLang.OpCodes.OpFlags";}
-	static getParentClassName(){return "BaseOpCode";}
-	_init(){
-		super._init();
-		this.op = "op_flags";
-		this.p_async = false;
-		this.p_export = false;
-		this.p_static = false;
-		this.p_const = false;
-		this.p_public = false;
-		this.p_private = false;
-		this.p_protected = false;
-		this.p_declare = false;
-		this.p_serializable = false;
-		this.p_cloneable = false;
-	}
-	/**
-	 * Returns classname of the object
-	 * @return string
-	 */
-	getClassName(){
-		return "BayrellLang.OpCodes.OpFlags";
-	}
 	/**
 	 * Returns name of variables to serialization
 	 * @return Vector<string>
@@ -60,6 +38,7 @@ class OpFlags extends BaseOpCode{
 		names.push("protected");
 		names.push("serializable");
 		names.push("cloneable");
+		names.push("assignable");
 	}
 	/**
 	 * Returns instance of the value by variable name
@@ -97,6 +76,9 @@ class OpFlags extends BaseOpCode{
 		}
 		else if (variable_name == "cloneable"){
 			return this.p_cloneable;
+		}
+		else if (variable_name == "assignable"){
+			return this.p_assignable;
 		}
 		return super.takeValue(variable_name, default_value);
 	}
@@ -136,6 +118,9 @@ class OpFlags extends BaseOpCode{
 		else if (variable_name == "cloneable"){
 			this.p_cloneable = value;
 		}
+		else if (variable_name == "assignable"){
+			this.p_assignable = value;
+		}
 		else {
 			super.assignValue(variable_name, value);
 		}
@@ -154,16 +139,34 @@ class OpFlags extends BaseOpCode{
 	 * Get flags
 	 */
 	static getFlags(){
-		return (new Vector()).push("async").push("export").push("static").push("const").push("public").push("private").push("declare").push("protected").push("serializable").push("cloneable");
+		return (new Vector()).push("async").push("export").push("static").push("const").push("public").push("private").push("declare").push("protected").push("serializable").push("cloneable").push("assignable");
 	}
 	/**
 	 * Get flags
 	 */
 	static hasFlag(flag_name){
-		if (flag_name == "async" || flag_name == "export" || flag_name == "static" || flag_name == "const" || flag_name == "public" || flag_name == "private" || flag_name == "declare" || flag_name == "protected" || flag_name == "serializable" || flag_name == "cloneable"){
+		if (flag_name == "async" || flag_name == "export" || flag_name == "static" || flag_name == "const" || flag_name == "public" || flag_name == "private" || flag_name == "declare" || flag_name == "protected" || flag_name == "serializable" || flag_name == "cloneable" || flag_name == "assignable"){
 			return true;
 		}
 		return false;
+	}
+	/* ======================= Class Init Functions ======================= */
+	getClassName(){return "BayrellLang.OpCodes.OpFlags";}
+	static getParentClassName(){return "BaseOpCode";}
+	_init(){
+		super._init();
+		this.op = "op_flags";
+		this.p_async = false;
+		this.p_export = false;
+		this.p_static = false;
+		this.p_const = false;
+		this.p_public = false;
+		this.p_private = false;
+		this.p_protected = false;
+		this.p_declare = false;
+		this.p_serializable = false;
+		this.p_cloneable = false;
+		this.p_assignable = false;
 	}
 }
 module.exports = OpFlags;

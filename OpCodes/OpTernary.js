@@ -19,46 +19,9 @@
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var BaseOpCode = require('./BaseOpCode.js');
 class OpTernary extends BaseOpCode{
-	getClassName(){return "BayrellLang.OpCodes.OpTernary";}
-	static getParentClassName(){return "BaseOpCode";}
-	_init(){
-		super._init();
-		this.op = "op_ternary";
-		this.condition = null;
-		this.if_true = null;
-		this.if_false = null;
-	}
-	assignValue(variable_name, value){
-		if (variable_name == "op") this.op = rtl.correct(value, "string", "op_ternary", "");
-		else if (variable_name == "condition") this.condition = rtl.correct(value, "BaseOpCode", null, "");
-		else if (variable_name == "if_true") this.if_true = rtl.correct(value, "BaseOpCode", null, "");
-		else if (variable_name == "if_false") this.if_false = rtl.correct(value, "BaseOpCode", null, "");
-		else super.assignValue(variable_name, value);
-	}
-	takeValue(variable_name, default_value){
-		if (default_value == undefined) default_value = null;
-		if (variable_name == "op") return this.op;
-		else if (variable_name == "condition") return this.condition;
-		else if (variable_name == "if_true") return this.if_true;
-		else if (variable_name == "if_false") return this.if_false;
-		return super.takeValue(variable_name, default_value);
-	}
-	getVariablesNames(names){
-		super.getVariablesNames(names);
-		names.push("op");
-		names.push("condition");
-		names.push("if_true");
-		names.push("if_false");
-	}
-	/**
-	 * Returns classname of the object
-	 * @return string
-	 */
-	getClassName(){
-		return "BayrellLang.OpCodes.OpTernary";
-	}
 	/**
 	 * Constructor
 	 */
@@ -76,6 +39,49 @@ class OpTernary extends BaseOpCode{
 	 */
 	destructor(){
 		super.destructor();
+	}
+	/* ======================= Class Init Functions ======================= */
+	getClassName(){return "BayrellLang.OpCodes.OpTernary";}
+	static getParentClassName(){return "BaseOpCode";}
+	_init(){
+		super._init();
+		this.op = "op_ternary";
+		this.condition = null;
+		this.if_true = null;
+		this.if_false = null;
+	}
+	assignObject(obj){
+		if (obj instanceof OpTernary){
+			this.op = rtl._clone(obj.op);
+			this.condition = rtl._clone(obj.condition);
+			this.if_true = rtl._clone(obj.if_true);
+			this.if_false = rtl._clone(obj.if_false);
+		}
+		super.assignObject(obj);
+	}
+	assignValue(variable_name, value){
+		if (variable_name == "op") this.op = rtl.correct(value, "string", "op_ternary", "");
+		else if (variable_name == "condition") this.condition = rtl.correct(value, "BayrellLang.OpCodes.BaseOpCode", null, "");
+		else if (variable_name == "if_true") this.if_true = rtl.correct(value, "BayrellLang.OpCodes.BaseOpCode", null, "");
+		else if (variable_name == "if_false") this.if_false = rtl.correct(value, "BayrellLang.OpCodes.BaseOpCode", null, "");
+		else super.assignValue(variable_name, value);
+	}
+	takeValue(variable_name, default_value){
+		if (default_value == undefined) default_value = null;
+		if (variable_name == "op") return this.op;
+		else if (variable_name == "condition") return this.condition;
+		else if (variable_name == "if_true") return this.if_true;
+		else if (variable_name == "if_false") return this.if_false;
+		return super.takeValue(variable_name, default_value);
+	}
+	static getFieldsList(names){
+		names.push("op");
+		names.push("condition");
+		names.push("if_true");
+		names.push("if_false");
+	}
+	static getFieldInfoByName(field_name){
+		return null;
 	}
 }
 module.exports = OpTernary;

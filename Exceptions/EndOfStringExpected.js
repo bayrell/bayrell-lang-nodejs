@@ -19,12 +19,11 @@
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var RuntimeUtils = require('bayrell-runtime-nodejs').RuntimeUtils;
 var ParserError = require('bayrell-parser-nodejs').Exceptions.ParserError;
 var LangConstant = require('../LangConstant.js');
 class EndOfStringExpected extends ParserError{
-	getClassName(){return "BayrellLang.Exceptions.EndOfStringExpected";}
-	static getParentClassName(){return "ParserError";}
 	constructor(line, col, context, prev){
 		if (prev == undefined) prev=null;
 		if (context == null){
@@ -35,5 +34,8 @@ class EndOfStringExpected extends ParserError{
 		this.pos = col;
 		this.buildMessage();
 	}
+	/* ======================= Class Init Functions ======================= */
+	getClassName(){return "BayrellLang.Exceptions.EndOfStringExpected";}
+	static getParentClassName(){return "ParserError";}
 }
 module.exports = EndOfStringExpected;

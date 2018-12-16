@@ -19,19 +19,13 @@
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var rs = require('bayrell-runtime-nodejs').rs;
 var ParserToken = require('bayrell-parser-nodejs').ParserToken;
 var ParserEOF = require('bayrell-parser-nodejs').Exceptions.ParserEOF;
 var ParserExpected = require('bayrell-parser-nodejs').Exceptions.ParserExpected;
 var EndOfStringExpected = require('../Exceptions/EndOfStringExpected.js');
 class ParserBayToken extends ParserToken{
-	getClassName(){return "BayrellLang.LangBay.ParserBayToken";}
-	static getParentClassName(){return "ParserToken";}
-	_init(){
-		super._init();
-		this._special_tokens = null;
-		this.parser = null;
-	}
 	/**
 	 * Current content of the file
 	 */
@@ -183,6 +177,14 @@ class ParserBayToken extends ParserToken{
 			return ;
 		}
 		this.readNextTokenBase();
+	}
+	/* ======================= Class Init Functions ======================= */
+	getClassName(){return "BayrellLang.LangBay.ParserBayToken";}
+	static getParentClassName(){return "ParserToken";}
+	_init(){
+		super._init();
+		this._special_tokens = null;
+		this.parser = null;
 	}
 }
 ParserBayToken.TOKEN_NONE = "none";

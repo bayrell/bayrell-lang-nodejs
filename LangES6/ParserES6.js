@@ -19,7 +19,9 @@
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 class BayrellParserES6{
+	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.LangES6.BayrellParserES6";}
 	static getParentClassName(){return "";}
 }

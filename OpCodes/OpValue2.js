@@ -19,42 +19,9 @@
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var BaseOpCode = require('./BaseOpCode.js');
 class OpValue2 extends BaseOpCode{
-	getClassName(){return "BayrellLang.OpCodes.OpValue2";}
-	static getParentClassName(){return "BaseOpCode";}
-	_init(){
-		super._init();
-		this.op = "op_value2";
-		this.value1 = null;
-		this.value2 = null;
-	}
-	assignValue(variable_name, value){
-		if (variable_name == "op") this.op = rtl.correct(value, "string", "op_value2", "");
-		else if (variable_name == "value1") this.value1 = rtl.correct(value, "BaseOpCode", null, "");
-		else if (variable_name == "value2") this.value2 = rtl.correct(value, "BaseOpCode", null, "");
-		else super.assignValue(variable_name, value);
-	}
-	takeValue(variable_name, default_value){
-		if (default_value == undefined) default_value = null;
-		if (variable_name == "op") return this.op;
-		else if (variable_name == "value1") return this.value1;
-		else if (variable_name == "value2") return this.value2;
-		return super.takeValue(variable_name, default_value);
-	}
-	getVariablesNames(names){
-		super.getVariablesNames(names);
-		names.push("op");
-		names.push("value1");
-		names.push("value2");
-	}
-	/**
-	 * Returns classname of the object
-	 * @return string
-	 */
-	getClassName(){
-		return "BayrellLang.OpCodes.OpValue2";
-	}
 	/**
 	 * Constructor
 	 */
@@ -70,6 +37,44 @@ class OpValue2 extends BaseOpCode{
 	 */
 	destructor(){
 		super.destructor();
+	}
+	/* ======================= Class Init Functions ======================= */
+	getClassName(){return "BayrellLang.OpCodes.OpValue2";}
+	static getParentClassName(){return "BaseOpCode";}
+	_init(){
+		super._init();
+		this.op = "op_value2";
+		this.value1 = null;
+		this.value2 = null;
+	}
+	assignObject(obj){
+		if (obj instanceof OpValue2){
+			this.op = rtl._clone(obj.op);
+			this.value1 = rtl._clone(obj.value1);
+			this.value2 = rtl._clone(obj.value2);
+		}
+		super.assignObject(obj);
+	}
+	assignValue(variable_name, value){
+		if (variable_name == "op") this.op = rtl.correct(value, "string", "op_value2", "");
+		else if (variable_name == "value1") this.value1 = rtl.correct(value, "BayrellLang.OpCodes.BaseOpCode", null, "");
+		else if (variable_name == "value2") this.value2 = rtl.correct(value, "BayrellLang.OpCodes.BaseOpCode", null, "");
+		else super.assignValue(variable_name, value);
+	}
+	takeValue(variable_name, default_value){
+		if (default_value == undefined) default_value = null;
+		if (variable_name == "op") return this.op;
+		else if (variable_name == "value1") return this.value1;
+		else if (variable_name == "value2") return this.value2;
+		return super.takeValue(variable_name, default_value);
+	}
+	static getFieldsList(names){
+		names.push("op");
+		names.push("value1");
+		names.push("value2");
+	}
+	static getFieldInfoByName(field_name){
+		return null;
 	}
 }
 module.exports = OpValue2;

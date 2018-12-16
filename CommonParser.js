@@ -19,19 +19,13 @@
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var rs = require('bayrell-runtime-nodejs').rs;
 var ParserToken = require('bayrell-parser-nodejs').ParserToken;
 var CoreParser = require('bayrell-parser-nodejs').CoreParser;
 var HexNumberExpected = require('./Exceptions/HexNumberExpected.js');
 var BaseOpCode = require('./OpCodes/BaseOpCode.js');
 class CommonParser extends CoreParser{
-	getClassName(){return "BayrellLang.CommonParser";}
-	static getParentClassName(){return "CoreParser";}
-	_init(){
-		super._init();
-		this._result = null;
-		this.skip_comments = false;
-	}
 	/**
 	 * Return true if char is alfa symbol
 	 * @param char ch
@@ -219,6 +213,14 @@ class CommonParser extends CoreParser{
 	 */
 	runParser(){
 		this._result = null;
+	}
+	/* ======================= Class Init Functions ======================= */
+	getClassName(){return "BayrellLang.CommonParser";}
+	static getParentClassName(){return "CoreParser";}
+	_init(){
+		super._init();
+		this._result = null;
+		this.skip_comments = false;
 	}
 }
 module.exports = CommonParser;

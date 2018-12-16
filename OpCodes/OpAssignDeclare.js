@@ -19,47 +19,14 @@
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var BaseOpCode = require('./BaseOpCode.js');
+var OpAnnotation = require('./OpAnnotation.js');
 var OpDynamic = require('./OpDynamic.js');
 var OpFlags = require('./OpFlags.js');
 var OpIdentifier = require('./OpIdentifier.js');
 var OpTemplateIdentifier = require('./OpTemplateIdentifier.js');
 class OpAssignDeclare extends BaseOpCode{
-	getClassName(){return "BayrellLang.OpCodes.OpAssignDeclare";}
-	static getParentClassName(){return "BaseOpCode";}
-	_init(){
-		super._init();
-		this.op = "op_assign_declare";
-		this.tp = null;
-		this.name = null;
-		this.value = null;
-		this.flags = null;
-	}
-	assignValue(variable_name, value){
-		if (variable_name == "op") this.op = rtl.correct(value, "string", "op_assign_declare", "");
-		else if (variable_name == "tp") this.tp = rtl.correct(value, "BaseOpCode", null, "");
-		else if (variable_name == "name") this.name = rtl.correct(value, "string", null, "");
-		else if (variable_name == "value") this.value = rtl.correct(value, "BaseOpCode", null, "");
-		else if (variable_name == "flags") this.flags = rtl.correct(value, "OpFlags", null, "");
-		else super.assignValue(variable_name, value);
-	}
-	takeValue(variable_name, default_value){
-		if (default_value == undefined) default_value = null;
-		if (variable_name == "op") return this.op;
-		else if (variable_name == "tp") return this.tp;
-		else if (variable_name == "name") return this.name;
-		else if (variable_name == "value") return this.value;
-		else if (variable_name == "flags") return this.flags;
-		return super.takeValue(variable_name, default_value);
-	}
-	getVariablesNames(names){
-		super.getVariablesNames(names);
-		names.push("op");
-		names.push("tp");
-		names.push("name");
-		names.push("value");
-		names.push("flags");
-	}
 	/**
 	 * Read is Flag
 	 */
@@ -71,6 +38,12 @@ class OpAssignDeclare extends BaseOpCode{
 			return false;
 		}
 		return this.flags.takeValue(name);
+	}
+	/**
+	 * Has Annotations
+	 */
+	hasAnnotations(){
+		return this.annotations != null && this.annotations.count() > 0;
 	}
 	/**
 	 * Returns classname of the object
@@ -96,6 +69,59 @@ class OpAssignDeclare extends BaseOpCode{
 	 */
 	destructor(){
 		super.destructor();
+	}
+	/* ======================= Class Init Functions ======================= */
+	getClassName(){return "BayrellLang.OpCodes.OpAssignDeclare";}
+	static getParentClassName(){return "BaseOpCode";}
+	_init(){
+		super._init();
+		this.op = "op_assign_declare";
+		this.tp = null;
+		this.name = null;
+		this.value = null;
+		this.flags = null;
+		this.annotations = null;
+	}
+	assignObject(obj){
+		if (obj instanceof OpAssignDeclare){
+			this.op = rtl._clone(obj.op);
+			this.tp = rtl._clone(obj.tp);
+			this.name = rtl._clone(obj.name);
+			this.value = rtl._clone(obj.value);
+			this.flags = rtl._clone(obj.flags);
+			this.annotations = rtl._clone(obj.annotations);
+		}
+		super.assignObject(obj);
+	}
+	assignValue(variable_name, value){
+		if (variable_name == "op") this.op = rtl.correct(value, "string", "op_assign_declare", "");
+		else if (variable_name == "tp") this.tp = rtl.correct(value, "BayrellLang.OpCodes.BaseOpCode", null, "");
+		else if (variable_name == "name") this.name = rtl.correct(value, "string", null, "");
+		else if (variable_name == "value") this.value = rtl.correct(value, "BayrellLang.OpCodes.BaseOpCode", null, "");
+		else if (variable_name == "flags") this.flags = rtl.correct(value, "BayrellLang.OpCodes.OpFlags", null, "");
+		else if (variable_name == "annotations") this.annotations = rtl.correct(value, "Vector", null, "BayrellLang.OpCodes.OpAnnotation");
+		else super.assignValue(variable_name, value);
+	}
+	takeValue(variable_name, default_value){
+		if (default_value == undefined) default_value = null;
+		if (variable_name == "op") return this.op;
+		else if (variable_name == "tp") return this.tp;
+		else if (variable_name == "name") return this.name;
+		else if (variable_name == "value") return this.value;
+		else if (variable_name == "flags") return this.flags;
+		else if (variable_name == "annotations") return this.annotations;
+		return super.takeValue(variable_name, default_value);
+	}
+	static getFieldsList(names){
+		names.push("op");
+		names.push("tp");
+		names.push("name");
+		names.push("value");
+		names.push("flags");
+		names.push("annotations");
+	}
+	static getFieldInfoByName(field_name){
+		return null;
 	}
 }
 module.exports = OpAssignDeclare;

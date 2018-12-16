@@ -19,59 +19,11 @@
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var BaseOpCode = require('./BaseOpCode.js');
+var OpAnnotation = require('./OpAnnotation.js');
 var OpFlags = require('./OpFlags.js');
 class OpFunctionDeclare extends BaseOpCode{
-	getClassName(){return "BayrellLang.OpCodes.OpFunctionDeclare";}
-	static getParentClassName(){return "BaseOpCode";}
-	_init(){
-		super._init();
-		this.op = "op_function";
-		this.name = "";
-		this.result_type = null;
-		this.args = null;
-		this.childs = null;
-		this.use_variables = null;
-		this.flags = null;
-	}
-	assignValue(variable_name, value){
-		if (variable_name == "op") this.op = rtl.correct(value, "string", "op_function", "");
-		else if (variable_name == "name") this.name = rtl.correct(value, "string", "", "");
-		else if (variable_name == "result_type") this.result_type = rtl.correct(value, "BaseOpCode", null, "");
-		else if (variable_name == "args") this.args = rtl.correct(value, "Vector", null, "OpAssignDeclare");
-		else if (variable_name == "childs") this.childs = rtl.correct(value, "Vector", null, "BaseOpCode");
-		else if (variable_name == "use_variables") this.use_variables = rtl.correct(value, "Vector", null, "string");
-		else if (variable_name == "flags") this.flags = rtl.correct(value, "OpFlags", null, "");
-		else super.assignValue(variable_name, value);
-	}
-	takeValue(variable_name, default_value){
-		if (default_value == undefined) default_value = null;
-		if (variable_name == "op") return this.op;
-		else if (variable_name == "name") return this.name;
-		else if (variable_name == "result_type") return this.result_type;
-		else if (variable_name == "args") return this.args;
-		else if (variable_name == "childs") return this.childs;
-		else if (variable_name == "use_variables") return this.use_variables;
-		else if (variable_name == "flags") return this.flags;
-		return super.takeValue(variable_name, default_value);
-	}
-	getVariablesNames(names){
-		super.getVariablesNames(names);
-		names.push("op");
-		names.push("name");
-		names.push("result_type");
-		names.push("args");
-		names.push("childs");
-		names.push("use_variables");
-		names.push("flags");
-	}
-	/**
-	 * Returns classname of the object
-	 * @return string
-	 */
-	getClassName(){
-		return "BayrellLang.OpCodes.OpFunctionDeclare";
-	}
 	/**
 	 * Read is Flag
 	 */
@@ -83,6 +35,12 @@ class OpFunctionDeclare extends BaseOpCode{
 			return false;
 		}
 		return this.flags.takeValue(name);
+	}
+	/**
+	 * Has Annotations
+	 */
+	hasAnnotations(){
+		return this.annotations != null && this.annotations.count() > 0;
 	}
 	/**
 	 * Constructor
@@ -97,6 +55,69 @@ class OpFunctionDeclare extends BaseOpCode{
 	 */
 	destructor(){
 		super.destructor();
+	}
+	/* ======================= Class Init Functions ======================= */
+	getClassName(){return "BayrellLang.OpCodes.OpFunctionDeclare";}
+	static getParentClassName(){return "BaseOpCode";}
+	_init(){
+		super._init();
+		this.op = "op_function";
+		this.name = "";
+		this.result_type = null;
+		this.args = null;
+		this.childs = null;
+		this.use_variables = null;
+		this.flags = null;
+		this.annotations = null;
+	}
+	assignObject(obj){
+		if (obj instanceof OpFunctionDeclare){
+			this.op = rtl._clone(obj.op);
+			this.name = rtl._clone(obj.name);
+			this.result_type = rtl._clone(obj.result_type);
+			this.args = rtl._clone(obj.args);
+			this.childs = rtl._clone(obj.childs);
+			this.use_variables = rtl._clone(obj.use_variables);
+			this.flags = rtl._clone(obj.flags);
+			this.annotations = rtl._clone(obj.annotations);
+		}
+		super.assignObject(obj);
+	}
+	assignValue(variable_name, value){
+		if (variable_name == "op") this.op = rtl.correct(value, "string", "op_function", "");
+		else if (variable_name == "name") this.name = rtl.correct(value, "string", "", "");
+		else if (variable_name == "result_type") this.result_type = rtl.correct(value, "BayrellLang.OpCodes.BaseOpCode", null, "");
+		else if (variable_name == "args") this.args = rtl.correct(value, "Vector", null, "OpAssignDeclare");
+		else if (variable_name == "childs") this.childs = rtl.correct(value, "Vector", null, "BayrellLang.OpCodes.BaseOpCode");
+		else if (variable_name == "use_variables") this.use_variables = rtl.correct(value, "Vector", null, "string");
+		else if (variable_name == "flags") this.flags = rtl.correct(value, "BayrellLang.OpCodes.OpFlags", null, "");
+		else if (variable_name == "annotations") this.annotations = rtl.correct(value, "Vector", null, "BayrellLang.OpCodes.OpAnnotation");
+		else super.assignValue(variable_name, value);
+	}
+	takeValue(variable_name, default_value){
+		if (default_value == undefined) default_value = null;
+		if (variable_name == "op") return this.op;
+		else if (variable_name == "name") return this.name;
+		else if (variable_name == "result_type") return this.result_type;
+		else if (variable_name == "args") return this.args;
+		else if (variable_name == "childs") return this.childs;
+		else if (variable_name == "use_variables") return this.use_variables;
+		else if (variable_name == "flags") return this.flags;
+		else if (variable_name == "annotations") return this.annotations;
+		return super.takeValue(variable_name, default_value);
+	}
+	static getFieldsList(names){
+		names.push("op");
+		names.push("name");
+		names.push("result_type");
+		names.push("args");
+		names.push("childs");
+		names.push("use_variables");
+		names.push("flags");
+		names.push("annotations");
+	}
+	static getFieldInfoByName(field_name){
+		return null;
 	}
 }
 module.exports = OpFunctionDeclare;

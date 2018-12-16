@@ -19,6 +19,7 @@
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var CommonTranslator = require('./CommonTranslator.js');
 var OutputAbstract = require('./Output/OutputAbstract.js');
 var OutputChilds = require('./Output/OutputChilds.js');
@@ -26,8 +27,6 @@ var OutputNope = require('./Output/OutputNope.js');
 var OutputOneLine = require('./Output/OutputOneLine.js');
 var OutputString = require('./Output/OutputString.js');
 class TranslatorBay extends CommonTranslator{
-	getClassName(){return "BayrellLang.TranslatorBay";}
-	static getParentClassName(){return "CommonTranslator";}
 	/**
 	 * Operator ADD
 	 */
@@ -197,5 +196,8 @@ class TranslatorBay extends CommonTranslator{
 	OpWhile(code_tree){
 		return null;
 	}
+	/* ======================= Class Init Functions ======================= */
+	getClassName(){return "BayrellLang.TranslatorBay";}
+	static getParentClassName(){return "CommonTranslator";}
 }
 module.exports = TranslatorBay;
