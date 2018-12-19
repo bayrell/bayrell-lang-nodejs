@@ -37,6 +37,12 @@ class OpClassDeclare extends BaseOpCode{
 		return this.flags.takeValue(name);
 	}
 	/**
+	 * Has Annotations
+	 */
+	hasAnnotations(){
+		return this.annotations != null && this.annotations.count() > 0;
+	}
+	/**
 	 * Constructor
 	 */
 	constructor(){
@@ -64,6 +70,7 @@ class OpClassDeclare extends BaseOpCode{
 		this.childs = null;
 		this.class_template = null;
 		this.flags = null;
+		this.annotations = null;
 	}
 	assignObject(obj){
 		if (obj instanceof OpClassDeclare){
@@ -74,6 +81,7 @@ class OpClassDeclare extends BaseOpCode{
 			this.childs = rtl._clone(obj.childs);
 			this.class_template = rtl._clone(obj.class_template);
 			this.flags = rtl._clone(obj.flags);
+			this.annotations = rtl._clone(obj.annotations);
 		}
 		super.assignObject(obj);
 	}
@@ -85,6 +93,7 @@ class OpClassDeclare extends BaseOpCode{
 		else if (variable_name == "childs") this.childs = rtl.correct(value, "Vector", null, "BayrellLang.OpCodes.BaseOpCode");
 		else if (variable_name == "class_template") this.class_template = rtl.correct(value, "Vector", null, "BayrellLang.OpCodes.BaseOpCode");
 		else if (variable_name == "flags") this.flags = rtl.correct(value, "BayrellLang.OpCodes.OpFlags", null, "");
+		else if (variable_name == "annotations") this.annotations = rtl.correct(value, "Vector", null, "OpAnnotation");
 		else super.assignValue(variable_name, value);
 	}
 	takeValue(variable_name, default_value){
@@ -96,6 +105,7 @@ class OpClassDeclare extends BaseOpCode{
 		else if (variable_name == "childs") return this.childs;
 		else if (variable_name == "class_template") return this.class_template;
 		else if (variable_name == "flags") return this.flags;
+		else if (variable_name == "annotations") return this.annotations;
 		return super.takeValue(variable_name, default_value);
 	}
 	static getFieldsList(names){
@@ -106,6 +116,7 @@ class OpClassDeclare extends BaseOpCode{
 		names.push("childs");
 		names.push("class_template");
 		names.push("flags");
+		names.push("annotations");
 	}
 	static getFieldInfoByName(field_name){
 		return null;
