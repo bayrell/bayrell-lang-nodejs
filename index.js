@@ -26,7 +26,7 @@ function ObjectAssign(res, obj){
 }
 
 module.exports = {
-	VERSION: '0.6.1',
+	VERSION: '0.6.2',
 };
 
 /* Exceptions */
@@ -133,7 +133,7 @@ ObjectAssign(module.exports, require("./Utils.js"));
 else{
 
 module.exports = {
-	VERSION: '0.6.1',
+	VERSION: '0.6.2',
 	'Exceptions': {
 		'EndOfStringExpected': require("./Exceptions/EndOfStringExpected.js"),
 		'HexNumberExpected': require("./Exceptions/HexNumberExpected.js"),

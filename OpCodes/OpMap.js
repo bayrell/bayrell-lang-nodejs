@@ -23,13 +23,6 @@ var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var BaseOpCode = require('./BaseOpCode.js');
 class OpMap extends BaseOpCode{
 	/**
-	 * Returns classname of the object
-	 * @return string
-	 */
-	getClassName(){
-		return "BayrellLang.OpCodes.OpMap";
-	}
-	/**
 	 * Constructor
 	 */
 	constructor(){

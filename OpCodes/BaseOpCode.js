@@ -23,19 +23,6 @@ var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var CoreObject = require('bayrell-runtime-nodejs').CoreObject;
 var SerializeInterface = require('bayrell-runtime-nodejs').Interfaces.SerializeInterface;
 class BaseOpCode extends CoreObject{
-	/**
-	 * Constructor
-	 */
-	constructor(){
-		super(null);
-	}
-	/**
-	 * Returns classname of the object
-	 * @return string
-	 */
-	getClassName(){
-		return "BayrellLang.OpCodes.BaseOpCode";
-	}
 	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.OpCodes.BaseOpCode";}
 	static getParentClassName(){return "CoreObject";}

@@ -1113,6 +1113,7 @@ class TranslatorPHP extends CommonTranslator{
 			}
 		}
 		var res = "";
+		var has_assignable = false;
 		var has_variables = false;
 		var has_serializable = false;
 		var has_cloneable = false;
@@ -1138,7 +1139,7 @@ class TranslatorPHP extends CommonTranslator{
 					has_cloneable = true;
 				}
 				if (variable.isFlag("assignable")){
-					has_serializable = true;
+					has_assignable = true;
 				}
 				if (!variable.isFlag("static") && !variable.isFlag("const")){
 					has_variables = true;
@@ -1182,7 +1183,7 @@ class TranslatorPHP extends CommonTranslator{
 				this.levelDec();
 				res += this.s("}");
 			}
-			if (has_cloneable){
+			if (has_cloneable || has_assignable){
 				var s1 = "public";
 				res += this.s(rtl.toString(s1)+" function assignObject($obj){");
 				this.levelInc();
@@ -1208,7 +1209,7 @@ class TranslatorPHP extends CommonTranslator{
 				this.levelDec();
 				res += this.s("}");
 			}
-			if (has_serializable){
+			if (has_serializable || has_assignable){
 				var class_variables_serializable_count = 0;
 				var s1 = "public";
 				res += this.s(rtl.toString(s1)+" function assignValue($variable_name, $value){");
@@ -1279,7 +1280,7 @@ class TranslatorPHP extends CommonTranslator{
 				this.levelDec();
 				res += this.s("}");
 			}
-			if (has_serializable || has_fields_annotations){
+			if (has_serializable || has_assignable || has_fields_annotations){
 				res += this.s("public static function getFieldsList($names){");
 				this.levelInc();
 				for (var i = 0; i < childs.count(); i++){
@@ -1288,7 +1289,7 @@ class TranslatorPHP extends CommonTranslator{
 						continue;
 					}
 					var is_struct = this.is_struct && !variable.isFlag("static") && !variable.isFlag("const");
-					if (variable.isFlag("public") && (variable.isFlag("serializable") || is_struct || variable.hasAnnotations())){
+					if (variable.isFlag("public") && (variable.isFlag("serializable") || variable.isFlag("assignable") || is_struct || variable.hasAnnotations())){
 						res += this.s("$names->push("+rtl.toString(this.convertString(variable.name))+");");
 					}
 				}

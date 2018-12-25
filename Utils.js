@@ -61,7 +61,7 @@ class Utils extends ContextObject{
 	 * @string string source
 	 * @return string
 	 */
-	static translate(context, parser_factory, translator_factory, source){
+	static translateSource(context, parser_factory, translator_factory, source){
 		var parser = parser_factory.newInstance(context);
 		var translator = translator_factory.newInstance(context);
 		parser.parseString(source);
@@ -101,7 +101,7 @@ class Utils extends ContextObject{
 		*/
 		var file_system = context.createProvider("default:fs");
 		var content = file_system.readFile(src_file_name);
-		var res = Utils.translate(context, parser_factory, translator_factory, content);
+		var res = Utils.translateSource(context, parser_factory, translator_factory, content);
 		var dir = BayrellCommonUtils.dirname(dest_file_name);
 		file_system.makeDir(dir);
 		file_system.saveFile(dest_file_name, res);

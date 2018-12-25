@@ -30,6 +30,7 @@ class ParserBayFactory extends ContextObject{
 	 * Returns new Instance
 	 */
 	newInstance(context){
+		if (context == undefined) context=null;
 		return new ParserBay(context);
 	}
 	/* ======================= Class Init Functions ======================= */

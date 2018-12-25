@@ -133,7 +133,7 @@ class ParserBayToken extends ParserToken{
 	 */
 	skipComments(){
 		var look = this.lookString(2);
-		while (look == "/*"){
+		while (look == "/*" && !this.isEOF()){
 			/* */
 			this.readComment(look);
 			this.skipSystemChar();
