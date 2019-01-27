@@ -21,11 +21,12 @@ var Map = require('bayrell-runtime-nodejs').Map;
 var Vector = require('bayrell-runtime-nodejs').Vector;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var CoreObject = require('bayrell-runtime-nodejs').CoreObject;
+var CoreStruct = require('bayrell-runtime-nodejs').CoreStruct;
 var SerializeInterface = require('bayrell-runtime-nodejs').Interfaces.SerializeInterface;
-class BaseOpCode extends CoreObject{
+class BaseOpCode extends CoreStruct{
 	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.OpCodes.BaseOpCode";}
-	static getParentClassName(){return "CoreObject";}
+	static getParentClassName(){return "CoreStruct";}
 	_init(){
 		super._init();
 		this.op = "";
@@ -38,17 +39,20 @@ class BaseOpCode extends CoreObject{
 		}
 		super.assignObject(obj);
 	}
-	assignValue(variable_name, value){
-		if (variable_name == "op") this.op = rtl.correct(value, "string", "", "");
-		else super.assignValue(variable_name, value);
+	assignValue(variable_name, value, sender){if(sender==undefined)sender=null;
+		if (variable_name == "op")this.op = rtl.correct(value,"string","","");
+		else super.assignValue(variable_name, value, sender);
 	}
 	takeValue(variable_name, default_value){
 		if (default_value == undefined) default_value = null;
 		if (variable_name == "op") return this.op;
 		return super.takeValue(variable_name, default_value);
 	}
-	static getFieldsList(names){
-		names.push("op");
+	static getFieldsList(names, flag){
+		if (flag==undefined)flag=0;
+		if ((flag | 3)==3){
+			names.push("op");
+		}
 	}
 	static getFieldInfoByName(field_name){
 		return null;

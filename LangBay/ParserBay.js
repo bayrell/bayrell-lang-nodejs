@@ -39,10 +39,12 @@ var OpChilds = require('../OpCodes/OpChilds.js');
 var OpClassDeclare = require('../OpCodes/OpClassDeclare.js');
 var OpClassName = require('../OpCodes/OpClassName.js');
 var OpClone = require('../OpCodes/OpClone.js');
+var OpComponent = require('../OpCodes/OpComponent.js');
 var OpComment = require('../OpCodes/OpComment.js');
 var OpCompare = require('../OpCodes/OpCompare.js');
 var OpConcat = require('../OpCodes/OpConcat.js');
 var OpContinue = require('../OpCodes/OpContinue.js');
+var OpCopyStruct = require('../OpCodes/OpCopyStruct.js');
 var OpDelete = require('../OpCodes/OpDelete.js');
 var OpDiv = require('../OpCodes/OpDiv.js');
 var OpDynamic = require('../OpCodes/OpDynamic.js');
@@ -51,6 +53,14 @@ var OpFor = require('../OpCodes/OpFor.js');
 var OpFunctionArrowDeclare = require('../OpCodes/OpFunctionArrowDeclare.js');
 var OpFunctionDeclare = require('../OpCodes/OpFunctionDeclare.js');
 var OpHexNumber = require('../OpCodes/OpHexNumber.js');
+var OpHtmlAttribute = require('../OpCodes/OpHtmlAttribute.js');
+var OpHtmlComment = require('../OpCodes/OpHtmlComment.js');
+var OpHtmlEscape = require('../OpCodes/OpHtmlEscape.js');
+var OpHtmlJson = require('../OpCodes/OpHtmlJson.js');
+var OpHtmlRaw = require('../OpCodes/OpHtmlRaw.js');
+var OpHtmlTag = require('../OpCodes/OpHtmlTag.js');
+var OpHtmlText = require('../OpCodes/OpHtmlText.js');
+var OpHtmlView = require('../OpCodes/OpHtmlView.js');
 var OpIdentifier = require('../OpCodes/OpIdentifier.js');
 var OpIf = require('../OpCodes/OpIf.js');
 var OpIfElse = require('../OpCodes/OpIfElse.js');
@@ -88,6 +98,7 @@ var OpTryCatchChilds = require('../OpCodes/OpTryCatchChilds.js');
 var OpUse = require('../OpCodes/OpUse.js');
 var OpVector = require('../OpCodes/OpVector.js');
 var OpWhile = require('../OpCodes/OpWhile.js');
+var HtmlToken = require('./HtmlToken.js');
 var ParserBayToken = require('./ParserBayToken.js');
 var ParserBayNameToken = require('./ParserBayNameToken.js');
 var HexNumberExpected = require('../Exceptions/HexNumberExpected.js');
@@ -280,6 +291,14 @@ class ParserBay extends CommonParser{
 	 */
 	readMethod(){
 		this.matchNextToken("method");
+		if (this.findNextToken("(")){
+			this.matchNextToken("(");
+			var class_name = this.readExpression();
+			this.matchNextToken(",");
+			var method_name = this.readExpression();
+			this.matchNextToken(")");
+			return new OpCall(new OpStatic(new OpIdentifier("rtl"), "method"), (new Vector()).push(class_name).push(method_name));
+		}
 		var value = this.readCallDynamic(true, false, true, false);
 		return new OpMethod(value);
 	}
@@ -403,12 +422,447 @@ class ParserBay extends CommonParser{
 		this.matchNextToken("}");
 		return res;
 	}
+	/* ============== HTML Template Parser ============== */
+	/**
+	 * Read Html Comment
+	 */
+	readHtmlComment(){
+		this.matchNextToken("<!--");
+		var res_str = this.current_token.readUntilString("-->", false);
+		this.assignCurrentToken(this.current_token);
+		this.matchNextToken("-->");
+		return new OpHtmlText("<!--"+rtl.toString(res_str)+"-->");
+	}
+	/**
+	 * Read Html Doctype
+	 */
+	readHtmlDOCTYPE(){
+		var s = this.current_token.readUntilString(">", false);
+		this.assignCurrentToken(this.current_token);
+		var res = new OpHtmlText("<!"+rtl.toString(rs.trim(s))+">");
+		this.matchNextToken(">");
+		return res;
+	}
+	/**
+	 * Add attribute
+	 */
+	addAttribute(attributes, attr){
+		var pos = -1;
+		for (var i = 0; i < attributes.count(); i++){
+			if (attributes.item(i).key == attr.key){
+				pos = i;
+				break;
+			}
+		}
+		if (pos == -1){
+			attributes.push(attr);
+		}
+		else {
+			attributes[i].value = new OpConcat(attributes[i].value, new OpString(" "));
+			attributes[i].value = new OpConcat(attributes[i].value, attr.value);
+		}
+	}
+	/**
+	 * Read Html Attributes
+	 */
+	readHtmlAttributes(op_code){
+		if (this.findNextToken(">")){
+			return null;
+		}
+		var spreads = new Vector();
+		var attributes = new Vector();
+		while (!this.findNextToken(">") && !this.findNextToken("/>")){
+			if (this.findNextToken("...")){
+				this.matchNextToken("...");
+				var spread_name = this.readIdentifierName();
+				spreads.push(spread_name);
+				continue;
+			}
+			var spec_attr = false;
+			var attr = new OpHtmlAttribute();
+			if (this.findNextToken("@")){
+				spec_attr = true;
+				this.matchNextToken("@");
+				attr.key = this.readNextToken().token;
+			}
+			else {
+				attr.key = this.readNextToken().token;
+			}
+			if (this.findNextToken("=")){
+				this.matchNextToken("=");
+				if (this.findNextToken("'") || this.findNextToken("\"")){
+					this.pushToken(new ParserBayToken(this.context(), this));
+					attr.value = new OpString(this.readAnyNextToken().token);
+					this.popRestoreToken();
+				}
+				else if (this.findNextToken("{")){
+					this.matchNextToken("{");
+					this.pushToken(new ParserBayToken(this.context(), this));
+					attr.value = this.readExpression();
+					this.popRestoreToken();
+					this.matchNextToken("}");
+				}
+				else {
+					throw this.parserError("Unknown token "+rtl.toString(this.next_token.token));
+				}
+			}
+			else {
+				attr.bracket = "\"";
+				attr.value = new OpString(attr.key);
+			}
+			if (spec_attr && attr.key == "class"){
+				attr.value = new OpCall(new OpDynamic(new OpIdentifier("this"), "css"), (new Vector()).push(attr.value));
+			}
+			this.addAttribute(attributes, attr);
+		}
+		op_code.spreads = spreads;
+		op_code.attributes = attributes;
+	}
+	/**
+	 * Read Html Expression
+	 */
+	readHtmlBlock(match_str, is_plain){
+		if (is_plain == undefined) is_plain=false;
+		var len_match = rs.strlen(match_str);
+		if (len_match == 0){
+			return null;
+		}
+		var look_str = this.current_token.lookString(len_match);
+		var childs = new Vector();
+		var special_tokens = HtmlToken.getSpecialTokens();
+		special_tokens.removeValue("@{");
+		special_tokens.removeValue("@raw{");
+		special_tokens.removeValue("@json{");
+		special_tokens.removeValue("<!--");
+		var bracket_level = 0;
+		var s = "";
+		/* Main loop */
+		while (look_str != "" && !this.current_token.isEOF() && (look_str != match_str || look_str == "}" && bracket_level > 0)){
+			var res = null;
+			if (!is_plain){
+				var is_next_html_token = this.current_token.findString("<");
+				var is_next_special_token = this.current_token.findVector(special_tokens) != -1;
+				if (is_next_special_token || is_next_html_token){
+					s = rs.trim(s, "\\t\\r\\n");
+					if (s != ""){
+						childs.push(new OpHtmlText(s));
+					}
+					s = "";
+					this.assignCurrentToken(this.current_token);
+					res = this.readHtmlTag();
+				}
+			}
+			if (res == null){
+				if (this.current_token.findString("{") && !is_plain || this.current_token.findString("@{") || this.current_token.findString("@raw{") || this.current_token.findString("@json{")){
+					if (!is_plain){
+						s = rs.trim(s, "\\t\\r\\n");
+					}
+					if (s != ""){
+						childs.push(new OpHtmlText(s));
+					}
+					s = "";
+					var is_raw = false;
+					var is_json = false;
+					if (this.current_token.findString("@raw{")){
+						is_raw = true;
+						this.current_token.match("@raw{");
+					}
+					else if (this.current_token.findString("@json{")){
+						is_json = true;
+						this.current_token.match("@json{");
+					}
+					else if (this.current_token.findString("@{")){
+						this.current_token.match("@{");
+					}
+					else if (this.current_token.findString("{")){
+						this.current_token.match("{");
+					}
+					this.assignCurrentToken(this.current_token);
+					this.pushToken(new ParserBayToken(this.context(), this));
+					res = this.readExpression();
+					if (is_raw){
+						res = new OpHtmlRaw(res);
+					}
+					else if (is_json){
+						res = new OpHtmlJson(res);
+					}
+					else {
+						res = new OpHtmlEscape(res);
+					}
+					this.popRestoreToken();
+					this.matchNextToken("}");
+				}
+			}
+			if (res != null){
+				childs.push(res);
+			}
+			else {
+				var look = this.current_token.readChar();
+				s = rtl.toString(s)+rtl.toString(look);
+				if (look == "{"){
+					bracket_level++;
+				}
+				else if (look == "}"){
+					bracket_level--;
+				}
+			}
+			look_str = this.current_token.lookString(len_match);
+		}
+		if (!is_plain){
+			s = rs.trim(s, "\\t\\r\\n");
+		}
+		if (s != ""){
+			childs.push(new OpHtmlText(s));
+		}
+		this.assignCurrentToken(this.current_token);
+		return childs;
+	}
+	/**
+	 * Read Html tag
+	 * @return BaseOpCode
+	 */
+	readHtmlTag(){
+		if (this.lookNextTokenType() == ParserBayToken.TOKEN_COMMENT){
+			return new OpComment(this.readAnyNextToken().token);
+		}
+		else if (this.findNextToken("<!--")){
+			return this.readHtmlComment();
+		}
+		else if (this.findNextToken("<!")){
+			this.matchNextToken("<!");
+			if (this.findNextString("DOCTYPE")){
+				return this.readHtmlDOCTYPE();
+			}
+		}
+		else if (this.findNextToken("<")){
+			this.matchNextToken("<");
+			if (this.findNextToken(">")){
+				this.matchNextToken(">");
+				var res = new OpHtmlView(this.readHtmlBlock("</>"));
+				if (res.childs != null && res.childs.count() == 1){
+					res = res.childs.item(0);
+				}
+				this.matchNextToken("</");
+				this.matchNextToken(">");
+				return res;
+			}
+			var res = new OpHtmlTag();
+			res.tag_name = this.readNextToken().token;
+			this.readHtmlAttributes(res);
+			if (this.findNextToken("/>")){
+				this.matchNextToken("/>");
+			}
+			else {
+				this.matchNextToken(">");
+				var close_tag = "</"+rtl.toString(res.tag_name)+">";
+				if (res.tag_name == "script" || res.tag_name == "pre" || res.tag_name == "textarea"){
+					res.is_plain = true;
+					res.childs = this.readHtmlBlock("</"+rtl.toString(res.tag_name)+">", true);
+				}
+				else {
+					res.childs = this.readHtmlBlock("</");
+				}
+				this.matchNextToken("</");
+				this.matchNextToken(res.tag_name);
+				this.matchNextToken(">");
+			}
+			return res;
+		}
+		return null;
+	}
+	/**
+	 * Read Html
+	 * @return BaseOpCode
+	 */
+	readHtml(){
+		/* Skip comments */
+		var old_skip_comments = this.skip_comments;
+		this.skip_comments = false;
+		/* Push new token */
+		this.pushToken(new HtmlToken(this.context(), this));
+		/* Read Html tag */
+		this.current_token.skipSystemChar();
+		/* Read Html View */
+		var res = new OpHtmlView();
+		res.childs = new Vector();
+		while (this.findNextToken("<") || this.findNextToken("<!")){
+			res.childs.push(this.readHtmlTag());
+		}
+		if (res.childs == null){
+			this.popRestoreToken();
+			return null;
+		}
+		if (res.childs.count() == 0){
+			this.popRestoreToken();
+			return null;
+		}
+		if (res.childs != null && res.childs.count() == 1){
+			res = res.childs.item(0);
+		}
+		this.popRestoreToken();
+		this.skip_comments = old_skip_comments;
+		return res;
+	}
+	/**
+	 * Retuns css hash 
+	 * @param string component class name
+	 * @return string hash
+	 */
+	getCssHash(s){
+		var arr = "1234567890abcdef";
+		var arr_sz = 16;
+		var arr_mod = 65536;
+		var sz = rs.strlen(s);
+		var hash = 0;
+		for (var i = 0; i < sz; i++){
+			var ch = rs.ord(s[i]);
+			hash = (hash << 2) + (hash >> 14) + ch & 65535;
+		}
+		var res = "";
+		var pos = 0;
+		var c = 0;
+		while (hash != 0 || pos < 4){
+			c = hash & 15;
+			hash = hash >> 4;
+			res += arr[c];
+			pos++;
+		}
+		return res;
+	}
+	/**
+	 * Read CSS Selector
+	 */
+	readCssSelector(look){
+		var s = "";
+		s = this.current_token.readUntilVector((new Vector()).push(",").push("%").push("{"));
+		if (s == ""){
+			return "";
+		}
+		if (look != "%"){
+			return s;
+		}
+		var pos = 0;
+		var sz = rs.strlen(s);
+		var class_name = rtl.toString(this.current_namespace)+"."+rtl.toString(this.current_class_name);
+		/* Read class name */
+		if (s[0] == "("){
+			while (pos < sz && s[pos] != ")"){
+				pos++;
+			}
+			class_name = rs.substr(s, 1, pos - 1);
+			class_name = this.getModuleName(class_name);
+			s = rs.substr(s, pos + 1);
+		}
+		pos = 0;
+		sz = rs.strlen(s);
+		while (pos < sz && s[pos] != " " && s[pos] != "." && s[pos] != ":" && s[pos] != "["){
+			pos++;
+		}
+		/* Get component name and postfix */
+		var name = "";
+		var postfix = "";
+		if (pos == sz){
+			name = s;
+		}
+		else {
+			name = rs.substr(s, 0, pos);
+			postfix = rs.substr(s, pos, sz - pos);
+		}
+		var hash = "-"+rtl.toString(this.getCssHash(class_name));
+		return rtl.toString(name)+rtl.toString(hash)+rtl.toString(postfix);
+	}
+	/**
+	 * Add OpCode
+	 * @return BaseOpCode
+	 */
+	readCssAddOpCode(current_op_code, s, new_op_code){
+		if (s != ""){
+			if (current_op_code == null){
+				current_op_code = new OpString(s);
+			}
+			else {
+				current_op_code = new OpConcat(current_op_code, new OpString(s));
+			}
+		}
+		if (new_op_code != null){
+			current_op_code = new OpConcat(current_op_code, new_op_code);
+		}
+		return current_op_code;
+	}
+	/**
+	 * Read CSS
+	 * @return BaseOpCode
+	 */
+	readCss(){
+		this.matchNextToken("{");
+		var op_code = null;
+		var s = "";
+		var look_str = this.current_token.lookString(1);
+		var match_str = "}";
+		var bracket_level = 0;
+		var flag_is_media = false;
+		var flag_is_css_body = false;
+		/* Main loop */
+		while (look_str != "" && !this.current_token.isEOF() && (look_str != match_str || look_str == "}" && bracket_level > 0)){
+			var look = this.current_token.readChar();
+			if (look == "$"){
+				this.assignCurrentToken(this.current_token);
+				this.pushToken(new ParserBayToken(this.context(), this));
+				if (this.findNextToken("{")){
+					this.matchNextToken("{");
+					op_code = this.readCssAddOpCode(op_code, s, this.readExpressionElement());
+					s = "";
+					this.matchNextToken("}");
+				}
+				else {
+					var name = this.readIdentifierName();
+					op_code = this.readCssAddOpCode(op_code, s, new OpIdentifier(name));
+					s = "";
+				}
+				this.popRestoreToken();
+			}
+			else if ((look == "." || look == "%") && !flag_is_media && !flag_is_css_body){
+				s = rtl.toString(s)+"."+rtl.toString(this.readCssSelector(look));
+			}
+			else if (look != "\t" && look != "\n" && look != "\r"){
+				s = rtl.toString(s)+rtl.toString(look);
+			}
+			if (look == "@" && this.current_token.lookString(5) == "media"){
+				flag_is_media = true;
+			}
+			if (look == "{"){
+				if (!flag_is_media){
+					flag_is_css_body = true;
+				}
+				flag_is_media = false;
+				bracket_level++;
+			}
+			else if (look == "}"){
+				flag_is_css_body = false;
+				bracket_level--;
+			}
+			look_str = this.current_token.lookString(1);
+		}
+		this.assignCurrentToken(this.current_token);
+		op_code = this.readCssAddOpCode(op_code, s, null);
+		this.matchNextToken("}");
+		return op_code;
+	}
+	/* ============== Read Expression ============== */
 	/**
 	 * Read element
 	 * @return BaseOpCode
 	 */
 	readExpressionElement(){
-		if (this.findNextToken("new")){
+		if (this.findNextToken("<")){
+			return this.readHtml();
+		}
+		else if (this.findNextToken("@") && this.next_token.lookString(3) == "css"){
+			this.matchNextToken("@");
+			this.matchNextToken("css");
+			return this.readCss();
+		}
+		else if (this.findNextToken("new")){
 			return this.readNewInstance();
 		}
 		else if (this.findNextToken("clone")){
@@ -696,8 +1150,22 @@ class ParserBay extends CommonParser{
 	 */
 	readExpression(){
 		this.pushToken();
+		/* Read function declare */
 		var res = null;
-		res = this.readDeclareArrowFunction(false);
+		res = this.readDeclareFunction(false);
+		if (res != null){
+			this.popToken();
+			return res;
+		}
+		try{
+			res = this.readOpCopyStruct();
+		}catch(_the_exception){
+			if (_the_exception instanceof ParserError){
+				var ex = _the_exception;
+				res = null;
+			}
+			else { throw _the_exception; }
+		}
 		if (res != null){
 			this.popToken();
 			return res;
@@ -710,6 +1178,17 @@ class ParserBay extends CommonParser{
 		return res;
 	}
 	/**
+	 * Read copy struct
+	 * @return BaseOpCode
+	 */
+	readOpCopyStruct(){
+		var name = this.readIdentifierName();
+		this.matchNextToken("<=");
+		var item = this.readExpression();
+		return new OpCopyStruct((new Map()).set("name", name).set("item", item));
+	}
+	/* ============== Read Operators ============== */
+	/**
 	 * Read operator assign
 	 * @return BaseOpCode
 	 */
@@ -719,7 +1198,7 @@ class ParserBay extends CommonParser{
 		var op_ident_name = "";
 		var op_exp = null;
 		var success = false;
-		var v = (new Vector()).push("=").push("~=").push("+=").push("-=");
+		var v = (new Vector()).push("=").push("~=").push("+=").push("-=").push("<=");
 		/* Read assign */
 		success = false;
 		this.pushToken();
@@ -741,10 +1220,14 @@ class ParserBay extends CommonParser{
 			else { throw _the_exception; }
 		}
 		if (success){
-			this.popToken();
 			var pos = this.findNextTokenVector(v);
 			var op_name = v.item(pos);
 			this.matchNextToken(op_name);
+			if (op_name == "<="){
+				this.popRollbackToken();
+				return this.readOpCopyStruct();
+			}
+			this.popToken();
 			if (this.findNextToken("await")){
 				op_exp = this.readCallAwait();
 			}
@@ -805,7 +1288,7 @@ class ParserBay extends CommonParser{
 		condition = this.readExpression();
 		this.matchNextToken(")");
 		/* Read if true operators block */
-		if (this.lookNextToken() == "{"){
+		if (this.findNextToken("{")){
 			this.matchNextToken("{");
 			if_true = this.readOperatorsBlock();
 			this.matchNextToken("}");
@@ -823,7 +1306,7 @@ class ParserBay extends CommonParser{
 					this.matchNextToken("(");
 					op_if_else.condition = this.readExpression();
 					this.matchNextToken(")");
-					if (this.lookNextToken() == "{"){
+					if (this.findNextToken("{")){
 						this.matchNextToken("{");
 						op_if_else.if_true = this.readOperatorsBlock();
 						this.matchNextToken("}");
@@ -835,7 +1318,7 @@ class ParserBay extends CommonParser{
 					if_else.push(op_if_else);
 				}
 				else {
-					if (this.lookNextToken() == "{"){
+					if (this.findNextToken("{")){
 						this.matchNextToken("{");
 						if_false = this.readOperatorsBlock();
 						this.matchNextToken("}");
@@ -853,7 +1336,7 @@ class ParserBay extends CommonParser{
 				this.matchNextToken("(");
 				op_if_else.condition = this.readExpression();
 				this.matchNextToken(")");
-				if (this.lookNextToken() == "{"){
+				if (this.findNextToken("{")){
 					this.matchNextToken("{");
 					op_if_else.if_true = this.readOperatorsBlock();
 					this.matchNextToken("}");
@@ -1109,6 +1592,7 @@ class ParserBay extends CommonParser{
 		}
 		return res;
 	}
+	/* ============== Read Class ============== */
 	/**
 	 * Read operator namespace
 	 * @return BaseOpCode
@@ -1201,37 +1685,20 @@ class ParserBay extends CommonParser{
 		return args;
 	}
 	/**
-	 * Read declare class arrow function
-	 * @return BaseOpCode
-	 */
-	readDeclareArrowFunction(read_name, is_declare_function){
-		if (read_name == undefined) read_name=true;
-		if (is_declare_function == undefined) is_declare_function=false;
-		var op_code = null;
-		/* Read arrow function */
-		if (this.findNextToken("func")){
-			this.matchNextToken("func");
-			op_code = new OpFunctionArrowDeclare();
-			if (read_name){
-				op_code.name = this.readIdentifierName();
-			}
-			op_code.args = this.readFunctionsArguments();
-			this.matchNextToken("=>");
-			op_code.return_function = this.readDeclareFunction(false, false);
-			return op_code;
-		}
-		op_code = this.readDeclareFunction(read_name, is_declare_function);
-		return op_code;
-	}
-	/**
 	 * Read declare class function
 	 * @return BaseOpCode
 	 */
-	readDeclareFunction(read_name, is_declare_function){
+	readDeclareFunction(read_name, is_declare_function, is_lambda){
 		if (read_name == undefined) read_name=true;
 		if (is_declare_function == undefined) is_declare_function=false;
+		if (is_lambda == undefined) is_lambda=false;
 		var res = new OpFunctionDeclare();
 		this.pushToken();
+		if (this.findNextToken("lambda")){
+			is_lambda = true;
+			this.matchNextToken("lambda");
+		}
+		res.is_lambda = is_lambda;
 		try{
 			res.result_type = this.readTemplateIdentifier();
 		}catch(_the_exception){
@@ -1245,7 +1712,7 @@ class ParserBay extends CommonParser{
 		if (read_name){
 			res.name = this.readIdentifierName();
 		}
-		if (this.lookNextToken() != "("){
+		if (!this.findNextToken("(")){
 			this.popRollbackToken();
 			return null;
 		}
@@ -1260,13 +1727,13 @@ class ParserBay extends CommonParser{
 			else { throw _the_exception; }
 		}
 		/* Read use variables*/
-		if (this.lookNextToken() == "use"){
+		if (this.findNextToken("use")){
 			this.matchNextToken("use");
 			this.matchNextToken("(");
-			while (this.lookNextToken() != ")" && !this.isEOF()){
+			while (!this.findNextToken(")") && !this.isEOF()){
 				var name = this.readIdentifierName();
 				res.use_variables.push(name);
-				if (this.lookNextToken() == ","){
+				if (this.findNextToken(",")){
 					this.matchNextToken(",");
 				}
 				else {
@@ -1275,17 +1742,66 @@ class ParserBay extends CommonParser{
 			}
 			this.matchNextToken(")");
 		}
-		if (is_declare_function){
+		if (this.findNextToken("=>")){
+			this.matchNextToken("=>");
+			this.popToken();
+			if (is_lambda){
+				this.pushToken();
+				try{
+					var flags = null;
+					flags = this.readFlags();
+					res.return_function = this.readDeclareFunction(false, is_declare_function, is_lambda);
+					if (res.return_function != null){
+						res.return_function.flags = flags;
+					}
+				}catch(_the_exception){
+					if (_the_exception instanceof ParserError){
+						var ex = _the_exception;
+						res.return_function = null;
+					}
+					else { throw _the_exception; }
+				}
+				if (res.return_function == null){
+					this.popRollbackToken();
+				}
+				else {
+					this.popToken();
+				}
+				if (res.return_function == null){
+					var op_item;
+					try{
+						op_item = this.readExpression();
+					}catch(_the_exception){
+						if (_the_exception instanceof ParserError){
+							var ex = _the_exception;
+							op_item = null;
+						}
+						else { throw _the_exception; }
+					}
+					if (op_item != null){
+						res.childs = (new Vector()).push(op_item);
+					}
+				}
+				if (res.return_function == null && res.childs == null){
+					this.matchNextToken(";");
+				}
+			}
+			else {
+				res.return_function = this.readDeclareFunction(false, is_declare_function, is_lambda);
+			}
+			return res;
+		}
+		else if (is_declare_function){
 			this.matchNextToken(";");
 		}
-		else {
-			if (this.lookNextToken() != "{"){
-				this.popRollbackToken();
-				return null;
-			}
+		else if (this.findNextToken("{")){
 			this.matchNextToken("{");
 			res.childs = this.readOperatorsBlock();
 			this.matchNextToken("}");
+		}
+		else {
+			this.popRollbackToken();
+			return null;
 		}
 		this.popToken();
 		return res;
@@ -1326,10 +1842,25 @@ class ParserBay extends CommonParser{
 			this.readAnnotation();
 			return ;
 		}
-		op_code = this.readDeclareArrowFunction(true, is_declare_function);
+		if (flags == null){
+			flags = new OpFlags();
+			flags.assignValue("public", true);
+		}
+		else {
+			if (!flags.isFlag("protected") && !flags.isFlag("private")){
+				flags.assignValue("public", true);
+			}
+		}
+		op_code = this.readDeclareFunction(true, is_declare_function);
 		if (op_code && op_code instanceof OpFunctionDeclare){
 			op_code.annotations = this.annotations;
 			op_code.flags = flags;
+			if (op_code.is_lambda){
+				flags.assignValue("static", true);
+			}
+			if (op_code.isFlag("pure")){
+				flags.assignValue("static", true);
+			}
 			res.childs.push(op_code);
 			this.annotations = null;
 			return ;
@@ -1432,10 +1963,6 @@ class ParserBay extends CommonParser{
 	readDeclareStruct(class_flags){
 		var res = new OpStructDeclare();
 		this.matchNextToken("struct");
-		if (this.findNextToken("readonly")){
-			this.matchNextToken("readonly");
-			res.is_readonly = true;
-		}
 		this.readClassHead(res);
 		res.flags = class_flags;
 		return res;

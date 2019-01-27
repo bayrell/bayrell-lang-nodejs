@@ -42,6 +42,7 @@ var OpComment = require('./OpCodes/OpComment.js');
 var OpCompare = require('./OpCodes/OpCompare.js');
 var OpConcat = require('./OpCodes/OpConcat.js');
 var OpContinue = require('./OpCodes/OpContinue.js');
+var OpCopyStruct = require('./OpCodes/OpCopyStruct.js');
 var OpDelete = require('./OpCodes/OpDelete.js');
 var OpDiv = require('./OpCodes/OpDiv.js');
 var OpDynamic = require('./OpCodes/OpDynamic.js');
@@ -50,6 +51,14 @@ var OpFor = require('./OpCodes/OpFor.js');
 var OpFunctionArrowDeclare = require('./OpCodes/OpFunctionArrowDeclare.js');
 var OpFunctionDeclare = require('./OpCodes/OpFunctionDeclare.js');
 var OpHexNumber = require('./OpCodes/OpHexNumber.js');
+var OpHtmlAttribute = require('./OpCodes/OpHtmlAttribute.js');
+var OpHtmlComment = require('./OpCodes/OpHtmlComment.js');
+var OpHtmlEscape = require('./OpCodes/OpHtmlEscape.js');
+var OpHtmlJson = require('./OpCodes/OpHtmlJson.js');
+var OpHtmlRaw = require('./OpCodes/OpHtmlRaw.js');
+var OpHtmlTag = require('./OpCodes/OpHtmlTag.js');
+var OpHtmlText = require('./OpCodes/OpHtmlText.js');
+var OpHtmlView = require('./OpCodes/OpHtmlView.js');
 var OpIdentifier = require('./OpCodes/OpIdentifier.js');
 var OpIf = require('./OpCodes/OpIf.js');
 var OpIfElse = require('./OpCodes/OpIfElse.js');
@@ -240,6 +249,9 @@ class CommonTranslator extends ContextObject{
 	OpContinue(op_code){
 		return "";
 	}
+	OpCopyStruct(op_code){
+		return "";
+	}
 	OpDelete(op_code){
 		return "";
 	}
@@ -360,6 +372,19 @@ class CommonTranslator extends ContextObject{
 	OpWhile(op_code){
 		return "";
 	}
+	/* =========================== HTML OP Codes ========================== */
+	OpHtmlJson(op_code){
+		return "";
+	}
+	OpHtmlRaw(op_code){
+		return "";
+	}
+	OpHtmlTag(op_code){
+		return "";
+	}
+	OpHtmlView(op_code){
+		return "";
+	}
 	/**
 	 * Translate to language
 	 * @param BaseOpCode op_code - Abstract syntax tree
@@ -393,7 +418,7 @@ class CommonTranslator extends ContextObject{
 	 * @param BaseOpCode op_code - Abstract syntax tree
 	 * @returns string - The result
 	 */
-	translateRun(op_code){
+	translateItem(op_code){
 		if (op_code instanceof OpNope){
 			return this.translateChilds(op_code.childs);
 		}
@@ -453,6 +478,9 @@ class CommonTranslator extends ContextObject{
 		}
 		else if (op_code instanceof OpContinue){
 			return this.OpContinue(op_code);
+		}
+		else if (op_code instanceof OpCopyStruct){
+			return this.OpCopyStruct(op_code);
 		}
 		else if (op_code instanceof OpDelete){
 			return this.OpDelete(op_code);
@@ -574,7 +602,33 @@ class CommonTranslator extends ContextObject{
 		else if (op_code instanceof OpWhile){
 			return this.OpWhile(op_code);
 		}
+		else if (op_code instanceof OpHtmlJson){
+			return this.OpHtmlJson(op_code);
+		}
+		else if (op_code instanceof OpHtmlRaw){
+			return this.OpHtmlRaw(op_code);
+		}
+		else if (op_code instanceof OpHtmlTag){
+			return this.OpHtmlTag(op_code);
+		}
+		else if (op_code instanceof OpHtmlText){
+			return this.OpString(op_code);
+		}
+		else if (op_code instanceof OpHtmlView){
+			return this.OpHtmlView(op_code);
+		}
 		return "";
+	}
+	/**
+	 * Translate to language
+	 * @param BaseOpCode op_code - Abstract syntax tree
+	 * @returns string - The result
+	 */
+	translateRun(op_code){
+		this.op_code_stack.push(op_code);
+		var res = this.translateItem(op_code);
+		this.op_code_stack.pop();
+		return res;
 	}
 	/**
 	 * Reset translator to default settings
@@ -585,6 +639,7 @@ class CommonTranslator extends ContextObject{
 		this.current_opcode_level = 0;
 		this.max_opcode_level = 100;
 		this.indent_level = 0;
+		this.op_code_stack = new Vector();
 	}
 	/**
 	 * Translate to language
@@ -600,6 +655,7 @@ class CommonTranslator extends ContextObject{
 	static getParentClassName(){return "ContextObject";}
 	_init(){
 		super._init();
+		this.op_code_stack = null;
 		this.one_lines = null;
 		this.is_operation = false;
 		this.current_opcode_level = 0;

@@ -50,10 +50,10 @@ class OpVector extends BaseOpCode{
 		}
 		super.assignObject(obj);
 	}
-	assignValue(variable_name, value){
-		if (variable_name == "op") this.op = rtl.correct(value, "string", "op_vector", "");
-		else if (variable_name == "values") this.values = rtl.correct(value, "Vector", null, "BayrellLang.OpCodes.BaseOpCode");
-		else super.assignValue(variable_name, value);
+	assignValue(variable_name, value, sender){if(sender==undefined)sender=null;
+		if (variable_name == "op")this.op = rtl.correct(value,"string","op_vector","");
+		else if (variable_name == "values")this.values = rtl.correct(value,"Vector",null,"BayrellLang.OpCodes.BaseOpCode");
+		else super.assignValue(variable_name, value, sender);
 	}
 	takeValue(variable_name, default_value){
 		if (default_value == undefined) default_value = null;
@@ -61,9 +61,12 @@ class OpVector extends BaseOpCode{
 		else if (variable_name == "values") return this.values;
 		return super.takeValue(variable_name, default_value);
 	}
-	static getFieldsList(names){
-		names.push("op");
-		names.push("values");
+	static getFieldsList(names, flag){
+		if (flag==undefined)flag=0;
+		if ((flag | 3)==3){
+			names.push("op");
+			names.push("values");
+		}
 	}
 	static getFieldInfoByName(field_name){
 		return null;

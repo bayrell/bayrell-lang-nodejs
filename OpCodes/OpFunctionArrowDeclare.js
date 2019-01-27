@@ -39,10 +39,10 @@ class OpFunctionArrowDeclare extends OpFunctionDeclare{
 		}
 		super.assignObject(obj);
 	}
-	assignValue(variable_name, value){
-		if (variable_name == "op") this.op = rtl.correct(value, "string", "op_arrow_function", "");
-		else if (variable_name == "return_function") this.return_function = rtl.correct(value, "BayrellLang.OpCodes.OpFunctionDeclare", null, "");
-		else super.assignValue(variable_name, value);
+	assignValue(variable_name, value, sender){if(sender==undefined)sender=null;
+		if (variable_name == "op")this.op = rtl.correct(value,"string","op_arrow_function","");
+		else if (variable_name == "return_function")this.return_function = rtl.correct(value,"BayrellLang.OpCodes.OpFunctionDeclare",null,"");
+		else super.assignValue(variable_name, value, sender);
 	}
 	takeValue(variable_name, default_value){
 		if (default_value == undefined) default_value = null;
@@ -50,9 +50,12 @@ class OpFunctionArrowDeclare extends OpFunctionDeclare{
 		else if (variable_name == "return_function") return this.return_function;
 		return super.takeValue(variable_name, default_value);
 	}
-	static getFieldsList(names){
-		names.push("op");
-		names.push("return_function");
+	static getFieldsList(names, flag){
+		if (flag==undefined)flag=0;
+		if ((flag | 3)==3){
+			names.push("op");
+			names.push("return_function");
+		}
 	}
 	static getFieldInfoByName(field_name){
 		return null;

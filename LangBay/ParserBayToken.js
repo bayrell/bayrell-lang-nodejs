@@ -183,6 +183,10 @@ class ParserBayToken extends ParserToken{
 	static getParentClassName(){return "ParserToken";}
 	_init(){
 		super._init();
+		this.TOKEN_NONE = "none";
+		this.TOKEN_BASE = "base";
+		this.TOKEN_STRING = "string";
+		this.TOKEN_COMMENT = "comment";
 		this._special_tokens = null;
 		this.parser = null;
 	}

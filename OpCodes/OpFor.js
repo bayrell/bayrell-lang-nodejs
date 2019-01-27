@@ -63,13 +63,13 @@ class OpFor extends BaseOpCode{
 		}
 		super.assignObject(obj);
 	}
-	assignValue(variable_name, value){
-		if (variable_name == "op") this.op = rtl.correct(value, "string", "op_for", "");
-		else if (variable_name == "loop_condition") this.loop_condition = rtl.correct(value, "BayrellLang.OpCodes.BaseOpCode", null, "");
-		else if (variable_name == "loop_init") this.loop_init = rtl.correct(value, "BayrellLang.OpCodes.BaseOpCode", null, "");
-		else if (variable_name == "loop_inc") this.loop_inc = rtl.correct(value, "BayrellLang.OpCodes.BaseOpCode", null, "");
-		else if (variable_name == "childs") this.childs = rtl.correct(value, "Vector", null, "BayrellLang.OpCodes.BaseOpCode");
-		else super.assignValue(variable_name, value);
+	assignValue(variable_name, value, sender){if(sender==undefined)sender=null;
+		if (variable_name == "op")this.op = rtl.correct(value,"string","op_for","");
+		else if (variable_name == "loop_condition")this.loop_condition = rtl.correct(value,"BayrellLang.OpCodes.BaseOpCode",null,"");
+		else if (variable_name == "loop_init")this.loop_init = rtl.correct(value,"BayrellLang.OpCodes.BaseOpCode",null,"");
+		else if (variable_name == "loop_inc")this.loop_inc = rtl.correct(value,"BayrellLang.OpCodes.BaseOpCode",null,"");
+		else if (variable_name == "childs")this.childs = rtl.correct(value,"Vector",null,"BayrellLang.OpCodes.BaseOpCode");
+		else super.assignValue(variable_name, value, sender);
 	}
 	takeValue(variable_name, default_value){
 		if (default_value == undefined) default_value = null;
@@ -80,12 +80,15 @@ class OpFor extends BaseOpCode{
 		else if (variable_name == "childs") return this.childs;
 		return super.takeValue(variable_name, default_value);
 	}
-	static getFieldsList(names){
-		names.push("op");
-		names.push("loop_condition");
-		names.push("loop_init");
-		names.push("loop_inc");
-		names.push("childs");
+	static getFieldsList(names, flag){
+		if (flag==undefined)flag=0;
+		if ((flag | 3)==3){
+			names.push("op");
+			names.push("loop_condition");
+			names.push("loop_init");
+			names.push("loop_inc");
+			names.push("childs");
+		}
 	}
 	static getFieldInfoByName(field_name){
 		return null;

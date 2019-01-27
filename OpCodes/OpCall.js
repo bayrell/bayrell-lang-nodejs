@@ -57,12 +57,12 @@ class OpCall extends BaseOpCode{
 		}
 		super.assignObject(obj);
 	}
-	assignValue(variable_name, value){
-		if (variable_name == "op") this.op = rtl.correct(value, "string", "op_call", "");
-		else if (variable_name == "value") this.value = rtl.correct(value, "BayrellLang.OpCodes.BaseOpCode", null, "");
-		else if (variable_name == "args") this.args = rtl.correct(value, "Vector", null, "BayrellLang.OpCodes.BaseOpCode");
-		else if (variable_name == "is_await") this.is_await = rtl.correct(value, "bool", false, "");
-		else super.assignValue(variable_name, value);
+	assignValue(variable_name, value, sender){if(sender==undefined)sender=null;
+		if (variable_name == "op")this.op = rtl.correct(value,"string","op_call","");
+		else if (variable_name == "value")this.value = rtl.correct(value,"BayrellLang.OpCodes.BaseOpCode",null,"");
+		else if (variable_name == "args")this.args = rtl.correct(value,"Vector",null,"BayrellLang.OpCodes.BaseOpCode");
+		else if (variable_name == "is_await")this.is_await = rtl.correct(value,"bool",false,"");
+		else super.assignValue(variable_name, value, sender);
 	}
 	takeValue(variable_name, default_value){
 		if (default_value == undefined) default_value = null;
@@ -72,11 +72,14 @@ class OpCall extends BaseOpCode{
 		else if (variable_name == "is_await") return this.is_await;
 		return super.takeValue(variable_name, default_value);
 	}
-	static getFieldsList(names){
-		names.push("op");
-		names.push("value");
-		names.push("args");
-		names.push("is_await");
+	static getFieldsList(names, flag){
+		if (flag==undefined)flag=0;
+		if ((flag | 3)==3){
+			names.push("op");
+			names.push("value");
+			names.push("args");
+			names.push("is_await");
+		}
 	}
 	static getFieldInfoByName(field_name){
 		return null;

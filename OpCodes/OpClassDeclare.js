@@ -85,16 +85,16 @@ class OpClassDeclare extends BaseOpCode{
 		}
 		super.assignObject(obj);
 	}
-	assignValue(variable_name, value){
-		if (variable_name == "op") this.op = rtl.correct(value, "string", "op_class", "");
-		else if (variable_name == "class_name") this.class_name = rtl.correct(value, "string", "", "");
-		else if (variable_name == "class_extends") this.class_extends = rtl.correct(value, "BayrellLang.OpCodes.BaseOpCode", "", "");
-		else if (variable_name == "class_implements") this.class_implements = rtl.correct(value, "Vector", null, "string");
-		else if (variable_name == "childs") this.childs = rtl.correct(value, "Vector", null, "BayrellLang.OpCodes.BaseOpCode");
-		else if (variable_name == "class_template") this.class_template = rtl.correct(value, "Vector", null, "BayrellLang.OpCodes.BaseOpCode");
-		else if (variable_name == "flags") this.flags = rtl.correct(value, "BayrellLang.OpCodes.OpFlags", null, "");
-		else if (variable_name == "annotations") this.annotations = rtl.correct(value, "Vector", null, "OpAnnotation");
-		else super.assignValue(variable_name, value);
+	assignValue(variable_name, value, sender){if(sender==undefined)sender=null;
+		if (variable_name == "op")this.op = rtl.correct(value,"string","op_class","");
+		else if (variable_name == "class_name")this.class_name = rtl.correct(value,"string","","");
+		else if (variable_name == "class_extends")this.class_extends = rtl.correct(value,"BayrellLang.OpCodes.BaseOpCode","","");
+		else if (variable_name == "class_implements")this.class_implements = rtl.correct(value,"Vector",null,"string");
+		else if (variable_name == "childs")this.childs = rtl.correct(value,"Vector",null,"BayrellLang.OpCodes.BaseOpCode");
+		else if (variable_name == "class_template")this.class_template = rtl.correct(value,"Vector",null,"BayrellLang.OpCodes.BaseOpCode");
+		else if (variable_name == "flags")this.flags = rtl.correct(value,"BayrellLang.OpCodes.OpFlags",null,"");
+		else if (variable_name == "annotations")this.annotations = rtl.correct(value,"Vector",null,"OpAnnotation");
+		else super.assignValue(variable_name, value, sender);
 	}
 	takeValue(variable_name, default_value){
 		if (default_value == undefined) default_value = null;
@@ -108,15 +108,18 @@ class OpClassDeclare extends BaseOpCode{
 		else if (variable_name == "annotations") return this.annotations;
 		return super.takeValue(variable_name, default_value);
 	}
-	static getFieldsList(names){
-		names.push("op");
-		names.push("class_name");
-		names.push("class_extends");
-		names.push("class_implements");
-		names.push("childs");
-		names.push("class_template");
-		names.push("flags");
-		names.push("annotations");
+	static getFieldsList(names, flag){
+		if (flag==undefined)flag=0;
+		if ((flag | 3)==3){
+			names.push("op");
+			names.push("class_name");
+			names.push("class_extends");
+			names.push("class_implements");
+			names.push("childs");
+			names.push("class_template");
+			names.push("flags");
+			names.push("annotations");
+		}
 	}
 	static getFieldInfoByName(field_name){
 		return null;
