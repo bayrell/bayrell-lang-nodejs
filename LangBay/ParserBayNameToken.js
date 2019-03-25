@@ -18,7 +18,9 @@
  */
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
+var Dict = require('bayrell-runtime-nodejs').Dict;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var Collection = require('bayrell-runtime-nodejs').Collection;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var rs = require('bayrell-runtime-nodejs').rs;
 var ParserToken = require('bayrell-parser-nodejs').ParserToken;
@@ -36,7 +38,8 @@ class ParserBayNameToken extends ParserToken{
 	}
 	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.LangBay.ParserBayNameToken";}
-	static getParentClassName(){return "ParserToken";}
+	static getCurrentClassName(){return "BayrellLang.LangBay.ParserBayNameToken";}
+	static getParentClassName(){return "BayrellParser.ParserToken";}
 }
 ParserBayNameToken.TOKEN_NONE = "none";
 ParserBayNameToken.TOKEN_BASE = "base";

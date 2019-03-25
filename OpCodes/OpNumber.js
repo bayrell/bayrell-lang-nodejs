@@ -18,13 +18,16 @@
  */
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
+var Dict = require('bayrell-runtime-nodejs').Dict;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var Collection = require('bayrell-runtime-nodejs').Collection;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var OpValueString = require('./OpValueString.js');
 class OpNumber extends OpValueString{
 	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.OpCodes.OpNumber";}
-	static getParentClassName(){return "OpValueString";}
+	static getCurrentClassName(){return "BayrellLang.OpCodes.OpNumber";}
+	static getParentClassName(){return "BayrellLang.OpCodes.OpValueString";}
 	_init(){
 		super._init();
 		this.op = "op_number";
@@ -36,7 +39,7 @@ class OpNumber extends OpValueString{
 		super.assignObject(obj);
 	}
 	assignValue(variable_name, value, sender){if(sender==undefined)sender=null;
-		if (variable_name == "op")this.op = rtl.correct(value,"string","op_number","");
+		if (variable_name == "op")this.op = rtl.convert(value,"string","op_number","");
 		else super.assignValue(variable_name, value, sender);
 	}
 	takeValue(variable_name, default_value){

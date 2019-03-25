@@ -18,9 +18,12 @@
  */
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
+var Dict = require('bayrell-runtime-nodejs').Dict;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var Collection = require('bayrell-runtime-nodejs').Collection;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var rs = require('bayrell-runtime-nodejs').rs;
+var RuntimeUtils = require('bayrell-runtime-nodejs').RuntimeUtils;
 var CommonParser = require('../CommonParser.js');
 var BaseOpCode = require('../OpCodes/BaseOpCode.js');
 var OpAdd = require('../OpCodes/OpAdd.js');
@@ -75,6 +78,7 @@ var OpNope = require('../OpCodes/OpNope.js');
 var OpNot = require('../OpCodes/OpNot.js');
 var OpNumber = require('../OpCodes/OpNumber.js');
 var OpOr = require('../OpCodes/OpOr.js');
+var OpPipe = require('../OpCodes/OpPipe.js');
 var OpPostDec = require('../OpCodes/OpPostDec.js');
 var OpPostInc = require('../OpCodes/OpPostInc.js');
 var OpPow = require('../OpCodes/OpPow.js');
@@ -261,8 +265,15 @@ class ParserBay extends CommonParser{
 	readNewInstance(){
 		this.matchNextToken("new");
 		var ident = this.readTemplateIdentifier();
-		var v = this.readCallBody();
-		return new OpNew(ident, v);
+		if (this.findNextToken("(")){
+			var v = this.readCallBody();
+			return new OpNew(ident, v);
+		}
+		else if (this.findNextToken("{")){
+			var v = this.readMap();
+			return new OpNew(ident, (new Vector()).push(v));
+		}
+		return new OpNew(ident);
 	}
 	/**
 	 * Read call await
@@ -301,6 +312,40 @@ class ParserBay extends CommonParser{
 		}
 		var value = this.readCallDynamic(true, false, true, false);
 		return new OpMethod(value);
+	}
+	/**
+	 * Read pipe
+	 * @return BaseOpCode
+	 */
+	readPipe(){
+		var item = null;
+		var items = new Vector();
+		var is_return_value = false;
+		var value = null;
+		this.matchNextToken("pipe");
+		this.matchNextToken("(");
+		if (!this.findNextToken(")")){
+			value = this.readExpression();
+		}
+		this.matchNextToken(")");
+		while (this.findNextToken(">>")){
+			this.matchNextToken(">>");
+			if (this.findNextToken("method")){
+				item = this.readMethod();
+			}
+			else if (this.findNextToken("value")){
+				break;
+			}
+			else {
+				item = this.readCallDynamic(true, true, true, true);
+			}
+			items.push(item);
+		}
+		if (this.findNextToken("value")){
+			this.matchNextToken("value");
+			is_return_value = true;
+		}
+		return new OpPipe((new Map()).set("value", value).set("items", items).set("is_return_value", is_return_value));
 	}
 	/**
 	 * Read get class name
@@ -483,20 +528,28 @@ class ParserBay extends CommonParser{
 			if (this.findNextToken("@")){
 				spec_attr = true;
 				this.matchNextToken("@");
-				attr.key = this.readNextToken().token;
+				attr.key = "@"+rtl.toString(this.readNextToken().token);
 			}
 			else {
 				attr.key = this.readNextToken().token;
 			}
-			if (this.findNextToken("=")){
+			if (attr.key == "@lambda"){
+				attr.value = this.readDeclareFunctionHeader(new OpFunctionDeclare());
+			}
+			else if (this.findNextToken("=")){
 				this.matchNextToken("=");
 				if (this.findNextToken("'") || this.findNextToken("\"")){
 					this.pushToken(new ParserBayToken(this.context(), this));
 					attr.value = new OpString(this.readAnyNextToken().token);
 					this.popRestoreToken();
 				}
-				else if (this.findNextToken("{")){
-					this.matchNextToken("{");
+				else if (this.findNextToken("@{") || this.findNextToken("{")){
+					if (this.findNextToken("@{")){
+						this.matchNextToken("@{");
+					}
+					else if (this.findNextToken("{")){
+						this.matchNextToken("{");
+					}
 					this.pushToken(new ParserBayToken(this.context(), this));
 					attr.value = this.readExpression();
 					this.popRestoreToken();
@@ -509,9 +562,6 @@ class ParserBay extends CommonParser{
 			else {
 				attr.bracket = "\"";
 				attr.value = new OpString(attr.key);
-			}
-			if (spec_attr && attr.key == "class"){
-				attr.value = new OpCall(new OpDynamic(new OpIdentifier("this"), "css"), (new Vector()).push(attr.value));
 			}
 			this.addAttribute(attributes, attr);
 		}
@@ -530,30 +580,41 @@ class ParserBay extends CommonParser{
 		var look_str = this.current_token.lookString(len_match);
 		var childs = new Vector();
 		var special_tokens = HtmlToken.getSpecialTokens();
+		special_tokens.removeValue("{");
 		special_tokens.removeValue("@{");
 		special_tokens.removeValue("@raw{");
 		special_tokens.removeValue("@json{");
+		/*special_tokens.removeValue("@code{");*/
 		special_tokens.removeValue("<!--");
 		var bracket_level = 0;
 		var s = "";
+		var is_next_html_token = false;
+		var is_next_special_token = false;
+		var is_prev_special_token = false;
 		/* Main loop */
 		while (look_str != "" && !this.current_token.isEOF() && (look_str != match_str || look_str == "}" && bracket_level > 0)){
+			is_next_html_token = this.current_token.findString("<");
+			is_next_special_token = this.current_token.findVector(special_tokens) != -1;
 			var res = null;
 			if (!is_plain){
-				var is_next_html_token = this.current_token.findString("<");
-				var is_next_special_token = this.current_token.findVector(special_tokens) != -1;
 				if (is_next_special_token || is_next_html_token){
-					s = rs.trim(s, "\\t\\r\\n");
+					if (is_next_special_token || is_prev_special_token){
+						s = rs.trim(s, "\\t\\r\\n");
+					}
+					else {
+						s = rs.trim(s, "\\t\\r\\n");
+					}
 					if (s != ""){
 						childs.push(new OpHtmlText(s));
 					}
 					s = "";
 					this.assignCurrentToken(this.current_token);
 					res = this.readHtmlTag();
+					is_prev_special_token = false;
 				}
 			}
 			if (res == null){
-				if (this.current_token.findString("{") && !is_plain || this.current_token.findString("@{") || this.current_token.findString("@raw{") || this.current_token.findString("@json{")){
+				if (this.current_token.findString("{") || this.current_token.findString("@{") || this.current_token.findString("@raw{") || this.current_token.findString("@json{")){
 					if (!is_plain){
 						s = rs.trim(s, "\\t\\r\\n");
 					}
@@ -563,6 +624,7 @@ class ParserBay extends CommonParser{
 					s = "";
 					var is_raw = false;
 					var is_json = false;
+					var is_code = false;
 					if (this.current_token.findString("@raw{")){
 						is_raw = true;
 						this.current_token.match("@raw{");
@@ -570,6 +632,10 @@ class ParserBay extends CommonParser{
 					else if (this.current_token.findString("@json{")){
 						is_json = true;
 						this.current_token.match("@json{");
+					}
+					else if (this.current_token.findString("@code{")){
+						is_code = true;
+						this.current_token.match("@code{");
 					}
 					else if (this.current_token.findString("@{")){
 						this.current_token.match("@{");
@@ -586,11 +652,15 @@ class ParserBay extends CommonParser{
 					else if (is_json){
 						res = new OpHtmlJson(res);
 					}
+					else if (is_code){
+						res = new OpHtmlRaw(res);
+					}
 					else {
 						res = new OpHtmlEscape(res);
 					}
 					this.popRestoreToken();
 					this.matchNextToken("}");
+					is_prev_special_token = true;
 				}
 			}
 			if (res != null){
@@ -609,7 +679,12 @@ class ParserBay extends CommonParser{
 			look_str = this.current_token.lookString(len_match);
 		}
 		if (!is_plain){
-			s = rs.trim(s, "\\t\\r\\n");
+			if (is_prev_special_token){
+				s = rs.trim(s, "\\t\\r\\n");
+			}
+			else {
+				s = rs.trim(s, "\\t\\r\\n");
+			}
 		}
 		if (s != ""){
 			childs.push(new OpHtmlText(s));
@@ -649,6 +724,7 @@ class ParserBay extends CommonParser{
 			var res = new OpHtmlTag();
 			res.tag_name = this.readNextToken().token;
 			this.readHtmlAttributes(res);
+			var childs_function = null;
 			if (this.findNextToken("/>")){
 				this.matchNextToken("/>");
 			}
@@ -659,12 +735,34 @@ class ParserBay extends CommonParser{
 					res.is_plain = true;
 					res.childs = this.readHtmlBlock("</"+rtl.toString(res.tag_name)+">", true);
 				}
+				else if (this.findNextToken("lambda") || this.findNextToken("pure")){
+					this.assignCurrentToken(this.current_token);
+					this.pushToken(new ParserBayToken(this.context(), this));
+					childs_function = this.readDeclareFunction(false);
+					this.popRestoreToken();
+				}
 				else {
 					res.childs = this.readHtmlBlock("</");
 				}
 				this.matchNextToken("</");
 				this.matchNextToken(res.tag_name);
 				this.matchNextToken(">");
+			}
+			if (childs_function != null){
+				res.setAttribute("@lambda", childs_function);
+				if (res.childs){
+					res.childs.clear();
+				}
+			}
+			else {
+				var op_code = res.findAttribute("@lambda");
+				if (op_code != null && op_code.value instanceof OpFunctionDeclare){
+					op_code.value.is_lambda = true;
+					if (res.childs != null){
+						op_code.value.childs = res.childs.copy();
+						res.childs.clear();
+					}
+				}
 			}
 			return res;
 		}
@@ -696,37 +794,8 @@ class ParserBay extends CommonParser{
 			this.popRestoreToken();
 			return null;
 		}
-		if (res.childs != null && res.childs.count() == 1){
-			res = res.childs.item(0);
-		}
 		this.popRestoreToken();
 		this.skip_comments = old_skip_comments;
-		return res;
-	}
-	/**
-	 * Retuns css hash 
-	 * @param string component class name
-	 * @return string hash
-	 */
-	getCssHash(s){
-		var arr = "1234567890abcdef";
-		var arr_sz = 16;
-		var arr_mod = 65536;
-		var sz = rs.strlen(s);
-		var hash = 0;
-		for (var i = 0; i < sz; i++){
-			var ch = rs.ord(s[i]);
-			hash = (hash << 2) + (hash >> 14) + ch & 65535;
-		}
-		var res = "";
-		var pos = 0;
-		var c = 0;
-		while (hash != 0 || pos < 4){
-			c = hash & 15;
-			hash = hash >> 4;
-			res += arr[c];
-			pos++;
-		}
 		return res;
 	}
 	/**
@@ -768,7 +837,7 @@ class ParserBay extends CommonParser{
 			name = rs.substr(s, 0, pos);
 			postfix = rs.substr(s, pos, sz - pos);
 		}
-		var hash = "-"+rtl.toString(this.getCssHash(class_name));
+		var hash = "-"+rtl.toString(RuntimeUtils.getCssHash(class_name));
 		return rtl.toString(name)+rtl.toString(hash)+rtl.toString(postfix);
 	}
 	/**
@@ -854,10 +923,7 @@ class ParserBay extends CommonParser{
 	 * @return BaseOpCode
 	 */
 	readExpressionElement(){
-		if (this.findNextToken("<")){
-			return this.readHtml();
-		}
-		else if (this.findNextToken("@") && this.next_token.lookString(3) == "css"){
+		if (this.findNextToken("@") && this.next_token.lookString(3) == "css"){
 			this.matchNextToken("@");
 			this.matchNextToken("css");
 			return this.readCss();
@@ -876,6 +942,9 @@ class ParserBay extends CommonParser{
 		}
 		else if (this.findNextToken("method")){
 			return this.readMethod();
+		}
+		else if (this.findNextToken("pipe")){
+			return this.readPipe();
 		}
 		else if (this.findNextToken("[")){
 			return this.readVector();
@@ -1149,10 +1218,20 @@ class ParserBay extends CommonParser{
 	 * @return BaseOpCode
 	 */
 	readExpression(){
+		if (this.findNextToken("<")){
+			return this.readHtml();
+		}
 		this.pushToken();
-		/* Read function declare */
+		var is_lambda = false;
+		if (this.findNextToken("lambda")){
+			is_lambda = true;
+			this.matchNextToken("lambda");
+		}
+		else if (this.findNextToken("pure")){
+			this.matchNextToken("pure");
+		}
 		var res = null;
-		res = this.readDeclareFunction(false);
+		res = this.readDeclareFunction(false, false, is_lambda);
 		if (res != null){
 			this.popToken();
 			return res;
@@ -1688,16 +1767,36 @@ class ParserBay extends CommonParser{
 	 * Read declare class function
 	 * @return BaseOpCode
 	 */
+	readDeclareFunctionHeader(res){
+		res.args = this.readFunctionsArguments();
+		/* Read use variables*/
+		if (this.findNextToken("use")){
+			this.matchNextToken("use");
+			this.matchNextToken("(");
+			while (!this.findNextToken(")") && !this.isEOF()){
+				var name = this.readIdentifierName();
+				res.use_variables.push(name);
+				if (this.findNextToken(",")){
+					this.matchNextToken(",");
+				}
+				else {
+					break;
+				}
+			}
+			this.matchNextToken(")");
+		}
+		return res;
+	}
+	/**
+	 * Read declare class function
+	 * @return BaseOpCode
+	 */
 	readDeclareFunction(read_name, is_declare_function, is_lambda){
 		if (read_name == undefined) read_name=true;
 		if (is_declare_function == undefined) is_declare_function=false;
 		if (is_lambda == undefined) is_lambda=false;
 		var res = new OpFunctionDeclare();
 		this.pushToken();
-		if (this.findNextToken("lambda")){
-			is_lambda = true;
-			this.matchNextToken("lambda");
-		}
 		res.is_lambda = is_lambda;
 		try{
 			res.result_type = this.readTemplateIdentifier();
@@ -1744,6 +1843,9 @@ class ParserBay extends CommonParser{
 		}
 		if (this.findNextToken("=>")){
 			this.matchNextToken("=>");
+			if (this.findNextToken("return")){
+				this.matchNextToken("return");
+			}
 			this.popToken();
 			if (is_lambda){
 				this.pushToken();
@@ -1787,7 +1889,12 @@ class ParserBay extends CommonParser{
 				}
 			}
 			else {
+				var flags = null;
+				flags = this.readFlags();
 				res.return_function = this.readDeclareFunction(false, is_declare_function, is_lambda);
+				if (res.return_function != null){
+					res.return_function.flags = flags;
+				}
 			}
 			return res;
 		}
@@ -1851,7 +1958,13 @@ class ParserBay extends CommonParser{
 				flags.assignValue("public", true);
 			}
 		}
-		op_code = this.readDeclareFunction(true, is_declare_function);
+		var is_lambda = false;
+		if (flags != null){
+			if (flags.isFlag("lambda")){
+				is_lambda = true;
+			}
+		}
+		op_code = this.readDeclareFunction(true, is_declare_function, is_lambda);
 		if (op_code && op_code instanceof OpFunctionDeclare){
 			op_code.annotations = this.annotations;
 			op_code.flags = flags;
@@ -2082,7 +2195,8 @@ class ParserBay extends CommonParser{
 	}
 	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.LangBay.ParserBay";}
-	static getParentClassName(){return "CommonParser";}
+	static getCurrentClassName(){return "BayrellLang.LangBay.ParserBay";}
+	static getParentClassName(){return "BayrellLang.CommonParser";}
 	_init(){
 		super._init();
 		this.current_namespace = "";

@@ -18,10 +18,13 @@
  */
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
+var Dict = require('bayrell-runtime-nodejs').Dict;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var Collection = require('bayrell-runtime-nodejs').Collection;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var re = require('bayrell-runtime-nodejs').re;
 var rs = require('bayrell-runtime-nodejs').rs;
+var RuntimeUtils = require('bayrell-runtime-nodejs').RuntimeUtils;
 var CommonTranslator = require('../CommonTranslator.js');
 var BaseOpCode = require('../OpCodes/BaseOpCode.js');
 var OpAdd = require('../OpCodes/OpAdd.js');
@@ -74,6 +77,7 @@ var OpNope = require('../OpCodes/OpNope.js');
 var OpNot = require('../OpCodes/OpNot.js');
 var OpNumber = require('../OpCodes/OpNumber.js');
 var OpOr = require('../OpCodes/OpOr.js');
+var OpPipe = require('../OpCodes/OpPipe.js');
 var OpPostDec = require('../OpCodes/OpPostDec.js');
 var OpPostInc = require('../OpCodes/OpPostInc.js');
 var OpPow = require('../OpCodes/OpPow.js');
@@ -104,6 +108,22 @@ class TranslatorES6 extends CommonTranslator{
 	 */
 	getCurrentClassName(){
 		return rtl.toString(this.current_namespace)+"."+rtl.toString(this.current_class_name);
+	}
+	/**
+	 * Returns full class name
+	 * @return string
+	 */
+	getCurrentFunctionName(){
+		var c = this.function_stack.count();
+		var last_function = this.function_stack.get(c - 1);
+		return rtl.toString(this.current_namespace)+"."+rtl.toString(this.current_class_name)+"::"+rtl.toString(last_function.name);
+	}
+	/**
+	 * Returns UI struct class name
+	 * @return string
+	 */
+	getUIStructClassName(){
+		return this.ui_struct_class_name.last();
 	}
 	/**
 	 * Returns true if function is async
@@ -386,6 +406,16 @@ class TranslatorES6 extends CommonTranslator{
 	 * Static load
 	 */
 	OpStatic(op_code){
+		var op_code_last = this.op_code_stack.last(null, -2);
+		if (op_code.value instanceof OpIdentifier && op_code_last instanceof OpCall){
+			if (op_code.value.value == "self"){
+				return rtl.toString(this.getName("self"))+"."+rtl.toString(op_code.name);
+				return "("+rtl.toString(this.getName("rtl"))+".method("+rtl.toString(this.getName("self"))+", "+rtl.toString(this.convertString(op_code.name))+"))";
+			}
+			else if (!this.modules.has(op_code.value.value) && op_code.value.value != "rtl" && op_code.value.value != "parent" && op_code.value.value != "static"){
+				return "("+rtl.toString(this.getName("rtl"))+".method("+rtl.toString(op_code.value.value)+".getClassName(), "+rtl.toString(this.convertString(op_code.name))+"))";
+			}
+		}
 		return rtl.toString(this.translateRun(op_code.value))+"."+rtl.toString(op_code.name);
 	}
 	/**
@@ -651,12 +681,18 @@ class TranslatorES6 extends CommonTranslator{
 	 * Copy struct
 	 */
 	copyStruct(op_code, names){
+		var old_is_operation = this.beginOperation();
+		var res = "";
 		if (op_code.item instanceof OpCopyStruct){
 			names.push(op_code.name);
 			var name = rs.implode(".", names);
-			return rtl.toString(name)+".copy( new "+rtl.toString(this.getName("Map"))+"({ "+rtl.toString(this.convertString(op_code.item.name))+": "+rtl.toString(this.copyStruct(op_code.item, names))+" })  )";
+			res = rtl.toString(name)+".copy( new "+rtl.toString(this.getName("Map"))+"({ "+rtl.toString(this.convertString(op_code.item.name))+": "+rtl.toString(this.copyStruct(op_code.item, names))+" })  )";
 		}
-		return this.translateItem(op_code.item);
+		else {
+			res = this.translateItem(op_code.item);
+		}
+		this.endOperation(old_is_operation);
+		return res;
 	}
 	/**
 	 * Copy struct
@@ -666,6 +702,23 @@ class TranslatorES6 extends CommonTranslator{
 			return this.copyStruct(op_code, (new Vector()));
 		}
 		return rtl.toString(op_code.name)+" = "+rtl.toString(this.copyStruct(op_code, (new Vector())))+";";
+	}
+	/**
+	 * Pipe
+	 */
+	OpPipe(op_code){
+		var res = "";
+		res = rtl.toString(this.getName("Maybe"))+".of("+rtl.toString(this.translateItem(op_code.value))+")";
+		if (op_code.items != null){
+			for (var i = 0; i < op_code.items.count(); i++){
+				var op_item = op_code.items.item(i);
+				res += this.s(".map("+rtl.toString(this.translateItem(op_item))+")");
+			}
+		}
+		if (op_code.is_return_value){
+			res += this.s(".value()");
+		}
+		return res;
 	}
 	/** ========================== Vector and Map ========================= */
 	/**
@@ -709,6 +762,15 @@ class TranslatorES6 extends CommonTranslator{
 				return rtl.toString(obj)+"."+rtl.toString(name)+".bind(this)";
 			}
 			return rtl.toString(obj)+"."+rtl.toString(name);
+		}
+		else if (op_code.value instanceof OpStatic){
+			var name = op_code.value.name;
+			if (op_code.value.value.value == "self"){
+				return rtl.toString(this.getName("self"))+"."+rtl.toString(name);
+			}
+			else if (!this.modules.has(op_code.value.value.value) && op_code.value.value.value != "rtl" && op_code.value.value.value != "parent" && op_code.value.value.value != "static"){
+				return "("+rtl.toString(this.getName("rtl"))+".method("+rtl.toString(op_code.value.value.value)+".getClassName(), "+rtl.toString(this.convertString(name))+"))";
+			}
 		}
 		return this.translateRun(op_code.value);
 	}
@@ -1138,14 +1200,20 @@ class TranslatorES6 extends CommonTranslator{
 		this.levelInc();
 		var s = this.s(this.translateRun(op_code.value));
 		this.levelDec();
+		this.endOperation();
 		if (this.isAsyncF()){
 			s = "return "+rtl.toString(this.asyncContextName())+".resolve("+rtl.toString(s)+");";
 			this.is_return = true;
 		}
+		else if (this.current_function_is_memorize){
+			var res = "var __memorize_value = "+rtl.toString(s)+";";
+			res += this.s(rtl.toString(this.getName("rtl"))+"._memorizeSave("+rtl.toString(this.convertString(this.getCurrentFunctionName()))+", arguments, __memorize_value);");
+			res += this.s("return __memorize_value;");
+			return res;
+		}
 		else {
 			s = "return "+rtl.toString(s)+";";
 		}
-		this.endOperation();
 		return s;
 	}
 	/**
@@ -1335,7 +1403,9 @@ class TranslatorES6 extends CommonTranslator{
 			this.modules.set("rtl", "Runtime.rtl");
 			this.modules.set("rs", "Runtime.rs");
 			this.modules.set("Map", "Runtime.Map");
+			this.modules.set("Dict", "Runtime.Dict");
 			this.modules.set("Vector", "Runtime.Vector");
+			this.modules.set("Collection", "Runtime.Collection");
 			this.modules.set("IntrospectionInfo", "Runtime.IntrospectionInfo");
 			this.modules.set("UIStruct", "Runtime.UIStruct");
 		}
@@ -1520,13 +1590,22 @@ class TranslatorES6 extends CommonTranslator{
 		if (op_code.isFlag("declare")){
 			return "";
 		}
+		var old_current_function_is_memorize = this.current_function_is_memorize;
+		this.current_function_is_memorize = false;
+		if (op_code.isFlag("memorize") && op_code.isFlag("static") && !op_code.isFlag("async") && this.function_stack.count() == 0){
+			this.current_function_is_memorize = true;
+		}
 		this.functionPush(op_code.name, op_code.isFlag("async"));
 		res += this.OpFunctionDeclareHeader(op_code);
 		res += "{";
 		this.setOperation(false);
 		this.pushOneLine(false);
 		this.levelInc();
-		/* Async function */
+		/* Memorize function */
+		if (this.current_function_is_memorize){
+			res += this.s("var __memorize_value = "+rtl.toString(this.getName("rtl"))+"._memorizeValue("+rtl.toString(this.convertString(this.getCurrentFunctionName()))+", arguments);");
+			res += this.s("if (__memorize_value != "+rtl.toString(this.getName("rtl"))+"._memorize_not_found) return __memorize_value;");
+		}
 		if (op_code.isFlag("async")){
 			var variables = new Vector();
 			this.detectAsyncDeclareVariables(op_code, variables);
@@ -1556,7 +1635,14 @@ class TranslatorES6 extends CommonTranslator{
 					var old_is_operation = this.beginOperation(true);
 					var lambda_res = this.translateRun(op_code.childs.item(0));
 					this.endOperation(old_is_operation);
-					res += this.s("return "+rtl.toString(lambda_res)+";");
+					if (this.current_function_is_memorize){
+						res += this.s("var __memorize_value = "+rtl.toString(lambda_res)+";");
+						res += this.s(rtl.toString(this.getName("rtl"))+"._memorizeSave("+rtl.toString(this.convertString(this.getCurrentFunctionName()))+", arguments, __memorize_value);");
+						res += this.s("return __memorize_value;");
+					}
+					else {
+						res += this.s("return "+rtl.toString(lambda_res)+";");
+					}
 				}
 			}
 			else {
@@ -1589,6 +1675,7 @@ class TranslatorES6 extends CommonTranslator{
 		res += this.s("}");
 		this.popOneLine();
 		this.functionPop();
+		this.current_function_is_memorize = old_current_function_is_memorize;
 		return res;
 	}
 	/**
@@ -1600,6 +1687,7 @@ class TranslatorES6 extends CommonTranslator{
 		var name = "";
 		var ch = "";
 		var v = rs.explode(".", this.current_namespace);
+		this.ui_struct_class_name.push(rtl.toString(this.current_namespace)+"."+rtl.toString(this.current_class_name));
 		for (var i = 0; i < v.count(); i++){
 			name += rtl.toString(ch)+rtl.toString(v.item(i));
 			s = "if (typeof "+rtl.toString(name)+" == 'undefined') "+rtl.toString(name)+" = {};";
@@ -1710,7 +1798,12 @@ class TranslatorES6 extends CommonTranslator{
 		var class_implements = op_code.class_implements;
 		var class_extends = "";
 		if (op_code.class_extends){
-			class_extends = this.getName(op_code.class_extends.value);
+			if (this.modules.has(op_code.class_extends.value)){
+				class_extends = this.modules.item(op_code.class_extends.value);
+			}
+			else {
+				class_extends = op_code.class_extends.value;
+			}
 		}
 		var s = "";
 		var res = "";
@@ -1754,11 +1847,13 @@ class TranslatorES6 extends CommonTranslator{
 		res += this.s("/* ======================= Class Init Functions ======================= */");
 		if (!this.is_interface){
 			res += this.s("getClassName(){"+"return "+rtl.toString(this.convertString(rtl.toString(this.current_namespace)+"."+rtl.toString(this.current_class_name)))+";}");
+			res += this.s("static getCurrentClassName(){"+"return "+rtl.toString(this.convertString(rtl.toString(this.current_namespace)+"."+rtl.toString(this.current_class_name)))+";}");
 			res += this.s("static getParentClassName(){"+"return "+rtl.toString(this.convertString(class_extends))+";}");
 		}
 		if (this.current_module_name != "Runtime" || this.current_class_name != "CoreObject"){
 			if (has_variables || has_implements){
 				res += this.s("_init(){");
+				this.functionPush("_init", false);
 				this.levelInc();
 				if (class_extends != ""){
 					res += this.s("super._init();");
@@ -1769,17 +1864,24 @@ class TranslatorES6 extends CommonTranslator{
 						if (!(variable instanceof OpAssignDeclare)){
 							continue;
 						}
+						if (variable.value == null){
+							continue;
+						}
 						var var_prefix = "";
 						if (this.is_struct && variable.isFlag("public") && !variable.isFlag("static")){
 							var_prefix = "__";
 						}
 						var is_struct = this.is_struct && !variable.isFlag("static") && !variable.isFlag("const");
 						if (is_struct){
+							this.beginOperation();
+							s = "this."+rtl.toString(var_prefix)+rtl.toString(variable.name)+" = "+rtl.toString(this.translateRun(variable.value))+";";
+							this.endOperation();
+							res += this.s(s);
 							res += this.s("Object.defineProperty(this, "+rtl.toString(this.convertString(variable.name))+", { get: function() { return this.__"+rtl.toString(variable.name)+"; }, set: function(value) { throw new Runtime.Exceptions.AssignStructValueError("+rtl.toString(this.convertString(variable.name))+") }});");
 						}
 						else {
 							this.beginOperation();
-							s = "this."+rtl.toString(var_prefix)+rtl.toString(variable.name)+" = "+rtl.toString(this.translateRun(variable.value))+";";
+							s = "this."+rtl.toString(variable.name)+" = "+rtl.toString(this.translateRun(variable.value))+";";
 							this.endOperation();
 							res += this.s(s);
 						}
@@ -1796,10 +1898,12 @@ class TranslatorES6 extends CommonTranslator{
 					}
 				}
 				this.levelDec();
+				this.functionPop();
 				res += this.s("}");
 			}
 			if (has_cloneable || has_assignable){
 				res += this.s("assignObject(obj){");
+				this.functionPush("assignObject", false);
 				this.levelInc();
 				res += this.s("if (obj instanceof "+rtl.toString(this.getName(this.current_class_name))+"){");
 				this.levelInc();
@@ -1814,18 +1918,25 @@ class TranslatorES6 extends CommonTranslator{
 						var_prefix = "__";
 					}
 					if (variable.isFlag("public") && (variable.isFlag("cloneable") || variable.isFlag("serializable") || is_struct)){
-						res += this.s("this."+rtl.toString(var_prefix)+rtl.toString(variable.name)+" = "+rtl.toString(this.getName("rtl"))+"._clone("+"obj."+rtl.toString(variable.name)+");");
+						if (this.is_struct){
+							res += this.s("this."+rtl.toString(var_prefix)+rtl.toString(variable.name)+" = "+"obj."+rtl.toString(var_prefix)+rtl.toString(variable.name)+";");
+						}
+						else {
+							res += this.s("this."+rtl.toString(var_prefix)+rtl.toString(variable.name)+" = "+rtl.toString(this.getName("rtl"))+"._clone("+"obj."+rtl.toString(var_prefix)+rtl.toString(variable.name)+");");
+						}
 					}
 				}
 				this.levelDec();
 				res += this.s("}");
 				res += this.s("super.assignObject(obj);");
 				this.levelDec();
+				this.functionPop();
 				res += this.s("}");
 			}
 			if (has_serializable || has_assignable){
 				var class_variables_serializable_count = 0;
 				res += this.s("assignValue(variable_name, value, sender){if(sender==undefined)sender=null;");
+				this.functionPush("assignValue", false);
 				this.levelInc();
 				class_variables_serializable_count = 0;
 				for (var i = 0; i < childs.count(); i++){
@@ -1847,7 +1958,7 @@ class TranslatorES6 extends CommonTranslator{
 						}
 						var s = "if (variable_name == "+rtl.toString(this.convertString(variable.name))+")";
 						s += "this."+rtl.toString(var_prefix)+rtl.toString(variable.name)+" = ";
-						s += rtl.toString(this.getName("rtl"))+".correct(value,\""+rtl.toString(type_value)+"\","+rtl.toString(def_val)+",\""+rtl.toString(type_template)+"\");";
+						s += rtl.toString(this.getName("rtl"))+".convert(value,\""+rtl.toString(type_value)+"\","+rtl.toString(def_val)+",\""+rtl.toString(type_template)+"\");";
 						if (class_variables_serializable_count == 0){
 							res += this.s(s);
 						}
@@ -1864,8 +1975,10 @@ class TranslatorES6 extends CommonTranslator{
 					res += this.s("else super.assignValue(variable_name, value, sender);");
 				}
 				this.levelDec();
+				this.functionPop();
 				res += this.s("}");
 				res += this.s("takeValue(variable_name, default_value){");
+				this.functionPush("takeValue", false);
 				this.levelInc();
 				res += this.s("if (default_value == undefined) default_value = null;");
 				class_variables_serializable_count = 0;
@@ -1892,10 +2005,12 @@ class TranslatorES6 extends CommonTranslator{
 				}
 				res += this.s("return super.takeValue(variable_name, default_value);");
 				this.levelDec();
+				this.functionPop();
 				res += this.s("}");
 			}
 			if (has_serializable || has_assignable || has_fields_annotations){
 				res += this.s("static getFieldsList(names, flag){");
+				this.functionPush("getFieldsList", false);
 				this.levelInc();
 				res += this.s("if (flag==undefined)flag=0;");
 				var vars = new Map();
@@ -1947,8 +2062,10 @@ class TranslatorES6 extends CommonTranslator{
 					res += this.s("}");
 				});
 				this.levelDec();
+				this.functionPop();
 				res += this.s("}");
 				res += this.s("static getFieldInfoByName(field_name){");
+				this.functionPush("getFieldInfoByName", false);
 				this.levelInc();
 				for (var i = 0; i < childs.count(); i++){
 					var variable = childs.item(i);
@@ -1970,8 +2087,10 @@ class TranslatorES6 extends CommonTranslator{
 						for (var j = 0; j < variable.annotations.count(); j++){
 							var annotation = variable.annotations.item(j);
 							this.pushOneLine(true);
+							var old_is_operation = this.beginOperation();
 							var s_kind = this.translateRun(annotation.kind);
 							var s_options = this.translateRun(annotation.options);
+							this.endOperation(old_is_operation);
 							this.popOneLine();
 							res += this.s(".push(new "+rtl.toString(s_kind)+"("+rtl.toString(s_options)+"))");
 						}
@@ -1985,10 +2104,12 @@ class TranslatorES6 extends CommonTranslator{
 				}
 				res += this.s("return null;");
 				this.levelDec();
+				this.functionPop();
 				res += this.s("}");
 			}
 			if (has_methods_annotations){
 				res += this.s("static getMethodsList(names){");
+				this.functionPush("getMethodsList", false);
 				this.levelInc();
 				for (var i = 0; i < childs.count(); i++){
 					var variable = childs.item(i);
@@ -2000,8 +2121,10 @@ class TranslatorES6 extends CommonTranslator{
 					}
 				}
 				this.levelDec();
+				this.functionPop();
 				res += this.s("}");
 				res += this.s("static getMethodInfoByName(method_name){");
+				this.functionPush("getMethodInfoByName", false);
 				this.levelInc();
 				for (var i = 0; i < childs.count(); i++){
 					var variable = childs.item(i);
@@ -2023,8 +2146,10 @@ class TranslatorES6 extends CommonTranslator{
 						for (var j = 0; j < variable.annotations.count(); j++){
 							var annotation = variable.annotations.item(j);
 							this.pushOneLine(true);
+							var old_is_operation = this.beginOperation();
 							var s_kind = this.translateRun(annotation.kind);
 							var s_options = this.translateRun(annotation.options);
+							this.endOperation(old_is_operation);
 							this.popOneLine();
 							res += this.s(".push(new "+rtl.toString(s_kind)+"("+rtl.toString(s_options)+"))");
 						}
@@ -2038,11 +2163,13 @@ class TranslatorES6 extends CommonTranslator{
 				}
 				res += this.s("return null;");
 				this.levelDec();
+				this.functionPop();
 				res += this.s("}");
 			}
 		}
 		if (op_code.hasAnnotations()){
 			res += this.s("static getClassInfo(){");
+			this.functionPush("getClassInfo", false);
 			this.levelInc();
 			res += this.s("return new "+rtl.toString(this.getName("IntrospectionInfo"))+"(");
 			this.levelInc();
@@ -2055,8 +2182,10 @@ class TranslatorES6 extends CommonTranslator{
 			for (var j = 0; j < op_code.annotations.count(); j++){
 				var annotation = op_code.annotations.item(j);
 				this.pushOneLine(true);
+				var old_is_operation = this.beginOperation();
 				var s_kind = this.translateRun(annotation.kind);
 				var s_options = this.translateRun(annotation.options);
+				this.endOperation(old_is_operation);
 				this.popOneLine();
 				res += this.s(".push(new "+rtl.toString(s_kind)+"("+rtl.toString(s_options)+"))");
 			}
@@ -2065,6 +2194,7 @@ class TranslatorES6 extends CommonTranslator{
 			this.levelDec();
 			res += this.s(");");
 			this.levelDec();
+			this.functionPop();
 			res += this.s("}");
 		}
 		return res;
@@ -2152,32 +2282,53 @@ class TranslatorES6 extends CommonTranslator{
 		return rs.strtoupper(ch) == ch && ch != "";
 	}
 	/**
+	 * Html escape
+	 */
+	OpHtmlEscape(op_code){
+		var value = this.translateRun(op_code.value);
+		return rtl.toString(this.getName("rs"))+".htmlEscape("+rtl.toString(value)+")";
+	}
+	/**
 	 * OpHtmlJson
 	 */
 	OpHtmlJson(op_code){
-		var value = rtl.toString(this.getName("rs"))+".json_encode("+rtl.toString(this.translateRun(op_code.value))+")";
+		return rtl.toString(this.getName("rtl"))+".json_encode("+rtl.toString(this.translateRun(op_code.value))+")";
 		var res = "";
-		res = "new "+rtl.toString(this.getName("UIStruct"))+"(";
-		res += this.s("(new "+rtl.toString(this.getName("Map"))+"())");
-		res += this.s(".set(\"name\", \"span\")");
-		res += this.s(".set(\"props\", (new "+rtl.toString(this.getName("Map"))+"())");
-		res += this.s(".set("+rtl.toString(this.convertString("dangerouslySetInnerHTML"))+", RuntimeWeb.Lib.html("+rtl.toString(value)+")"+")");
-		res += this.s(")");
+		res = "new "+rtl.toString(this.getName("UIStruct"))+"(new "+rtl.toString(this.getName("Map"))+"({";
+		res += this.s("\"name\":\"span\",");
+		res += this.s("\"props\": new "+rtl.toString(this.getName("Map"))+"({");
+		res += this.s("\"rawHTML\":"+rtl.toString(value));
+		res += this.s("})})");
 		return res;
 	}
 	/**
 	 * OpHtmlRaw
 	 */
 	OpHtmlRaw(op_code){
-		var value = this.translateRun(op_code.value);
+		return this.translateRun(op_code.value);
 		var res = "";
-		res = "new "+rtl.toString(this.getName("UIStruct"))+"(";
-		res += this.s("(new "+rtl.toString(this.getName("Map"))+"())");
-		res += this.s(".set(\"name\", \"span\")");
-		res += this.s(".set(\"props\", (new "+rtl.toString(this.getName("Map"))+"())");
-		res += this.s(".set("+rtl.toString(this.convertString("dangerouslySetInnerHTML"))+", RuntimeWeb.Lib.html("+rtl.toString(value)+")"+")");
-		res += this.s(")");
+		res = "new "+rtl.toString(this.getName("UIStruct"))+"(new "+rtl.toString(this.getName("Map"))+"({";
+		res += this.s("\"name\":\"span\",");
+		res += this.s("\"props\": new "+rtl.toString(this.getName("Map"))+"({");
+		res += this.s("\"rawHTML\":"+rtl.toString(value));
+		res += this.s("})})");
 		return res;
+	}
+	/**
+	 * Html Text
+	 */
+	OpHtmlText(op_code){
+		return this.convertString(op_code.value);
+		return rtl.toString(this.getName("rtl"))+".normalizeUI("+rtl.toString(this.convertString(op_code.value))+")";
+	}
+	/**
+	 * Returns true if key is props
+	 */
+	isOpHtmlTagProps(key){
+		if (key == "@key" || key == "@control"){
+			return false;
+		}
+		return true;
 	}
 	/**
 	 * Html tag
@@ -2186,67 +2337,85 @@ class TranslatorES6 extends CommonTranslator{
 		var is_component = false;
 		var res = "";
 		this.pushOneLine(false);
-		this.levelInc();
 		/* isComponent */
 		if (this.modules.has(op_code.tag_name)){
-			res = "new "+rtl.toString(this.getName("UIStruct"))+"(";
-			res += this.s("(new "+rtl.toString(this.getName("Map"))+"())");
-			res += this.s(".set(\"kind\", \"component\")");
-			res += this.s(".set(\"name\", "+rtl.toString(this.convertString(this.modules.item(op_code.tag_name)))+")");
+			res = "new "+rtl.toString(this.getName("UIStruct"))+"(new "+rtl.toString(this.getName("Map"))+"({";
+			res += this.s("\"kind\":\"component\",");
+			res += this.s("\"name\":"+rtl.toString(this.convertString(this.modules.item(op_code.tag_name)))+",");
 			is_component = true;
 		}
 		else {
-			res = "new "+rtl.toString(this.getName("UIStruct"))+"(";
-			res += this.s("(new "+rtl.toString(this.getName("Map"))+"())");
-			res += this.s(".set(\"name\", "+rtl.toString(this.convertString(op_code.tag_name))+")");
+			res = "new "+rtl.toString(this.getName("UIStruct"))+"(new "+rtl.toString(this.getName("Map"))+"({";
+			res += this.s("\"space\":"+rtl.toString(this.convertString(RuntimeUtils.getCssHash(this.getUIStructClassName())))+",");
+			res += this.s("\"class_name\":this.getCurrentClassName(),");
+			res += this.s("\"name\":"+rtl.toString(this.convertString(op_code.tag_name))+",");
 		}
-		var raw_item = null;
-		if (!op_code.is_plain && op_code.childs != null && op_code.childs.count() == 1){
-			var item = op_code.childs.item(0);
-			if (item instanceof OpHtmlJson){
-				raw_item = item;
-			}
-			else if (item instanceof OpHtmlRaw){
-				raw_item = item;
-			}
-		}
-		if (is_component){
-			res += this.s(".set(\"props\", this.getElementAttrs()");
-		}
-		else {
-			res += this.s(".set(\"props\", (new "+rtl.toString(this.getName("Map"))+"())");
-		}
+		var is_props = false;
+		var is_spreads = op_code.spreads != null && op_code.spreads.count() > 0;
 		if (op_code.attributes != null && op_code.attributes.count() > 0){
 			op_code.attributes.each((item) => {
-				this.pushOneLine(true);
-				var value = this.translateRun(item.value);
-				this.popOneLine();
-				res += this.s(".set("+rtl.toString(this.convertString(item.key))+", "+rtl.toString(value)+")");
+				var key = item.key;
+				if (this.isOpHtmlTagProps(key)){
+					is_props = true;
+				}
+				else if (key == "@key"){
+					var value = this.translateRun(item.value);
+					res += this.s("\"key\": "+rtl.toString(value)+",");
+				}
+				else if (key == "@control"){
+					var value = this.translateRun(item.value);
+					res += this.s("\"controller\": "+rtl.toString(value)+",");
+				}
 			});
 		}
-		if (op_code.spreads != null && op_code.spreads.count() > 0){
-			op_code.spreads.each((item) => {
-				res += this.s(".addMap("+rtl.toString(item)+")");
-			});
+		if (is_props || is_spreads){
+			res += this.s("\"props\": (new "+rtl.toString(this.getName("Map"))+"())");
+			this.levelInc();
+			if (is_props){
+				op_code.attributes.each((item) => {
+					if (this.isOpHtmlTagProps(item.key)){
+						var old_operation = this.beginOperation(true);
+						this.pushOneLine(true);
+						var key = item.key;
+						var value = this.translateRun(item.value);
+						if (key == "@lambda"){
+							key = "callback";
+						}
+						this.popOneLine();
+						this.endOperation(old_operation);
+						res += this.s(".set("+rtl.toString(this.convertString(key))+", "+rtl.toString(value)+")");
+					}
+				});
+			}
+			if (is_spreads){
+				op_code.spreads.each((item) => {
+					res += this.s(".addMap("+rtl.toString(item)+")");
+				});
+			}
+			this.levelDec();
+			res += this.s(",");
 		}
 		if (op_code.is_plain){
 			if (op_code.childs != null){
 				var value = op_code.childs.reduce((res, item) => {
 					var value = "";
 					if (item instanceof OpHtmlJson){
-						value = rtl.toString(this.getName("rs"))+".json_encode("+rtl.toString(this.translateRun(item.value))+")";
+						value = rtl.toString(this.getName("rtl"))+".json_encode("+rtl.toString(this.translateRun(item.value))+")";
 						value = rtl.toString(this.getName("rtl"))+".toString("+rtl.toString(value)+")";
 					}
 					else if (item instanceof OpHtmlRaw){
 						value = this.translateRun(item.value);
 						value = rtl.toString(this.getName("rtl"))+".toString("+rtl.toString(value)+")";
 					}
-					else if (item instanceof OpConcat || item instanceof OpString || item instanceof OpHtmlText){
+					else if (item instanceof OpConcat || item instanceof OpString){
 						value = this.translateRun(item);
 					}
 					else if (item instanceof OpHtmlEscape){
 						value = this.translateRun(item);
 						value = rtl.toString(this.getName("rs"))+".htmlEscape("+rtl.toString(value)+")";
+					}
+					else if (item instanceof OpHtmlText){
+						value = this.convertString(item.value);
 					}
 					else {
 						value = this.translateRun(item);
@@ -2257,37 +2426,36 @@ class TranslatorES6 extends CommonTranslator{
 					}
 					return rtl.toString(res)+"+"+rtl.toString(value);
 				}, "");
-				res += this.s(".set("+rtl.toString(this.convertString("dangerouslySetInnerHTML"))+", "+rtl.toString(value)+")");
+				var old_operation = this.beginOperation(true);
+				this.pushOneLine(true);
+				res += this.s("\"children\": new "+rtl.toString(this.getName("Vector"))+"(");
+				this.levelInc();
+				res += rtl.toString(this.getName("rtl"))+".normalizeUI("+rtl.toString(value)+")";
+				this.levelDec();
+				res += this.s(")");
+				this.popOneLine();
+				this.endOperation(old_operation);
 			}
 		}
-		else if (raw_item != null){
-			if (raw_item instanceof OpHtmlJson){
-				var value = rtl.toString(this.getName("rs"))+".json_encode("+rtl.toString(this.translateRun(raw_item.value))+")";
-				res += this.s(".set("+rtl.toString(this.convertString("dangerouslySetInnerHTML"))+", RuntimeWeb.Lib.html("+rtl.toString(value)+")"+")");
-			}
-			else if (raw_item instanceof OpHtmlRaw){
-				var value = this.translateRun(raw_item.value);
-				res += this.s(".set("+rtl.toString(this.convertString("dangerouslySetInnerHTML"))+", RuntimeWeb.Lib.html("+rtl.toString(value)+")"+")");
-			}
-		}
-		res += this.s(")");
-		/* Childs */
-		if (raw_item == null && !op_code.is_plain){
+		else {
 			if (op_code.childs == null || op_code.childs.count() == 0){
 			}
 			else {
-				res += this.s(".set(\"children\", (new "+rtl.toString(this.getName("Vector"))+"())");
+				res += this.s("\"children\": "+rtl.toString(this.getName("rtl"))+".normalizeUIVector(new "+rtl.toString(this.getName("Vector"))+"(");
+				this.levelInc();
+				var ch = "";
 				op_code.childs.each((item) => {
 					if (item instanceof OpComment){
 						return ;
 					}
-					res += this.s(".push("+rtl.toString(this.translateRun(item))+")");
+					res += rtl.toString(ch)+rtl.toString(this.s(this.translateRun(item)));
+					ch = ",";
 				});
-				res += this.s(")");
+				this.levelDec();
+				res += this.s("))");
 			}
 		}
-		this.levelDec();
-		res += this.s(")");
+		res += this.s("}))");
 		this.popOneLine();
 		return res;
 	}
@@ -2295,12 +2463,13 @@ class TranslatorES6 extends CommonTranslator{
 	 * Html tag
 	 */
 	OpHtmlView(op_code){
+		var res = rtl.toString(this.getName("rtl"))+".normalizeUIVector((new "+rtl.toString(this.getName("Vector"))+"())";
 		this.pushOneLine(false);
-		var res = "(new "+rtl.toString(this.getName("Vector"))+"())";
 		op_code.childs.each((item) => {
 			res += this.s(".push("+rtl.toString(this.translateRun(item))+")");
 		});
 		this.popOneLine();
+		res += this.s(")");
 		return res;
 	}
 	/** =========================== Preprocessor ========================== */
@@ -2334,6 +2503,7 @@ class TranslatorES6 extends CommonTranslator{
 	resetTranslator(){
 		super.resetTranslator();
 		this.function_stack = new Vector();
+		this.ui_struct_class_name = new Vector();
 	}
 	/**
 	 * Translate to language
@@ -2348,12 +2518,16 @@ class TranslatorES6 extends CommonTranslator{
 	}
 	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.LangES6.TranslatorES6";}
-	static getParentClassName(){return "CommonTranslator";}
+	static getCurrentClassName(){return "BayrellLang.LangES6.TranslatorES6";}
+	static getParentClassName(){return "BayrellLang.CommonTranslator";}
 	_init(){
 		super._init();
+		this.ui_struct_class_name = null;
 		this.modules = null;
 		this.current_namespace = "";
 		this.current_class_name = "";
+		this.current_function_is_static = false;
+		this.current_function_is_memorize = false;
 		this.function_stack = null;
 		this.current_module_name = "";
 		this.is_interface = false;

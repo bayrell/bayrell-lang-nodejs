@@ -18,7 +18,9 @@
  */
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
+var Dict = require('bayrell-runtime-nodejs').Dict;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var Collection = require('bayrell-runtime-nodejs').Collection;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var BaseOpCode = require('./BaseOpCode.js');
 var OpFunctionDeclare = require('./OpFunctionDeclare.js');
@@ -26,7 +28,8 @@ var OpFlags = require('./OpFlags.js');
 class OpFunctionArrowDeclare extends OpFunctionDeclare{
 	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.OpCodes.OpFunctionArrowDeclare";}
-	static getParentClassName(){return "OpFunctionDeclare";}
+	static getCurrentClassName(){return "BayrellLang.OpCodes.OpFunctionArrowDeclare";}
+	static getParentClassName(){return "BayrellLang.OpCodes.OpFunctionDeclare";}
 	_init(){
 		super._init();
 		this.op = "op_arrow_function";
@@ -40,8 +43,8 @@ class OpFunctionArrowDeclare extends OpFunctionDeclare{
 		super.assignObject(obj);
 	}
 	assignValue(variable_name, value, sender){if(sender==undefined)sender=null;
-		if (variable_name == "op")this.op = rtl.correct(value,"string","op_arrow_function","");
-		else if (variable_name == "return_function")this.return_function = rtl.correct(value,"BayrellLang.OpCodes.OpFunctionDeclare",null,"");
+		if (variable_name == "op")this.op = rtl.convert(value,"string","op_arrow_function","");
+		else if (variable_name == "return_function")this.return_function = rtl.convert(value,"BayrellLang.OpCodes.OpFunctionDeclare",null,"");
 		else super.assignValue(variable_name, value, sender);
 	}
 	takeValue(variable_name, default_value){

@@ -18,7 +18,9 @@
  */
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
+var Dict = require('bayrell-runtime-nodejs').Dict;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var Collection = require('bayrell-runtime-nodejs').Collection;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var rs = require('bayrell-runtime-nodejs').rs;
 var ContextObject = require('bayrell-runtime-nodejs').ContextObject;
@@ -97,11 +99,11 @@ class TranslatorBay extends CoreTranslator{
 	 * Escape string
 	 */
 	convertString(s){
-		s = re.replace("\\\\", "\\\\", s);
-		s = re.replace("\"", "\\\"", s);
-		s = re.replace("\n", "\\n", s);
-		s = re.replace("\r", "\\r", s);
-		s = re.replace("\t", "\\t", s);
+		s = (rtl.method(re.getClassName(), "replace"))("\\\\", "\\\\", s);
+		s = (rtl.method(re.getClassName(), "replace"))("\"", "\\\"", s);
+		s = (rtl.method(re.getClassName(), "replace"))("\n", "\\n", s);
+		s = (rtl.method(re.getClassName(), "replace"))("\r", "\\r", s);
+		s = (rtl.method(re.getClassName(), "replace"))("\t", "\\t", s);
 		return s;
 	}
 	/**
@@ -907,7 +909,8 @@ class TranslatorBay extends CoreTranslator{
 	}
 	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.LangBay.TranslatorBay";}
-	static getParentClassName(){return "CoreTranslator";}
+	static getCurrentClassName(){return "BayrellLang.LangBay.TranslatorBay";}
+	static getParentClassName(){return "BayrellLang.CoreTranslator";}
 	_init(){
 		super._init();
 		this.is_interface = false;

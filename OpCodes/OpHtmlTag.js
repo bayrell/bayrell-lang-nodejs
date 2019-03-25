@@ -18,28 +18,62 @@
  */
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
+var Dict = require('bayrell-runtime-nodejs').Dict;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var Collection = require('bayrell-runtime-nodejs').Collection;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var Vector = require('bayrell-runtime-nodejs').Vector;
 var BaseOpCode = require('./BaseOpCode.js');
 var OpHtmlAttribute = require('./OpHtmlAttribute.js');
 class OpHtmlTag extends BaseOpCode{
 	/**
-	 * Constructor
+	 * Find attribute by attr_name
+	 * @param string attr_name
+	 * @return OpHtmlAttribute
 	 */
-	constructor(){
-		super();
-		this.childs = new Vector();
+	findAttribute(attr_name){
+		if (this.attributes == null){
+			return null;
+		}
+		for (var i = 0; i < this.attributes.count(); i++){
+			var item = this.attributes.item(i);
+			if (item.key == attr_name){
+				return item;
+			}
+		}
+		return null;
 	}
 	/**
-	 * Destructor
+	 * Remove attribute by attr_name
+	 * @param string attr_name
 	 */
-	destructor(){
-		super.destructor();
+	removeAttribute(attr_name){
+		this.attributes = this.attributes.filter((item) => {
+			return item.key != attr_name;
+		});
+	}
+	/**
+	 * Set attribute by attr_name
+	 * @param string attr_name
+	 * @param mixed value
+	 */
+	setAttribute(attr_name, value){
+		if (this.attributes == null){
+			return ;
+		}
+		for (var i = 0; i < this.attributes.count(); i++){
+			var item = this.attributes.item(i);
+			if (item.key == attr_name){
+				item.value = value;
+				return ;
+			}
+		}
+		this.attributes.push(new OpHtmlAttribute((new Map()).set("key", attr_name).set("value", value)));
 	}
 	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.OpCodes.OpHtmlTag";}
-	static getParentClassName(){return "BaseOpCode";}
+	static getCurrentClassName(){return "BayrellLang.OpCodes.OpHtmlTag";}
+	static getParentClassName(){return "BayrellLang.OpCodes.BaseOpCode";}
 	_init(){
 		super._init();
 		this.op = "op_html_tag";
@@ -61,12 +95,12 @@ class OpHtmlTag extends BaseOpCode{
 		super.assignObject(obj);
 	}
 	assignValue(variable_name, value, sender){if(sender==undefined)sender=null;
-		if (variable_name == "op")this.op = rtl.correct(value,"string","op_html_tag","");
-		else if (variable_name == "tag_name")this.tag_name = rtl.correct(value,"string","","");
-		else if (variable_name == "attributes")this.attributes = rtl.correct(value,"Runtime.Vector",null,"BayrellLang.OpCodes.OpHtmlAttribute");
-		else if (variable_name == "spreads")this.spreads = rtl.correct(value,"Runtime.Vector",null,"mixed");
-		else if (variable_name == "childs")this.childs = rtl.correct(value,"Runtime.Vector",null,"BayrellLang.OpCodes.BaseOpCode");
-		else if (variable_name == "is_plain")this.is_plain = rtl.correct(value,"bool",false,"");
+		if (variable_name == "op")this.op = rtl.convert(value,"string","op_html_tag","");
+		else if (variable_name == "tag_name")this.tag_name = rtl.convert(value,"string","","");
+		else if (variable_name == "attributes")this.attributes = rtl.convert(value,"Runtime.Vector",null,"BayrellLang.OpCodes.OpHtmlAttribute");
+		else if (variable_name == "spreads")this.spreads = rtl.convert(value,"Runtime.Vector",null,"mixed");
+		else if (variable_name == "childs")this.childs = rtl.convert(value,"Runtime.Vector",null,"BayrellLang.OpCodes.BaseOpCode");
+		else if (variable_name == "is_plain")this.is_plain = rtl.convert(value,"bool",false,"");
 		else super.assignValue(variable_name, value, sender);
 	}
 	takeValue(variable_name, default_value){

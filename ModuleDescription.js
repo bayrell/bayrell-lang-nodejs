@@ -18,7 +18,9 @@
  */
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
+var Dict = require('bayrell-runtime-nodejs').Dict;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var Collection = require('bayrell-runtime-nodejs').Collection;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var ContextInterface = require('bayrell-runtime-nodejs').Interfaces.ContextInterface;
 var ModuleDescriptionInterface = require('bayrell-runtime-nodejs').Interfaces.ModuleDescriptionInterface;
@@ -35,7 +37,7 @@ class ModuleDescription{
 	 * @return string
 	 */
 	static getModuleVersion(){
-		return "0.7.0";
+		return "0.7.1";
 	}
 	/**
 	 * Init context
@@ -65,6 +67,7 @@ class ModuleDescription{
 	}
 	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.ModuleDescription";}
+	static getCurrentClassName(){return "BayrellLang.ModuleDescription";}
 	static getParentClassName(){return "";}
 	_init(){
 		if (this.__implements__ == undefined){this.__implements__ = [];}

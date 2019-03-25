@@ -18,7 +18,9 @@
  */
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
+var Dict = require('bayrell-runtime-nodejs').Dict;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var Collection = require('bayrell-runtime-nodejs').Collection;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var BaseOpCode = require('./BaseOpCode.js');
 var OpIfElse = require('./OpIfElse.js');
@@ -44,7 +46,8 @@ class OpIf extends BaseOpCode{
 	}
 	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.OpCodes.OpIf";}
-	static getParentClassName(){return "BaseOpCode";}
+	static getCurrentClassName(){return "BayrellLang.OpCodes.OpIf";}
+	static getParentClassName(){return "BayrellLang.OpCodes.BaseOpCode";}
 	_init(){
 		super._init();
 		this.op = "op_if";
@@ -64,11 +67,11 @@ class OpIf extends BaseOpCode{
 		super.assignObject(obj);
 	}
 	assignValue(variable_name, value, sender){if(sender==undefined)sender=null;
-		if (variable_name == "op")this.op = rtl.correct(value,"string","op_if","");
-		else if (variable_name == "condition")this.condition = rtl.correct(value,"BayrellLang.OpCodes.BaseOpCode",null,"");
-		else if (variable_name == "if_true")this.if_true = rtl.correct(value,"Vector",null,"BayrellLang.OpCodes.BaseOpCode");
-		else if (variable_name == "if_false")this.if_false = rtl.correct(value,"Vector",null,"BayrellLang.OpCodes.BaseOpCode");
-		else if (variable_name == "if_else")this.if_else = rtl.correct(value,"Vector",null,"BayrellLang.OpCodes.OpIfElse");
+		if (variable_name == "op")this.op = rtl.convert(value,"string","op_if","");
+		else if (variable_name == "condition")this.condition = rtl.convert(value,"BayrellLang.OpCodes.BaseOpCode",null,"");
+		else if (variable_name == "if_true")this.if_true = rtl.convert(value,"Vector",null,"BayrellLang.OpCodes.BaseOpCode");
+		else if (variable_name == "if_false")this.if_false = rtl.convert(value,"Vector",null,"BayrellLang.OpCodes.BaseOpCode");
+		else if (variable_name == "if_else")this.if_else = rtl.convert(value,"Vector",null,"BayrellLang.OpCodes.OpIfElse");
 		else super.assignValue(variable_name, value, sender);
 	}
 	takeValue(variable_name, default_value){

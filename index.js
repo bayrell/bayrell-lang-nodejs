@@ -26,7 +26,7 @@ function ObjectAssign(res, obj){
 }
 
 module.exports = {
-	VERSION: '0.7.0',
+	VERSION: '0.7.1',
 };
 
 /* Exceptions */
@@ -75,6 +75,7 @@ ObjectAssign(module.exports, require("./OpCodes/OpComment.js"));
 ObjectAssign(module.exports, require("./OpCodes/OpCompare.js"));
 ObjectAssign(module.exports, require("./OpCodes/OpConcat.js"));
 ObjectAssign(module.exports, require("./OpCodes/OpContinue.js"));
+ObjectAssign(module.exports, require("./OpCodes/OpCopyStruct.js"));
 ObjectAssign(module.exports, require("./OpCodes/OpDelete.js"));
 ObjectAssign(module.exports, require("./OpCodes/OpDiv.js"));
 ObjectAssign(module.exports, require("./OpCodes/OpDynamic.js"));
@@ -95,6 +96,7 @@ ObjectAssign(module.exports, require("./OpCodes/OpNope.js"));
 ObjectAssign(module.exports, require("./OpCodes/OpNot.js"));
 ObjectAssign(module.exports, require("./OpCodes/OpNumber.js"));
 ObjectAssign(module.exports, require("./OpCodes/OpOr.js"));
+ObjectAssign(module.exports, require("./OpCodes/OpPipe.js"));
 ObjectAssign(module.exports, require("./OpCodes/OpPostDec.js"));
 ObjectAssign(module.exports, require("./OpCodes/OpPostInc.js"));
 ObjectAssign(module.exports, require("./OpCodes/OpPow.js"));
@@ -133,7 +135,7 @@ ObjectAssign(module.exports, require("./Utils.js"));
 else{
 
 module.exports = {
-	VERSION: '0.7.0',
+	VERSION: '0.7.1',
 	'Exceptions': {
 		'EndOfStringExpected': require("./Exceptions/EndOfStringExpected.js"),
 		'HexNumberExpected': require("./Exceptions/HexNumberExpected.js"),
@@ -179,6 +181,7 @@ module.exports = {
 		'OpCompare': require("./OpCodes/OpCompare.js"),
 		'OpConcat': require("./OpCodes/OpConcat.js"),
 		'OpContinue': require("./OpCodes/OpContinue.js"),
+		'OpCopyStruct': require("./OpCodes/OpCopyStruct.js"),
 		'OpDelete': require("./OpCodes/OpDelete.js"),
 		'OpDiv': require("./OpCodes/OpDiv.js"),
 		'OpDynamic': require("./OpCodes/OpDynamic.js"),
@@ -199,6 +202,7 @@ module.exports = {
 		'OpNot': require("./OpCodes/OpNot.js"),
 		'OpNumber': require("./OpCodes/OpNumber.js"),
 		'OpOr': require("./OpCodes/OpOr.js"),
+		'OpPipe': require("./OpCodes/OpPipe.js"),
 		'OpPostDec': require("./OpCodes/OpPostDec.js"),
 		'OpPostInc': require("./OpCodes/OpPostInc.js"),
 		'OpPow': require("./OpCodes/OpPow.js"),

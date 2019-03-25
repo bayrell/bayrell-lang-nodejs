@@ -18,7 +18,9 @@
  */
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
+var Dict = require('bayrell-runtime-nodejs').Dict;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var Collection = require('bayrell-runtime-nodejs').Collection;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var rs = require('bayrell-runtime-nodejs').rs;
 var ParserToken = require('bayrell-parser-nodejs').ParserToken;
@@ -216,7 +218,8 @@ class CommonParser extends CoreParser{
 	}
 	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.CommonParser";}
-	static getParentClassName(){return "CoreParser";}
+	static getCurrentClassName(){return "BayrellLang.CommonParser";}
+	static getParentClassName(){return "BayrellParser.CoreParser";}
 	_init(){
 		super._init();
 		this._result = null;

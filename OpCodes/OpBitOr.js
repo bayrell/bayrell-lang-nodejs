@@ -18,13 +18,16 @@
  */
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
+var Dict = require('bayrell-runtime-nodejs').Dict;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var Collection = require('bayrell-runtime-nodejs').Collection;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var OpValue2 = require('./OpValue2.js');
 class OpBitOr extends OpValue2{
 	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.OpCodes.OpBitOr";}
-	static getParentClassName(){return "OpValue2";}
+	static getCurrentClassName(){return "BayrellLang.OpCodes.OpBitOr";}
+	static getParentClassName(){return "BayrellLang.OpCodes.OpValue2";}
 	_init(){
 		super._init();
 		this.op = "op_bit_or";
@@ -36,7 +39,7 @@ class OpBitOr extends OpValue2{
 		super.assignObject(obj);
 	}
 	assignValue(variable_name, value, sender){if(sender==undefined)sender=null;
-		if (variable_name == "op")this.op = rtl.correct(value,"string","op_bit_or","");
+		if (variable_name == "op")this.op = rtl.convert(value,"string","op_bit_or","");
 		else super.assignValue(variable_name, value, sender);
 	}
 	takeValue(variable_name, default_value){

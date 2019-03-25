@@ -18,7 +18,9 @@
  */
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
+var Dict = require('bayrell-runtime-nodejs').Dict;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var Collection = require('bayrell-runtime-nodejs').Collection;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var RuntimeUtils = require('bayrell-runtime-nodejs').RuntimeUtils;
 var ParserError = require('bayrell-parser-nodejs').Exceptions.ParserError;
@@ -36,6 +38,7 @@ class HexNumberExpected extends ParserError{
 	}
 	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.Exceptions.HexNumberExpected";}
-	static getParentClassName(){return "ParserError";}
+	static getCurrentClassName(){return "BayrellLang.Exceptions.HexNumberExpected";}
+	static getParentClassName(){return "BayrellParser.Exceptions.ParserError";}
 }
 module.exports = HexNumberExpected;

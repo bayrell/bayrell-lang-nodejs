@@ -18,7 +18,9 @@
  */
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
+var Dict = require('bayrell-runtime-nodejs').Dict;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var Collection = require('bayrell-runtime-nodejs').Collection;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var Vector = require('bayrell-runtime-nodejs').Vector;
 var BaseOpCode = require('./BaseOpCode.js');
@@ -62,7 +64,8 @@ class OpComponent extends BaseOpCode{
 	}
 	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.OpCodes.OpComponent";}
-	static getParentClassName(){return "BaseOpCode";}
+	static getCurrentClassName(){return "BayrellLang.OpCodes.OpComponent";}
+	static getParentClassName(){return "BayrellLang.OpCodes.BaseOpCode";}
 	_init(){
 		super._init();
 		this.op = "op_component";
@@ -80,10 +83,10 @@ class OpComponent extends BaseOpCode{
 		super.assignObject(obj);
 	}
 	assignValue(variable_name, value, sender){if(sender==undefined)sender=null;
-		if (variable_name == "op")this.op = rtl.correct(value,"string","op_component","");
-		else if (variable_name == "name")this.name = rtl.correct(value,"BayrellLang.OpCodes.BaseOpCode","","");
-		else if (variable_name == "alias")this.alias = rtl.correct(value,"string","","");
-		else if (variable_name == "args")this.args = rtl.correct(value,"Map",null,"string");
+		if (variable_name == "op")this.op = rtl.convert(value,"string","op_component","");
+		else if (variable_name == "name")this.name = rtl.convert(value,"BayrellLang.OpCodes.BaseOpCode","","");
+		else if (variable_name == "alias")this.alias = rtl.convert(value,"string","","");
+		else if (variable_name == "args")this.args = rtl.convert(value,"Map",null,"string");
 		else super.assignValue(variable_name, value, sender);
 	}
 	takeValue(variable_name, default_value){

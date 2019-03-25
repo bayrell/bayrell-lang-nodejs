@@ -18,7 +18,9 @@
  */
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
+var Dict = require('bayrell-runtime-nodejs').Dict;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var Collection = require('bayrell-runtime-nodejs').Collection;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var rs = require('bayrell-runtime-nodejs').rs;
 var ContextObject = require('bayrell-runtime-nodejs').ContextObject;
@@ -73,6 +75,7 @@ var OpNope = require('./OpCodes/OpNope.js');
 var OpNot = require('./OpCodes/OpNot.js');
 var OpNumber = require('./OpCodes/OpNumber.js');
 var OpOr = require('./OpCodes/OpOr.js');
+var OpPipe = require('./OpCodes/OpPipe.js');
 var OpPostDec = require('./OpCodes/OpPostDec.js');
 var OpPostInc = require('./OpCodes/OpPostInc.js');
 var OpPow = require('./OpCodes/OpPow.js');
@@ -312,6 +315,9 @@ class CommonTranslator extends ContextObject{
 	OpOr(op_code){
 		return "";
 	}
+	OpPipe(op_code){
+		return "";
+	}
 	OpPostDec(op_code){
 		return "";
 	}
@@ -373,6 +379,9 @@ class CommonTranslator extends ContextObject{
 		return "";
 	}
 	/* =========================== HTML OP Codes ========================== */
+	OpHtmlEscape(op_code){
+		return "";
+	}
 	OpHtmlJson(op_code){
 		return "";
 	}
@@ -380,6 +389,9 @@ class CommonTranslator extends ContextObject{
 		return "";
 	}
 	OpHtmlTag(op_code){
+		return "";
+	}
+	OpHtmlText(op_code){
 		return "";
 	}
 	OpHtmlView(op_code){
@@ -542,6 +554,9 @@ class CommonTranslator extends ContextObject{
 		else if (op_code instanceof OpOr){
 			return this.OpOr(op_code);
 		}
+		else if (op_code instanceof OpPipe){
+			return this.OpPipe(op_code);
+		}
 		else if (op_code instanceof OpPostDec){
 			return this.OpPostDec(op_code);
 		}
@@ -602,6 +617,9 @@ class CommonTranslator extends ContextObject{
 		else if (op_code instanceof OpWhile){
 			return this.OpWhile(op_code);
 		}
+		else if (op_code instanceof OpHtmlEscape){
+			return this.OpHtmlEscape(op_code);
+		}
 		else if (op_code instanceof OpHtmlJson){
 			return this.OpHtmlJson(op_code);
 		}
@@ -612,7 +630,7 @@ class CommonTranslator extends ContextObject{
 			return this.OpHtmlTag(op_code);
 		}
 		else if (op_code instanceof OpHtmlText){
-			return this.OpString(op_code);
+			return this.OpHtmlText(op_code);
 		}
 		else if (op_code instanceof OpHtmlView){
 			return this.OpHtmlView(op_code);
@@ -652,7 +670,8 @@ class CommonTranslator extends ContextObject{
 	}
 	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.CommonTranslator";}
-	static getParentClassName(){return "ContextObject";}
+	static getCurrentClassName(){return "BayrellLang.CommonTranslator";}
+	static getParentClassName(){return "Runtime.ContextObject";}
 	_init(){
 		super._init();
 		this.op_code_stack = null;

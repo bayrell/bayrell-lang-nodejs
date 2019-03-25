@@ -18,7 +18,9 @@
  */
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
+var Dict = require('bayrell-runtime-nodejs').Dict;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var Collection = require('bayrell-runtime-nodejs').Collection;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var re = require('bayrell-runtime-nodejs').re;
 var rs = require('bayrell-runtime-nodejs').rs;
@@ -38,6 +40,9 @@ class TranslatorNodeJS extends TranslatorES6{
 		else if (name == "self"){
 			return this.current_class_name;
 		}
+		else if (name == "static"){
+			return "this";
+		}
 		return name;
 	}
 	/**
@@ -49,7 +54,7 @@ class TranslatorNodeJS extends TranslatorES6{
 		this.current_module_name = arr.item(0);
 		this.modules.clear();
 		if (this.current_module_name != "Runtime"){
-			return "var rtl = require('bayrell-runtime-nodejs').rtl;"+rtl.toString(this.s("var Map = require('bayrell-runtime-nodejs').Map;"))+rtl.toString(this.s("var Vector = require('bayrell-runtime-nodejs').Vector;"))+rtl.toString(this.s("var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;"));
+			return "var rtl = require('bayrell-runtime-nodejs').rtl;"+rtl.toString(this.s("var Map = require('bayrell-runtime-nodejs').Map;"))+rtl.toString(this.s("var Dict = require('bayrell-runtime-nodejs').Dict;"))+rtl.toString(this.s("var Vector = require('bayrell-runtime-nodejs').Vector;"))+rtl.toString(this.s("var Collection = require('bayrell-runtime-nodejs').Collection;"))+rtl.toString(this.s("var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;"));
 		}
 		return "";
 	}
@@ -103,8 +108,8 @@ class TranslatorNodeJS extends TranslatorES6{
 			if (module_name == "Runtime"){
 				module_name = "BayrellRuntime";
 			}
-			if (module_name == "RuntimeWeb"){
-				module_name = "BayrellRuntimeWeb";
+			if (module_name == "RuntimeUI"){
+				module_name = "BayrellRuntimeUI";
 			}
 			module_name = rtl.convertNodeJSModuleName(module_name);
 			res = "var "+rtl.toString(class_name)+" = require('"+rtl.toString(module_name)+"')."+rtl.toString(module_path)+";";
@@ -216,6 +221,7 @@ class TranslatorNodeJS extends TranslatorES6{
 	}
 	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.LangNodeJS.TranslatorNodeJS";}
-	static getParentClassName(){return "TranslatorES6";}
+	static getCurrentClassName(){return "BayrellLang.LangNodeJS.TranslatorNodeJS";}
+	static getParentClassName(){return "BayrellLang.LangES6.TranslatorES6";}
 }
 module.exports = TranslatorNodeJS;

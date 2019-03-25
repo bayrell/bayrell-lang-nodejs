@@ -18,7 +18,9 @@
  */
 var rtl = require('bayrell-runtime-nodejs').rtl;
 var Map = require('bayrell-runtime-nodejs').Map;
+var Dict = require('bayrell-runtime-nodejs').Dict;
 var Vector = require('bayrell-runtime-nodejs').Vector;
+var Collection = require('bayrell-runtime-nodejs').Collection;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var Vector = require('bayrell-runtime-nodejs').Vector;
 var BaseOpCode = require('./BaseOpCode.js');
@@ -26,7 +28,8 @@ var OpValue1 = require('./OpValue1.js');
 class OpHtmlEscape extends OpValue1{
 	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.OpCodes.OpHtmlEscape";}
-	static getParentClassName(){return "OpValue1";}
+	static getCurrentClassName(){return "BayrellLang.OpCodes.OpHtmlEscape";}
+	static getParentClassName(){return "BayrellLang.OpCodes.OpValue1";}
 	_init(){
 		super._init();
 		this.op = "op_html_escape";
@@ -38,7 +41,7 @@ class OpHtmlEscape extends OpValue1{
 		super.assignObject(obj);
 	}
 	assignValue(variable_name, value, sender){if(sender==undefined)sender=null;
-		if (variable_name == "op")this.op = rtl.correct(value,"string","op_html_escape","");
+		if (variable_name == "op")this.op = rtl.convert(value,"string","op_html_escape","");
 		else super.assignValue(variable_name, value, sender);
 	}
 	takeValue(variable_name, default_value){
