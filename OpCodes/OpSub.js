@@ -30,6 +30,7 @@ class OpSub extends OpValue2{
 	static getParentClassName(){return "BayrellLang.OpCodes.OpValue2";}
 	_init(){
 		super._init();
+		var names = Object.getOwnPropertyNames(this);
 		this.op = "op_sub";
 	}
 	assignObject(obj){
@@ -54,6 +55,11 @@ class OpSub extends OpValue2{
 		}
 	}
 	static getFieldInfoByName(field_name){
+		return null;
+	}
+	static getMethodsList(names){
+	}
+	static getMethodInfoByName(method_name){
 		return null;
 	}
 }

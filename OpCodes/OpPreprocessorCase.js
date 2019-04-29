@@ -46,6 +46,7 @@ class OpPreprocessorCase extends BaseOpCode{
 	static getParentClassName(){return "BayrellLang.OpCodes.BaseOpCode";}
 	_init(){
 		super._init();
+		var names = Object.getOwnPropertyNames(this);
 		this.op = "op_preprocessor_case";
 		this.condition = null;
 		this.value = null;
@@ -80,6 +81,11 @@ class OpPreprocessorCase extends BaseOpCode{
 		}
 	}
 	static getFieldInfoByName(field_name){
+		return null;
+	}
+	static getMethodsList(names){
+	}
+	static getMethodInfoByName(method_name){
 		return null;
 	}
 }

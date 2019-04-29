@@ -28,6 +28,17 @@ class LangConstant{
 	getClassName(){return "BayrellLang.LangConstant";}
 	static getCurrentClassName(){return "BayrellLang.LangConstant";}
 	static getParentClassName(){return "";}
+	static getFieldsList(names, flag){
+		if (flag==undefined)flag=0;
+	}
+	static getFieldInfoByName(field_name){
+		return null;
+	}
+	static getMethodsList(names){
+	}
+	static getMethodInfoByName(method_name){
+		return null;
+	}
 }
 LangConstant.ERROR_END_OF_THE_STRING_EXPECTED = RuntimeConstant.ERROR_MODULE_PARSER - 501;
 LangConstant.ERROR_PARSER_HEX_NUMBER_EXPECTED = RuntimeConstant.ERROR_MODULE_PARSER - 502;

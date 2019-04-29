@@ -31,6 +31,7 @@ class OpInterfaceDeclare extends OpClassDeclare{
 	static getParentClassName(){return "BayrellLang.OpCodes.OpClassDeclare";}
 	_init(){
 		super._init();
+		var names = Object.getOwnPropertyNames(this);
 		this.op = "op_interace";
 	}
 	assignObject(obj){
@@ -55,6 +56,11 @@ class OpInterfaceDeclare extends OpClassDeclare{
 		}
 	}
 	static getFieldInfoByName(field_name){
+		return null;
+	}
+	static getMethodsList(names){
+	}
+	static getMethodInfoByName(method_name){
 		return null;
 	}
 }

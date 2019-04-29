@@ -129,12 +129,20 @@ class TranslatorES6 extends CommonTranslator{
 	 * Returns true if function is async
 	 * @return bool
 	 */
-	checkAwaitOpCode(op_code){
+	checkAwaitOpCode(op_code, kind){
 		if (this.detectIsAwait(op_code)){
 			this.is_async_opcode = true;
+			if (kind == "while" || kind == "for"){
+				this.is_async_opcode_while = true;
+			}
+			return true;
 		}
 		else {
 			this.is_async_opcode = false;
+			if (kind == "while" || kind == "for"){
+				this.is_async_opcode_while = false;
+			}
+			return false;
 		}
 	}
 	/**
@@ -260,7 +268,7 @@ class TranslatorES6 extends CommonTranslator{
 	 * @return string
 	 */
 	asyncBeginPos(){
-		if (!this.isAsync()){
+		if (!this.isAsyncF()){
 			return ;
 		}
 		var obj = this.function_stack.last();
@@ -271,8 +279,8 @@ class TranslatorES6 extends CommonTranslator{
 	 * @return string
 	 */
 	asyncEndPos(){
-		if (!this.isAsync()){
-			return ;
+		if (!this.isAsyncF()){
+			return "";
 		}
 		var obj = this.function_stack.last();
 		return obj.getAsyncEndPos();
@@ -918,7 +926,7 @@ class TranslatorES6 extends CommonTranslator{
 	 * Break
 	 */
 	OpBreak(op_code){
-		if (this.isAsync()){
+		if (this.isAsyncF() && this.is_async_opcode_while){
 			this.is_return = true;
 			var pos = this.asyncEndPos();
 			return "return "+rtl.toString(this.asyncContextName())+".jump("+rtl.toString(this.convertString(pos))+");";
@@ -945,7 +953,7 @@ class TranslatorES6 extends CommonTranslator{
 	 * Continue
 	 */
 	OpContinue(op_code){
-		if (this.isAsync()){
+		if (this.isAsyncF() && this.is_async_opcode_while){
 			this.is_return = true;
 			var pos = this.asyncBeginPos();
 			return "return "+rtl.toString(this.asyncContextName())+".jump("+rtl.toString(this.convertString(pos))+");";
@@ -964,26 +972,52 @@ class TranslatorES6 extends CommonTranslator{
 	OpFor(op_code){
 		var s = "";
 		var jump_pos_begin = "";
+		var jump_pos_first = "";
+		var jump_pos_start = "";
 		var jump_pos_end = "";
 		var jump_pos_childs = "";
 		/* Check await op_code*/
-		this.checkAwaitOpCode(op_code);
+		var old_is_async_opcode = this.is_async_opcode;
+		var old_is_async_opcode_while = this.is_async_opcode_while;
+		this.checkAwaitOpCode(op_code, "for");
+		/* OpFor async start */
+		/*
+		if (this.isAsync())
+		{
+			this.asyncJumpAdd();
+			jump_pos_end = this.asyncJumpCurrent();
+			
+			s ~= this.translateRun(op_code.loop_init);
+			s ~= this.s("return " ~ this.asyncContextName() ~ ".jump(" ~ this.convertString(jump_pos_end) ~ ");");
+			this.levelDec();
+			s ~= this.s("}");
+			s ~= this.s("else if (" ~ this.asyncJumpName() ~ " == " ~ this.convertString(jump_pos_end) ~ "){");
+			this.levelInc();
+		}
+		*/
 		/* Async start */
-		jump_pos_begin = this.asyncJumpCurrent();
 		jump_pos_end = this.asyncJumpNext();
 		this.asyncJumpPush();
-		jump_pos_childs = this.asyncJumpCurrent();
+		jump_pos_begin = this.asyncJumpCurrent();
+		this.asyncJumpAdd();
+		jump_pos_start = this.asyncJumpCurrent();
 		/* Push stop jump positions for break and continue */
 		this.asyncPushStop(jump_pos_begin, jump_pos_end);
+		this.asyncJumpAdd();
+		jump_pos_childs = this.asyncJumpCurrent();
 		/* Header */
 		if (this.isAsync()){
 			s += this.translateRun(op_code.loop_init);
-			this.asyncJumpAdd();
-			jump_pos_begin = this.asyncJumpCurrent();
-			s += this.s("return "+rtl.toString(this.asyncContextName())+".jump("+rtl.toString(this.convertString(jump_pos_begin))+");");
+			s += this.s("return "+rtl.toString(this.asyncContextName())+".jump("+rtl.toString(this.convertString(jump_pos_start))+");");
 			this.levelDec();
 			s += this.s("}");
 			s += this.s("else if ("+rtl.toString(this.asyncJumpName())+" == "+rtl.toString(this.convertString(jump_pos_begin))+"){");
+			this.levelInc();
+			s += this.s(this.translateRun(op_code.loop_inc));
+			s += this.s("return "+rtl.toString(this.asyncContextName())+".jump("+rtl.toString(this.convertString(jump_pos_start))+");");
+			this.levelDec();
+			s += this.s("}");
+			s += this.s("else if ("+rtl.toString(this.asyncJumpName())+" == "+rtl.toString(this.convertString(jump_pos_start))+"){");
 			this.levelInc();
 			this.beginOperation();
 			var s1 = "if ("+rtl.toString(this.translateRun(op_code.loop_condition))+"){";
@@ -1001,9 +1035,6 @@ class TranslatorES6 extends CommonTranslator{
 		}
 		for (var i = 0; i < op_code.childs.count(); i++){
 			op_code_childs += this.s(this.translateRun(op_code.childs.item(i)));
-		}
-		if (this.isAsync()){
-			op_code_childs += this.s(this.translateRun(op_code.loop_inc));
 		}
 		if (!this.isAsync()){
 			this.levelDec();
@@ -1033,6 +1064,9 @@ class TranslatorES6 extends CommonTranslator{
 			s += this.s("else if ("+rtl.toString(this.asyncJumpName())+" == "+rtl.toString(this.convertString(jump_pos_end))+"){");
 			this.levelInc();
 		}
+		this.is_async_opcode = old_is_async_opcode;
+		this.is_async_opcode_while = old_is_async_opcode_while;
+		/* Pop stop jump positions */
 		this.asyncPopStop();
 		this.asyncJumpPop();
 		this.asyncJumpAdd();
@@ -1054,7 +1088,9 @@ class TranslatorES6 extends CommonTranslator{
 		var op_code_false = "";
 		var op_code_else = new Vector();
 		/* Check await op_code*/
-		this.checkAwaitOpCode(op_code);
+		var old_is_async_opcode = this.is_async_opcode;
+		var old_is_async_opcode_while = this.is_async_opcode_while;
+		this.checkAwaitOpCode(op_code, "if");
 		/* Condition */
 		this.beginOperation();
 		s += "if ("+rtl.toString(this.translateRun(op_code.condition))+"){";
@@ -1157,7 +1193,7 @@ class TranslatorES6 extends CommonTranslator{
 				var op_code_else_sz = op_code_else.count();
 				for (var i = 0; i < op_code_else_sz; i++){
 					var item = op_code_else.item(i);
-					var jump_pos = item.get("jump_pos", -1, "int");
+					var jump_pos = item.get("jump_pos", "-1", "string");
 					var is_return = item.get("is_return", false, "bool");
 					var op_code = item.get("op_code", "", "string");
 					this.levelDec();
@@ -1185,6 +1221,9 @@ class TranslatorES6 extends CommonTranslator{
 			s += this.s("else if ("+rtl.toString(this.asyncJumpName())+" == "+rtl.toString(this.convertString(jump_pos_end))+"){");
 			this.levelInc();
 		}
+		this.is_async_opcode = old_is_async_opcode;
+		this.is_async_opcode_while = old_is_async_opcode_while;
+		/* Decrease level */
 		this.asyncJumpPop();
 		this.asyncJumpAdd();
 		this.is_return = old_is_return;
@@ -1235,7 +1274,9 @@ class TranslatorES6 extends CommonTranslator{
 	OpTryCatch(op_code){
 		var s = "";
 		/* Check await op_code*/
-		this.checkAwaitOpCode(op_code);
+		var old_is_async_opcode = this.is_async_opcode;
+		var old_is_async_opcode_while = this.is_async_opcode_while;
+		this.checkAwaitOpCode(op_code, "try_catch");
 		var jump_pos_catch = "";
 		var jump_pos_end = "";
 		if (this.isAsync()){
@@ -1322,6 +1363,8 @@ class TranslatorES6 extends CommonTranslator{
 		else {
 			s += this.s("}");
 		}
+		this.is_async_opcode = old_is_async_opcode;
+		this.is_async_opcode_while = old_is_async_opcode_while;
 		return s;
 	}
 	/**
@@ -1333,23 +1376,45 @@ class TranslatorES6 extends CommonTranslator{
 		var jump_pos_end = "";
 		var jump_pos_childs = "";
 		/* Check await op_code*/
-		this.checkAwaitOpCode(op_code);
-		jump_pos_begin = this.asyncJumpCurrent();
+		var old_is_async_opcode = this.is_async_opcode;
+		var old_is_async_opcode_while = this.is_async_opcode_while;
+		this.checkAwaitOpCode(op_code, "while");
+		/* OpWhile async start */
+		/*
+		if (this.isAsync())
+		{
+			this.asyncJumpAdd();
+			jump_pos_end = this.asyncJumpCurrent();
+			
+			s ~= "return " ~ this.asyncContextName() ~ ".jump(" ~ this.convertString(jump_pos_end) ~ ");";
+			this.levelDec();
+			s ~= this.s("}");
+			s ~= this.s("else if (" ~ this.asyncJumpName() ~ " == " ~ this.convertString(jump_pos_end) ~ "){");
+			this.levelInc();
+		}
+		*/
+		/* Async start */
 		jump_pos_end = this.asyncJumpNext();
 		this.asyncJumpPush();
+		jump_pos_begin = this.asyncJumpCurrent();
+		this.asyncJumpAdd();
 		jump_pos_childs = this.asyncJumpCurrent();
 		/* Push stop jump positions for break and continue */
 		this.asyncPushStop(jump_pos_begin, jump_pos_end);
 		/* Condition */
-		this.beginOperation();
 		if (this.isAsync()){
-			s += "if ("+rtl.toString(this.translateRun(op_code.condition))+"){";
+			s += "return "+rtl.toString(this.asyncContextName())+".jump("+rtl.toString(this.convertString(jump_pos_begin))+");";
+			this.levelDec();
+			s += this.s("}");
+			s += this.s("else if ("+rtl.toString(this.asyncJumpName())+" == "+rtl.toString(this.convertString(jump_pos_begin))+"){");
+			this.levelInc();
+			s += this.s("if ("+rtl.toString(this.translateRun(op_code.condition))+"){");
 		}
 		else {
+			this.beginOperation();
 			s += "while ("+rtl.toString(this.translateRun(op_code.condition))+"){";
+			this.endOperation();
 		}
-		this.endOperation();
-		/* Childs */
 		var op_code_childs = "";
 		if (!this.isAsync()){
 			this.levelInc();
@@ -1385,6 +1450,9 @@ class TranslatorES6 extends CommonTranslator{
 			s += this.s("else if ("+rtl.toString(this.asyncJumpName())+" == "+rtl.toString(this.convertString(jump_pos_end))+"){");
 			this.levelInc();
 		}
+		this.is_async_opcode = old_is_async_opcode;
+		this.is_async_opcode_while = old_is_async_opcode_while;
+		/* Pop stop jump positions */
 		this.asyncPopStop();
 		this.asyncJumpPop();
 		this.asyncJumpAdd();
@@ -1844,8 +1912,8 @@ class TranslatorES6 extends CommonTranslator{
 			has_serializable = true;
 			has_cloneable = true;
 		}
-		res += this.s("/* ======================= Class Init Functions ======================= */");
 		if (!this.is_interface){
+			res += this.s("/* ======================= Class Init Functions ======================= */");
 			res += this.s("getClassName(){"+"return "+rtl.toString(this.convertString(rtl.toString(this.current_namespace)+"."+rtl.toString(this.current_class_name)))+";}");
 			res += this.s("static getCurrentClassName(){"+"return "+rtl.toString(this.convertString(rtl.toString(this.current_namespace)+"."+rtl.toString(this.current_class_name)))+";}");
 			res += this.s("static getParentClassName(){"+"return "+rtl.toString(this.convertString(class_extends))+";}");
@@ -1857,6 +1925,7 @@ class TranslatorES6 extends CommonTranslator{
 				this.levelInc();
 				if (class_extends != ""){
 					res += this.s("super._init();");
+					res += this.s("var names = Object.getOwnPropertyNames(this);");
 				}
 				if (childs != null){
 					for (var i = 0; i < childs.count(); i++){
@@ -1877,7 +1946,7 @@ class TranslatorES6 extends CommonTranslator{
 							s = "this."+rtl.toString(var_prefix)+rtl.toString(variable.name)+" = "+rtl.toString(this.translateRun(variable.value))+";";
 							this.endOperation();
 							res += this.s(s);
-							res += this.s("Object.defineProperty(this, "+rtl.toString(this.convertString(variable.name))+", { get: function() { return this.__"+rtl.toString(variable.name)+"; }, set: function(value) { throw new Runtime.Exceptions.AssignStructValueError("+rtl.toString(this.convertString(variable.name))+") }});");
+							res += this.s("if (names.indexOf("+rtl.toString(this.convertString(variable.name))+") == -1)"+"Object.defineProperty(this, "+rtl.toString(this.convertString(variable.name))+", { get: function() { return this.__"+rtl.toString(variable.name)+"; }, set: function(value) { throw new Runtime.Exceptions.AssignStructValueError("+rtl.toString(this.convertString(variable.name))+") }});");
 						}
 						else {
 							this.beginOperation();
@@ -2008,7 +2077,7 @@ class TranslatorES6 extends CommonTranslator{
 				this.functionPop();
 				res += this.s("}");
 			}
-			if (has_serializable || has_assignable || has_fields_annotations){
+			if (!this.is_interface){
 				res += this.s("static getFieldsList(names, flag){");
 				this.functionPush("getFieldsList", false);
 				this.levelInc();
@@ -2106,8 +2175,6 @@ class TranslatorES6 extends CommonTranslator{
 				this.levelDec();
 				this.functionPop();
 				res += this.s("}");
-			}
-			if (has_methods_annotations){
 				res += this.s("static getMethodsList(names){");
 				this.functionPush("getMethodsList", false);
 				this.levelInc();
@@ -2325,7 +2392,7 @@ class TranslatorES6 extends CommonTranslator{
 	 * Returns true if key is props
 	 */
 	isOpHtmlTagProps(key){
-		if (key == "@key" || key == "@control"){
+		if (key == "@key" || key == "@control" || key == "@model"){
 			return false;
 		}
 		return true;
@@ -2341,6 +2408,7 @@ class TranslatorES6 extends CommonTranslator{
 		if (this.modules.has(op_code.tag_name)){
 			res = "new "+rtl.toString(this.getName("UIStruct"))+"(new "+rtl.toString(this.getName("Map"))+"({";
 			res += this.s("\"kind\":\"component\",");
+			res += this.s("\"class_name\":this.getCurrentClassName(),");
 			res += this.s("\"name\":"+rtl.toString(this.convertString(this.modules.item(op_code.tag_name)))+",");
 			is_component = true;
 		}
@@ -2366,6 +2434,10 @@ class TranslatorES6 extends CommonTranslator{
 					var value = this.translateRun(item.value);
 					res += this.s("\"controller\": "+rtl.toString(value)+",");
 				}
+				else if (key == "@model"){
+					var value = this.translateRun(item.value);
+					res += this.s("\"model\": "+rtl.toString(value)+",");
+				}
 			});
 		}
 		if (is_props || is_spreads){
@@ -2378,9 +2450,6 @@ class TranslatorES6 extends CommonTranslator{
 						this.pushOneLine(true);
 						var key = item.key;
 						var value = this.translateRun(item.value);
-						if (key == "@lambda"){
-							key = "callback";
-						}
 						this.popOneLine();
 						this.endOperation(old_operation);
 						res += this.s(".set("+rtl.toString(this.convertString(key))+", "+rtl.toString(value)+")");
@@ -2396,7 +2465,7 @@ class TranslatorES6 extends CommonTranslator{
 			res += this.s(",");
 		}
 		if (op_code.is_plain){
-			if (op_code.childs != null){
+			if (op_code.childs != null && op_code.childs.count() > 0){
 				var value = op_code.childs.reduce((res, item) => {
 					var value = "";
 					if (item instanceof OpHtmlJson){
@@ -2522,6 +2591,7 @@ class TranslatorES6 extends CommonTranslator{
 	static getParentClassName(){return "BayrellLang.CommonTranslator";}
 	_init(){
 		super._init();
+		var names = Object.getOwnPropertyNames(this);
 		this.ui_struct_class_name = null;
 		this.modules = null;
 		this.current_namespace = "";
@@ -2534,7 +2604,19 @@ class TranslatorES6 extends CommonTranslator{
 		this.is_struct = false;
 		this.is_return = false;
 		this.is_async_opcode = false;
+		this.is_async_opcode_while = false;
 		this.is_async_await_op_call = false;
+	}
+	static getFieldsList(names, flag){
+		if (flag==undefined)flag=0;
+	}
+	static getFieldInfoByName(field_name){
+		return null;
+	}
+	static getMethodsList(names){
+	}
+	static getMethodInfoByName(method_name){
+		return null;
 	}
 }
 module.exports = TranslatorES6;

@@ -647,6 +647,7 @@ class CoreTranslator extends ContextObject{
 	static getParentClassName(){return "Runtime.ContextObject";}
 	_init(){
 		super._init();
+		var names = Object.getOwnPropertyNames(this);
 		this.is_operation_stack = null;
 		this.op_code_stack = null;
 		this.one_lines = null;
@@ -656,6 +657,17 @@ class CoreTranslator extends ContextObject{
 		this.indent = "\t";
 		this.space = " ";
 		this.crlf = "\n";
+	}
+	static getFieldsList(names, flag){
+		if (flag==undefined)flag=0;
+	}
+	static getFieldInfoByName(field_name){
+		return null;
+	}
+	static getMethodsList(names){
+	}
+	static getMethodInfoByName(method_name){
+		return null;
 	}
 }
 module.exports = CoreTranslator;

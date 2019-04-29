@@ -40,6 +40,17 @@ class ParserBayNameToken extends ParserToken{
 	getClassName(){return "BayrellLang.LangBay.ParserBayNameToken";}
 	static getCurrentClassName(){return "BayrellLang.LangBay.ParserBayNameToken";}
 	static getParentClassName(){return "BayrellParser.ParserToken";}
+	static getFieldsList(names, flag){
+		if (flag==undefined)flag=0;
+	}
+	static getFieldInfoByName(field_name){
+		return null;
+	}
+	static getMethodsList(names){
+	}
+	static getMethodInfoByName(method_name){
+		return null;
+	}
 }
 ParserBayNameToken.TOKEN_NONE = "none";
 ParserBayNameToken.TOKEN_BASE = "base";

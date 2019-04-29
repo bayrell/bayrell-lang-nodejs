@@ -37,6 +37,7 @@ class OpHtmlView extends OpChilds{
 	static getParentClassName(){return "BayrellLang.OpCodes.OpChilds";}
 	_init(){
 		super._init();
+		var names = Object.getOwnPropertyNames(this);
 		this.op = "op_html_view";
 		this.variable = "";
 	}
@@ -66,6 +67,11 @@ class OpHtmlView extends OpChilds{
 		}
 	}
 	static getFieldInfoByName(field_name){
+		return null;
+	}
+	static getMethodsList(names){
+	}
+	static getMethodInfoByName(method_name){
 		return null;
 	}
 }

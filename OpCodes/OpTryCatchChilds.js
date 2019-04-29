@@ -48,6 +48,7 @@ class OpTryCatchChilds extends BaseOpCode{
 	static getParentClassName(){return "BayrellLang.OpCodes.BaseOpCode";}
 	_init(){
 		super._init();
+		var names = Object.getOwnPropertyNames(this);
 		this.op = "op_try_catch_childs";
 		this.op_type = null;
 		this.op_ident = null;
@@ -87,6 +88,11 @@ class OpTryCatchChilds extends BaseOpCode{
 		}
 	}
 	static getFieldInfoByName(field_name){
+		return null;
+	}
+	static getMethodsList(names){
+	}
+	static getMethodInfoByName(method_name){
 		return null;
 	}
 }

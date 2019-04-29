@@ -30,6 +30,7 @@ class OpPreprocessorSwitch extends OpChilds{
 	static getParentClassName(){return "BayrellLang.OpCodes.OpChilds";}
 	_init(){
 		super._init();
+		var names = Object.getOwnPropertyNames(this);
 		this.op = "op_preprocessor_switch";
 	}
 	assignObject(obj){
@@ -54,6 +55,11 @@ class OpPreprocessorSwitch extends OpChilds{
 		}
 	}
 	static getFieldInfoByName(field_name){
+		return null;
+	}
+	static getMethodsList(names){
+	}
+	static getMethodInfoByName(method_name){
 		return null;
 	}
 }

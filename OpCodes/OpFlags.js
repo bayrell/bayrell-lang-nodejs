@@ -188,6 +188,7 @@ class OpFlags extends BaseOpCode{
 	static getParentClassName(){return "BayrellLang.OpCodes.BaseOpCode";}
 	_init(){
 		super._init();
+		var names = Object.getOwnPropertyNames(this);
 		this.op = "op_flags";
 		this.p_async = false;
 		this.p_export = false;
@@ -203,6 +204,17 @@ class OpFlags extends BaseOpCode{
 		this.p_memorize = false;
 		this.p_lambda = false;
 		this.p_pure = false;
+	}
+	static getFieldsList(names, flag){
+		if (flag==undefined)flag=0;
+	}
+	static getFieldInfoByName(field_name){
+		return null;
+	}
+	static getMethodsList(names){
+	}
+	static getMethodInfoByName(method_name){
+		return null;
 	}
 }
 module.exports = OpFlags;

@@ -130,10 +130,10 @@ class TranslatorPHP extends CommonTranslator{
 			return "parent";
 		}
 		else if (name == "self"){
-			return "self";
+			return "self::class";
 		}
 		else if (name == "static"){
-			return "static";
+			return "static::class";
 		}
 		else if (this.modules.has(name)){
 			return name;
@@ -202,6 +202,15 @@ class TranslatorPHP extends CommonTranslator{
 	 */
 	OpIdentifier(op_code){
 		this.current_opcode_level = this.max_opcode_level;
+		var op_code_last = this.op_code_stack.last(null, -2);
+		if (op_code_last instanceof OpStatic){
+			if (op_code.value == "self"){
+				return "self";
+			}
+			if (op_code.value == "static"){
+				return "static";
+			}
+		}
 		return this.getName(op_code.value);
 	}
 	/**
@@ -1233,8 +1242,8 @@ class TranslatorPHP extends CommonTranslator{
 		var has_cloneable = false;
 		var has_methods_annotations = false;
 		var has_fields_annotations = false;
-		res += this.s("/* ======================= Class Init Functions ======================= */");
 		if (!this.is_interface){
+			res += this.s("/* ======================= Class Init Functions ======================= */");
 			res += this.s("public function getClassName(){"+"return "+rtl.toString(this.convertString(rtl.toString(this.current_namespace)+"."+rtl.toString(this.current_class_name)))+";}");
 			res += this.s("public static function getCurrentClassName(){"+"return "+rtl.toString(this.convertString(rtl.toString(this.current_namespace)+"."+rtl.toString(this.current_class_name)))+";}");
 			res += this.s("public static function getParentClassName(){"+"return "+rtl.toString(this.convertString(class_extends))+";}");
@@ -1404,7 +1413,7 @@ class TranslatorPHP extends CommonTranslator{
 				this.levelDec();
 				res += this.s("}");
 			}
-			if (has_serializable || has_assignable || has_fields_annotations){
+			if (!this.is_interface){
 				res += this.s("public static function getFieldsList($names, $flag=0){");
 				this.levelInc();
 				var vars = new Map();
@@ -1496,8 +1505,6 @@ class TranslatorPHP extends CommonTranslator{
 				res += this.s("return null;");
 				this.levelDec();
 				res += this.s("}");
-			}
-			if (has_methods_annotations){
 				res += this.s("public static function getMethodsList($names){");
 				this.levelInc();
 				for (var i = 0; i < childs.count(); i++){
@@ -1703,7 +1710,7 @@ class TranslatorPHP extends CommonTranslator{
 	 * Returns true if key is props
 	 */
 	isOpHtmlTagProps(key){
-		if (key == "@key" || key == "@control"){
+		if (key == "@key" || key == "@control" || key == "@model"){
 			return false;
 		}
 		return true;
@@ -1719,6 +1726,7 @@ class TranslatorPHP extends CommonTranslator{
 		if (this.modules.has(op_code.tag_name)){
 			res = "new UIStruct(new "+rtl.toString(this.getName("Map"))+"([";
 			res += this.s("\"kind\"=>\"component\",");
+			res += this.s("\"class_name\"=>static::getCurrentClassName(),");
 			res += this.s("\"name\"=>"+rtl.toString(this.convertString(this.modules.item(op_code.tag_name)))+",");
 			is_component = true;
 		}
@@ -1744,6 +1752,10 @@ class TranslatorPHP extends CommonTranslator{
 					var value = this.translateRun(item.value);
 					res += this.s("\"controller\"=>"+rtl.toString(value)+",");
 				}
+				else if (key == "@model"){
+					var value = this.translateRun(item.value);
+					res += this.s("\"model\"=>"+rtl.toString(value)+",");
+				}
 			});
 		}
 		if (is_props || is_spreads){
@@ -1756,9 +1768,6 @@ class TranslatorPHP extends CommonTranslator{
 						this.pushOneLine(true);
 						var key = item.key;
 						var value = this.translateRun(item.value);
-						if (key == "@lambda"){
-							key = "callback";
-						}
 						this.popOneLine();
 						this.endOperation(old_operation);
 						res += this.s("->set("+rtl.toString(this.convertString(key))+", "+rtl.toString(value)+")");
@@ -1774,7 +1783,7 @@ class TranslatorPHP extends CommonTranslator{
 			res += this.s(",");
 		}
 		if (op_code.is_plain){
-			if (op_code.childs != null){
+			if (op_code.childs != null && op_code.childs.count() > 0){
 				var value = op_code.childs.reduce((res, item) => {
 					var value = "";
 					if (item instanceof OpHtmlJson){
@@ -1817,7 +1826,7 @@ class TranslatorPHP extends CommonTranslator{
 		}
 		else {
 			if (op_code.childs != null && op_code.childs.count() > 0){
-				res += this.s("\"children\" => rtl::normalizeUIVector(new "+rtl.toString(this.getName("Vector"))+"([");
+				res += this.s("\"children\" => rtl::normalizeUIVector(new "+rtl.toString(this.getName("Vector"))+"(");
 				this.levelInc();
 				var childs_sz = op_code.childs.count();
 				for (var i = 0; i < childs_sz; i++){
@@ -1828,7 +1837,7 @@ class TranslatorPHP extends CommonTranslator{
 					res += this.s(rtl.toString(this.translateRun(item))+rtl.toString((i + 1 == childs_sz) ? ("") : (",")));
 				}
 				this.levelDec();
-				res += this.s("]))");
+				res += this.s("))");
 			}
 		}
 		res += this.s("]))");
@@ -1841,7 +1850,7 @@ class TranslatorPHP extends CommonTranslator{
 	 * Html tag
 	 */
 	OpHtmlView(op_code){
-		var res = "rtl::normalizeUIVector(new Vector([";
+		var res = "rtl::normalizeUIVector(new Vector(";
 		this.pushOneLine(false);
 		var childs_sz = op_code.childs.count();
 		for (var i = 0; i < childs_sz; i++){
@@ -1852,7 +1861,7 @@ class TranslatorPHP extends CommonTranslator{
 			res += this.s(rtl.toString(this.translateRun(item))+rtl.toString((i + 1 == childs_sz) ? ("") : (",")));
 		}
 		this.popOneLine();
-		res += this.s("]))");
+		res += this.s("))");
 		return res;
 	}
 	/** =========================== Preprocessor ========================== */
@@ -1905,6 +1914,7 @@ class TranslatorPHP extends CommonTranslator{
 	static getParentClassName(){return "BayrellLang.CommonTranslator";}
 	_init(){
 		super._init();
+		var names = Object.getOwnPropertyNames(this);
 		this.ui_struct_class_name = null;
 		this.modules = null;
 		this.current_namespace = "";
@@ -1916,6 +1926,17 @@ class TranslatorPHP extends CommonTranslator{
 		this.is_static = false;
 		this.is_interface = false;
 		this.is_struct = false;
+	}
+	static getFieldsList(names, flag){
+		if (flag==undefined)flag=0;
+	}
+	static getFieldInfoByName(field_name){
+		return null;
+	}
+	static getMethodsList(names){
+	}
+	static getMethodInfoByName(method_name){
+		return null;
 	}
 }
 module.exports = TranslatorPHP;

@@ -674,6 +674,7 @@ class CommonTranslator extends ContextObject{
 	static getParentClassName(){return "Runtime.ContextObject";}
 	_init(){
 		super._init();
+		var names = Object.getOwnPropertyNames(this);
 		this.op_code_stack = null;
 		this.one_lines = null;
 		this.is_operation = false;
@@ -683,6 +684,17 @@ class CommonTranslator extends ContextObject{
 		this.indent = "\t";
 		this.space = " ";
 		this.crlf = "\n";
+	}
+	static getFieldsList(names, flag){
+		if (flag==undefined)flag=0;
+	}
+	static getFieldInfoByName(field_name){
+		return null;
+	}
+	static getMethodsList(names){
+	}
+	static getMethodInfoByName(method_name){
+		return null;
 	}
 }
 module.exports = CommonTranslator;

@@ -27,5 +27,16 @@ class BayrellParserES6{
 	getClassName(){return "BayrellLang.LangES6.BayrellParserES6";}
 	static getCurrentClassName(){return "BayrellLang.LangES6.BayrellParserES6";}
 	static getParentClassName(){return "";}
+	static getFieldsList(names, flag){
+		if (flag==undefined)flag=0;
+	}
+	static getFieldInfoByName(field_name){
+		return null;
+	}
+	static getMethodsList(names){
+	}
+	static getMethodInfoByName(method_name){
+		return null;
+	}
 }
 module.exports = BayrellParserES6;

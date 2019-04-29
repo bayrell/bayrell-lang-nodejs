@@ -108,8 +108,8 @@ class TranslatorNodeJS extends TranslatorES6{
 			if (module_name == "Runtime"){
 				module_name = "BayrellRuntime";
 			}
-			if (module_name == "RuntimeUI"){
-				module_name = "BayrellRuntimeUI";
+			if (module_name == "Core"){
+				module_name = "BayrellCore";
 			}
 			module_name = rtl.convertNodeJSModuleName(module_name);
 			res = "var "+rtl.toString(class_name)+" = require('"+rtl.toString(module_name)+"')."+rtl.toString(module_path)+";";
@@ -121,6 +121,7 @@ class TranslatorNodeJS extends TranslatorES6{
 	 */
 	OpClassDeclareHeader(op_code){
 		var res = "";
+		this.ui_struct_class_name.push(rtl.toString(this.current_namespace)+"."+rtl.toString(this.current_class_name));
 		this.beginOperation();
 		res += "class "+rtl.toString(op_code.class_name);
 		if (op_code.class_extends != ""){
@@ -223,5 +224,16 @@ class TranslatorNodeJS extends TranslatorES6{
 	getClassName(){return "BayrellLang.LangNodeJS.TranslatorNodeJS";}
 	static getCurrentClassName(){return "BayrellLang.LangNodeJS.TranslatorNodeJS";}
 	static getParentClassName(){return "BayrellLang.LangES6.TranslatorES6";}
+	static getFieldsList(names, flag){
+		if (flag==undefined)flag=0;
+	}
+	static getFieldInfoByName(field_name){
+		return null;
+	}
+	static getMethodsList(names){
+	}
+	static getMethodInfoByName(method_name){
+		return null;
+	}
 }
 module.exports = TranslatorNodeJS;

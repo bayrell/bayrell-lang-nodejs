@@ -40,8 +40,20 @@ class TranslatorPHPFactory extends ContextObject{
 	static getParentClassName(){return "Runtime.ContextObject";}
 	_init(){
 		super._init();
+		var names = Object.getOwnPropertyNames(this);
 		if (this.__implements__ == undefined){this.__implements__ = [];}
 		this.__implements__.push(FactoryInterface);
+	}
+	static getFieldsList(names, flag){
+		if (flag==undefined)flag=0;
+	}
+	static getFieldInfoByName(field_name){
+		return null;
+	}
+	static getMethodsList(names){
+	}
+	static getMethodInfoByName(method_name){
+		return null;
 	}
 }
 TranslatorPHPFactory.__static_implements__ = [];

@@ -71,6 +71,7 @@ class OpAssignDeclare extends BaseOpCode{
 	static getParentClassName(){return "BayrellLang.OpCodes.BaseOpCode";}
 	_init(){
 		super._init();
+		var names = Object.getOwnPropertyNames(this);
 		this.op = "op_assign_declare";
 		this.tp = null;
 		this.name = null;
@@ -120,6 +121,11 @@ class OpAssignDeclare extends BaseOpCode{
 		}
 	}
 	static getFieldInfoByName(field_name){
+		return null;
+	}
+	static getMethodsList(names){
+	}
+	static getMethodInfoByName(method_name){
 		return null;
 	}
 }
