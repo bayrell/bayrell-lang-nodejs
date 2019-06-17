@@ -14,9 +14,13 @@
 	"LangNodeJS/*.js",
 	"LangPHP/*.js",
 	"OpCodes/*.js",
+	"Parser/*.js",
+	"Parser/Exceptions/*.js",
+	"Parser/Interfaces/*.js",
+	"Search/*.js",
     "*.js"
   ],
   "main": "index.js",
   "name": "bayrell-lang-nodejs",
-  "version": "0.7.2"
+  "version": "0.7.3"
 }

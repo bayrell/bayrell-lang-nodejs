@@ -17,11 +17,13 @@
  *  limitations under the License.
  */
 var rtl = require('bayrell-runtime-nodejs').rtl;
+var rs = require('bayrell-runtime-nodejs').rs;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Dict = require('bayrell-runtime-nodejs').Dict;
 var Vector = require('bayrell-runtime-nodejs').Vector;
 var Collection = require('bayrell-runtime-nodejs').Collection;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
+var UIStruct = require('bayrell-runtime-nodejs').UIStruct;
 var BaseOpCode = require('./BaseOpCode.js');
 class OpWhile extends BaseOpCode{
 	/**
@@ -42,6 +44,7 @@ class OpWhile extends BaseOpCode{
 	}
 	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.OpCodes.OpWhile";}
+	static getCurrentNamespace(){return "BayrellLang.OpCodes";}
 	static getCurrentClassName(){return "BayrellLang.OpCodes.OpWhile";}
 	static getParentClassName(){return "BayrellLang.OpCodes.BaseOpCode";}
 	_init(){
@@ -60,7 +63,7 @@ class OpWhile extends BaseOpCode{
 	}
 	assignValue(variable_name, value, sender){if(sender==undefined)sender=null;
 		if (variable_name == "condition")this.condition = rtl.convert(value,"BayrellLang.OpCodes.BaseOpCode",null,"");
-		else if (variable_name == "childs")this.childs = rtl.convert(value,"Vector",null,"BayrellLang.OpCodes.BaseOpCode");
+		else if (variable_name == "childs")this.childs = rtl.convert(value,"Runtime.Vector",null,"BayrellLang.OpCodes.BaseOpCode");
 		else super.assignValue(variable_name, value, sender);
 	}
 	takeValue(variable_name, default_value){

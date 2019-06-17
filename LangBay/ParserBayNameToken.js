@@ -17,15 +17,16 @@
  *  limitations under the License.
  */
 var rtl = require('bayrell-runtime-nodejs').rtl;
+var rs = require('bayrell-runtime-nodejs').rs;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Dict = require('bayrell-runtime-nodejs').Dict;
 var Vector = require('bayrell-runtime-nodejs').Vector;
 var Collection = require('bayrell-runtime-nodejs').Collection;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
-var rs = require('bayrell-runtime-nodejs').rs;
-var ParserToken = require('bayrell-parser-nodejs').ParserToken;
-var ParserEOF = require('bayrell-parser-nodejs').Exceptions.ParserEOF;
-var ParserExpected = require('bayrell-parser-nodejs').Exceptions.ParserExpected;
+var UIStruct = require('bayrell-runtime-nodejs').UIStruct;
+var ParserToken = require('../Parser/ParserToken.js');
+var ParserEOF = require('../Parser/Exceptions/ParserEOF.js');
+var ParserExpected = require('../Parser/Exceptions/ParserExpected.js');
 var EndOfStringExpected = require('../Exceptions/EndOfStringExpected.js');
 class ParserBayNameToken extends ParserToken{
 	/**
@@ -38,8 +39,9 @@ class ParserBayNameToken extends ParserToken{
 	}
 	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.LangBay.ParserBayNameToken";}
+	static getCurrentNamespace(){return "BayrellLang.LangBay";}
 	static getCurrentClassName(){return "BayrellLang.LangBay.ParserBayNameToken";}
-	static getParentClassName(){return "BayrellParser.ParserToken";}
+	static getParentClassName(){return "BayrellLang.Parser.ParserToken";}
 	static getFieldsList(names, flag){
 		if (flag==undefined)flag=0;
 	}

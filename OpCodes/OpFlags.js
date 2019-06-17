@@ -17,11 +17,13 @@
  *  limitations under the License.
  */
 var rtl = require('bayrell-runtime-nodejs').rtl;
+var rs = require('bayrell-runtime-nodejs').rs;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Dict = require('bayrell-runtime-nodejs').Dict;
 var Vector = require('bayrell-runtime-nodejs').Vector;
 var Collection = require('bayrell-runtime-nodejs').Collection;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
+var UIStruct = require('bayrell-runtime-nodejs').UIStruct;
 var BaseOpCode = require('./BaseOpCode.js');
 class OpFlags extends BaseOpCode{
 	/**
@@ -52,7 +54,6 @@ class OpFlags extends BaseOpCode{
 		names.push("assignable");
 		names.push("memorize");
 		names.push("lambda");
-		names.push("pure");
 	}
 	/**
 	 * Returns instance of the value by variable name
@@ -99,9 +100,6 @@ class OpFlags extends BaseOpCode{
 		}
 		else if (variable_name == "lambda"){
 			return this.p_lambda;
-		}
-		else if (variable_name == "pure"){
-			return this.p_pure;
 		}
 		return super.takeValue(variable_name, default_value);
 	}
@@ -150,9 +148,6 @@ class OpFlags extends BaseOpCode{
 		else if (variable_name == "lambda"){
 			this.p_lambda = value;
 		}
-		else if (variable_name == "pure"){
-			this.p_pure = value;
-		}
 		else {
 			super.assignValue(variable_name, value);
 		}
@@ -171,19 +166,20 @@ class OpFlags extends BaseOpCode{
 	 * Get flags
 	 */
 	static getFlags(){
-		return (new Vector()).push("async").push("export").push("static").push("const").push("public").push("private").push("declare").push("protected").push("serializable").push("cloneable").push("assignable").push("memorize").push("lambda").push("pure");
+		return (new Vector()).push("async").push("export").push("static").push("const").push("public").push("private").push("declare").push("protected").push("serializable").push("cloneable").push("assignable").push("memorize").push("lambda");
 	}
 	/**
 	 * Get flags
 	 */
 	static hasFlag(flag_name){
-		if (flag_name == "async" || flag_name == "export" || flag_name == "static" || flag_name == "const" || flag_name == "public" || flag_name == "private" || flag_name == "declare" || flag_name == "protected" || flag_name == "serializable" || flag_name == "cloneable" || flag_name == "assignable" || flag_name == "memorize" || flag_name == "lambda" || flag_name == "pure"){
+		if (flag_name == "async" || flag_name == "export" || flag_name == "static" || flag_name == "const" || flag_name == "public" || flag_name == "private" || flag_name == "declare" || flag_name == "protected" || flag_name == "serializable" || flag_name == "cloneable" || flag_name == "assignable" || flag_name == "memorize" || flag_name == "lambda"){
 			return true;
 		}
 		return false;
 	}
 	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.OpCodes.OpFlags";}
+	static getCurrentNamespace(){return "BayrellLang.OpCodes";}
 	static getCurrentClassName(){return "BayrellLang.OpCodes.OpFlags";}
 	static getParentClassName(){return "BayrellLang.OpCodes.BaseOpCode";}
 	_init(){
@@ -203,7 +199,6 @@ class OpFlags extends BaseOpCode{
 		this.p_assignable = false;
 		this.p_memorize = false;
 		this.p_lambda = false;
-		this.p_pure = false;
 	}
 	static getFieldsList(names, flag){
 		if (flag==undefined)flag=0;

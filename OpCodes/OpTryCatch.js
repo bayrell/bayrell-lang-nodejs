@@ -17,11 +17,13 @@
  *  limitations under the License.
  */
 var rtl = require('bayrell-runtime-nodejs').rtl;
+var rs = require('bayrell-runtime-nodejs').rs;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Dict = require('bayrell-runtime-nodejs').Dict;
 var Vector = require('bayrell-runtime-nodejs').Vector;
 var Collection = require('bayrell-runtime-nodejs').Collection;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
+var UIStruct = require('bayrell-runtime-nodejs').UIStruct;
 var BaseOpCode = require('./BaseOpCode.js');
 var OpTryCatchChilds = require('./OpTryCatchChilds.js');
 class OpTryCatch extends BaseOpCode{
@@ -43,6 +45,7 @@ class OpTryCatch extends BaseOpCode{
 	}
 	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.OpCodes.OpTryCatch";}
+	static getCurrentNamespace(){return "BayrellLang.OpCodes";}
 	static getCurrentClassName(){return "BayrellLang.OpCodes.OpTryCatch";}
 	static getParentClassName(){return "BayrellLang.OpCodes.BaseOpCode";}
 	_init(){
@@ -62,8 +65,8 @@ class OpTryCatch extends BaseOpCode{
 	}
 	assignValue(variable_name, value, sender){if(sender==undefined)sender=null;
 		if (variable_name == "op")this.op = rtl.convert(value,"string","op_try_catch","");
-		else if (variable_name == "op_try")this.op_try = rtl.convert(value,"Vector",null,"BayrellLang.OpCodes.BaseOpCode");
-		else if (variable_name == "childs")this.childs = rtl.convert(value,"Vector",null,"BayrellLang.OpCodes.OpTryCatchChilds");
+		else if (variable_name == "op_try")this.op_try = rtl.convert(value,"Runtime.Vector",null,"BayrellLang.OpCodes.BaseOpCode");
+		else if (variable_name == "childs")this.childs = rtl.convert(value,"Runtime.Vector",null,"BayrellLang.OpCodes.OpTryCatchChilds");
 		else super.assignValue(variable_name, value, sender);
 	}
 	takeValue(variable_name, default_value){

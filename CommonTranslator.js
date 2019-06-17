@@ -17,12 +17,13 @@
  *  limitations under the License.
  */
 var rtl = require('bayrell-runtime-nodejs').rtl;
+var rs = require('bayrell-runtime-nodejs').rs;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Dict = require('bayrell-runtime-nodejs').Dict;
 var Vector = require('bayrell-runtime-nodejs').Vector;
 var Collection = require('bayrell-runtime-nodejs').Collection;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
-var rs = require('bayrell-runtime-nodejs').rs;
+var UIStruct = require('bayrell-runtime-nodejs').UIStruct;
 var ContextObject = require('bayrell-runtime-nodejs').ContextObject;
 var BaseOpCode = require('./OpCodes/BaseOpCode.js');
 var OpAdd = require('./OpCodes/OpAdd.js');
@@ -104,6 +105,13 @@ class CommonTranslator extends ContextObject{
 	constructor(context){
 		if (context == undefined) context=null;
 		super(context);
+		this.is_operation = false;
+		this.current_opcode_level = 0;
+		this.max_opcode_level = 100;
+		this.indent_level = 0;
+		this.indent = "\t";
+		this.space = " ";
+		this.crlf = "\n";
 	}
 	/**
 	 * Push new level
@@ -664,12 +672,13 @@ class CommonTranslator extends ContextObject{
 	 * @param BaseOpCode op_code - Abstract syntax tree
 	 * @returns string - The result
 	 */
-	translate(op_code){
+	translateOpCode(op_code){
 		this.resetTranslator();
 		return this.translateRun(op_code);
 	}
 	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.CommonTranslator";}
+	static getCurrentNamespace(){return "BayrellLang";}
 	static getCurrentClassName(){return "BayrellLang.CommonTranslator";}
 	static getParentClassName(){return "Runtime.ContextObject";}
 	_init(){

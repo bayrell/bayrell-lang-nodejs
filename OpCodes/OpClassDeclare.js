@@ -17,11 +17,13 @@
  *  limitations under the License.
  */
 var rtl = require('bayrell-runtime-nodejs').rtl;
+var rs = require('bayrell-runtime-nodejs').rs;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Dict = require('bayrell-runtime-nodejs').Dict;
 var Vector = require('bayrell-runtime-nodejs').Vector;
 var Collection = require('bayrell-runtime-nodejs').Collection;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
+var UIStruct = require('bayrell-runtime-nodejs').UIStruct;
 var BaseOpCode = require('./BaseOpCode.js');
 var OpFlags = require('./OpFlags.js');
 class OpClassDeclare extends BaseOpCode{
@@ -62,6 +64,7 @@ class OpClassDeclare extends BaseOpCode{
 	}
 	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.OpCodes.OpClassDeclare";}
+	static getCurrentNamespace(){return "BayrellLang.OpCodes";}
 	static getCurrentClassName(){return "BayrellLang.OpCodes.OpClassDeclare";}
 	static getParentClassName(){return "BayrellLang.OpCodes.BaseOpCode";}
 	_init(){
@@ -93,11 +96,11 @@ class OpClassDeclare extends BaseOpCode{
 		if (variable_name == "op")this.op = rtl.convert(value,"string","op_class","");
 		else if (variable_name == "class_name")this.class_name = rtl.convert(value,"string","","");
 		else if (variable_name == "class_extends")this.class_extends = rtl.convert(value,"BayrellLang.OpCodes.BaseOpCode","","");
-		else if (variable_name == "class_implements")this.class_implements = rtl.convert(value,"Vector",null,"string");
-		else if (variable_name == "childs")this.childs = rtl.convert(value,"Vector",null,"BayrellLang.OpCodes.BaseOpCode");
-		else if (variable_name == "class_template")this.class_template = rtl.convert(value,"Vector",null,"BayrellLang.OpCodes.BaseOpCode");
+		else if (variable_name == "class_implements")this.class_implements = rtl.convert(value,"Runtime.Vector",null,"string");
+		else if (variable_name == "childs")this.childs = rtl.convert(value,"Runtime.Vector",null,"BayrellLang.OpCodes.BaseOpCode");
+		else if (variable_name == "class_template")this.class_template = rtl.convert(value,"Runtime.Vector",null,"BayrellLang.OpCodes.BaseOpCode");
 		else if (variable_name == "flags")this.flags = rtl.convert(value,"BayrellLang.OpCodes.OpFlags",null,"");
-		else if (variable_name == "annotations")this.annotations = rtl.convert(value,"Vector",null,"OpAnnotation");
+		else if (variable_name == "annotations")this.annotations = rtl.convert(value,"Runtime.Vector",null,"OpAnnotation");
 		else super.assignValue(variable_name, value, sender);
 	}
 	takeValue(variable_name, default_value){

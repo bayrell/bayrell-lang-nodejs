@@ -17,13 +17,15 @@
  *  limitations under the License.
  */
 var rtl = require('bayrell-runtime-nodejs').rtl;
+var rs = require('bayrell-runtime-nodejs').rs;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Dict = require('bayrell-runtime-nodejs').Dict;
 var Vector = require('bayrell-runtime-nodejs').Vector;
 var Collection = require('bayrell-runtime-nodejs').Collection;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
+var UIStruct = require('bayrell-runtime-nodejs').UIStruct;
 var RuntimeUtils = require('bayrell-runtime-nodejs').RuntimeUtils;
-var ParserError = require('bayrell-parser-nodejs').Exceptions.ParserError;
+var ParserError = require('../Parser/Exceptions/ParserError.js');
 var LangConstant = require('../LangConstant.js');
 class EndOfStringExpected extends ParserError{
 	constructor(line, col, context, prev){
@@ -38,8 +40,9 @@ class EndOfStringExpected extends ParserError{
 	}
 	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.Exceptions.EndOfStringExpected";}
+	static getCurrentNamespace(){return "BayrellLang.Exceptions";}
 	static getCurrentClassName(){return "BayrellLang.Exceptions.EndOfStringExpected";}
-	static getParentClassName(){return "BayrellParser.Exceptions.ParserError";}
+	static getParentClassName(){return "BayrellLang.Parser.Exceptions.ParserError";}
 	static getFieldsList(names, flag){
 		if (flag==undefined)flag=0;
 	}

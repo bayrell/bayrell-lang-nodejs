@@ -17,13 +17,14 @@
  *  limitations under the License.
  */
 var rtl = require('bayrell-runtime-nodejs').rtl;
+var rs = require('bayrell-runtime-nodejs').rs;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Dict = require('bayrell-runtime-nodejs').Dict;
 var Vector = require('bayrell-runtime-nodejs').Vector;
 var Collection = require('bayrell-runtime-nodejs').Collection;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
+var UIStruct = require('bayrell-runtime-nodejs').UIStruct;
 var re = require('bayrell-runtime-nodejs').re;
-var rs = require('bayrell-runtime-nodejs').rs;
 var OpAssignDeclare = require('../OpCodes/OpAssignDeclare.js');
 var OpIdentifier = require('../OpCodes/OpIdentifier.js');
 var OpPreprocessorCase = require('../OpCodes/OpPreprocessorCase.js');
@@ -54,7 +55,15 @@ class TranslatorNodeJS extends TranslatorES6{
 		this.current_module_name = arr.item(0);
 		this.modules.clear();
 		if (this.current_module_name != "Runtime"){
-			return "var rtl = require('bayrell-runtime-nodejs').rtl;"+rtl.toString(this.s("var Map = require('bayrell-runtime-nodejs').Map;"))+rtl.toString(this.s("var Dict = require('bayrell-runtime-nodejs').Dict;"))+rtl.toString(this.s("var Vector = require('bayrell-runtime-nodejs').Vector;"))+rtl.toString(this.s("var Collection = require('bayrell-runtime-nodejs').Collection;"))+rtl.toString(this.s("var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;"));
+			this.modules.set("rtl", "Runtime.rtl");
+			this.modules.set("rs", "Runtime.rs");
+			this.modules.set("Map", "Runtime.Map");
+			this.modules.set("Dict", "Runtime.Dict");
+			this.modules.set("Vector", "Runtime.Vector");
+			this.modules.set("Collection", "Runtime.Collection");
+			this.modules.set("IntrospectionInfo", "Runtime.IntrospectionInfo");
+			this.modules.set("UIStruct", "Runtime.UIStruct");
+			return "var rtl = require('bayrell-runtime-nodejs').rtl;"+rtl.toString(this.s("var rs = require('bayrell-runtime-nodejs').rs;"))+rtl.toString(this.s("var Map = require('bayrell-runtime-nodejs').Map;"))+rtl.toString(this.s("var Dict = require('bayrell-runtime-nodejs').Dict;"))+rtl.toString(this.s("var Vector = require('bayrell-runtime-nodejs').Vector;"))+rtl.toString(this.s("var Collection = require('bayrell-runtime-nodejs').Collection;"))+rtl.toString(this.s("var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;"))+rtl.toString(this.s("var UIStruct = require('bayrell-runtime-nodejs').UIStruct;"));
 		}
 		return "";
 	}
@@ -222,6 +231,7 @@ class TranslatorNodeJS extends TranslatorES6{
 	}
 	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.LangNodeJS.TranslatorNodeJS";}
+	static getCurrentNamespace(){return "BayrellLang.LangNodeJS";}
 	static getCurrentClassName(){return "BayrellLang.LangNodeJS.TranslatorNodeJS";}
 	static getParentClassName(){return "BayrellLang.LangES6.TranslatorES6";}
 	static getFieldsList(names, flag){

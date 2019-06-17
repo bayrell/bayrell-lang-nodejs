@@ -17,11 +17,13 @@
  *  limitations under the License.
  */
 var rtl = require('bayrell-runtime-nodejs').rtl;
+var rs = require('bayrell-runtime-nodejs').rs;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Dict = require('bayrell-runtime-nodejs').Dict;
 var Vector = require('bayrell-runtime-nodejs').Vector;
 var Collection = require('bayrell-runtime-nodejs').Collection;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
+var UIStruct = require('bayrell-runtime-nodejs').UIStruct;
 var CoreObject = require('bayrell-runtime-nodejs').CoreObject;
 var ContextObject = require('bayrell-runtime-nodejs').ContextObject;
 var FactoryInterface = require('bayrell-runtime-nodejs').Interfaces.FactoryInterface;
@@ -53,7 +55,7 @@ class Utils extends ContextObject{
 	 */
 	static translateAST(context, translator_factory, code_tree){
 		var translator = translator_factory.newInstance(context);
-		var res = translator.translate(code_tree);
+		var res = translator.translateOpCode(code_tree);
 		return res;
 	}
 	/**
@@ -68,7 +70,7 @@ class Utils extends ContextObject{
 		var translator = translator_factory.newInstance(context);
 		parser.parseString(source);
 		var code_tree = parser.getAST();
-		var res = translator.translate(code_tree);
+		var res = translator.translateOpCode(code_tree);
 		return res;
 	}
 	/**
@@ -82,7 +84,7 @@ class Utils extends ContextObject{
 		var parser = new ParserBay(context);
 		parser.parseString(source);
 		var code_tree = parser.getAST();
-		var res = translator.translate(code_tree);
+		var res = translator.translateOpCode(code_tree);
 		return res;
 	}
 	/**
@@ -119,6 +121,7 @@ class Utils extends ContextObject{
 	}
 	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.Utils";}
+	static getCurrentNamespace(){return "BayrellLang";}
 	static getCurrentClassName(){return "BayrellLang.Utils";}
 	static getParentClassName(){return "Runtime.ContextObject";}
 	static getFieldsList(names, flag){

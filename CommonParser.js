@@ -17,14 +17,15 @@
  *  limitations under the License.
  */
 var rtl = require('bayrell-runtime-nodejs').rtl;
+var rs = require('bayrell-runtime-nodejs').rs;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Dict = require('bayrell-runtime-nodejs').Dict;
 var Vector = require('bayrell-runtime-nodejs').Vector;
 var Collection = require('bayrell-runtime-nodejs').Collection;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
-var rs = require('bayrell-runtime-nodejs').rs;
-var ParserToken = require('bayrell-parser-nodejs').ParserToken;
-var CoreParser = require('bayrell-parser-nodejs').CoreParser;
+var UIStruct = require('bayrell-runtime-nodejs').UIStruct;
+var ParserToken = require('./Parser/ParserToken.js');
+var CoreParser = require('./Parser/CoreParser.js');
 var HexNumberExpected = require('./Exceptions/HexNumberExpected.js');
 var BaseOpCode = require('./OpCodes/BaseOpCode.js');
 class CommonParser extends CoreParser{
@@ -218,8 +219,9 @@ class CommonParser extends CoreParser{
 	}
 	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.CommonParser";}
+	static getCurrentNamespace(){return "BayrellLang";}
 	static getCurrentClassName(){return "BayrellLang.CommonParser";}
-	static getParentClassName(){return "BayrellParser.CoreParser";}
+	static getParentClassName(){return "BayrellLang.Parser.CoreParser";}
 	_init(){
 		super._init();
 		var names = Object.getOwnPropertyNames(this);

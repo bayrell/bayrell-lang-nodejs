@@ -17,11 +17,13 @@
  *  limitations under the License.
  */
 var rtl = require('bayrell-runtime-nodejs').rtl;
+var rs = require('bayrell-runtime-nodejs').rs;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Dict = require('bayrell-runtime-nodejs').Dict;
 var Vector = require('bayrell-runtime-nodejs').Vector;
 var Collection = require('bayrell-runtime-nodejs').Collection;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
+var UIStruct = require('bayrell-runtime-nodejs').UIStruct;
 var BaseOpCode = require('./BaseOpCode.js');
 var OpAnnotation = require('./OpAnnotation.js');
 var OpDynamic = require('./OpDynamic.js');
@@ -67,6 +69,7 @@ class OpAssignDeclare extends BaseOpCode{
 	}
 	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.OpCodes.OpAssignDeclare";}
+	static getCurrentNamespace(){return "BayrellLang.OpCodes";}
 	static getCurrentClassName(){return "BayrellLang.OpCodes.OpAssignDeclare";}
 	static getParentClassName(){return "BayrellLang.OpCodes.BaseOpCode";}
 	_init(){
@@ -96,7 +99,7 @@ class OpAssignDeclare extends BaseOpCode{
 		else if (variable_name == "name")this.name = rtl.convert(value,"string",null,"");
 		else if (variable_name == "value")this.value = rtl.convert(value,"BayrellLang.OpCodes.BaseOpCode",null,"");
 		else if (variable_name == "flags")this.flags = rtl.convert(value,"BayrellLang.OpCodes.OpFlags",null,"");
-		else if (variable_name == "annotations")this.annotations = rtl.convert(value,"Vector",null,"BayrellLang.OpCodes.OpAnnotation");
+		else if (variable_name == "annotations")this.annotations = rtl.convert(value,"Runtime.Vector",null,"BayrellLang.OpCodes.OpAnnotation");
 		else super.assignValue(variable_name, value, sender);
 	}
 	takeValue(variable_name, default_value){

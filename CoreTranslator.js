@@ -17,14 +17,14 @@
  *  limitations under the License.
  */
 var rtl = require('bayrell-runtime-nodejs').rtl;
+var rs = require('bayrell-runtime-nodejs').rs;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Dict = require('bayrell-runtime-nodejs').Dict;
 var Vector = require('bayrell-runtime-nodejs').Vector;
 var Collection = require('bayrell-runtime-nodejs').Collection;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
-var rs = require('bayrell-runtime-nodejs').rs;
+var UIStruct = require('bayrell-runtime-nodejs').UIStruct;
 var ContextObject = require('bayrell-runtime-nodejs').ContextObject;
-var CoreTranslator = require('./CoreTranslator.js');
 var BaseOpCode = require('./OpCodes/BaseOpCode.js');
 var OpAdd = require('./OpCodes/OpAdd.js');
 var OpAnd = require('./OpCodes/OpAnd.js');
@@ -643,6 +643,7 @@ class CoreTranslator extends ContextObject{
 	}
 	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.CoreTranslator";}
+	static getCurrentNamespace(){return "BayrellLang";}
 	static getCurrentClassName(){return "BayrellLang.CoreTranslator";}
 	static getParentClassName(){return "Runtime.ContextObject";}
 	_init(){

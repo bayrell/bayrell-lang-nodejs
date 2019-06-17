@@ -17,13 +17,14 @@
  *  limitations under the License.
  */
 var rtl = require('bayrell-runtime-nodejs').rtl;
+var rs = require('bayrell-runtime-nodejs').rs;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Dict = require('bayrell-runtime-nodejs').Dict;
 var Vector = require('bayrell-runtime-nodejs').Vector;
 var Collection = require('bayrell-runtime-nodejs').Collection;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
+var UIStruct = require('bayrell-runtime-nodejs').UIStruct;
 var re = require('bayrell-runtime-nodejs').re;
-var rs = require('bayrell-runtime-nodejs').rs;
 var RuntimeUtils = require('bayrell-runtime-nodejs').RuntimeUtils;
 var CommonTranslator = require('../CommonTranslator.js');
 var BaseOpCode = require('../OpCodes/BaseOpCode.js');
@@ -106,7 +107,7 @@ class TranslatorES6 extends CommonTranslator{
 	 * Returns full class name
 	 * @return string
 	 */
-	getCurrentClassName(){
+	currentClassName(){
 		return rtl.toString(this.current_namespace)+"."+rtl.toString(this.current_class_name);
 	}
 	/**
@@ -1915,6 +1916,7 @@ class TranslatorES6 extends CommonTranslator{
 		if (!this.is_interface){
 			res += this.s("/* ======================= Class Init Functions ======================= */");
 			res += this.s("getClassName(){"+"return "+rtl.toString(this.convertString(rtl.toString(this.current_namespace)+"."+rtl.toString(this.current_class_name)))+";}");
+			res += this.s("static getCurrentNamespace(){"+"return "+rtl.toString(this.convertString(this.current_namespace))+";}");
 			res += this.s("static getCurrentClassName(){"+"return "+rtl.toString(this.convertString(rtl.toString(this.current_namespace)+"."+rtl.toString(this.current_class_name)))+";}");
 			res += this.s("static getParentClassName(){"+"return "+rtl.toString(this.convertString(class_extends))+";}");
 		}
@@ -2148,7 +2150,7 @@ class TranslatorES6 extends CommonTranslator{
 						this.levelInc();
 						res += this.s("(new "+rtl.toString(this.getName("Map"))+"())");
 						res += this.s(".set(\"kind\", \"field\")");
-						res += this.s(".set(\"class_name\", "+rtl.toString(this.convertString(this.getCurrentClassName()))+")");
+						res += this.s(".set(\"class_name\", "+rtl.toString(this.convertString(this.currentClassName()))+")");
 						res += this.s(".set(\"name\", "+rtl.toString(this.convertString(variable.name))+")");
 						res += this.s(".set(\"annotations\", ");
 						this.levelInc();
@@ -2205,7 +2207,7 @@ class TranslatorES6 extends CommonTranslator{
 						this.levelInc();
 						res += this.s("(new "+rtl.toString(this.getName("Map"))+"())");
 						res += this.s(".set(\"kind\", \"method\")");
-						res += this.s(".set(\"class_name\", "+rtl.toString(this.convertString(this.getCurrentClassName()))+")");
+						res += this.s(".set(\"class_name\", "+rtl.toString(this.convertString(this.currentClassName()))+")");
 						res += this.s(".set(\"name\", "+rtl.toString(this.convertString(variable.name))+")");
 						res += this.s(".set(\"annotations\", ");
 						this.levelInc();
@@ -2242,7 +2244,7 @@ class TranslatorES6 extends CommonTranslator{
 			this.levelInc();
 			res += this.s("(new "+rtl.toString(this.getName("Map"))+"())");
 			res += this.s(".set(\"kind\", \"class\")");
-			res += this.s(".set(\"class_name\", "+rtl.toString(this.convertString(this.getCurrentClassName()))+")");
+			res += this.s(".set(\"class_name\", "+rtl.toString(this.convertString(this.currentClassName()))+")");
 			res += this.s(".set(\"annotations\", ");
 			this.levelInc();
 			res += this.s("(new "+rtl.toString(this.getName("Vector"))+"())");
@@ -2392,7 +2394,7 @@ class TranslatorES6 extends CommonTranslator{
 	 * Returns true if key is props
 	 */
 	isOpHtmlTagProps(key){
-		if (key == "@key" || key == "@control" || key == "@model"){
+		if (key == "@key" || key == "@control" || key == "@model" || key == "@ref" || key == "@bind" || key == "@annotations"){
 			return false;
 		}
 		return true;
@@ -2430,6 +2432,10 @@ class TranslatorES6 extends CommonTranslator{
 					var value = this.translateRun(item.value);
 					res += this.s("\"key\": "+rtl.toString(value)+",");
 				}
+				else if (key == "@ref"){
+					var value = this.translateRun(item.value);
+					res += this.s("\"reference\": "+rtl.toString(value)+",");
+				}
 				else if (key == "@control"){
 					var value = this.translateRun(item.value);
 					res += this.s("\"controller\": "+rtl.toString(value)+",");
@@ -2437,6 +2443,14 @@ class TranslatorES6 extends CommonTranslator{
 				else if (key == "@model"){
 					var value = this.translateRun(item.value);
 					res += this.s("\"model\": "+rtl.toString(value)+",");
+				}
+				else if (key == "@bind"){
+					var value = this.translateRun(item.value);
+					res += this.s("\"bind\": "+rtl.toString(value)+",");
+				}
+				else if (key == "@annotations"){
+					var value = this.translateRun(item.value);
+					res += this.s("\"annotations\": "+rtl.toString(value)+",");
 				}
 			});
 		}
@@ -2579,7 +2593,7 @@ class TranslatorES6 extends CommonTranslator{
 	 * @param BaseOpCode op_code - Abstract syntax tree
 	 * @returns string - The result
 	 */
-	translate(op_code){
+	translateOpCode(op_code){
 		this.resetTranslator();
 		var s = "\"use strict;\""+rtl.toString(this.crlf);
 		s += this.translateRun(op_code);
@@ -2587,6 +2601,7 @@ class TranslatorES6 extends CommonTranslator{
 	}
 	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.LangES6.TranslatorES6";}
+	static getCurrentNamespace(){return "BayrellLang.LangES6";}
 	static getCurrentClassName(){return "BayrellLang.LangES6.TranslatorES6";}
 	static getParentClassName(){return "BayrellLang.CommonTranslator";}
 	_init(){

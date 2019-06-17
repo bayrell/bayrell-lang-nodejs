@@ -17,11 +17,13 @@
  *  limitations under the License.
  */
 var rtl = require('bayrell-runtime-nodejs').rtl;
+var rs = require('bayrell-runtime-nodejs').rs;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Dict = require('bayrell-runtime-nodejs').Dict;
 var Vector = require('bayrell-runtime-nodejs').Vector;
 var Collection = require('bayrell-runtime-nodejs').Collection;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
+var UIStruct = require('bayrell-runtime-nodejs').UIStruct;
 var CoreObject = require('bayrell-runtime-nodejs').CoreObject;
 var ContextObject = require('bayrell-runtime-nodejs').ContextObject;
 var ContextInterface = require('bayrell-runtime-nodejs').Interfaces.ContextInterface;
@@ -31,11 +33,14 @@ class TranslatorPHPFactory extends ContextObject{
 	/**
 	 * Returns new Instance
 	 */
-	newInstance(context){
+	newInstance(context, params){
+		if (context == undefined) context=null;
+		if (params == undefined) params=null;
 		return new TranslatorPHP(context);
 	}
 	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.LangPHP.TranslatorPHPFactory";}
+	static getCurrentNamespace(){return "BayrellLang.LangPHP";}
 	static getCurrentClassName(){return "BayrellLang.LangPHP.TranslatorPHPFactory";}
 	static getParentClassName(){return "Runtime.ContextObject";}
 	_init(){

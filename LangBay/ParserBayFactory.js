@@ -17,11 +17,13 @@
  *  limitations under the License.
  */
 var rtl = require('bayrell-runtime-nodejs').rtl;
+var rs = require('bayrell-runtime-nodejs').rs;
 var Map = require('bayrell-runtime-nodejs').Map;
 var Dict = require('bayrell-runtime-nodejs').Dict;
 var Vector = require('bayrell-runtime-nodejs').Vector;
 var Collection = require('bayrell-runtime-nodejs').Collection;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
+var UIStruct = require('bayrell-runtime-nodejs').UIStruct;
 var CoreObject = require('bayrell-runtime-nodejs').CoreObject;
 var ContextObject = require('bayrell-runtime-nodejs').ContextObject;
 var ContextInterface = require('bayrell-runtime-nodejs').Interfaces.ContextInterface;
@@ -38,6 +40,7 @@ class ParserBayFactory extends ContextObject{
 	}
 	/* ======================= Class Init Functions ======================= */
 	getClassName(){return "BayrellLang.LangBay.ParserBayFactory";}
+	static getCurrentNamespace(){return "BayrellLang.LangBay";}
 	static getCurrentClassName(){return "BayrellLang.LangBay.ParserBayFactory";}
 	static getParentClassName(){return "Runtime.ContextObject";}
 	_init(){
