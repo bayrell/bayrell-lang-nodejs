@@ -27,7 +27,6 @@ var UIStruct = require('bayrell-runtime-nodejs').UIStruct;
 var CoreObject = require('bayrell-runtime-nodejs').CoreObject;
 var ContextObject = require('bayrell-runtime-nodejs').ContextObject;
 var FactoryInterface = require('bayrell-runtime-nodejs').Interfaces.FactoryInterface;
-var BayrellCommonUtils = require('bayrell-common-nodejs').Utils;
 var ParserBay = require('./LangBay/ParserBay.js');
 var TranslatorES6 = require('./LangES6/TranslatorES6.js');
 var CommonParser = require('./CommonParser.js');
@@ -103,12 +102,21 @@ class Utils extends ContextObject{
 		var content = fsModule.readFileSync(src_file_name, {encoding : 'utf8'}).toString();
 		#endswitch
 		*/
-		var file_system = context.createProvider("default:fs");
-		var content = file_system.readFile(src_file_name);
-		var res = Utils.translateSource(context, parser_factory, translator_factory, content);
-		var dir = BayrellCommonUtils.dirname(dest_file_name);
+		/*
+		FileSystemInterface file_system = context.createProvider("default:fs");
+		string content = file_system.readFile(src_file_name);
+		
+		string res = self::translateSource(
+			context,
+			parser_factory,
+			translator_factory,
+			content
+		);
+		
+		
 		file_system.makeDir(dir);
 		file_system.saveFile(dest_file_name, res);
+		*/
 		/*
 		#switch
 		#case ifcode NODEJS then
