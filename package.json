@@ -22,5 +22,5 @@
   ],
   "main": "index.js",
   "name": "bayrell-lang-nodejs",
-  "version": "0.7.3.1"
+  "version": "0.7.4"
 }
