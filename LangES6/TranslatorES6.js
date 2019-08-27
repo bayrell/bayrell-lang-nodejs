@@ -1471,7 +1471,12 @@ class TranslatorES6 extends CommonTranslator{
 		var arr = rs.explode(".", this.current_namespace);
 		this.current_module_name = arr.item(0);
 		this.modules.clear();
-		if (this.current_module_name != "Runtime"){
+		if (
+			this.current_namespace != "Runtime" &&
+			this.current_namespace != "Runtime.Annotations" &&
+			this.current_namespace != "Runtime.Exceptions" &&
+			this.current_namespace != "Runtime.Interfaces"
+		){
 			this.modules.set("rtl", "Runtime.rtl");
 			this.modules.set("rs", "Runtime.rs");
 			this.modules.set("Map", "Runtime.Map");

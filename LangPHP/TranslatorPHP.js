@@ -923,7 +923,12 @@ class TranslatorPHP extends CommonTranslator{
 		this.current_module_name = arr.item(0);
 		this.modules.clear();
 		var res = "namespace "+rtl.toString(rs.implode("\\", arr))+";";
-		if (this.current_module_name != "Runtime"){
+		if (
+			this.current_namespace != "Runtime" &&
+			this.current_namespace != "Runtime.Annotations" &&
+			this.current_namespace != "Runtime.Exceptions" &&
+			this.current_namespace != "Runtime.Interfaces"
+		){
 			res += this.s("use Runtime\\rs;");
 			res += this.s("use Runtime\\rtl;");
 			res += this.s("use Runtime\\Map;");
