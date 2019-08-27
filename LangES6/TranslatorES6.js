@@ -24,6 +24,7 @@ var Vector = require('bayrell-runtime-nodejs').Vector;
 var Collection = require('bayrell-runtime-nodejs').Collection;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var UIStruct = require('bayrell-runtime-nodejs').UIStruct;
+var lib = require('bayrell-runtime-nodejs').lib;
 var re = require('bayrell-runtime-nodejs').re;
 var RuntimeUtils = require('bayrell-runtime-nodejs').RuntimeUtils;
 var CommonTranslator = require('../CommonTranslator.js');
@@ -419,7 +420,9 @@ class TranslatorES6 extends CommonTranslator{
 		if (op_code.value instanceof OpIdentifier && op_code_last instanceof OpCall){
 			if (op_code.value.value == "self"){
 				return rtl.toString(this.getName("self"))+"."+rtl.toString(op_code.name);
-				return "("+rtl.toString(this.getName("rtl"))+".method("+rtl.toString(this.getName("self"))+", "+rtl.toString(this.convertString(op_code.name))+"))";
+			}
+			if (op_code.value.value == "static" && this.current_function_is_static == false){
+				return "this.constructor."+rtl.toString(op_code.name);
 			}
 			else if (!this.modules.has(op_code.value.value) && op_code.value.value != "rtl" && op_code.value.value != "parent" && op_code.value.value != "static"){
 				return "("+rtl.toString(this.getName("rtl"))+".method("+rtl.toString(op_code.value.value)+".getClassName(), "+rtl.toString(this.convertString(op_code.name))+"))";
@@ -1475,7 +1478,7 @@ class TranslatorES6 extends CommonTranslator{
 			this.modules.set("Dict", "Runtime.Dict");
 			this.modules.set("Vector", "Runtime.Vector");
 			this.modules.set("Collection", "Runtime.Collection");
-			this.modules.set("IntrospectionInfo", "Runtime.IntrospectionInfo");
+			this.modules.set("IntrospectionInfo", "Runtime.Annotations.IntrospectionInfo");
 			this.modules.set("UIStruct", "Runtime.UIStruct");
 		}
 		return "";
@@ -1658,6 +1661,14 @@ class TranslatorES6 extends CommonTranslator{
 		/* Skip if declare function */
 		if (op_code.isFlag("declare")){
 			return "";
+		}
+		if (this.function_stack.count() == 0){
+			if (op_code.isFlag("static")){
+				this.current_function_is_static = true;
+			}
+			else {
+				this.current_function_is_static = false;
+			}
 		}
 		var old_current_function_is_memorize = this.current_function_is_memorize;
 		this.current_function_is_memorize = false;
@@ -1950,7 +1961,7 @@ class TranslatorES6 extends CommonTranslator{
 							res += this.s(s);
 							res += this.s("if (names.indexOf("+rtl.toString(this.convertString(variable.name))+") == -1)"+"Object.defineProperty(this, "+rtl.toString(this.convertString(variable.name))+", { get: function() { return this.__"+rtl.toString(variable.name)+"; }, set: function(value) { throw new Runtime.Exceptions.AssignStructValueError("+rtl.toString(this.convertString(variable.name))+") }});");
 						}
-						else {
+						else if (!variable.isFlag("static") && !variable.isFlag("const")){
 							this.beginOperation();
 							s = "this."+rtl.toString(variable.name)+" = "+rtl.toString(this.translateRun(variable.value))+";";
 							this.endOperation();
@@ -2394,7 +2405,7 @@ class TranslatorES6 extends CommonTranslator{
 	 * Returns true if key is props
 	 */
 	isOpHtmlTagProps(key){
-		if (key == "@key" || key == "@control" || key == "@model" || key == "@ref" || key == "@bind" || key == "@annotations"){
+		if (key == "@key" || key == "@model" || key == "@value" || key == "@bind" || key == "@ref" || key == "@annotations" || key == "@watch"){
 			return false;
 		}
 		return true;
@@ -2423,7 +2434,19 @@ class TranslatorES6 extends CommonTranslator{
 		var is_props = false;
 		var is_spreads = op_code.spreads != null && op_code.spreads.count() > 0;
 		if (op_code.attributes != null && op_code.attributes.count() > 0){
-			op_code.attributes.each((item) => {
+			var pos_key = op_code.attributes.find(lib.equalAttr("key", "@key"));
+			var pos_ref = op_code.attributes.find(lib.equalAttr("key", "@ref"));
+			var pos_model = op_code.attributes.find(lib.equalAttr("key", "@model"));
+			var pos_value = op_code.attributes.find(lib.equalAttr("key", "@value"));
+			var pos_watch = op_code.attributes.find(lib.equalAttr("key", "@watch"));
+			var is_key = pos_key != -1;
+			var is_ref = pos_ref != -1;
+			var item_ref = op_code.attributes.get(pos_ref, null);
+			var item_model = op_code.attributes.get(pos_model, null);
+			var item_value = op_code.attributes.get(pos_value, null);
+			var item_watch = op_code.attributes.get(pos_watch, null);
+			for (var attr_index = 0; attr_index < op_code.attributes.count(); attr_index++){
+				var item = op_code.attributes.item(attr_index);
 				var key = item.key;
 				if (this.isOpHtmlTagProps(key)){
 					is_props = true;
@@ -2436,23 +2459,44 @@ class TranslatorES6 extends CommonTranslator{
 					var value = this.translateRun(item.value);
 					res += this.s("\"reference\": "+rtl.toString(value)+",");
 				}
-				else if (key == "@control"){
-					var value = this.translateRun(item.value);
-					res += this.s("\"controller\": "+rtl.toString(value)+",");
-				}
 				else if (key == "@model"){
 					var value = this.translateRun(item.value);
 					res += this.s("\"model\": "+rtl.toString(value)+",");
 				}
+				else if (key == "@value"){
+					var value = this.translateRun(item.value);
+					res += this.s("\"value\": "+rtl.toString(value)+",");
+				}
 				else if (key == "@bind"){
 					var value = this.translateRun(item.value);
 					res += this.s("\"bind\": "+rtl.toString(value)+",");
+					if (!is_key){
+						res += this.s("\"key\": "+rtl.toString(value)+",");
+						is_key = true;
+					}
 				}
 				else if (key == "@annotations"){
 					var value = this.translateRun(item.value);
 					res += this.s("\"annotations\": "+rtl.toString(value)+",");
 				}
-			});
+				else if (key == "@watch"){
+					var item2 = item;
+					if (item_model != null){
+						item2 = item2.copy( new Map({ "value": item2.value.copy( new Map({ "values": item2.value.values.pushIm(item_model.value) })  ) })  );
+					}
+					var value = this.translateRun(item2.value);
+					res += this.s("\"watch\": "+rtl.toString(value)+",");
+				}
+			}
+			if (item_model != null && item_watch == null){
+				res += this.s("\"watch\": new Runtime.Vector("+rtl.toString(this.translateRun(item_model.value))+"),");
+			}
+			else if (item_value != null && item_watch == null){
+				res += this.s("\"watch\": new Runtime.Vector("+rtl.toString(this.translateRun(item_value.value))+"),");
+			}
+			if (!is_key && item_ref != null){
+				res += this.s("\"key\": "+rtl.toString(this.translateRun(item_ref.value))+",");
+			}
 		}
 		if (is_props || is_spreads){
 			res += this.s("\"props\": (new "+rtl.toString(this.getName("Map"))+"())");

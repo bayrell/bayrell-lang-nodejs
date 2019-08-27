@@ -106,13 +106,15 @@ class TranslatorNodeJS extends TranslatorES6{
 				js_path = rtl.toString(js_path)+rtl.toString(ch)+rtl.toString(arr1.item(j));
 				ch = "/";
 			}
-			var module_name = arr1.shift();
+			var module_name = arr1.first();
+			arr1 = arr1.removeFirstIm();
 			var module_path = rs.implode(".", arr1);
 			js_path = rtl.toString(js_path)+".js";
 			res = "var "+rtl.toString(class_name)+" = require('"+rtl.toString(js_path)+"');";
 		}
 		else {
-			var module_name = arr1.shift();
+			var module_name = arr1.first();
+			arr1 = arr1.removeFirstIm();
 			var module_path = rs.implode(".", arr1);
 			if (module_name == "Runtime"){
 				module_name = "BayrellRuntime";

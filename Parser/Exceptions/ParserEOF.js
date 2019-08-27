@@ -31,7 +31,7 @@ class ParserEOF extends ParserError{
 	constructor(context, prev){
 		if (prev == undefined) prev=null;
 		if (context == null){
-			context = RuntimeUtils.globalContext();
+			context = RuntimeUtils.getContext();
 		}
 		super(context.translate("ERROR_PARSER_EOF"), ParserConstant.ERROR_PARSER_EOF, context, prev);
 	}

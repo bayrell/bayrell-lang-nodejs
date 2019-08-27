@@ -24,6 +24,7 @@ var Vector = require('bayrell-runtime-nodejs').Vector;
 var Collection = require('bayrell-runtime-nodejs').Collection;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var UIStruct = require('bayrell-runtime-nodejs').UIStruct;
+var lib = require('bayrell-runtime-nodejs').lib;
 var re = require('bayrell-runtime-nodejs').re;
 var RuntimeUtils = require('bayrell-runtime-nodejs').RuntimeUtils;
 var CommonTranslator = require('../CommonTranslator.js');
@@ -929,7 +930,7 @@ class TranslatorPHP extends CommonTranslator{
 			res += this.s("use Runtime\\Vector;");
 			res += this.s("use Runtime\\Dict;");
 			res += this.s("use Runtime\\Collection;");
-			res += this.s("use Runtime\\IntrospectionInfo;");
+			res += this.s("use Runtime\\Annotations\\IntrospectionInfo;");
 			res += this.s("use Runtime\\UIStruct;");
 			this.modules.set("rs", "Runtime.rs");
 			this.modules.set("rtl", "Runtime.rtl");
@@ -937,7 +938,7 @@ class TranslatorPHP extends CommonTranslator{
 			this.modules.set("Dict", "Runtime.Dict");
 			this.modules.set("Vector", "Runtime.Vector");
 			this.modules.set("Collection", "Runtime.Collection");
-			this.modules.set("IntrospectionInfo", "Runtime.IntrospectionInfo");
+			this.modules.set("IntrospectionInfo", "Runtime.Annotations.IntrospectionInfo");
 			this.modules.set("UIStruct", "Runtime.UIStruct");
 		}
 		return res;
@@ -1304,6 +1305,12 @@ class TranslatorPHP extends CommonTranslator{
 						if (is_struct){
 							this.beginOperation();
 							var s = "$this->"+rtl.toString(var_prefix)+rtl.toString(variable.name)+" = "+rtl.toString(this.translateRun(variable.value))+";";
+							this.endOperation();
+							res += this.s(s);
+						}
+						else if (!variable.isFlag("static") && !variable.isFlag("const")){
+							this.beginOperation();
+							var s = "$this->"+rtl.toString(variable.name)+" = "+rtl.toString(this.translateRun(variable.value))+";";
 							this.endOperation();
 							res += this.s(s);
 						}
@@ -1711,7 +1718,7 @@ class TranslatorPHP extends CommonTranslator{
 	 * Returns true if key is props
 	 */
 	isOpHtmlTagProps(key){
-		if (key == "@key" || key == "@control" || key == "@model" || key == "@ref" || key == "@bind" || key == "@annotations"){
+		if (key == "@key" || key == "@model" || key == "@value" || key == "@bind" || key == "@ref" || key == "@annotations"){
 			return false;
 		}
 		return true;
@@ -1760,6 +1767,10 @@ class TranslatorPHP extends CommonTranslator{
 				else if (key == "@model"){
 					var value = this.translateRun(item.value);
 					res += this.s("\"model\"=>"+rtl.toString(value)+",");
+				}
+				else if (key == "@value"){
+					var value = this.translateRun(item.value);
+					res += this.s("\"value\"=>"+rtl.toString(value)+",");
 				}
 				else if (key == "@bind"){
 					var value = this.translateRun(item.value);

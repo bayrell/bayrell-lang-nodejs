@@ -1702,7 +1702,7 @@ class ParserBay extends CommonParser{
 		}
 		else {
 			var arr = rs.explode(".", name);
-			var last_name = arr.pop();
+			var last_name = arr.last();
 			this.modules.set(last_name, name);
 		}
 		return new OpUse(name, alias_name);

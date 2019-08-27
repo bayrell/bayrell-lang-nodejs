@@ -24,6 +24,7 @@ var Vector = require('bayrell-runtime-nodejs').Vector;
 var Collection = require('bayrell-runtime-nodejs').Collection;
 var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var UIStruct = require('bayrell-runtime-nodejs').UIStruct;
+var AssetsInterface = require('bayrell-runtime-nodejs').Interfaces.AssetsInterface;
 var ContextInterface = require('bayrell-runtime-nodejs').Interfaces.ContextInterface;
 var ModuleDescriptionInterface = require('bayrell-runtime-nodejs').Interfaces.ModuleDescriptionInterface;
 class ModuleDescription{
@@ -68,6 +69,12 @@ class ModuleDescription{
 		return null;
 	}
 	/**
+	 * Returns enities
+	 */
+	static resources(){
+		return null;
+	}
+	/**
 	 * Called then module registed in context
 	 * @param ContextInterface context
 	 */
@@ -93,6 +100,7 @@ class ModuleDescription{
 	_init(){
 		if (this.__implements__ == undefined){this.__implements__ = [];}
 		this.__implements__.push(ModuleDescriptionInterface);
+		this.__implements__.push(AssetsInterface);
 	}
 	static getFieldsList(names, flag){
 		if (flag==undefined)flag=0;
@@ -108,4 +116,5 @@ class ModuleDescription{
 }
 ModuleDescription.__static_implements__ = [];
 ModuleDescription.__static_implements__.push(ModuleDescriptionInterface)
+ModuleDescription.__static_implements__.push(AssetsInterface)
 module.exports = ModuleDescription;

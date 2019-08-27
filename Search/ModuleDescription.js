@@ -43,7 +43,7 @@ class ModuleDescription{
 	 * @return string
 	 */
 	static getModuleVersion(){
-		return "0.7.3";
+		return "0.1.0";
 	}
 	/**
 	 * Returns required modules

@@ -26,6 +26,11 @@ var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
 var UIStruct = require('bayrell-runtime-nodejs').UIStruct;
 var CoreObject = require('bayrell-runtime-nodejs').CoreObject;
 class FunctionStack extends CoreObject{
+	constructor(){
+		super();
+		this.async_jump_pos = new Vector();
+		this.async_stop_pos = new Vector();
+	}
 	/**
 	 * Returns jump string from arr
 	 * @param Vector<int> arr
