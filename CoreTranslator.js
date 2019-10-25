@@ -1,8 +1,9 @@
 "use strict;"
+var use = require('bayrell').use;
 /*!
- *  Bayrell Common Languages Transcompiler
+ *  Bayrell Language
  *
- *  (c) Copyright 2016-2018 "Ildar Bikmamatov" <support@bayrell.org>
+ *  (c) Copyright 2016-2019 "Ildar Bikmamatov" <support@bayrell.org>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,659 +17,347 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-var rtl = require('bayrell-runtime-nodejs').rtl;
-var rs = require('bayrell-runtime-nodejs').rs;
-var Map = require('bayrell-runtime-nodejs').Map;
-var Dict = require('bayrell-runtime-nodejs').Dict;
-var Vector = require('bayrell-runtime-nodejs').Vector;
-var Collection = require('bayrell-runtime-nodejs').Collection;
-var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
-var UIStruct = require('bayrell-runtime-nodejs').UIStruct;
-var ContextObject = require('bayrell-runtime-nodejs').ContextObject;
-var BaseOpCode = require('./OpCodes/BaseOpCode.js');
-var OpAdd = require('./OpCodes/OpAdd.js');
-var OpAnd = require('./OpCodes/OpAnd.js');
-var OpAssign = require('./OpCodes/OpAssign.js');
-var OpAssignDeclare = require('./OpCodes/OpAssignDeclare.js');
-var OpBitAnd = require('./OpCodes/OpBitAnd.js');
-var OpBitNot = require('./OpCodes/OpBitNot.js');
-var OpBitOr = require('./OpCodes/OpBitOr.js');
-var OpBitXor = require('./OpCodes/OpBitXor.js');
-var OpBreak = require('./OpCodes/OpBreak.js');
-var OpCall = require('./OpCodes/OpCall.js');
-var OpCallAwait = require('./OpCodes/OpCallAwait.js');
-var OpChilds = require('./OpCodes/OpChilds.js');
-var OpClassDeclare = require('./OpCodes/OpClassDeclare.js');
-var OpClassName = require('./OpCodes/OpClassName.js');
-var OpClone = require('./OpCodes/OpClone.js');
-var OpComment = require('./OpCodes/OpComment.js');
-var OpCompare = require('./OpCodes/OpCompare.js');
-var OpConcat = require('./OpCodes/OpConcat.js');
-var OpContinue = require('./OpCodes/OpContinue.js');
-var OpDelete = require('./OpCodes/OpDelete.js');
-var OpDiv = require('./OpCodes/OpDiv.js');
-var OpDynamic = require('./OpCodes/OpDynamic.js');
-var OpFlags = require('./OpCodes/OpFlags.js');
-var OpFor = require('./OpCodes/OpFor.js');
-var OpFunctionArrowDeclare = require('./OpCodes/OpFunctionArrowDeclare.js');
-var OpFunctionDeclare = require('./OpCodes/OpFunctionDeclare.js');
-var OpHexNumber = require('./OpCodes/OpHexNumber.js');
-var OpIdentifier = require('./OpCodes/OpIdentifier.js');
-var OpIf = require('./OpCodes/OpIf.js');
-var OpIfElse = require('./OpCodes/OpIfElse.js');
-var OpInterfaceDeclare = require('./OpCodes/OpInterfaceDeclare.js');
-var OpMap = require('./OpCodes/OpMap.js');
-var OpMethod = require('./OpCodes/OpMethod.js');
-var OpMod = require('./OpCodes/OpMod.js');
-var OpMult = require('./OpCodes/OpMult.js');
-var OpNamespace = require('./OpCodes/OpNamespace.js');
-var OpNew = require('./OpCodes/OpNew.js');
-var OpNope = require('./OpCodes/OpNope.js');
-var OpNot = require('./OpCodes/OpNot.js');
-var OpNumber = require('./OpCodes/OpNumber.js');
-var OpOr = require('./OpCodes/OpOr.js');
-var OpPostDec = require('./OpCodes/OpPostDec.js');
-var OpPostInc = require('./OpCodes/OpPostInc.js');
-var OpPow = require('./OpCodes/OpPow.js');
-var OpPreDec = require('./OpCodes/OpPreDec.js');
-var OpPreInc = require('./OpCodes/OpPreInc.js');
-var OpPreprocessorSwitch = require('./OpCodes/OpPreprocessorSwitch.js');
-var OpReturn = require('./OpCodes/OpReturn.js');
-var OpShiftLeft = require('./OpCodes/OpShiftLeft.js');
-var OpShiftRight = require('./OpCodes/OpShiftRight.js');
-var OpStatic = require('./OpCodes/OpStatic.js');
-var OpString = require('./OpCodes/OpString.js');
-var OpStringItem = require('./OpCodes/OpStringItem.js');
-var OpStructDeclare = require('./OpCodes/OpStructDeclare.js');
-var OpSub = require('./OpCodes/OpSub.js');
-var OpTemplateIdentifier = require('./OpCodes/OpTemplateIdentifier.js');
-var OpTernary = require('./OpCodes/OpTernary.js');
-var OpThrow = require('./OpCodes/OpThrow.js');
-var OpTryCatch = require('./OpCodes/OpTryCatch.js');
-var OpUse = require('./OpCodes/OpUse.js');
-var OpVector = require('./OpCodes/OpVector.js');
-var OpWhile = require('./OpCodes/OpWhile.js');
-class CoreTranslator extends ContextObject{
+if (typeof Bayrell == 'undefined') Bayrell = {};
+if (typeof Bayrell.Lang == 'undefined') Bayrell.Lang = {};
+Bayrell.Lang.CoreTranslator = function(__ctx)
+{
+	use("Runtime.CoreStruct").apply(this, arguments);
+};
+Bayrell.Lang.CoreTranslator.prototype = Object.create(use("Runtime.CoreStruct").prototype);
+Bayrell.Lang.CoreTranslator.prototype.constructor = Bayrell.Lang.CoreTranslator;
+Object.assign(Bayrell.Lang.CoreTranslator.prototype,
+{
 	/**
-	 * Push new level
+	 * Find save op code
 	 */
-	pushOneLine(level){
-		if (level == undefined) level=true;
-		this.one_lines.push(level);
-	}
+	findSaveOpCode: function(__ctx, op_code)
+	{
+		var __v0 = use("Runtime.lib");
+		return this.save_op_codes.findItem(__ctx, __v0.equalAttr(__ctx, "op_code", op_code));
+	},
 	/**
-	 * Pop level
+	 * Increment indent level
 	 */
-	popOneLine(){
-		return this.one_lines.pop();
-	}
+	levelInc: function(__ctx)
+	{
+		return this.copy(__ctx, use("Runtime.Dict").from({"indent_level":this.indent_level + 1}));
+	},
 	/**
-	 * Returns true if is one line
+	 * Decrease indent level
 	 */
-	isOneLine(){
-		return this.one_lines.last(false);
-	}
+	levelDec: function(__ctx)
+	{
+		return this.copy(__ctx, use("Runtime.Dict").from({"indent_level":this.indent_level - 1}));
+	},
 	/**
-	 * Begin operation
+	 * Output content with indent
 	 */
-	beginOperation(){
-		this.is_operation_stack.push(this.is_operation);
-		this.is_operation = true;
-		this.current_opcode_level = 0;
-		return this.is_operation_stack.last(false);
-	}
-	/**
-	 * End operation
-	 */
-	endOperation(){
-		if (this.is_operation_stack.count() > 0){
-			this.is_operation = this.is_operation_stack.pop();
+	s: function(__ctx, s, content)
+	{
+		if (content == undefined) content = null;
+		if (s == "")
+		{
+			return "";
 		}
-		else {
-			this.is_operation = false;
-		}
-	}
-	/**
-	 * Returns true if is operation
-	 */
-	isOperation(){
-		return this.is_operation;
-	}
-	/**
-	 * Set max opcode level
-	 */
-	setMaxOpCodeLevel(){
-		this.current_opcode_level = this.max_opcode_level;
-	}
-	/**
-	 * Set opcode level
-	 */
-	setOpCodeLevel(opcode_level){
-		this.current_opcode_level = opcode_level;
-	}
-	/**
-	 * Output string witch brackets
-	 */
-	o(s, current_opcode_level){
-		if (this.is_operation == false){
+		if (content === "")
+		{
 			return s;
 		}
-		if (current_opcode_level > this.current_opcode_level){
-			return "("+rtl.toString(s)+")";
+		var __v0 = use("Runtime.rs");
+		return this.crlf + use("Runtime.rtl").toStr(__v0.str_repeat(__ctx, this.indent, this.indent_level)) + use("Runtime.rtl").toStr(s);
+	},
+	/**
+	 * Output content with opcode level
+	 */
+	o: function(__ctx, s, opcode_level_in, opcode_level_out)
+	{
+		if (opcode_level_in < opcode_level_out)
+		{
+			return "(" + use("Runtime.rtl").toStr(s) + use("Runtime.rtl").toStr(")");
 		}
 		return s;
-	}
-	/**
-	 * Output operation
-	 */
-	op(op_code, op, opcode_level){
-		var res = "";
-		res += this.o(this.translateRun(op_code.value1), opcode_level);
-		res += " "+rtl.toString(op)+" ";
-		res += this.o(this.translateRun(op_code.value2), opcode_level);
-		this.current_opcode_level = opcode_level;
-		return res;
-	}
-	/**
-	 * Output string witch levels
-	 */
-	s(s){
-		if (this.isOneLine()){
-			return s;
+	},
+	_init: function(__ctx)
+	{
+		var defProp = use('Runtime.rtl').defProp;
+		var a = Object.getOwnPropertyNames(this);
+		this.__current_namespace_name = "";
+		if (a.indexOf("current_namespace_name") == -1) defProp(this, "current_namespace_name");
+		this.__current_class_name = "";
+		if (a.indexOf("current_class_name") == -1) defProp(this, "current_class_name");
+		this.__current_class_full_name = "";
+		if (a.indexOf("current_class_full_name") == -1) defProp(this, "current_class_full_name");
+		this.__current_class_extends_name = "";
+		if (a.indexOf("current_class_extends_name") == -1) defProp(this, "current_class_extends_name");
+		this.__current_function = null;
+		if (a.indexOf("current_function") == -1) defProp(this, "current_function");
+		this.__modules = null;
+		if (a.indexOf("modules") == -1) defProp(this, "modules");
+		this.__vars = null;
+		if (a.indexOf("vars") == -1) defProp(this, "vars");
+		this.__save_vars = null;
+		if (a.indexOf("save_vars") == -1) defProp(this, "save_vars");
+		this.__save_op_codes = null;
+		if (a.indexOf("save_op_codes") == -1) defProp(this, "save_op_codes");
+		this.__save_op_code_inc = 0;
+		if (a.indexOf("save_op_code_inc") == -1) defProp(this, "save_op_code_inc");
+		this.__is_static_function = false;
+		if (a.indexOf("is_static_function") == -1) defProp(this, "is_static_function");
+		this.__is_operation = false;
+		if (a.indexOf("is_operation") == -1) defProp(this, "is_operation");
+		this.__opcode_level = 0;
+		if (a.indexOf("opcode_level") == -1) defProp(this, "opcode_level");
+		this.__indent_level = 0;
+		if (a.indexOf("indent_level") == -1) defProp(this, "indent_level");
+		this.__indent = "\t";
+		if (a.indexOf("indent") == -1) defProp(this, "indent");
+		this.__crlf = "\n";
+		if (a.indexOf("crlf") == -1) defProp(this, "crlf");
+		this.__flag_struct_check_types = false;
+		if (a.indexOf("flag_struct_check_types") == -1) defProp(this, "flag_struct_check_types");
+		this.__preprocessor_flags = null;
+		if (a.indexOf("preprocessor_flags") == -1) defProp(this, "preprocessor_flags");
+		use("Runtime.CoreStruct").prototype._init.call(this,__ctx);
+	},
+	assignObject: function(__ctx,o)
+	{
+		if (o instanceof use("Bayrell.Lang.CoreTranslator"))
+		{
+			this.__current_namespace_name = o.__current_namespace_name;
+			this.__current_class_name = o.__current_class_name;
+			this.__current_class_full_name = o.__current_class_full_name;
+			this.__current_class_extends_name = o.__current_class_extends_name;
+			this.__current_function = o.__current_function;
+			this.__modules = o.__modules;
+			this.__vars = o.__vars;
+			this.__save_vars = o.__save_vars;
+			this.__save_op_codes = o.__save_op_codes;
+			this.__save_op_code_inc = o.__save_op_code_inc;
+			this.__is_static_function = o.__is_static_function;
+			this.__is_operation = o.__is_operation;
+			this.__opcode_level = o.__opcode_level;
+			this.__indent_level = o.__indent_level;
+			this.__indent = o.__indent;
+			this.__crlf = o.__crlf;
+			this.__flag_struct_check_types = o.__flag_struct_check_types;
+			this.__preprocessor_flags = o.__preprocessor_flags;
 		}
-		var arr = rs.explode("\n", s);
-		arr = arr.map((item) => {
-			return rtl.toString(this.indent)+rtl.toString(item);
-		});
-		var s = rs.implode("\n", arr);
-		return rtl.toString(s)+rtl.toString(this.crlf);
-	}
+		use("Runtime.CoreStruct").prototype.assignObject.call(this,__ctx,o);
+	},
+	assignValue: function(__ctx,k,v)
+	{
+		if (k == "current_namespace_name")this.__current_namespace_name = v;
+		else if (k == "current_class_name")this.__current_class_name = v;
+		else if (k == "current_class_full_name")this.__current_class_full_name = v;
+		else if (k == "current_class_extends_name")this.__current_class_extends_name = v;
+		else if (k == "current_function")this.__current_function = v;
+		else if (k == "modules")this.__modules = v;
+		else if (k == "vars")this.__vars = v;
+		else if (k == "save_vars")this.__save_vars = v;
+		else if (k == "save_op_codes")this.__save_op_codes = v;
+		else if (k == "save_op_code_inc")this.__save_op_code_inc = v;
+		else if (k == "is_static_function")this.__is_static_function = v;
+		else if (k == "is_operation")this.__is_operation = v;
+		else if (k == "opcode_level")this.__opcode_level = v;
+		else if (k == "indent_level")this.__indent_level = v;
+		else if (k == "indent")this.__indent = v;
+		else if (k == "crlf")this.__crlf = v;
+		else if (k == "flag_struct_check_types")this.__flag_struct_check_types = v;
+		else if (k == "preprocessor_flags")this.__preprocessor_flags = v;
+		else use("Runtime.CoreStruct").prototype.assignValue.call(this,__ctx,k,v);
+	},
+	takeValue: function(__ctx,k,d)
+	{
+		if (d == undefined) d = null;
+		if (k == "current_namespace_name")return this.__current_namespace_name;
+		else if (k == "current_class_name")return this.__current_class_name;
+		else if (k == "current_class_full_name")return this.__current_class_full_name;
+		else if (k == "current_class_extends_name")return this.__current_class_extends_name;
+		else if (k == "current_function")return this.__current_function;
+		else if (k == "modules")return this.__modules;
+		else if (k == "vars")return this.__vars;
+		else if (k == "save_vars")return this.__save_vars;
+		else if (k == "save_op_codes")return this.__save_op_codes;
+		else if (k == "save_op_code_inc")return this.__save_op_code_inc;
+		else if (k == "is_static_function")return this.__is_static_function;
+		else if (k == "is_operation")return this.__is_operation;
+		else if (k == "opcode_level")return this.__opcode_level;
+		else if (k == "indent_level")return this.__indent_level;
+		else if (k == "indent")return this.__indent;
+		else if (k == "crlf")return this.__crlf;
+		else if (k == "flag_struct_check_types")return this.__flag_struct_check_types;
+		else if (k == "preprocessor_flags")return this.__preprocessor_flags;
+		return use("Runtime.CoreStruct").prototype.takeValue.call(this,__ctx,k,d);
+	},
+	getClassName: function(__ctx)
+	{
+		return "Bayrell.Lang.CoreTranslator";
+	},
+});
+Object.assign(Bayrell.Lang.CoreTranslator, use("Runtime.CoreStruct"));
+Object.assign(Bayrell.Lang.CoreTranslator,
+{
 	/**
-	 * Output string with new line
+	 * Translate BaseOpCode
 	 */
-	n(s){
-		if (this.isOneLine()){
-			return s;
-		}
-		return rtl.toString(s)+rtl.toString(this.crlf);
-	}
+	translate: function(__ctx, t, op_code)
+	{
+		return "";
+	},
 	/**
-	 * Returns CRLF
+	 * Inc save op code
 	 */
-	getCRLF(){
-		if (this.isOneLine()){
-			return "";
-		}
-		return this.crlf;
-	}
-	OpAdd(op_code){
-		return "";
-	}
-	OpAnd(op_code){
-		return "";
-	}
-	OpAssign(op_code){
-		return "";
-	}
-	OpAssignDeclare(op_code){
-		return "";
-	}
-	OpBitAnd(op_code){
-		return "";
-	}
-	OpBitNot(op_code){
-		return "";
-	}
-	OpBitOr(op_code){
-		return "";
-	}
-	OpBitXor(op_code){
-		return "";
-	}
-	OpBreak(op_code){
-		return "";
-	}
-	OpCall(op_code){
-		return "";
-	}
-	OpClassDeclare(op_code){
-		return "";
-	}
-	OpClassName(op_code){
-		return "";
-	}
-	OpClone(op_code){
-		return "";
-	}
-	OpComment(op_code){
-		return "";
-	}
-	OpCompare(op_code){
-		return "";
-	}
-	OpConcat(op_code){
-		return "";
-	}
-	OpContinue(op_code){
-		return "";
-	}
-	OpDelete(op_code){
-		return "";
-	}
-	OpDiv(op_code){
-		return "";
-	}
-	OpDynamic(op_code){
-		return "";
-	}
-	OpFlags(op_code){
-		return "";
-	}
-	OpFor(op_code){
-		return "";
-	}
-	OpFunctionArrowDeclare(op_code){
-		return "";
-	}
-	OpFunctionDeclare(op_code){
-		return "";
-	}
-	OpHexNumber(op_code){
-		return "";
-	}
-	OpIdentifier(op_code){
-		return "";
-	}
-	OpIf(op_code){
-		return "";
-	}
-	OpInterfaceDeclare(op_code){
-		return "";
-	}
-	OpMethod(op_code){
-		return "";
-	}
-	OpMod(op_code){
-		return "";
-	}
-	OpMult(op_code){
-		return "";
-	}
-	OpNamespace(op_code){
-		return "";
-	}
-	OpNew(op_code){
-		return "";
-	}
-	OpNope(op_code){
-		return "";
-	}
-	OpNot(op_code){
-		return "";
-	}
-	OpNumber(op_code){
-		return "";
-	}
-	OpOr(op_code){
-		return "";
-	}
-	OpPostDec(op_code){
-		return "";
-	}
-	OpPostInc(op_code){
-		return "";
-	}
-	OpPow(op_code){
-		return "";
-	}
-	OpPreDec(op_code){
-		return "";
-	}
-	OpPreInc(op_code){
-		return "";
-	}
-	OpPreprocessorSwitch(op_code){
-		return "";
-	}
-	OpReturn(op_code){
-		return "";
-	}
-	OpShiftLeft(op_code){
-		return "";
-	}
-	OpShiftRight(op_code){
-		return "";
-	}
-	OpStatic(op_code){
-		return "";
-	}
-	OpString(op_code){
-		return "";
-	}
-	OpStringItem(op_code){
-		return "";
-	}
-	OpStructDeclare(op_code){
-		return "";
-	}
-	OpSub(op_code){
-		return "";
-	}
-	OpTemplateIdentifier(op_code){
-		return "";
-	}
-	OpTernary(op_code){
-		return "";
-	}
-	OpThrow(op_code){
-		return "";
-	}
-	OpTryCatch(op_code){
-		return "";
-	}
-	OpUse(op_code){
-		return "";
-	}
-	OpWhile(op_code){
-		return "";
-	}
-	/* =========================== HTML OP Codes ========================== */
-	OpHtmlJson(op_code){
-		return "";
-	}
-	OpHtmlRaw(op_code){
-		return "";
-	}
-	OpHtmlTag(op_code){
-		return "";
-	}
-	OpHtmlView(op_code){
-		return "";
-	}
+	nextSaveOpCode: function(__ctx, t)
+	{
+		return "__v" + use("Runtime.rtl").toStr(t.save_op_code_inc);
+	},
 	/**
-	 * Translate to language
-	 * @param BaseOpCode op_code - Abstract syntax tree
-	 * @returns string - The result
+	 * Inc save op code
 	 */
-	translateChilds(childs){
-		if (childs == null){
-			return "";
+	incSaveOpCode: function(__ctx, t)
+	{
+		var var_name = this.nextSaveOpCode(__ctx, t);
+		var save_op_code_inc = t.save_op_code_inc + 1;
+		t = t.copy(__ctx, use("Runtime.Dict").from({"save_op_code_inc":save_op_code_inc}));
+		return use("Runtime.Collection").from([t,var_name]);
+	},
+	/**
+	 * Add save op code
+	 */
+	addSaveOpCode: function(__ctx, t, data)
+	{
+		var var_name = data.get(__ctx, "var_name", "");
+		var content = data.get(__ctx, "content", "");
+		var var_content = data.get(__ctx, "var_content", "");
+		var save_op_code_inc = t.save_op_code_inc;
+		if (var_name == "")
+		{
+			var_name = this.nextSaveOpCode(__ctx, t);
+			save_op_code_inc += 1;
 		}
-		var res = "";
-		var code_str = "";
-		var flag = true;
-		for (var i = 0; i < childs.count(); i++){
-			this.setOpCodeLevel(0);
-			code_str = this.translateRun(childs.item(i));
-			if (code_str == ""){
+		data = data.setIm(__ctx, "var_name", var_name);
+		var __v0 = use("Bayrell.Lang.SaveOpCode");
+		var s = new __v0(__ctx, data);
+		t = t.copy(__ctx, use("Runtime.Dict").from({"save_op_codes":t.save_op_codes.pushIm(__ctx, s),"save_op_code_inc":save_op_code_inc}));
+		return use("Runtime.Collection").from([t,var_name]);
+	},
+	/**
+	 * Clear save op code
+	 */
+	clearSaveOpCode: function(__ctx, t)
+	{
+		var __v0 = use("Runtime.Collection");
+		t = t.copy(__ctx, { "save_op_codes": new __v0(__ctx) });
+		t = t.copy(__ctx, { "save_op_code_inc": 0 });
+		return t;
+	},
+	/**
+	 * Output save op code content
+	 */
+	outputSaveOpCode: function(__ctx, t, save_op_code_value)
+	{
+		if (save_op_code_value == undefined) save_op_code_value = 0;
+		var content = "";
+		for (var i = 0;i < t.save_op_codes.count(__ctx);i++)
+		{
+			if (i < save_op_code_value)
+			{
 				continue;
 			}
-			res += this.n(code_str);
+			var save = t.save_op_codes.item(__ctx, i);
+			var s = (save.content == "") ? t.s(__ctx, "var " + use("Runtime.rtl").toStr(save.var_name) + use("Runtime.rtl").toStr(" = ") + use("Runtime.rtl").toStr(save.var_content) + use("Runtime.rtl").toStr(";")) : save.content;
+			content += use("Runtime.rtl").toStr(s);
 		}
-		return rs.trim(res);
-	}
+		return content;
+	},
 	/**
-	 * Translate to language
-	 * @param BaseOpCode op_code - Abstract syntax tree
-	 * @returns string - The result
+	 * Call f and return result with save op codes
 	 */
-	translateItem(op_code){
-		if (op_code instanceof OpNope){
-			return this.translateChilds(op_code.childs);
-		}
-		else if (op_code instanceof OpInterfaceDeclare){
-			return this.OpInterfaceDeclare(op_code);
-		}
-		else if (op_code instanceof OpStructDeclare){
-			return this.OpStructDeclare(op_code);
-		}
-		else if (op_code instanceof OpAdd){
-			return this.OpAdd(op_code);
-		}
-		else if (op_code instanceof OpAnd){
-			return this.OpAnd(op_code);
-		}
-		else if (op_code instanceof OpAssign){
-			return this.OpAssign(op_code);
-		}
-		else if (op_code instanceof OpAssignDeclare){
-			return this.OpAssignDeclare(op_code);
-		}
-		else if (op_code instanceof OpBitAnd){
-			return this.OpBitAnd(op_code);
-		}
-		else if (op_code instanceof OpBitNot){
-			return this.OpBitNot(op_code);
-		}
-		else if (op_code instanceof OpBitOr){
-			return this.OpBitOr(op_code);
-		}
-		else if (op_code instanceof OpBitXor){
-			return this.OpBitXor(op_code);
-		}
-		else if (op_code instanceof OpBreak){
-			return this.OpBreak(op_code);
-		}
-		else if (op_code instanceof OpCall){
-			return this.OpCall(op_code);
-		}
-		else if (op_code instanceof OpClassDeclare){
-			return this.OpClassDeclare(op_code);
-		}
-		else if (op_code instanceof OpClassName){
-			return this.OpClassName(op_code);
-		}
-		else if (op_code instanceof OpClone){
-			return this.OpClone(op_code);
-		}
-		else if (op_code instanceof OpComment){
-			return this.OpComment(op_code);
-		}
-		else if (op_code instanceof OpCompare){
-			return this.OpCompare(op_code);
-		}
-		else if (op_code instanceof OpConcat){
-			return this.OpConcat(op_code);
-		}
-		else if (op_code instanceof OpContinue){
-			return this.OpContinue(op_code);
-		}
-		else if (op_code instanceof OpDelete){
-			return this.OpDelete(op_code);
-		}
-		else if (op_code instanceof OpDiv){
-			return this.OpDiv(op_code);
-		}
-		else if (op_code instanceof OpDynamic){
-			return this.OpDynamic(op_code);
-		}
-		else if (op_code instanceof OpFlags){
-			return this.OpFlags(op_code);
-		}
-		else if (op_code instanceof OpFor){
-			return this.OpFor(op_code);
-		}
-		else if (op_code instanceof OpFunctionArrowDeclare){
-			return this.OpFunctionArrowDeclare(op_code);
-		}
-		else if (op_code instanceof OpFunctionDeclare){
-			return this.OpFunctionDeclare(op_code);
-		}
-		else if (op_code instanceof OpHexNumber){
-			return this.OpHexNumber(op_code);
-		}
-		else if (op_code instanceof OpIdentifier){
-			return this.OpIdentifier(op_code);
-		}
-		else if (op_code instanceof OpMap){
-			return this.OpMap(op_code);
-		}
-		else if (op_code instanceof OpMethod){
-			return this.OpMethod(op_code);
-		}
-		else if (op_code instanceof OpIf){
-			return this.OpIf(op_code);
-		}
-		else if (op_code instanceof OpMod){
-			return this.OpMod(op_code);
-		}
-		else if (op_code instanceof OpMult){
-			return this.OpMult(op_code);
-		}
-		else if (op_code instanceof OpNamespace){
-			return this.OpNamespace(op_code);
-		}
-		else if (op_code instanceof OpNew){
-			return this.OpNew(op_code);
-		}
-		else if (op_code instanceof OpNope){
-			return this.OpNope(op_code);
-		}
-		else if (op_code instanceof OpNot){
-			return this.OpNot(op_code);
-		}
-		else if (op_code instanceof OpNumber){
-			return this.OpNumber(op_code);
-		}
-		else if (op_code instanceof OpOr){
-			return this.OpOr(op_code);
-		}
-		else if (op_code instanceof OpPostDec){
-			return this.OpPostDec(op_code);
-		}
-		else if (op_code instanceof OpPostInc){
-			return this.OpPostInc(op_code);
-		}
-		else if (op_code instanceof OpPow){
-			return this.OpPow(op_code);
-		}
-		else if (op_code instanceof OpPreDec){
-			return this.OpPreDec(op_code);
-		}
-		else if (op_code instanceof OpPreInc){
-			return this.OpPreInc(op_code);
-		}
-		else if (op_code instanceof OpPreprocessorSwitch){
-			return this.OpPreprocessorSwitch(op_code);
-		}
-		else if (op_code instanceof OpReturn){
-			return this.OpReturn(op_code);
-		}
-		else if (op_code instanceof OpShiftLeft){
-			return this.OpShiftLeft(op_code);
-		}
-		else if (op_code instanceof OpShiftRight){
-			return this.OpShiftRight(op_code);
-		}
-		else if (op_code instanceof OpStatic){
-			return this.OpStatic(op_code);
-		}
-		else if (op_code instanceof OpString){
-			return this.OpString(op_code);
-		}
-		else if (op_code instanceof OpStringItem){
-			return this.OpStringItem(op_code);
-		}
-		else if (op_code instanceof OpSub){
-			return this.OpSub(op_code);
-		}
-		else if (op_code instanceof OpTemplateIdentifier){
-			return this.OpTemplateIdentifier(op_code);
-		}
-		else if (op_code instanceof OpTernary){
-			return this.OpTernary(op_code);
-		}
-		else if (op_code instanceof OpThrow){
-			return this.OpThrow(op_code);
-		}
-		else if (op_code instanceof OpTryCatch){
-			return this.OpTryCatch(op_code);
-		}
-		else if (op_code instanceof OpUse){
-			return this.OpUse(op_code);
-		}
-		else if (op_code instanceof OpVector){
-			return this.OpVector(op_code);
-		}
-		else if (op_code instanceof OpWhile){
-			return this.OpWhile(op_code);
-		}
-		else if (op_code instanceof OpHtmlJson){
-			return this.OpHtmlJson(op_code);
-		}
-		else if (op_code instanceof OpHtmlRaw){
-			return this.OpHtmlRaw(op_code);
-		}
-		else if (op_code instanceof OpHtmlTag){
-			return this.OpHtmlTag(op_code);
-		}
-		else if (op_code instanceof OpHtmlText){
-			return this.OpString(op_code);
-		}
-		else if (op_code instanceof OpHtmlView){
-			return this.OpHtmlView(op_code);
-		}
-		return "";
-	}
-	/**
-	 * Translate to language
-	 * @param BaseOpCode op_code - Abstract syntax tree
-	 * @returns string - The result
-	 */
-	translateRun(op_code){
-		this.op_code_stack.push(op_code);
-		var res = this.translateItem(op_code);
-		this.op_code_stack.pop();
-		return res;
-	}
-	/**
-	 * Reset translator to default settings
-	 */
-	resetTranslator(){
-		this.is_operation = false;
-		this.current_opcode_level = 0;
-		this.max_opcode_level = 100;
-		this.is_operation_stack = new Vector();
-		this.op_code_stack = new Vector();
-		this.one_lines = new Vector();
-	}
-	/**
-	 * Translate to language
-	 * @param BaseOpCode op_code - Abstract syntax tree
-	 * @returns string - The result
-	 */
-	translate(op_code){
-		this.resetTranslator();
-		return this.translateRun(op_code);
-	}
+	saveOpCodeCall: function(__ctx, t, f, args)
+	{
+		/* Clear save op codes */
+		var save_op_codes = t.save_op_codes;
+		var save_op_code_inc = t.save_op_code_inc;
+		var __v0 = use("Runtime.rtl");
+		var res = __v0.apply(__ctx, f, args.unshiftIm(__ctx, t));
+		t = res[0];
+		var value = res[1];
+		/* Output save op code */
+		var save = t.constructor.outputSaveOpCode(__ctx, t, save_op_codes.count(__ctx));
+		/* Restore save op codes */
+		t = t.copy(__ctx, { "save_op_codes": save_op_codes });
+		t = t.copy(__ctx, { "save_op_code_inc": save_op_code_inc });
+		return use("Runtime.Collection").from([t,save,value]);
+	},
 	/* ======================= Class Init Functions ======================= */
-	getClassName(){return "BayrellLang.CoreTranslator";}
-	static getCurrentNamespace(){return "BayrellLang";}
-	static getCurrentClassName(){return "BayrellLang.CoreTranslator";}
-	static getParentClassName(){return "Runtime.ContextObject";}
-	_init(){
-		super._init();
-		var names = Object.getOwnPropertyNames(this);
-		this.is_operation_stack = null;
-		this.op_code_stack = null;
-		this.one_lines = null;
-		this.current_opcode_level = 0;
-		this.max_opcode_level = 100;
-		this.is_operation = false;
-		this.indent = "\t";
-		this.space = " ";
-		this.crlf = "\n";
-	}
-	static getFieldsList(names, flag){
-		if (flag==undefined)flag=0;
-	}
-	static getFieldInfoByName(field_name){
+	getCurrentNamespace: function()
+	{
+		return "Bayrell.Lang";
+	},
+	getCurrentClassName: function()
+	{
+		return "Bayrell.Lang.CoreTranslator";
+	},
+	getParentClassName: function()
+	{
+		return "Runtime.CoreStruct";
+	},
+	getClassInfo: function(__ctx)
+	{
+		var Collection = use("Runtime.Collection");
+		var Dict = use("Runtime.Dict");
+		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
+		return new IntrospectionInfo(__ctx, {
+			"kind": IntrospectionInfo.ITEM_CLASS,
+			"class_name": "Bayrell.Lang.CoreTranslator",
+			"name": "Bayrell.Lang.CoreTranslator",
+			"annotations": Collection.from([
+			]),
+		});
+	},
+	getFieldsList: function(__ctx, f)
+	{
+		var a = [];
+		if (f==undefined) f=0;
+		if ((f|3)==3)
+		{
+			a.push("current_namespace_name");
+			a.push("current_class_name");
+			a.push("current_class_full_name");
+			a.push("current_class_extends_name");
+			a.push("current_function");
+			a.push("modules");
+			a.push("vars");
+			a.push("save_vars");
+			a.push("save_op_codes");
+			a.push("save_op_code_inc");
+			a.push("is_static_function");
+			a.push("is_operation");
+			a.push("opcode_level");
+			a.push("indent_level");
+			a.push("indent");
+			a.push("crlf");
+			a.push("flag_struct_check_types");
+			a.push("preprocessor_flags");
+		}
+		return use("Runtime.Collection").from(a);
+	},
+	getFieldInfoByName: function(__ctx,field_name)
+	{
 		return null;
-	}
-	static getMethodsList(names){
-	}
-	static getMethodInfoByName(method_name){
+	},
+	getMethodsList: function(__ctx)
+	{
+		var a = [
+		];
+		return use("Runtime.Collection").from(a);
+	},
+	getMethodInfoByName: function(__ctx,field_name)
+	{
 		return null;
-	}
-}
-module.exports = CoreTranslator;
+	},
+});use.add(Bayrell.Lang.CoreTranslator);
+if (module.exports == undefined) module.exports = {};
+if (module.exports.Bayrell == undefined) module.exports.Bayrell = {};
+if (module.exports.Bayrell.Lang == undefined) module.exports.Bayrell.Lang = {};
+module.exports.Bayrell.Lang.CoreTranslator = Bayrell.Lang.CoreTranslator;

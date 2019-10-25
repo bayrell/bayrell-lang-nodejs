@@ -1,6 +1,7 @@
 "use strict;"
+var use = require('bayrell').use;
 /*!
- *  Bayrell Common Languages Transcompiler
+ *  Bayrell Language
  *
  *  (c) Copyright 2016-2018 "Ildar Bikmamatov" <support@bayrell.org>
  *
@@ -16,54 +17,111 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-var rtl = require('bayrell-runtime-nodejs').rtl;
-var rs = require('bayrell-runtime-nodejs').rs;
-var Map = require('bayrell-runtime-nodejs').Map;
-var Dict = require('bayrell-runtime-nodejs').Dict;
-var Vector = require('bayrell-runtime-nodejs').Vector;
-var Collection = require('bayrell-runtime-nodejs').Collection;
-var IntrospectionInfo = require('bayrell-runtime-nodejs').IntrospectionInfo;
-var UIStruct = require('bayrell-runtime-nodejs').UIStruct;
-var OpValueString = require('./OpValueString.js');
-class OpComment extends OpValueString{
+if (typeof Bayrell == 'undefined') Bayrell = {};
+if (typeof Bayrell.Lang == 'undefined') Bayrell.Lang = {};
+if (typeof Bayrell.Lang.OpCodes == 'undefined') Bayrell.Lang.OpCodes = {};
+Bayrell.Lang.OpCodes.OpComment = function(__ctx)
+{
+	use("Bayrell.Lang.OpCodes.BaseOpCode").apply(this, arguments);
+};
+Bayrell.Lang.OpCodes.OpComment.prototype = Object.create(use("Bayrell.Lang.OpCodes.BaseOpCode").prototype);
+Bayrell.Lang.OpCodes.OpComment.prototype.constructor = Bayrell.Lang.OpCodes.OpComment;
+Object.assign(Bayrell.Lang.OpCodes.OpComment.prototype,
+{
+	_init: function(__ctx)
+	{
+		var defProp = use('Runtime.rtl').defProp;
+		var a = Object.getOwnPropertyNames(this);
+		this.__op = "op_comment";
+		if (a.indexOf("op") == -1) defProp(this, "op");
+		this.__value = "";
+		if (a.indexOf("value") == -1) defProp(this, "value");
+		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,__ctx);
+	},
+	assignObject: function(__ctx,o)
+	{
+		if (o instanceof use("Bayrell.Lang.OpCodes.OpComment"))
+		{
+			this.__op = o.__op;
+			this.__value = o.__value;
+		}
+		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,__ctx,o);
+	},
+	assignValue: function(__ctx,k,v)
+	{
+		if (k == "op")this.__op = v;
+		else if (k == "value")this.__value = v;
+		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,__ctx,k,v);
+	},
+	takeValue: function(__ctx,k,d)
+	{
+		if (d == undefined) d = null;
+		if (k == "op")return this.__op;
+		else if (k == "value")return this.__value;
+		return use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.takeValue.call(this,__ctx,k,d);
+	},
+	getClassName: function(__ctx)
+	{
+		return "Bayrell.Lang.OpCodes.OpComment";
+	},
+});
+Object.assign(Bayrell.Lang.OpCodes.OpComment, use("Bayrell.Lang.OpCodes.BaseOpCode"));
+Object.assign(Bayrell.Lang.OpCodes.OpComment,
+{
 	/* ======================= Class Init Functions ======================= */
-	getClassName(){return "BayrellLang.OpCodes.OpComment";}
-	static getCurrentNamespace(){return "BayrellLang.OpCodes";}
-	static getCurrentClassName(){return "BayrellLang.OpCodes.OpComment";}
-	static getParentClassName(){return "BayrellLang.OpCodes.OpValueString";}
-	_init(){
-		super._init();
-		var names = Object.getOwnPropertyNames(this);
-		this.op = "op_comment";
-	}
-	assignObject(obj){
-		if (obj instanceof OpComment){
-			this.op = rtl._clone(obj.op);
+	getCurrentNamespace: function()
+	{
+		return "Bayrell.Lang.OpCodes";
+	},
+	getCurrentClassName: function()
+	{
+		return "Bayrell.Lang.OpCodes.OpComment";
+	},
+	getParentClassName: function()
+	{
+		return "Bayrell.Lang.OpCodes.BaseOpCode";
+	},
+	getClassInfo: function(__ctx)
+	{
+		var Collection = use("Runtime.Collection");
+		var Dict = use("Runtime.Dict");
+		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
+		return new IntrospectionInfo(__ctx, {
+			"kind": IntrospectionInfo.ITEM_CLASS,
+			"class_name": "Bayrell.Lang.OpCodes.OpComment",
+			"name": "Bayrell.Lang.OpCodes.OpComment",
+			"annotations": Collection.from([
+			]),
+		});
+	},
+	getFieldsList: function(__ctx, f)
+	{
+		var a = [];
+		if (f==undefined) f=0;
+		if ((f|3)==3)
+		{
+			a.push("op");
+			a.push("value");
 		}
-		super.assignObject(obj);
-	}
-	assignValue(variable_name, value, sender){if(sender==undefined)sender=null;
-		if (variable_name == "op")this.op = rtl.convert(value,"string","op_comment","");
-		else super.assignValue(variable_name, value, sender);
-	}
-	takeValue(variable_name, default_value){
-		if (default_value == undefined) default_value = null;
-		if (variable_name == "op") return this.op;
-		return super.takeValue(variable_name, default_value);
-	}
-	static getFieldsList(names, flag){
-		if (flag==undefined)flag=0;
-		if ((flag | 3)==3){
-			names.push("op");
-		}
-	}
-	static getFieldInfoByName(field_name){
+		return use("Runtime.Collection").from(a);
+	},
+	getFieldInfoByName: function(__ctx,field_name)
+	{
 		return null;
-	}
-	static getMethodsList(names){
-	}
-	static getMethodInfoByName(method_name){
+	},
+	getMethodsList: function(__ctx)
+	{
+		var a = [
+		];
+		return use("Runtime.Collection").from(a);
+	},
+	getMethodInfoByName: function(__ctx,field_name)
+	{
 		return null;
-	}
-}
-module.exports = OpComment;
+	},
+});use.add(Bayrell.Lang.OpCodes.OpComment);
+if (module.exports == undefined) module.exports = {};
+if (module.exports.Bayrell == undefined) module.exports.Bayrell = {};
+if (module.exports.Bayrell.Lang == undefined) module.exports.Bayrell.Lang = {};
+if (module.exports.Bayrell.Lang.OpCodes == undefined) module.exports.Bayrell.Lang.OpCodes = {};
+module.exports.Bayrell.Lang.OpCodes.OpComment = Bayrell.Lang.OpCodes.OpComment;
