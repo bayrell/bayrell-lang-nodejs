@@ -20,36 +20,36 @@ var use = require('bayrell').use;
 if (typeof Bayrell == 'undefined') Bayrell = {};
 if (typeof Bayrell.Lang == 'undefined') Bayrell.Lang = {};
 if (typeof Bayrell.Lang.Exceptions == 'undefined') Bayrell.Lang.Exceptions = {};
-Bayrell.Lang.Exceptions.ParserUnknownError = function(__ctx, s, code, context, prev)
+Bayrell.Lang.Exceptions.ParserUnknownError = function(ctx, s, code, context, prev)
 {
 	if (code == -1)
 	{
 		var __v0 = use("Bayrell.Lang.LangConstant");
 		code = __v0.ERROR_PARSER;
 	}
-	use("Runtime.Exceptions.RuntimeException").call(this, __ctx, s, code, context, prev);
+	use("Runtime.Exceptions.RuntimeException").call(this, ctx, s, code, context, prev);
 };
 Bayrell.Lang.Exceptions.ParserUnknownError.prototype = Object.create(use("Runtime.Exceptions.RuntimeException").prototype);
 Bayrell.Lang.Exceptions.ParserUnknownError.prototype.constructor = Bayrell.Lang.Exceptions.ParserUnknownError;
 Object.assign(Bayrell.Lang.Exceptions.ParserUnknownError.prototype,
 {
-	assignObject: function(__ctx,o)
+	assignObject: function(ctx,o)
 	{
 		if (o instanceof use("Bayrell.Lang.Exceptions.ParserUnknownError"))
 		{
 		}
-		use("Runtime.Exceptions.RuntimeException").prototype.assignObject.call(this,__ctx,o);
+		use("Runtime.Exceptions.RuntimeException").prototype.assignObject.call(this,ctx,o);
 	},
-	assignValue: function(__ctx,k,v)
+	assignValue: function(ctx,k,v)
 	{
-		use("Runtime.Exceptions.RuntimeException").prototype.assignValue.call(this,__ctx,k,v);
+		use("Runtime.Exceptions.RuntimeException").prototype.assignValue.call(this,ctx,k,v);
 	},
-	takeValue: function(__ctx,k,d)
+	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
-		return use("Runtime.Exceptions.RuntimeException").prototype.takeValue.call(this,__ctx,k,d);
+		return use("Runtime.Exceptions.RuntimeException").prototype.takeValue.call(this,ctx,k,d);
 	},
-	getClassName: function(__ctx)
+	getClassName: function(ctx)
 	{
 		return "Bayrell.Lang.Exceptions.ParserUnknownError";
 	},
@@ -70,12 +70,12 @@ Object.assign(Bayrell.Lang.Exceptions.ParserUnknownError,
 	{
 		return "Runtime.Exceptions.RuntimeException";
 	},
-	getClassInfo: function(__ctx)
+	getClassInfo: function(ctx)
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
 		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
-		return new IntrospectionInfo(__ctx, {
+		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Bayrell.Lang.Exceptions.ParserUnknownError",
 			"name": "Bayrell.Lang.Exceptions.ParserUnknownError",
@@ -83,23 +83,26 @@ Object.assign(Bayrell.Lang.Exceptions.ParserUnknownError,
 			]),
 		});
 	},
-	getFieldsList: function(__ctx, f)
+	getFieldsList: function(ctx, f)
 	{
 		var a = [];
 		if (f==undefined) f=0;
 		return use("Runtime.Collection").from(a);
 	},
-	getFieldInfoByName: function(__ctx,field_name)
+	getFieldInfoByName: function(ctx,field_name)
 	{
+		var Collection = use("Runtime.Collection");
+		var Dict = use("Runtime.Dict");
+		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
 		return null;
 	},
-	getMethodsList: function(__ctx)
+	getMethodsList: function(ctx)
 	{
 		var a = [
 		];
 		return use("Runtime.Collection").from(a);
 	},
-	getMethodInfoByName: function(__ctx,field_name)
+	getMethodInfoByName: function(ctx,field_name)
 	{
 		return null;
 	},

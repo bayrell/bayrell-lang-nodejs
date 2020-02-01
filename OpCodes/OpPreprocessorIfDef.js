@@ -1,7 +1,7 @@
 "use strict;"
 var use = require('bayrell').use;
 /*!
- *  Bayrell Language
+ *  Bayrell Common Languages Transcompiler
  *
  *  (c) Copyright 2016-2018 "Ildar Bikmamatov" <support@bayrell.org>
  *
@@ -20,54 +20,61 @@ var use = require('bayrell').use;
 if (typeof Bayrell == 'undefined') Bayrell = {};
 if (typeof Bayrell.Lang == 'undefined') Bayrell.Lang = {};
 if (typeof Bayrell.Lang.OpCodes == 'undefined') Bayrell.Lang.OpCodes = {};
-Bayrell.Lang.OpCodes.OpDelete = function(ctx)
+Bayrell.Lang.OpCodes.OpPreprocessorIfDef = function(ctx)
 {
 	use("Bayrell.Lang.OpCodes.BaseOpCode").apply(this, arguments);
 };
-Bayrell.Lang.OpCodes.OpDelete.prototype = Object.create(use("Bayrell.Lang.OpCodes.BaseOpCode").prototype);
-Bayrell.Lang.OpCodes.OpDelete.prototype.constructor = Bayrell.Lang.OpCodes.OpDelete;
-Object.assign(Bayrell.Lang.OpCodes.OpDelete.prototype,
+Bayrell.Lang.OpCodes.OpPreprocessorIfDef.prototype = Object.create(use("Bayrell.Lang.OpCodes.BaseOpCode").prototype);
+Bayrell.Lang.OpCodes.OpPreprocessorIfDef.prototype.constructor = Bayrell.Lang.OpCodes.OpPreprocessorIfDef;
+Object.assign(Bayrell.Lang.OpCodes.OpPreprocessorIfDef.prototype,
 {
 	_init: function(ctx)
 	{
 		var defProp = use('Runtime.rtl').defProp;
 		var a = Object.getOwnPropertyNames(this);
-		this.__op = "op_delete";
+		this.__op = "op_preprocessor_ifdef";
 		if (a.indexOf("op") == -1) defProp(this, "op");
-		this.__op_code = null;
-		if (a.indexOf("op_code") == -1) defProp(this, "op_code");
+		this.__condition = null;
+		if (a.indexOf("condition") == -1) defProp(this, "condition");
+		this.__items = null;
+		if (a.indexOf("items") == -1) defProp(this, "items");
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
-		if (o instanceof use("Bayrell.Lang.OpCodes.OpDelete"))
+		if (o instanceof use("Bayrell.Lang.OpCodes.OpPreprocessorIfDef"))
 		{
 			this.__op = o.__op;
-			this.__op_code = o.__op_code;
+			this.__condition = o.__condition;
+			this.__items = o.__items;
 		}
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
 		if (k == "op")this.__op = v;
-		else if (k == "op_code")this.__op_code = v;
+		else if (k == "condition")this.__condition = v;
+		else if (k == "items")this.__items = v;
 		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
 		if (k == "op")return this.__op;
-		else if (k == "op_code")return this.__op_code;
+		else if (k == "condition")return this.__condition;
+		else if (k == "items")return this.__items;
 		return use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)
 	{
-		return "Bayrell.Lang.OpCodes.OpDelete";
+		return "Bayrell.Lang.OpCodes.OpPreprocessorIfDef";
 	},
 });
-Object.assign(Bayrell.Lang.OpCodes.OpDelete, use("Bayrell.Lang.OpCodes.BaseOpCode"));
-Object.assign(Bayrell.Lang.OpCodes.OpDelete,
+Object.assign(Bayrell.Lang.OpCodes.OpPreprocessorIfDef, use("Bayrell.Lang.OpCodes.BaseOpCode"));
+Object.assign(Bayrell.Lang.OpCodes.OpPreprocessorIfDef,
 {
+	KIND_PROGRAM: "program",
+	KIND_CLASS_BODY: "class_body",
 	/* ======================= Class Init Functions ======================= */
 	getCurrentNamespace: function()
 	{
@@ -75,7 +82,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpDelete,
 	},
 	getCurrentClassName: function()
 	{
-		return "Bayrell.Lang.OpCodes.OpDelete";
+		return "Bayrell.Lang.OpCodes.OpPreprocessorIfDef";
 	},
 	getParentClassName: function()
 	{
@@ -88,8 +95,8 @@ Object.assign(Bayrell.Lang.OpCodes.OpDelete,
 		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
-			"class_name": "Bayrell.Lang.OpCodes.OpDelete",
-			"name": "Bayrell.Lang.OpCodes.OpDelete",
+			"class_name": "Bayrell.Lang.OpCodes.OpPreprocessorIfDef",
+			"name": "Bayrell.Lang.OpCodes.OpPreprocessorIfDef",
 			"annotations": Collection.from([
 			]),
 		});
@@ -101,7 +108,8 @@ Object.assign(Bayrell.Lang.OpCodes.OpDelete,
 		if ((f|3)==3)
 		{
 			a.push("op");
-			a.push("op_code");
+			a.push("condition");
+			a.push("items");
 		}
 		return use("Runtime.Collection").from(a);
 	},
@@ -110,16 +118,37 @@ Object.assign(Bayrell.Lang.OpCodes.OpDelete,
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
 		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
-		if (field_name == "op") return new IntrospectionInfo(ctx, {
+		if (field_name == "KIND_PROGRAM") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.OpCodes.OpDelete",
+			"class_name": "Bayrell.Lang.OpCodes.OpPreprocessorIfDef",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "op_code") return new IntrospectionInfo(ctx, {
+		if (field_name == "KIND_CLASS_BODY") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.OpCodes.OpDelete",
+			"class_name": "Bayrell.Lang.OpCodes.OpPreprocessorIfDef",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "op") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.OpCodes.OpPreprocessorIfDef",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "condition") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.OpCodes.OpPreprocessorIfDef",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "items") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.OpCodes.OpPreprocessorIfDef",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -136,9 +165,9 @@ Object.assign(Bayrell.Lang.OpCodes.OpDelete,
 	{
 		return null;
 	},
-});use.add(Bayrell.Lang.OpCodes.OpDelete);
+});use.add(Bayrell.Lang.OpCodes.OpPreprocessorIfDef);
 if (module.exports == undefined) module.exports = {};
 if (module.exports.Bayrell == undefined) module.exports.Bayrell = {};
 if (module.exports.Bayrell.Lang == undefined) module.exports.Bayrell.Lang = {};
 if (module.exports.Bayrell.Lang.OpCodes == undefined) module.exports.Bayrell.Lang.OpCodes = {};
-module.exports.Bayrell.Lang.OpCodes.OpDelete = Bayrell.Lang.OpCodes.OpDelete;
+module.exports.Bayrell.Lang.OpCodes.OpPreprocessorIfDef = Bayrell.Lang.OpCodes.OpPreprocessorIfDef;

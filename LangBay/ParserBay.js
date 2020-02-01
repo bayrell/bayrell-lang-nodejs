@@ -3,7 +3,7 @@ var use = require('bayrell').use;
 /*!
  *  Bayrell Language
  *
- *  (c) Copyright 2016-2019 "Ildar Bikmamatov" <support@bayrell.org>
+ *  (c) Copyright 2016-2020 "Ildar Bikmamatov" <support@bayrell.org>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ var use = require('bayrell').use;
 if (typeof Bayrell == 'undefined') Bayrell = {};
 if (typeof Bayrell.Lang == 'undefined') Bayrell.Lang = {};
 if (typeof Bayrell.Lang.LangBay == 'undefined') Bayrell.Lang.LangBay = {};
-Bayrell.Lang.LangBay.ParserBay = function(__ctx)
+Bayrell.Lang.LangBay.ParserBay = function(ctx)
 {
 	use("Bayrell.Lang.CoreParser").apply(this, arguments);
 };
@@ -28,7 +28,7 @@ Bayrell.Lang.LangBay.ParserBay.prototype = Object.create(use("Bayrell.Lang.CoreP
 Bayrell.Lang.LangBay.ParserBay.prototype.constructor = Bayrell.Lang.LangBay.ParserBay;
 Object.assign(Bayrell.Lang.LangBay.ParserBay.prototype,
 {
-	_init: function(__ctx)
+	_init: function(ctx)
 	{
 		this.vars = null;
 		this.uses = null;
@@ -45,9 +45,9 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay.prototype,
 		this.parser_operator = null;
 		this.parser_preprocessor = null;
 		this.parser_program = null;
-		use("Bayrell.Lang.CoreParser").prototype._init.call(this,__ctx);
+		use("Bayrell.Lang.CoreParser").prototype._init.call(this,ctx);
 	},
-	assignObject: function(__ctx,o)
+	assignObject: function(ctx,o)
 	{
 		if (o instanceof use("Bayrell.Lang.LangBay.ParserBay"))
 		{
@@ -67,9 +67,9 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay.prototype,
 			this.parser_preprocessor = o.parser_preprocessor;
 			this.parser_program = o.parser_program;
 		}
-		use("Bayrell.Lang.CoreParser").prototype.assignObject.call(this,__ctx,o);
+		use("Bayrell.Lang.CoreParser").prototype.assignObject.call(this,ctx,o);
 	},
-	assignValue: function(__ctx,k,v)
+	assignValue: function(ctx,k,v)
 	{
 		if (k == "vars")this.vars = v;
 		else if (k == "uses")this.uses = v;
@@ -86,9 +86,9 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay.prototype,
 		else if (k == "parser_operator")this.parser_operator = v;
 		else if (k == "parser_preprocessor")this.parser_preprocessor = v;
 		else if (k == "parser_program")this.parser_program = v;
-		else use("Bayrell.Lang.CoreParser").prototype.assignValue.call(this,__ctx,k,v);
+		else use("Bayrell.Lang.CoreParser").prototype.assignValue.call(this,ctx,k,v);
 	},
-	takeValue: function(__ctx,k,d)
+	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
 		if (k == "vars")return this.vars;
@@ -106,9 +106,9 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay.prototype,
 		else if (k == "parser_operator")return this.parser_operator;
 		else if (k == "parser_preprocessor")return this.parser_preprocessor;
 		else if (k == "parser_program")return this.parser_program;
-		return use("Bayrell.Lang.CoreParser").prototype.takeValue.call(this,__ctx,k,d);
+		return use("Bayrell.Lang.CoreParser").prototype.takeValue.call(this,ctx,k,d);
 	},
-	getClassName: function(__ctx)
+	getClassName: function(ctx)
 	{
 		return "Bayrell.Lang.LangBay.ParserBay";
 	},
@@ -119,7 +119,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 	/**
 	 * Reset parser
 	 */
-	reset: function(__ctx, parser)
+	reset: function(ctx, parser)
 	{
 		var __v0 = use("Runtime.Dict");
 		var __v1 = use("Runtime.Dict");
@@ -130,16 +130,16 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 		var __v6 = use("Bayrell.Lang.LangBay.ParserBayOperator");
 		var __v7 = use("Bayrell.Lang.LangBay.ParserBayPreprocessor");
 		var __v8 = use("Bayrell.Lang.LangBay.ParserBayProgram");
-		return parser.copy(__ctx, use("Runtime.Dict").from({"vars":new __v0(__ctx),"uses":new __v1(__ctx),"caret":new __v2(__ctx, use("Runtime.Dict").from({})),"token":null,"parser_base":new __v3(__ctx),"parser_expression":new __v4(__ctx),"parser_html":new __v5(__ctx),"parser_operator":new __v6(__ctx),"parser_preprocessor":new __v7(__ctx),"parser_program":new __v8(__ctx)}));
+		return parser.copy(ctx, use("Runtime.Dict").from({"vars":new __v0(ctx),"uses":new __v1(ctx),"caret":new __v2(ctx, use("Runtime.Dict").from({})),"token":null,"parser_base":new __v3(ctx),"parser_expression":new __v4(ctx),"parser_html":new __v5(ctx),"parser_operator":new __v6(ctx),"parser_preprocessor":new __v7(ctx),"parser_program":new __v8(ctx)}));
 	},
 	/**
 	 * Parse file and convert to BaseOpCode
 	 */
-	parse: function(__ctx, parser, content)
+	parse: function(ctx, parser, content)
 	{
-		parser = this.reset(__ctx, parser);
-		parser = this.setContent(__ctx, parser, content);
-		return parser.parser_program.constructor.readProgram(__ctx, parser);
+		parser = this.reset(ctx, parser);
+		parser = this.setContent(ctx, parser, content);
+		return parser.parser_program.constructor.readProgram(ctx, parser);
 	},
 	/* ======================= Class Init Functions ======================= */
 	getCurrentNamespace: function()
@@ -154,12 +154,12 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 	{
 		return "Bayrell.Lang.CoreParser";
 	},
-	getClassInfo: function(__ctx)
+	getClassInfo: function(ctx)
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
 		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
-		return new IntrospectionInfo(__ctx, {
+		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
 			"name": "Bayrell.Lang.LangBay.ParserBay",
@@ -167,7 +167,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 			]),
 		});
 	},
-	getFieldsList: function(__ctx, f)
+	getFieldsList: function(ctx, f)
 	{
 		var a = [];
 		if (f==undefined) f=0;
@@ -191,17 +191,125 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 		}
 		return use("Runtime.Collection").from(a);
 	},
-	getFieldInfoByName: function(__ctx,field_name)
+	getFieldInfoByName: function(ctx,field_name)
 	{
+		var Collection = use("Runtime.Collection");
+		var Dict = use("Runtime.Dict");
+		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
+		if (field_name == "vars") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "uses") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "current_namespace") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "current_class") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "current_namespace_name") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "current_class_name") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "current_class_kind") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "find_identifier") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "skip_comments") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "parser_base") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "parser_expression") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "parser_html") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "parser_operator") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "parser_preprocessor") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "parser_program") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
 		return null;
 	},
-	getMethodsList: function(__ctx)
+	getMethodsList: function(ctx)
 	{
 		var a = [
 		];
 		return use("Runtime.Collection").from(a);
 	},
-	getMethodInfoByName: function(__ctx,field_name)
+	getMethodInfoByName: function(ctx,field_name)
 	{
 		return null;
 	},

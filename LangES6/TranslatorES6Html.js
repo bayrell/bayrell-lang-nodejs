@@ -3,7 +3,7 @@ var use = require('bayrell').use;
 /*!
  *  Bayrell Language
  *
- *  (c) Copyright 2016-2019 "Ildar Bikmamatov" <support@bayrell.org>
+ *  (c) Copyright 2016-2020 "Ildar Bikmamatov" <support@bayrell.org>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -20,25 +20,25 @@ var use = require('bayrell').use;
 if (typeof Bayrell == 'undefined') Bayrell = {};
 if (typeof Bayrell.Lang == 'undefined') Bayrell.Lang = {};
 if (typeof Bayrell.Lang.LangES6 == 'undefined') Bayrell.Lang.LangES6 = {};
-Bayrell.Lang.LangES6.TranslatorES6Html = function(__ctx)
+Bayrell.Lang.LangES6.TranslatorES6Html = function(ctx)
 {
 };
 Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html.prototype,
 {
-	assignObject: function(__ctx,o)
+	assignObject: function(ctx,o)
 	{
 		if (o instanceof use("Bayrell.Lang.LangES6.TranslatorES6Html"))
 		{
 		}
 	},
-	assignValue: function(__ctx,k,v)
+	assignValue: function(ctx,k,v)
 	{
 	},
-	takeValue: function(__ctx,k,d)
+	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
 	},
-	getClassName: function(__ctx)
+	getClassName: function(ctx)
 	{
 		return "Bayrell.Lang.LangES6.TranslatorES6Html";
 	},
@@ -48,37 +48,63 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 	/**
 	 * Is component
 	 */
-	isComponent: function(__ctx, tag_name)
+	isComponent: function(ctx, tag_name)
 	{
+		if (tag_name == "")
+		{
+			return false;
+		}
 		var __v0 = use("Runtime.rs");
-		var ch1 = __v0.substr(__ctx, tag_name, 0, 1);
+		var ch1 = __v0.substr(ctx, tag_name, 0, 1);
 		var __v0 = use("Runtime.rs");
-		var ch2 = __v0.strtoupper(__ctx, ch1);
+		var ch2 = __v0.strtoupper(ctx, ch1);
 		return ch1 == "{" || ch1 == ch2;
 	},
 	/**
 	 * Translator html template
 	 */
-	OpHtmlAttrs: function(__ctx, t, attrs)
+	OpHtmlAttrs: function(ctx, t, attrs)
 	{
 		var attr_s = "null";
-		var attrs = attrs.map(__ctx, (__ctx, attr) => 
+		var v_model = "";
+		var __v0 = use("Runtime.lib");
+		var model = attrs.findItem(ctx, __v0.equalAttr(ctx, "key", "@model"));
+		if (!model)
+		{
+			var __v0 = use("Runtime.lib");
+			var bind = attrs.findItem(ctx, __v0.equalAttr(ctx, "key", "@bind"));
+			if (bind)
+			{
+				var res = t.expression.constructor.Expression(ctx, t, bind.value);
+				t = res[0];
+				v_model = "model[" + use("Runtime.rtl").toStr(res[1]) + use("Runtime.rtl").toStr("]");
+			}
+		}
+		var attrs = attrs.map(ctx, (ctx, attr) => 
 		{
 			var attr_key = attr.key;
 			var __v0 = use("Runtime.rs");
-			var ch = __v0.substr(__ctx, attr_key, 0, 1);
+			var ch = __v0.substr(ctx, attr_key, 0, 1);
 			var __v0 = use("Bayrell.Lang.OpCodes.OpString");
 			if (attr_key == "@class" && attr.value instanceof __v0)
 			{
-				return "\"class\":" + use("Runtime.rtl").toStr("this.getCssName(__ctx, ") + use("Runtime.rtl").toStr(t.expression.constructor.toString(__ctx, attr.value.value)) + use("Runtime.rtl").toStr(")");
+				return "\"class\":" + use("Runtime.rtl").toStr("this.getCssName(ctx, ") + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, attr.value.value)) + use("Runtime.rtl").toStr(")");
 			}
 			var __v0 = use("Runtime.rs");
-			if (__v0.substr(__ctx, attr_key, 0, 7) == "@event:")
+			if (__v0.substr(ctx, attr_key, 0, 7) == "@event:")
 			{
 				var __v1 = use("Runtime.rs");
-				var event_name = __v1.substr(__ctx, attr_key, 7);
-				event_name = t.expression.constructor.findModuleName(__ctx, t, event_name);
+				var event_name = __v1.substr(ctx, attr_key, 7);
+				event_name = t.expression.constructor.findModuleName(ctx, t, event_name);
 				attr_key = "@event:" + use("Runtime.rtl").toStr(event_name);
+			}
+			var __v0 = use("Runtime.rs");
+			if (__v0.substr(ctx, attr_key, 0, 12) == "@eventAsync:")
+			{
+				var __v1 = use("Runtime.rs");
+				var event_name = __v1.substr(ctx, attr_key, 12);
+				event_name = t.expression.constructor.findModuleName(ctx, t, event_name);
+				attr_key = "@eventAsync:" + use("Runtime.rtl").toStr(event_name);
 			}
 			var __v0 = use("Bayrell.Lang.OpCodes.OpHtmlValue");
 			if (attr.value instanceof __v0)
@@ -87,71 +113,99 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 				var __v2 = use("Bayrell.Lang.OpCodes.OpHtmlValue");
 				if (attr.value.kind == __v1.KIND_RAW)
 				{
-					var res = t.expression.constructor.Expression(__ctx, t, attr.value.value);
+					var res = t.expression.constructor.Expression(ctx, t, attr.value.value);
 					t = res[0];
-					return t.expression.constructor.toString(__ctx, attr_key) + use("Runtime.rtl").toStr(":") + use("Runtime.rtl").toStr(res[1]);
+					return t.expression.constructor.toString(ctx, attr_key) + use("Runtime.rtl").toStr(":") + use("Runtime.rtl").toStr(res[1]);
 				}
 				else if (attr.value.kind == __v2.KIND_JSON)
 				{
-					var res = t.expression.constructor.Expression(__ctx, t, attr.value.value);
+					var res = t.expression.constructor.Expression(ctx, t, attr.value.value);
 					t = res[0];
 					var value = res[1];
-					value = "static::json_encode(__ctx, " + use("Runtime.rtl").toStr(value) + use("Runtime.rtl").toStr(")");
-					return t.expression.constructor.toString(__ctx, attr_key) + use("Runtime.rtl").toStr(":") + use("Runtime.rtl").toStr(value);
+					value = t.expression.constructor.useModuleName(ctx, t, "RenderHelper") + use("Runtime.rtl").toStr(".json_encode(ctx, ") + use("Runtime.rtl").toStr(value) + use("Runtime.rtl").toStr(")");
+					return t.expression.constructor.toString(ctx, attr_key) + use("Runtime.rtl").toStr(":") + use("Runtime.rtl").toStr(value);
 				}
 			}
-			var res = t.expression.constructor.Expression(__ctx, t, attr.value);
+			var res = t.expression.constructor.Expression(ctx, t, attr.value);
 			t = res[0];
 			var value = res[1];
-			return t.expression.constructor.toString(__ctx, attr_key) + use("Runtime.rtl").toStr(":") + use("Runtime.rtl").toStr(res[1]);
+			if (attr_key == "@bind" && v_model != "")
+			{
+				var s = "";
+				s = t.expression.constructor.toString(ctx, attr_key) + use("Runtime.rtl").toStr(":") + use("Runtime.rtl").toStr(res[1]) + use("Runtime.rtl").toStr(",");
+				s += use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, "@model") + use("Runtime.rtl").toStr(":") + use("Runtime.rtl").toStr(v_model));
+				return s;
+			}
+			return t.expression.constructor.toString(ctx, attr_key) + use("Runtime.rtl").toStr(":") + use("Runtime.rtl").toStr(res[1]);
 		});
-		attrs = attrs.filter(__ctx, (__ctx, s) => 
+		attrs = attrs.filter(ctx, (ctx, s) => 
 		{
 			return s != "";
 		});
-		if (attrs.count(__ctx) > 0)
+		if (attrs.count(ctx) > 0)
 		{
 			var __v0 = use("Runtime.rs");
-			attr_s = "{" + use("Runtime.rtl").toStr(__v0.join(__ctx, ",", attrs)) + use("Runtime.rtl").toStr("}");
+			attr_s = "{" + use("Runtime.rtl").toStr(__v0.join(ctx, ",", attrs)) + use("Runtime.rtl").toStr("}");
 		}
 		return use("Runtime.Collection").from([t,attr_s]);
 	},
 	/**
 	 * Translator html template
 	 */
-	OpHtmlTag: function(__ctx, t, op_code, item_pos)
+	OpHtmlTagEmpty: function(ctx, t, op_code, item_pos)
 	{
-		var is_component = this.isComponent(__ctx, op_code.tag_name);
+		var __v0 = use("Runtime.rtl");
+		var f = __v0.method(ctx, this.getCurrentClassName(ctx), "OpHtmlItems");
+		var res = t.constructor.saveOpCodeCall(ctx, t, f, use("Runtime.Collection").from([op_code.items]));
+		t = res[0];
+		var content = res[1];
+		var var_name = res[2];
+		var res = t.constructor.addSaveOpCode(ctx, t, use("Runtime.Dict").from({"op_code":op_code,"var_name":var_name,"content":content}));
+		t = res[0];
+		return use("Runtime.Collection").from([t,var_name]);
+	},
+	/**
+	 * Translator html template
+	 */
+	OpHtmlTag: function(ctx, t, op_code, item_pos)
+	{
+		if (op_code.tag_name == "")
+		{
+			return this.OpHtmlTagEmpty(ctx, t, op_code, item_pos);
+		}
+		var is_component = this.isComponent(ctx, op_code.tag_name);
+		var tag_name = "";
 		var content = "";
 		if (is_component)
 		{
-			content = t.s(__ctx, "/* Component '" + use("Runtime.rtl").toStr(op_code.tag_name) + use("Runtime.rtl").toStr("' */"));
+			content = t.s(ctx, "/* Component '" + use("Runtime.rtl").toStr(op_code.tag_name) + use("Runtime.rtl").toStr("' */"));
+			tag_name = t.expression.constructor.toString(ctx, t.expression.constructor.findModuleName(ctx, t, op_code.tag_name));
 		}
 		else
 		{
-			content = t.s(__ctx, "/* Element '" + use("Runtime.rtl").toStr(op_code.tag_name) + use("Runtime.rtl").toStr("' */"));
+			content = t.s(ctx, "/* Element '" + use("Runtime.rtl").toStr(op_code.tag_name) + use("Runtime.rtl").toStr("' */"));
+			tag_name = t.expression.constructor.toString(ctx, op_code.tag_name);
 		}
-		var res = t.constructor.incSaveOpCode(__ctx, t);
+		var res = t.constructor.incSaveOpCode(ctx, t);
 		t = res[0];
 		var var_name = res[1];
-		var tag_name = t.expression.constructor.toString(__ctx, op_code.tag_name);
-		var res = this.OpHtmlAttrs(__ctx, t, op_code.attrs);
+		var res = this.OpHtmlAttrs(ctx, t, op_code.attrs);
 		t = res[0];
 		var attrs = res[1];
 		var var_name_content = var_name + use("Runtime.rtl").toStr("_content");
-		if (op_code.items != null && op_code.items.items.count(__ctx) > 0)
+		if (op_code.items != null && op_code.items.items.count(ctx) > 0)
 		{
-			content += use("Runtime.rtl").toStr(t.s(__ctx, "var " + use("Runtime.rtl").toStr(var_name_content) + use("Runtime.rtl").toStr(" = (control) =>")));
-			content += use("Runtime.rtl").toStr(t.s(__ctx, "{"));
-			t = t.levelInc(__ctx);
+			content += use("Runtime.rtl").toStr(t.s(ctx, "var " + use("Runtime.rtl").toStr(var_name_content) + use("Runtime.rtl").toStr(" = (control) =>")));
+			content += use("Runtime.rtl").toStr(t.s(ctx, "{"));
+			t = t.levelInc(ctx);
 			var __v0 = use("Runtime.rtl");
-			var f = __v0.method(__ctx, this.getCurrentClassName(__ctx), "OpHtmlItems");
-			var res = t.constructor.saveOpCodeCall(__ctx, t, f, use("Runtime.Collection").from([op_code.items]));
+			var f = __v0.method(ctx, this.getCurrentClassName(ctx), "OpHtmlItems");
+			var res = t.constructor.saveOpCodeCall(ctx, t, f, use("Runtime.Collection").from([op_code.items]));
 			t = res[0];
 			content += use("Runtime.rtl").toStr(res[1]);
-			content += use("Runtime.rtl").toStr(t.s(__ctx, "return " + use("Runtime.rtl").toStr(res[2]) + use("Runtime.rtl").toStr(";")));
-			t = t.levelDec(__ctx);
-			content += use("Runtime.rtl").toStr(t.s(__ctx, "};"));
+			content += use("Runtime.rtl").toStr(t.s(ctx, "return " + use("Runtime.rtl").toStr(res[2]) + use("Runtime.rtl").toStr(";")));
+			t = t.levelDec(ctx);
+			content += use("Runtime.rtl").toStr(t.s(ctx, "};"));
 		}
 		else
 		{
@@ -161,51 +215,52 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 		{
 			if (op_code.op_code_name)
 			{
-				var res = t.expression.constructor.Expression(__ctx, t, op_code.op_code_name);
+				var res = t.expression.constructor.Expression(ctx, t, op_code.op_code_name);
 				t = res[0];
 				tag_name = res[1];
 			}
-			content += use("Runtime.rtl").toStr(t.s(__ctx, "var " + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_elem = Runtime.UI.Drivers.RenderDriver.component(") + use("Runtime.rtl").toStr("layout,") + use("Runtime.rtl").toStr(tag_name) + use("Runtime.rtl").toStr(",") + use("Runtime.rtl").toStr(attrs) + use("Runtime.rtl").toStr(",") + use("Runtime.rtl").toStr(var_name_content) + use("Runtime.rtl").toStr(",") + use("Runtime.rtl").toStr("control,") + use("Runtime.rtl").toStr(item_pos) + use("Runtime.rtl").toStr(");")));
+			content += use("Runtime.rtl").toStr(t.s(ctx, "var " + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_elem = Runtime.Web.Drivers.RenderDriver.component(") + use("Runtime.rtl").toStr("layout,") + use("Runtime.rtl").toStr(tag_name) + use("Runtime.rtl").toStr(",") + use("Runtime.rtl").toStr(attrs) + use("Runtime.rtl").toStr(",") + use("Runtime.rtl").toStr(var_name_content) + use("Runtime.rtl").toStr(",") + use("Runtime.rtl").toStr("control,") + use("Runtime.rtl").toStr(item_pos) + use("Runtime.rtl").toStr(");")));
 		}
 		else
 		{
-			content += use("Runtime.rtl").toStr(t.s(__ctx, "var " + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_elem = Runtime.UI.Drivers.RenderDriver.elem(") + use("Runtime.rtl").toStr("layout,") + use("Runtime.rtl").toStr(tag_name) + use("Runtime.rtl").toStr(",") + use("Runtime.rtl").toStr(attrs) + use("Runtime.rtl").toStr(",") + use("Runtime.rtl").toStr(var_name_content) + use("Runtime.rtl").toStr(",") + use("Runtime.rtl").toStr("control,") + use("Runtime.rtl").toStr(item_pos) + use("Runtime.rtl").toStr(");")));
+			content += use("Runtime.rtl").toStr(t.s(ctx, "var " + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_elem = Runtime.Web.Drivers.RenderDriver.elem(") + use("Runtime.rtl").toStr("layout,") + use("Runtime.rtl").toStr(tag_name) + use("Runtime.rtl").toStr(",") + use("Runtime.rtl").toStr(attrs) + use("Runtime.rtl").toStr(",") + use("Runtime.rtl").toStr(var_name_content) + use("Runtime.rtl").toStr(",") + use("Runtime.rtl").toStr("control,") + use("Runtime.rtl").toStr(item_pos) + use("Runtime.rtl").toStr(");")));
 		}
-		var res = t.constructor.addSaveOpCode(__ctx, t, use("Runtime.Dict").from({"op_code":op_code,"var_name":var_name,"content":content}));
+		var res = t.constructor.addSaveOpCode(ctx, t, use("Runtime.Dict").from({"op_code":op_code,"var_name":var_name,"content":content}));
 		t = res[0];
 		return use("Runtime.Collection").from([t,var_name + use("Runtime.rtl").toStr("_elem")]);
 	},
 	/**
 	 * Translator html items
 	 */
-	OpHtmlItems: function(__ctx, t, op_code)
+	OpHtmlItems: function(ctx, t, op_code)
 	{
-		if (op_code.items.count(__ctx) == 0)
+		if (op_code.items.count(ctx) == 0)
 		{
 			return use("Runtime.Collection").from([t,""]);
 		}
-		var res = t.constructor.incSaveOpCode(__ctx, t);
+		var res = t.constructor.incSaveOpCode(ctx, t);
 		t = res[0];
 		var var_name = res[1];
-		var content = t.s(__ctx, "/* Items */");
-		content += use("Runtime.rtl").toStr(t.s(__ctx, "var " + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr(" = [];")));
-		for (var i = 0;i < op_code.items.count(__ctx);i++)
+		var content = t.s(ctx, "/* Items */");
+		content += use("Runtime.rtl").toStr(t.s(ctx, "var " + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr(" = [];")));
+		for (var i = 0;i < op_code.items.count(ctx);i++)
 		{
-			var item = op_code.items.item(__ctx, i);
+			var item = op_code.items.item(ctx, i);
 			var item_value = "";
 			var is_text = false;
+			var is_html = false;
 			var is_raw = false;
 			var __v0 = use("Bayrell.Lang.OpCodes.OpHtmlContent");
 			var __v1 = use("Bayrell.Lang.OpCodes.OpHtmlTag");
 			var __v2 = use("Bayrell.Lang.OpCodes.OpHtmlValue");
 			if (item instanceof __v0)
 			{
-				item_value = t.expression.constructor.toString(__ctx, item.value);
+				item_value = t.expression.constructor.toString(ctx, item.value);
 				is_text = true;
 			}
 			else if (item instanceof __v1)
 			{
-				var res = this.OpHtmlTag(__ctx, t, item, i);
+				var res = this.OpHtmlTag(ctx, t, item, i);
 				t = res[0];
 				item_value = res[1];
 			}
@@ -213,25 +268,33 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 			{
 				var __v3 = use("Bayrell.Lang.OpCodes.OpHtmlValue");
 				var __v4 = use("Bayrell.Lang.OpCodes.OpHtmlValue");
+				var __v5 = use("Bayrell.Lang.OpCodes.OpHtmlValue");
 				if (item.kind == __v3.KIND_RAW)
 				{
-					var res = t.expression.constructor.Expression(__ctx, t, item.value);
+					var res = t.expression.constructor.Expression(ctx, t, item.value);
 					t = res[0];
 					item_value = res[1];
 					is_raw = true;
 				}
-				else if (item.kind == __v4.KIND_JSON)
+				else if (item.kind == __v4.KIND_HTML)
 				{
-					var res = t.expression.constructor.Expression(__ctx, t, item.value);
+					var res = t.expression.constructor.Expression(ctx, t, item.value);
 					t = res[0];
 					item_value = res[1];
-					item_value = "this.json_encode(__ctx, " + use("Runtime.rtl").toStr(item_value) + use("Runtime.rtl").toStr(")");
+					is_html = true;
+				}
+				else if (item.kind == __v5.KIND_JSON)
+				{
+					var res = t.expression.constructor.Expression(ctx, t, item.value);
+					t = res[0];
+					item_value = res[1];
+					item_value = "this.json_encode(ctx, " + use("Runtime.rtl").toStr(item_value) + use("Runtime.rtl").toStr(")");
 					is_text = true;
 				}
 			}
 			else
 			{
-				var res = t.expression.constructor.Expression(__ctx, t, item);
+				var res = t.expression.constructor.Expression(ctx, t, item);
 				t = res[0];
 				item_value = res[1];
 				is_text = true;
@@ -242,15 +305,19 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 			}
 			if (is_text)
 			{
-				item_value = "Runtime.UI.Drivers.RenderDriver.text(" + use("Runtime.rtl").toStr("layout,") + use("Runtime.rtl").toStr(item_value) + use("Runtime.rtl").toStr(",") + use("Runtime.rtl").toStr("control,") + use("Runtime.rtl").toStr(i) + use("Runtime.rtl").toStr(")");
+				item_value = "Runtime.Web.Drivers.RenderDriver.text(" + use("Runtime.rtl").toStr("layout,") + use("Runtime.rtl").toStr(item_value) + use("Runtime.rtl").toStr(",") + use("Runtime.rtl").toStr("control,") + use("Runtime.rtl").toStr(i) + use("Runtime.rtl").toStr(")");
+			}
+			else if (is_html)
+			{
+				item_value = "Runtime.Web.Drivers.RenderDriver.html(" + use("Runtime.rtl").toStr("layout,") + use("Runtime.rtl").toStr(item_value) + use("Runtime.rtl").toStr(",") + use("Runtime.rtl").toStr("control,") + use("Runtime.rtl").toStr(i) + use("Runtime.rtl").toStr(")");
 			}
 			else if (is_raw)
 			{
-				item_value = "Runtime.UI.Drivers.RenderDriver.raw(" + use("Runtime.rtl").toStr("layout,") + use("Runtime.rtl").toStr(item_value) + use("Runtime.rtl").toStr(",") + use("Runtime.rtl").toStr("control,") + use("Runtime.rtl").toStr(i) + use("Runtime.rtl").toStr(")");
+				item_value = "Runtime.Web.Drivers.RenderDriver.raw(" + use("Runtime.rtl").toStr("layout,") + use("Runtime.rtl").toStr(item_value) + use("Runtime.rtl").toStr(",") + use("Runtime.rtl").toStr("control,") + use("Runtime.rtl").toStr(i) + use("Runtime.rtl").toStr(")");
 			}
-			content += use("Runtime.rtl").toStr(t.s(__ctx, var_name + use("Runtime.rtl").toStr(".push(") + use("Runtime.rtl").toStr(item_value) + use("Runtime.rtl").toStr(");")));
+			content += use("Runtime.rtl").toStr(t.s(ctx, var_name + use("Runtime.rtl").toStr(".push(") + use("Runtime.rtl").toStr(item_value) + use("Runtime.rtl").toStr(");")));
 		}
-		var res = t.constructor.addSaveOpCode(__ctx, t, use("Runtime.Dict").from({"op_code":op_code,"var_name":var_name,"content":content}));
+		var res = t.constructor.addSaveOpCode(ctx, t, use("Runtime.Dict").from({"op_code":op_code,"var_name":var_name,"content":content}));
 		t = res[0];
 		return use("Runtime.Collection").from([t,var_name]);
 	},
@@ -267,12 +334,12 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 	{
 		return "";
 	},
-	getClassInfo: function(__ctx)
+	getClassInfo: function(ctx)
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
 		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
-		return new IntrospectionInfo(__ctx, {
+		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Bayrell.Lang.LangES6.TranslatorES6Html",
 			"name": "Bayrell.Lang.LangES6.TranslatorES6Html",
@@ -280,23 +347,26 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 			]),
 		});
 	},
-	getFieldsList: function(__ctx, f)
+	getFieldsList: function(ctx, f)
 	{
 		var a = [];
 		if (f==undefined) f=0;
 		return use("Runtime.Collection").from(a);
 	},
-	getFieldInfoByName: function(__ctx,field_name)
+	getFieldInfoByName: function(ctx,field_name)
 	{
+		var Collection = use("Runtime.Collection");
+		var Dict = use("Runtime.Dict");
+		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
 		return null;
 	},
-	getMethodsList: function(__ctx)
+	getMethodsList: function(ctx)
 	{
 		var a = [
 		];
 		return use("Runtime.Collection").from(a);
 	},
-	getMethodInfoByName: function(__ctx,field_name)
+	getMethodInfoByName: function(ctx,field_name)
 	{
 		return null;
 	},

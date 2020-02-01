@@ -3,7 +3,7 @@ var use = require('bayrell').use;
 /*!
  *  Bayrell Language
  *
- *  (c) Copyright 2016-2019 "Ildar Bikmamatov" <support@bayrell.org>
+ *  (c) Copyright 2016-2020 "Ildar Bikmamatov" <support@bayrell.org>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ var use = require('bayrell').use;
  */
 if (typeof Bayrell == 'undefined') Bayrell = {};
 if (typeof Bayrell.Lang == 'undefined') Bayrell.Lang = {};
-Bayrell.Lang.CoreToken = function(__ctx)
+Bayrell.Lang.CoreToken = function(ctx)
 {
 	use("Runtime.CoreStruct").apply(this, arguments);
 };
@@ -27,7 +27,7 @@ Bayrell.Lang.CoreToken.prototype = Object.create(use("Runtime.CoreStruct").proto
 Bayrell.Lang.CoreToken.prototype.constructor = Bayrell.Lang.CoreToken;
 Object.assign(Bayrell.Lang.CoreToken.prototype,
 {
-	_init: function(__ctx)
+	_init: function(ctx)
 	{
 		var defProp = use('Runtime.rtl').defProp;
 		var a = Object.getOwnPropertyNames(this);
@@ -41,9 +41,9 @@ Object.assign(Bayrell.Lang.CoreToken.prototype,
 		if (a.indexOf("caret_end") == -1) defProp(this, "caret_end");
 		this.__eof = false;
 		if (a.indexOf("eof") == -1) defProp(this, "eof");
-		use("Runtime.CoreStruct").prototype._init.call(this,__ctx);
+		use("Runtime.CoreStruct").prototype._init.call(this,ctx);
 	},
-	assignObject: function(__ctx,o)
+	assignObject: function(ctx,o)
 	{
 		if (o instanceof use("Bayrell.Lang.CoreToken"))
 		{
@@ -53,18 +53,18 @@ Object.assign(Bayrell.Lang.CoreToken.prototype,
 			this.__caret_end = o.__caret_end;
 			this.__eof = o.__eof;
 		}
-		use("Runtime.CoreStruct").prototype.assignObject.call(this,__ctx,o);
+		use("Runtime.CoreStruct").prototype.assignObject.call(this,ctx,o);
 	},
-	assignValue: function(__ctx,k,v)
+	assignValue: function(ctx,k,v)
 	{
 		if (k == "kind")this.__kind = v;
 		else if (k == "content")this.__content = v;
 		else if (k == "caret_start")this.__caret_start = v;
 		else if (k == "caret_end")this.__caret_end = v;
 		else if (k == "eof")this.__eof = v;
-		else use("Runtime.CoreStruct").prototype.assignValue.call(this,__ctx,k,v);
+		else use("Runtime.CoreStruct").prototype.assignValue.call(this,ctx,k,v);
 	},
-	takeValue: function(__ctx,k,d)
+	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
 		if (k == "kind")return this.__kind;
@@ -72,9 +72,9 @@ Object.assign(Bayrell.Lang.CoreToken.prototype,
 		else if (k == "caret_start")return this.__caret_start;
 		else if (k == "caret_end")return this.__caret_end;
 		else if (k == "eof")return this.__eof;
-		return use("Runtime.CoreStruct").prototype.takeValue.call(this,__ctx,k,d);
+		return use("Runtime.CoreStruct").prototype.takeValue.call(this,ctx,k,d);
 	},
-	getClassName: function(__ctx)
+	getClassName: function(ctx)
 	{
 		return "Bayrell.Lang.CoreToken";
 	},
@@ -95,12 +95,12 @@ Object.assign(Bayrell.Lang.CoreToken,
 	{
 		return "Runtime.CoreStruct";
 	},
-	getClassInfo: function(__ctx)
+	getClassInfo: function(ctx)
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
 		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
-		return new IntrospectionInfo(__ctx, {
+		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Bayrell.Lang.CoreToken",
 			"name": "Bayrell.Lang.CoreToken",
@@ -108,7 +108,7 @@ Object.assign(Bayrell.Lang.CoreToken,
 			]),
 		});
 	},
-	getFieldsList: function(__ctx, f)
+	getFieldsList: function(ctx, f)
 	{
 		var a = [];
 		if (f==undefined) f=0;
@@ -122,17 +122,55 @@ Object.assign(Bayrell.Lang.CoreToken,
 		}
 		return use("Runtime.Collection").from(a);
 	},
-	getFieldInfoByName: function(__ctx,field_name)
+	getFieldInfoByName: function(ctx,field_name)
 	{
+		var Collection = use("Runtime.Collection");
+		var Dict = use("Runtime.Dict");
+		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
+		if (field_name == "kind") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.CoreToken",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "content") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.CoreToken",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "caret_start") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.CoreToken",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "caret_end") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.CoreToken",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "eof") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.CoreToken",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
 		return null;
 	},
-	getMethodsList: function(__ctx)
+	getMethodsList: function(ctx)
 	{
 		var a = [
 		];
 		return use("Runtime.Collection").from(a);
 	},
-	getMethodInfoByName: function(__ctx,field_name)
+	getMethodInfoByName: function(ctx,field_name)
 	{
 		return null;
 	},

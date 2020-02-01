@@ -20,7 +20,7 @@ var use = require('bayrell').use;
 if (typeof Bayrell == 'undefined') Bayrell = {};
 if (typeof Bayrell.Lang == 'undefined') Bayrell.Lang = {};
 if (typeof Bayrell.Lang.OpCodes == 'undefined') Bayrell.Lang.OpCodes = {};
-Bayrell.Lang.OpCodes.OpHtmlValue = function(__ctx)
+Bayrell.Lang.OpCodes.OpHtmlValue = function(ctx)
 {
 	use("Bayrell.Lang.OpCodes.BaseOpCode").apply(this, arguments);
 };
@@ -28,7 +28,7 @@ Bayrell.Lang.OpCodes.OpHtmlValue.prototype = Object.create(use("Bayrell.Lang.OpC
 Bayrell.Lang.OpCodes.OpHtmlValue.prototype.constructor = Bayrell.Lang.OpCodes.OpHtmlValue;
 Object.assign(Bayrell.Lang.OpCodes.OpHtmlValue.prototype,
 {
-	_init: function(__ctx)
+	_init: function(ctx)
 	{
 		var defProp = use('Runtime.rtl').defProp;
 		var a = Object.getOwnPropertyNames(this);
@@ -38,9 +38,9 @@ Object.assign(Bayrell.Lang.OpCodes.OpHtmlValue.prototype,
 		if (a.indexOf("kind") == -1) defProp(this, "kind");
 		this.__value = null;
 		if (a.indexOf("value") == -1) defProp(this, "value");
-		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,__ctx);
+		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,ctx);
 	},
-	assignObject: function(__ctx,o)
+	assignObject: function(ctx,o)
 	{
 		if (o instanceof use("Bayrell.Lang.OpCodes.OpHtmlValue"))
 		{
@@ -48,24 +48,24 @@ Object.assign(Bayrell.Lang.OpCodes.OpHtmlValue.prototype,
 			this.__kind = o.__kind;
 			this.__value = o.__value;
 		}
-		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,__ctx,o);
+		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
 	},
-	assignValue: function(__ctx,k,v)
+	assignValue: function(ctx,k,v)
 	{
 		if (k == "op")this.__op = v;
 		else if (k == "kind")this.__kind = v;
 		else if (k == "value")this.__value = v;
-		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,__ctx,k,v);
+		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
 	},
-	takeValue: function(__ctx,k,d)
+	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
 		if (k == "op")return this.__op;
 		else if (k == "kind")return this.__kind;
 		else if (k == "value")return this.__value;
-		return use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.takeValue.call(this,__ctx,k,d);
+		return use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.takeValue.call(this,ctx,k,d);
 	},
-	getClassName: function(__ctx)
+	getClassName: function(ctx)
 	{
 		return "Bayrell.Lang.OpCodes.OpHtmlValue";
 	},
@@ -75,6 +75,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpHtmlValue,
 {
 	KIND_RAW: "raw",
 	KIND_JSON: "json",
+	KIND_HTML: "html",
 	/* ======================= Class Init Functions ======================= */
 	getCurrentNamespace: function()
 	{
@@ -88,12 +89,12 @@ Object.assign(Bayrell.Lang.OpCodes.OpHtmlValue,
 	{
 		return "Bayrell.Lang.OpCodes.BaseOpCode";
 	},
-	getClassInfo: function(__ctx)
+	getClassInfo: function(ctx)
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
 		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
-		return new IntrospectionInfo(__ctx, {
+		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Bayrell.Lang.OpCodes.OpHtmlValue",
 			"name": "Bayrell.Lang.OpCodes.OpHtmlValue",
@@ -101,7 +102,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpHtmlValue,
 			]),
 		});
 	},
-	getFieldsList: function(__ctx, f)
+	getFieldsList: function(ctx, f)
 	{
 		var a = [];
 		if (f==undefined) f=0;
@@ -113,17 +114,62 @@ Object.assign(Bayrell.Lang.OpCodes.OpHtmlValue,
 		}
 		return use("Runtime.Collection").from(a);
 	},
-	getFieldInfoByName: function(__ctx,field_name)
+	getFieldInfoByName: function(ctx,field_name)
 	{
+		var Collection = use("Runtime.Collection");
+		var Dict = use("Runtime.Dict");
+		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
+		if (field_name == "KIND_RAW") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.OpCodes.OpHtmlValue",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "KIND_JSON") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.OpCodes.OpHtmlValue",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "KIND_HTML") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.OpCodes.OpHtmlValue",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "op") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.OpCodes.OpHtmlValue",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "kind") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.OpCodes.OpHtmlValue",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "value") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.OpCodes.OpHtmlValue",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
 		return null;
 	},
-	getMethodsList: function(__ctx)
+	getMethodsList: function(ctx)
 	{
 		var a = [
 		];
 		return use("Runtime.Collection").from(a);
 	},
-	getMethodInfoByName: function(__ctx,field_name)
+	getMethodInfoByName: function(ctx,field_name)
 	{
 		return null;
 	},

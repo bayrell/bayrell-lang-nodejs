@@ -26,7 +26,7 @@ function ObjectAssign(res, obj){
 }
 
 module.exports = {
-	VERSION: '0.8.0-alpha.9',
+	VERSION: '0.8.0',
 };
 
 }
@@ -40,7 +40,7 @@ function ObjectAssign(res, obj){
 }
 
 module.exports = {
-	VERSION: '0.8.0-alpha.9',
+	VERSION: '0.8.0',
 	'Exceptions': {
 		'ParserUnknownError': require("./Exceptions/ParserUnknownError.js"),
 	},
@@ -133,6 +133,7 @@ ObjectAssign(module.exports, {
 		'OpNumber': require("./OpCodes/OpNumber.js"),
 		'OpPipe': require("./OpCodes/OpPipe.js"),
 		'OpPreprocessorIfCode': require("./OpCodes/OpPreprocessorIfCode.js"),
+		'OpPreprocessorIfDef': require("./OpCodes/OpPreprocessorIfDef.js"),
 		'OpPreprocessorSwitch': require("./OpCodes/OpPreprocessorSwitch.js"),
 		'OpReturn': require("./OpCodes/OpReturn.js"),
 		'OpString': require("./OpCodes/OpString.js"),

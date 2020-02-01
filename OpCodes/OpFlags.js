@@ -20,7 +20,7 @@ var use = require('bayrell').use;
 if (typeof Bayrell == 'undefined') Bayrell = {};
 if (typeof Bayrell.Lang == 'undefined') Bayrell.Lang = {};
 if (typeof Bayrell.Lang.OpCodes == 'undefined') Bayrell.Lang.OpCodes = {};
-Bayrell.Lang.OpCodes.OpFlags = function(__ctx)
+Bayrell.Lang.OpCodes.OpFlags = function(ctx)
 {
 	use("Runtime.CoreStruct").apply(this, arguments);
 };
@@ -31,16 +31,16 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags.prototype,
 	/**
 	 * Read is Flag
 	 */
-	isFlag: function(__ctx, name)
+	isFlag: function(ctx, name)
 	{
 		var __v0 = use("Bayrell.Lang.OpCodes.OpFlags");
-		if (!__v0.hasFlag(__ctx, name))
+		if (!__v0.hasFlag(ctx, name))
 		{
 			return false;
 		}
-		return this.takeValue(__ctx, "p_" + use("Runtime.rtl").toStr(name));
+		return this.takeValue(ctx, "p_" + use("Runtime.rtl").toStr(name));
 	},
-	_init: function(__ctx)
+	_init: function(ctx)
 	{
 		var defProp = use('Runtime.rtl').defProp;
 		var a = Object.getOwnPropertyNames(this);
@@ -70,9 +70,11 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags.prototype,
 		if (a.indexOf("p_memorize") == -1) defProp(this, "p_memorize");
 		this.__p_lambda = false;
 		if (a.indexOf("p_lambda") == -1) defProp(this, "p_lambda");
-		use("Runtime.CoreStruct").prototype._init.call(this,__ctx);
+		this.__p_pure = false;
+		if (a.indexOf("p_pure") == -1) defProp(this, "p_pure");
+		use("Runtime.CoreStruct").prototype._init.call(this,ctx);
 	},
-	assignObject: function(__ctx,o)
+	assignObject: function(ctx,o)
 	{
 		if (o instanceof use("Bayrell.Lang.OpCodes.OpFlags"))
 		{
@@ -89,10 +91,11 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags.prototype,
 			this.__p_assignable = o.__p_assignable;
 			this.__p_memorize = o.__p_memorize;
 			this.__p_lambda = o.__p_lambda;
+			this.__p_pure = o.__p_pure;
 		}
-		use("Runtime.CoreStruct").prototype.assignObject.call(this,__ctx,o);
+		use("Runtime.CoreStruct").prototype.assignObject.call(this,ctx,o);
 	},
-	assignValue: function(__ctx,k,v)
+	assignValue: function(ctx,k,v)
 	{
 		if (k == "p_async")this.__p_async = v;
 		else if (k == "p_export")this.__p_export = v;
@@ -107,9 +110,10 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags.prototype,
 		else if (k == "p_assignable")this.__p_assignable = v;
 		else if (k == "p_memorize")this.__p_memorize = v;
 		else if (k == "p_lambda")this.__p_lambda = v;
-		else use("Runtime.CoreStruct").prototype.assignValue.call(this,__ctx,k,v);
+		else if (k == "p_pure")this.__p_pure = v;
+		else use("Runtime.CoreStruct").prototype.assignValue.call(this,ctx,k,v);
 	},
-	takeValue: function(__ctx,k,d)
+	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
 		if (k == "p_async")return this.__p_async;
@@ -125,9 +129,10 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags.prototype,
 		else if (k == "p_assignable")return this.__p_assignable;
 		else if (k == "p_memorize")return this.__p_memorize;
 		else if (k == "p_lambda")return this.__p_lambda;
-		return use("Runtime.CoreStruct").prototype.takeValue.call(this,__ctx,k,d);
+		else if (k == "p_pure")return this.__p_pure;
+		return use("Runtime.CoreStruct").prototype.takeValue.call(this,ctx,k,d);
 	},
-	getClassName: function(__ctx)
+	getClassName: function(ctx)
 	{
 		return "Bayrell.Lang.OpCodes.OpFlags";
 	},
@@ -138,16 +143,16 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags,
 	/**
 	 * Get flags
 	 */
-	getFlags: function(__ctx)
+	getFlags: function(ctx)
 	{
-		return use("Runtime.Collection").from(["async","export","static","const","public","private","declare","protected","serializable","cloneable","assignable","memorize","lambda"]);
+		return use("Runtime.Collection").from(["async","export","static","const","public","private","declare","protected","serializable","cloneable","assignable","memorize","lambda","pure"]);
 	},
 	/**
 	 * Get flags
 	 */
-	hasFlag: function(__ctx, flag_name)
+	hasFlag: function(ctx, flag_name)
 	{
-		if (flag_name == "async" || flag_name == "export" || flag_name == "static" || flag_name == "const" || flag_name == "public" || flag_name == "private" || flag_name == "declare" || flag_name == "protected" || flag_name == "serializable" || flag_name == "cloneable" || flag_name == "assignable" || flag_name == "memorize" || flag_name == "lambda")
+		if (flag_name == "async" || flag_name == "export" || flag_name == "static" || flag_name == "const" || flag_name == "public" || flag_name == "private" || flag_name == "declare" || flag_name == "protected" || flag_name == "serializable" || flag_name == "cloneable" || flag_name == "assignable" || flag_name == "memorize" || flag_name == "lambda" || flag_name == "pure")
 		{
 			return true;
 		}
@@ -166,12 +171,12 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags,
 	{
 		return "Runtime.CoreStruct";
 	},
-	getClassInfo: function(__ctx)
+	getClassInfo: function(ctx)
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
 		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
-		return new IntrospectionInfo(__ctx, {
+		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
 			"name": "Bayrell.Lang.OpCodes.OpFlags",
@@ -179,7 +184,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags,
 			]),
 		});
 	},
-	getFieldsList: function(__ctx, f)
+	getFieldsList: function(ctx, f)
 	{
 		var a = [];
 		if (f==undefined) f=0;
@@ -198,20 +203,122 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags,
 			a.push("p_assignable");
 			a.push("p_memorize");
 			a.push("p_lambda");
+			a.push("p_pure");
 		}
 		return use("Runtime.Collection").from(a);
 	},
-	getFieldInfoByName: function(__ctx,field_name)
+	getFieldInfoByName: function(ctx,field_name)
 	{
+		var Collection = use("Runtime.Collection");
+		var Dict = use("Runtime.Dict");
+		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
+		if (field_name == "p_async") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "p_export") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "p_static") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "p_const") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "p_public") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "p_private") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "p_protected") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "p_declare") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "p_serializable") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "p_cloneable") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "p_assignable") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "p_memorize") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "p_lambda") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "p_pure") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
 		return null;
 	},
-	getMethodsList: function(__ctx)
+	getMethodsList: function(ctx)
 	{
 		var a = [
 		];
 		return use("Runtime.Collection").from(a);
 	},
-	getMethodInfoByName: function(__ctx,field_name)
+	getMethodInfoByName: function(ctx,field_name)
 	{
 		return null;
 	},
