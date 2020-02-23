@@ -67,6 +67,14 @@ Object.assign(Bayrell.Lang.CoreTranslator.prototype,
 		return this.crlf + use("Runtime.rtl").toStr(__v0.str_repeat(ctx, this.indent, this.indent_level)) + use("Runtime.rtl").toStr(s);
 	},
 	/**
+	 * Output content with indent
+	 */
+	s2: function(ctx, s)
+	{
+		var __v0 = use("Runtime.rs");
+		return this.crlf + use("Runtime.rtl").toStr(__v0.str_repeat(ctx, this.indent, this.indent_level)) + use("Runtime.rtl").toStr(s);
+	},
+	/**
 	 * Output content with opcode level
 	 */
 	o: function(ctx, s, opcode_level_in, opcode_level_out)

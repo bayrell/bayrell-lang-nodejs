@@ -405,7 +405,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayHtml,
 		var caret = parser.parser_base.constructor.skipChar(ctx, parser, content, parser.caret.clone(ctx));
 		var __v0 = use("Runtime.rs");
 		var ch = __v0.substr(ctx, content.ref, caret.pos, 1);
-		while (ch != ">" && caret.pos < content_sz)
+		while (ch != "/" && ch != ">" && caret.pos < content_sz)
 		{
 			var caret_start = caret;
 			parser = parser.copy(ctx, { "caret": caret.clone(ctx) });

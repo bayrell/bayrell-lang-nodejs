@@ -58,7 +58,7 @@ Object.assign(Bayrell.Lang.ModuleDescription,
 	 */
 	getModuleVersion: function(ctx)
 	{
-		return "0.8.0";
+		return "0.8.1";
 	},
 	/**
 	 * Returns required modules
