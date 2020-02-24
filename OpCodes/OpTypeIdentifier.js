@@ -32,37 +32,34 @@ Object.assign(Bayrell.Lang.OpCodes.OpTypeIdentifier.prototype,
 	{
 		var defProp = use('Runtime.rtl').defProp;
 		var a = Object.getOwnPropertyNames(this);
-		this.__op = "op_type_identifier";
-		if (a.indexOf("op") == -1) defProp(this, "op");
-		this.__entity_name = null;
-		if (a.indexOf("entity_name") == -1) defProp(this, "entity_name");
-		this.__template = null;
-		if (a.indexOf("template") == -1) defProp(this, "template");
+		this.op = "op_type_identifier";
+		this.entity_name = null;
+		this.template = null;
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
 		if (o instanceof use("Bayrell.Lang.OpCodes.OpTypeIdentifier"))
 		{
-			this.__op = o.__op;
-			this.__entity_name = o.__entity_name;
-			this.__template = o.__template;
+			this.op = o.op;
+			this.entity_name = o.entity_name;
+			this.template = o.template;
 		}
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
-		if (k == "op")this.__op = v;
-		else if (k == "entity_name")this.__entity_name = v;
-		else if (k == "template")this.__template = v;
+		if (k == "op")this.op = v;
+		else if (k == "entity_name")this.entity_name = v;
+		else if (k == "template")this.template = v;
 		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
-		if (k == "op")return this.__op;
-		else if (k == "entity_name")return this.__entity_name;
-		else if (k == "template")return this.__template;
+		if (k == "op")return this.op;
+		else if (k == "entity_name")return this.entity_name;
+		else if (k == "template")return this.template;
 		return use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)

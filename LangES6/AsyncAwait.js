@@ -32,32 +32,30 @@ Object.assign(Bayrell.Lang.LangES6.AsyncAwait.prototype,
 	{
 		var defProp = use('Runtime.rtl').defProp;
 		var a = Object.getOwnPropertyNames(this);
-		this.__start_pos = "";
-		if (a.indexOf("start_pos") == -1) defProp(this, "start_pos");
-		this.__end_pos = "";
-		if (a.indexOf("end_pos") == -1) defProp(this, "end_pos");
+		this.start_pos = "";
+		this.end_pos = "";
 		use("Runtime.CoreStruct").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
 		if (o instanceof use("Bayrell.Lang.LangES6.AsyncAwait"))
 		{
-			this.__start_pos = o.__start_pos;
-			this.__end_pos = o.__end_pos;
+			this.start_pos = o.start_pos;
+			this.end_pos = o.end_pos;
 		}
 		use("Runtime.CoreStruct").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
-		if (k == "start_pos")this.__start_pos = v;
-		else if (k == "end_pos")this.__end_pos = v;
+		if (k == "start_pos")this.start_pos = v;
+		else if (k == "end_pos")this.end_pos = v;
 		else use("Runtime.CoreStruct").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
-		if (k == "start_pos")return this.__start_pos;
-		else if (k == "end_pos")return this.__end_pos;
+		if (k == "start_pos")return this.start_pos;
+		else if (k == "end_pos")return this.end_pos;
 		return use("Runtime.CoreStruct").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)

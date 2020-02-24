@@ -31,42 +31,38 @@ Object.assign(Bayrell.Lang.SaveOpCode.prototype,
 	{
 		var defProp = use('Runtime.rtl').defProp;
 		var a = Object.getOwnPropertyNames(this);
-		this.__var_name = "";
-		if (a.indexOf("var_name") == -1) defProp(this, "var_name");
-		this.__var_content = "";
-		if (a.indexOf("var_content") == -1) defProp(this, "var_content");
-		this.__content = "";
-		if (a.indexOf("content") == -1) defProp(this, "content");
-		this.__op_code = null;
-		if (a.indexOf("op_code") == -1) defProp(this, "op_code");
+		this.var_name = "";
+		this.var_content = "";
+		this.content = "";
+		this.op_code = null;
 		use("Runtime.CoreStruct").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
 		if (o instanceof use("Bayrell.Lang.SaveOpCode"))
 		{
-			this.__var_name = o.__var_name;
-			this.__var_content = o.__var_content;
-			this.__content = o.__content;
-			this.__op_code = o.__op_code;
+			this.var_name = o.var_name;
+			this.var_content = o.var_content;
+			this.content = o.content;
+			this.op_code = o.op_code;
 		}
 		use("Runtime.CoreStruct").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
-		if (k == "var_name")this.__var_name = v;
-		else if (k == "var_content")this.__var_content = v;
-		else if (k == "content")this.__content = v;
-		else if (k == "op_code")this.__op_code = v;
+		if (k == "var_name")this.var_name = v;
+		else if (k == "var_content")this.var_content = v;
+		else if (k == "content")this.content = v;
+		else if (k == "op_code")this.op_code = v;
 		else use("Runtime.CoreStruct").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
-		if (k == "var_name")return this.__var_name;
-		else if (k == "var_content")return this.__var_content;
-		else if (k == "content")return this.__content;
-		else if (k == "op_code")return this.__op_code;
+		if (k == "var_name")return this.var_name;
+		else if (k == "var_content")return this.var_content;
+		else if (k == "content")return this.content;
+		else if (k == "op_code")return this.op_code;
 		return use("Runtime.CoreStruct").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)

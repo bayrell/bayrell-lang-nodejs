@@ -783,7 +783,8 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 					var __v2 = use("Bayrell.Lang.OpCodes.OpDeclareClass");
 					if (class_kind == __v1.KIND_STRUCT)
 					{
-						prefix = "__";
+						/* prefix = "__"; */
+						prefix = "";
 					}
 					else if (class_kind == __v2.KIND_CLASS)
 					{
@@ -800,7 +801,10 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 						if (class_kind == __v1.KIND_STRUCT)
 						{
 							var var_name = t.expression.constructor.toString(ctx, value.var_name);
-							s1 += use("Runtime.rtl").toStr(t.s(ctx, "if (a.indexOf(" + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr(") == -1) defProp(this, ") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr(");")));
+							/*s1 ~= t.s
+							(
+								"if (a.indexOf(" ~ var_name ~ ") == -1) defProp(this, " ~ var_name ~ ");"
+							);*/
 							/*
 							s1 ~= t.s
 							(
@@ -837,7 +841,8 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 			}
 			var __v1 = use("Bayrell.Lang.OpCodes.OpDeclareClass");
 			var is_struct = class_kind == __v1.KIND_STRUCT;
-			var var_prefix = (is_struct) ? "__" : "";
+			/* string var_prefix = is_struct ? "__" : ""; */
+			var var_prefix = "";
 			/* Assign Object */
 			content += use("Runtime.rtl").toStr(t.s(ctx, "assignObject: function(ctx,o)"));
 			content += use("Runtime.rtl").toStr(t.s(ctx, "{"));

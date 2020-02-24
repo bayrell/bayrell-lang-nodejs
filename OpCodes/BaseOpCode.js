@@ -32,32 +32,30 @@ Object.assign(Bayrell.Lang.OpCodes.BaseOpCode.prototype,
 	{
 		var defProp = use('Runtime.rtl').defProp;
 		var a = Object.getOwnPropertyNames(this);
-		this.__caret_start = null;
-		if (a.indexOf("caret_start") == -1) defProp(this, "caret_start");
-		this.__caret_end = null;
-		if (a.indexOf("caret_end") == -1) defProp(this, "caret_end");
+		this.caret_start = null;
+		this.caret_end = null;
 		use("Runtime.CoreStruct").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
 		if (o instanceof use("Bayrell.Lang.OpCodes.BaseOpCode"))
 		{
-			this.__caret_start = o.__caret_start;
-			this.__caret_end = o.__caret_end;
+			this.caret_start = o.caret_start;
+			this.caret_end = o.caret_end;
 		}
 		use("Runtime.CoreStruct").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
-		if (k == "caret_start")this.__caret_start = v;
-		else if (k == "caret_end")this.__caret_end = v;
+		if (k == "caret_start")this.caret_start = v;
+		else if (k == "caret_end")this.caret_end = v;
 		else use("Runtime.CoreStruct").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
-		if (k == "caret_start")return this.__caret_start;
-		else if (k == "caret_end")return this.__caret_end;
+		if (k == "caret_start")return this.caret_start;
+		else if (k == "caret_end")return this.caret_end;
 		return use("Runtime.CoreStruct").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)

@@ -21,9 +21,9 @@ if (typeof Bayrell == 'undefined') Bayrell = {};
 if (typeof Bayrell.Lang == 'undefined') Bayrell.Lang = {};
 Bayrell.Lang.CoreParser = function(ctx)
 {
-	use("Runtime.FakeStruct").apply(this, arguments);
+	use("Runtime.CoreStruct").apply(this, arguments);
 };
-Bayrell.Lang.CoreParser.prototype = Object.create(use("Runtime.FakeStruct").prototype);
+Bayrell.Lang.CoreParser.prototype = Object.create(use("Runtime.CoreStruct").prototype);
 Bayrell.Lang.CoreParser.prototype.constructor = Bayrell.Lang.CoreParser;
 Object.assign(Bayrell.Lang.CoreParser.prototype,
 {
@@ -42,7 +42,7 @@ Object.assign(Bayrell.Lang.CoreParser.prototype,
 		this.content_sz = 0;
 		this.caret = null;
 		this.find_ident = true;
-		use("Runtime.FakeStruct").prototype._init.call(this,ctx);
+		use("Runtime.CoreStruct").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
@@ -55,7 +55,7 @@ Object.assign(Bayrell.Lang.CoreParser.prototype,
 			this.caret = o.caret;
 			this.find_ident = o.find_ident;
 		}
-		use("Runtime.FakeStruct").prototype.assignObject.call(this,ctx,o);
+		use("Runtime.CoreStruct").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
@@ -65,7 +65,7 @@ Object.assign(Bayrell.Lang.CoreParser.prototype,
 		else if (k == "content_sz")this.content_sz = v;
 		else if (k == "caret")this.caret = v;
 		else if (k == "find_ident")this.find_ident = v;
-		else use("Runtime.FakeStruct").prototype.assignValue.call(this,ctx,k,v);
+		else use("Runtime.CoreStruct").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
@@ -76,14 +76,14 @@ Object.assign(Bayrell.Lang.CoreParser.prototype,
 		else if (k == "content_sz")return this.content_sz;
 		else if (k == "caret")return this.caret;
 		else if (k == "find_ident")return this.find_ident;
-		return use("Runtime.FakeStruct").prototype.takeValue.call(this,ctx,k,d);
+		return use("Runtime.CoreStruct").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)
 	{
 		return "Bayrell.Lang.CoreParser";
 	},
 });
-Object.assign(Bayrell.Lang.CoreParser, use("Runtime.FakeStruct"));
+Object.assign(Bayrell.Lang.CoreParser, use("Runtime.CoreStruct"));
 Object.assign(Bayrell.Lang.CoreParser,
 {
 	/**
@@ -127,7 +127,7 @@ Object.assign(Bayrell.Lang.CoreParser,
 	},
 	getParentClassName: function()
 	{
-		return "Runtime.FakeStruct";
+		return "Runtime.CoreStruct";
 	},
 	getClassInfo: function(ctx)
 	{

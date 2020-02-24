@@ -32,42 +32,38 @@ Object.assign(Bayrell.Lang.OpCodes.OpTryCatchItem.prototype,
 	{
 		var defProp = use('Runtime.rtl').defProp;
 		var a = Object.getOwnPropertyNames(this);
-		this.__op = "op_try_catch_item";
-		if (a.indexOf("op") == -1) defProp(this, "op");
-		this.__name = "";
-		if (a.indexOf("name") == -1) defProp(this, "name");
-		this.__pattern = null;
-		if (a.indexOf("pattern") == -1) defProp(this, "pattern");
-		this.__value = null;
-		if (a.indexOf("value") == -1) defProp(this, "value");
+		this.op = "op_try_catch_item";
+		this.name = "";
+		this.pattern = null;
+		this.value = null;
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
 		if (o instanceof use("Bayrell.Lang.OpCodes.OpTryCatchItem"))
 		{
-			this.__op = o.__op;
-			this.__name = o.__name;
-			this.__pattern = o.__pattern;
-			this.__value = o.__value;
+			this.op = o.op;
+			this.name = o.name;
+			this.pattern = o.pattern;
+			this.value = o.value;
 		}
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
-		if (k == "op")this.__op = v;
-		else if (k == "name")this.__name = v;
-		else if (k == "pattern")this.__pattern = v;
-		else if (k == "value")this.__value = v;
+		if (k == "op")this.op = v;
+		else if (k == "name")this.name = v;
+		else if (k == "pattern")this.pattern = v;
+		else if (k == "value")this.value = v;
 		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
-		if (k == "op")return this.__op;
-		else if (k == "name")return this.__name;
-		else if (k == "pattern")return this.__pattern;
-		else if (k == "value")return this.__value;
+		if (k == "op")return this.op;
+		else if (k == "name")return this.name;
+		else if (k == "pattern")return this.pattern;
+		else if (k == "value")return this.value;
 		return use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)

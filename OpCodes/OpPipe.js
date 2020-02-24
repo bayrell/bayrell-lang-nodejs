@@ -32,62 +32,54 @@ Object.assign(Bayrell.Lang.OpCodes.OpPipe.prototype,
 	{
 		var defProp = use('Runtime.rtl').defProp;
 		var a = Object.getOwnPropertyNames(this);
-		this.__op = "op_pipe";
-		if (a.indexOf("op") == -1) defProp(this, "op");
-		this.__kind = "";
-		if (a.indexOf("kind") == -1) defProp(this, "kind");
-		this.__class_name = "";
-		if (a.indexOf("class_name") == -1) defProp(this, "class_name");
-		this.__method_name = "";
-		if (a.indexOf("method_name") == -1) defProp(this, "method_name");
-		this.__obj = null;
-		if (a.indexOf("obj") == -1) defProp(this, "obj");
-		this.__args = null;
-		if (a.indexOf("args") == -1) defProp(this, "args");
-		this.__is_await = false;
-		if (a.indexOf("is_await") == -1) defProp(this, "is_await");
-		this.__is_context = true;
-		if (a.indexOf("is_context") == -1) defProp(this, "is_context");
+		this.op = "op_pipe";
+		this.kind = "";
+		this.class_name = "";
+		this.method_name = "";
+		this.obj = null;
+		this.args = null;
+		this.is_await = false;
+		this.is_context = true;
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
 		if (o instanceof use("Bayrell.Lang.OpCodes.OpPipe"))
 		{
-			this.__op = o.__op;
-			this.__kind = o.__kind;
-			this.__class_name = o.__class_name;
-			this.__method_name = o.__method_name;
-			this.__obj = o.__obj;
-			this.__args = o.__args;
-			this.__is_await = o.__is_await;
-			this.__is_context = o.__is_context;
+			this.op = o.op;
+			this.kind = o.kind;
+			this.class_name = o.class_name;
+			this.method_name = o.method_name;
+			this.obj = o.obj;
+			this.args = o.args;
+			this.is_await = o.is_await;
+			this.is_context = o.is_context;
 		}
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
-		if (k == "op")this.__op = v;
-		else if (k == "kind")this.__kind = v;
-		else if (k == "class_name")this.__class_name = v;
-		else if (k == "method_name")this.__method_name = v;
-		else if (k == "obj")this.__obj = v;
-		else if (k == "args")this.__args = v;
-		else if (k == "is_await")this.__is_await = v;
-		else if (k == "is_context")this.__is_context = v;
+		if (k == "op")this.op = v;
+		else if (k == "kind")this.kind = v;
+		else if (k == "class_name")this.class_name = v;
+		else if (k == "method_name")this.method_name = v;
+		else if (k == "obj")this.obj = v;
+		else if (k == "args")this.args = v;
+		else if (k == "is_await")this.is_await = v;
+		else if (k == "is_context")this.is_context = v;
 		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
-		if (k == "op")return this.__op;
-		else if (k == "kind")return this.__kind;
-		else if (k == "class_name")return this.__class_name;
-		else if (k == "method_name")return this.__method_name;
-		else if (k == "obj")return this.__obj;
-		else if (k == "args")return this.__args;
-		else if (k == "is_await")return this.__is_await;
-		else if (k == "is_context")return this.__is_context;
+		if (k == "op")return this.op;
+		else if (k == "kind")return this.kind;
+		else if (k == "class_name")return this.class_name;
+		else if (k == "method_name")return this.method_name;
+		else if (k == "obj")return this.obj;
+		else if (k == "args")return this.args;
+		else if (k == "is_await")return this.is_await;
+		else if (k == "is_context")return this.is_context;
 		return use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)

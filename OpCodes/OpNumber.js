@@ -32,37 +32,34 @@ Object.assign(Bayrell.Lang.OpCodes.OpNumber.prototype,
 	{
 		var defProp = use('Runtime.rtl').defProp;
 		var a = Object.getOwnPropertyNames(this);
-		this.__op = "op_number";
-		if (a.indexOf("op") == -1) defProp(this, "op");
-		this.__value = 0;
-		if (a.indexOf("value") == -1) defProp(this, "value");
-		this.__negative = false;
-		if (a.indexOf("negative") == -1) defProp(this, "negative");
+		this.op = "op_number";
+		this.value = 0;
+		this.negative = false;
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
 		if (o instanceof use("Bayrell.Lang.OpCodes.OpNumber"))
 		{
-			this.__op = o.__op;
-			this.__value = o.__value;
-			this.__negative = o.__negative;
+			this.op = o.op;
+			this.value = o.value;
+			this.negative = o.negative;
 		}
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
-		if (k == "op")this.__op = v;
-		else if (k == "value")this.__value = v;
-		else if (k == "negative")this.__negative = v;
+		if (k == "op")this.op = v;
+		else if (k == "value")this.value = v;
+		else if (k == "negative")this.negative = v;
 		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
-		if (k == "op")return this.__op;
-		else if (k == "value")return this.__value;
-		else if (k == "negative")return this.__negative;
+		if (k == "op")return this.op;
+		else if (k == "value")return this.value;
+		else if (k == "negative")return this.negative;
 		return use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)

@@ -32,32 +32,30 @@ Object.assign(Bayrell.Lang.OpCodes.OpThrow.prototype,
 	{
 		var defProp = use('Runtime.rtl').defProp;
 		var a = Object.getOwnPropertyNames(this);
-		this.__op = "op_throw";
-		if (a.indexOf("op") == -1) defProp(this, "op");
-		this.__expression = null;
-		if (a.indexOf("expression") == -1) defProp(this, "expression");
+		this.op = "op_throw";
+		this.expression = null;
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
 		if (o instanceof use("Bayrell.Lang.OpCodes.OpThrow"))
 		{
-			this.__op = o.__op;
-			this.__expression = o.__expression;
+			this.op = o.op;
+			this.expression = o.expression;
 		}
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
-		if (k == "op")this.__op = v;
-		else if (k == "expression")this.__expression = v;
+		if (k == "op")this.op = v;
+		else if (k == "expression")this.expression = v;
 		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
-		if (k == "op")return this.__op;
-		else if (k == "expression")return this.__expression;
+		if (k == "op")return this.op;
+		else if (k == "expression")return this.expression;
 		return use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)

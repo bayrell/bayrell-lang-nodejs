@@ -32,47 +32,42 @@ Object.assign(Bayrell.Lang.OpCodes.OpIf.prototype,
 	{
 		var defProp = use('Runtime.rtl').defProp;
 		var a = Object.getOwnPropertyNames(this);
-		this.__op = "op_if";
-		if (a.indexOf("op") == -1) defProp(this, "op");
-		this.__condition = null;
-		if (a.indexOf("condition") == -1) defProp(this, "condition");
-		this.__if_true = null;
-		if (a.indexOf("if_true") == -1) defProp(this, "if_true");
-		this.__if_false = null;
-		if (a.indexOf("if_false") == -1) defProp(this, "if_false");
-		this.__if_else = null;
-		if (a.indexOf("if_else") == -1) defProp(this, "if_else");
+		this.op = "op_if";
+		this.condition = null;
+		this.if_true = null;
+		this.if_false = null;
+		this.if_else = null;
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
 		if (o instanceof use("Bayrell.Lang.OpCodes.OpIf"))
 		{
-			this.__op = o.__op;
-			this.__condition = o.__condition;
-			this.__if_true = o.__if_true;
-			this.__if_false = o.__if_false;
-			this.__if_else = o.__if_else;
+			this.op = o.op;
+			this.condition = o.condition;
+			this.if_true = o.if_true;
+			this.if_false = o.if_false;
+			this.if_else = o.if_else;
 		}
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
-		if (k == "op")this.__op = v;
-		else if (k == "condition")this.__condition = v;
-		else if (k == "if_true")this.__if_true = v;
-		else if (k == "if_false")this.__if_false = v;
-		else if (k == "if_else")this.__if_else = v;
+		if (k == "op")this.op = v;
+		else if (k == "condition")this.condition = v;
+		else if (k == "if_true")this.if_true = v;
+		else if (k == "if_false")this.if_false = v;
+		else if (k == "if_else")this.if_else = v;
 		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
-		if (k == "op")return this.__op;
-		else if (k == "condition")return this.__condition;
-		else if (k == "if_true")return this.__if_true;
-		else if (k == "if_false")return this.__if_false;
-		else if (k == "if_else")return this.__if_else;
+		if (k == "op")return this.op;
+		else if (k == "condition")return this.condition;
+		else if (k == "if_true")return this.if_true;
+		else if (k == "if_false")return this.if_false;
+		else if (k == "if_else")return this.if_else;
 		return use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)

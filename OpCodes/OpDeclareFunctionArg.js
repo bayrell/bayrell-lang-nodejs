@@ -32,42 +32,38 @@ Object.assign(Bayrell.Lang.OpCodes.OpDeclareFunctionArg.prototype,
 	{
 		var defProp = use('Runtime.rtl').defProp;
 		var a = Object.getOwnPropertyNames(this);
-		this.__op = "op_function_arg";
-		if (a.indexOf("op") == -1) defProp(this, "op");
-		this.__pattern = null;
-		if (a.indexOf("pattern") == -1) defProp(this, "pattern");
-		this.__name = "";
-		if (a.indexOf("name") == -1) defProp(this, "name");
-		this.__expression = null;
-		if (a.indexOf("expression") == -1) defProp(this, "expression");
+		this.op = "op_function_arg";
+		this.pattern = null;
+		this.name = "";
+		this.expression = null;
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
 		if (o instanceof use("Bayrell.Lang.OpCodes.OpDeclareFunctionArg"))
 		{
-			this.__op = o.__op;
-			this.__pattern = o.__pattern;
-			this.__name = o.__name;
-			this.__expression = o.__expression;
+			this.op = o.op;
+			this.pattern = o.pattern;
+			this.name = o.name;
+			this.expression = o.expression;
 		}
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
-		if (k == "op")this.__op = v;
-		else if (k == "pattern")this.__pattern = v;
-		else if (k == "name")this.__name = v;
-		else if (k == "expression")this.__expression = v;
+		if (k == "op")this.op = v;
+		else if (k == "pattern")this.pattern = v;
+		else if (k == "name")this.name = v;
+		else if (k == "expression")this.expression = v;
 		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
-		if (k == "op")return this.__op;
-		else if (k == "pattern")return this.__pattern;
-		else if (k == "name")return this.__name;
-		else if (k == "expression")return this.__expression;
+		if (k == "op")return this.op;
+		else if (k == "pattern")return this.pattern;
+		else if (k == "name")return this.name;
+		else if (k == "expression")return this.expression;
 		return use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)

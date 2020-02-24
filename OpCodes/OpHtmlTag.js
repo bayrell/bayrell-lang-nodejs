@@ -32,52 +32,46 @@ Object.assign(Bayrell.Lang.OpCodes.OpHtmlTag.prototype,
 	{
 		var defProp = use('Runtime.rtl').defProp;
 		var a = Object.getOwnPropertyNames(this);
-		this.__op = "op_html_tag";
-		if (a.indexOf("op") == -1) defProp(this, "op");
-		this.__tag_name = "";
-		if (a.indexOf("tag_name") == -1) defProp(this, "tag_name");
-		this.__op_code_name = null;
-		if (a.indexOf("op_code_name") == -1) defProp(this, "op_code_name");
-		this.__attrs = null;
-		if (a.indexOf("attrs") == -1) defProp(this, "attrs");
-		this.__spreads = null;
-		if (a.indexOf("spreads") == -1) defProp(this, "spreads");
-		this.__items = null;
-		if (a.indexOf("items") == -1) defProp(this, "items");
+		this.op = "op_html_tag";
+		this.tag_name = "";
+		this.op_code_name = null;
+		this.attrs = null;
+		this.spreads = null;
+		this.items = null;
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
 		if (o instanceof use("Bayrell.Lang.OpCodes.OpHtmlTag"))
 		{
-			this.__op = o.__op;
-			this.__tag_name = o.__tag_name;
-			this.__op_code_name = o.__op_code_name;
-			this.__attrs = o.__attrs;
-			this.__spreads = o.__spreads;
-			this.__items = o.__items;
+			this.op = o.op;
+			this.tag_name = o.tag_name;
+			this.op_code_name = o.op_code_name;
+			this.attrs = o.attrs;
+			this.spreads = o.spreads;
+			this.items = o.items;
 		}
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
-		if (k == "op")this.__op = v;
-		else if (k == "tag_name")this.__tag_name = v;
-		else if (k == "op_code_name")this.__op_code_name = v;
-		else if (k == "attrs")this.__attrs = v;
-		else if (k == "spreads")this.__spreads = v;
-		else if (k == "items")this.__items = v;
+		if (k == "op")this.op = v;
+		else if (k == "tag_name")this.tag_name = v;
+		else if (k == "op_code_name")this.op_code_name = v;
+		else if (k == "attrs")this.attrs = v;
+		else if (k == "spreads")this.spreads = v;
+		else if (k == "items")this.items = v;
 		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
-		if (k == "op")return this.__op;
-		else if (k == "tag_name")return this.__tag_name;
-		else if (k == "op_code_name")return this.__op_code_name;
-		else if (k == "attrs")return this.__attrs;
-		else if (k == "spreads")return this.__spreads;
-		else if (k == "items")return this.__items;
+		if (k == "op")return this.op;
+		else if (k == "tag_name")return this.tag_name;
+		else if (k == "op_code_name")return this.op_code_name;
+		else if (k == "attrs")return this.attrs;
+		else if (k == "spreads")return this.spreads;
+		else if (k == "items")return this.items;
 		return use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)

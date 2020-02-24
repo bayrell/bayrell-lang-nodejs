@@ -32,37 +32,34 @@ Object.assign(Bayrell.Lang.OpCodes.OpTryCatch.prototype,
 	{
 		var defProp = use('Runtime.rtl').defProp;
 		var a = Object.getOwnPropertyNames(this);
-		this.__op = "op_try_catch";
-		if (a.indexOf("op") == -1) defProp(this, "op");
-		this.__op_try = null;
-		if (a.indexOf("op_try") == -1) defProp(this, "op_try");
-		this.__items = null;
-		if (a.indexOf("items") == -1) defProp(this, "items");
+		this.op = "op_try_catch";
+		this.op_try = null;
+		this.items = null;
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
 		if (o instanceof use("Bayrell.Lang.OpCodes.OpTryCatch"))
 		{
-			this.__op = o.__op;
-			this.__op_try = o.__op_try;
-			this.__items = o.__items;
+			this.op = o.op;
+			this.op_try = o.op_try;
+			this.items = o.items;
 		}
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
-		if (k == "op")this.__op = v;
-		else if (k == "op_try")this.__op_try = v;
-		else if (k == "items")this.__items = v;
+		if (k == "op")this.op = v;
+		else if (k == "op_try")this.op_try = v;
+		else if (k == "items")this.items = v;
 		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
-		if (k == "op")return this.__op;
-		else if (k == "op_try")return this.__op_try;
-		else if (k == "items")return this.__items;
+		if (k == "op")return this.op;
+		else if (k == "op_try")return this.op_try;
+		else if (k == "items")return this.items;
 		return use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)

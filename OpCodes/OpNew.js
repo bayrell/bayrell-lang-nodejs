@@ -32,37 +32,34 @@ Object.assign(Bayrell.Lang.OpCodes.OpNew.prototype,
 	{
 		var defProp = use('Runtime.rtl').defProp;
 		var a = Object.getOwnPropertyNames(this);
-		this.__op = "op_new";
-		if (a.indexOf("op") == -1) defProp(this, "op");
-		this.__args = null;
-		if (a.indexOf("args") == -1) defProp(this, "args");
-		this.__value = null;
-		if (a.indexOf("value") == -1) defProp(this, "value");
+		this.op = "op_new";
+		this.args = null;
+		this.value = null;
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
 		if (o instanceof use("Bayrell.Lang.OpCodes.OpNew"))
 		{
-			this.__op = o.__op;
-			this.__args = o.__args;
-			this.__value = o.__value;
+			this.op = o.op;
+			this.args = o.args;
+			this.value = o.value;
 		}
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
-		if (k == "op")this.__op = v;
-		else if (k == "args")this.__args = v;
-		else if (k == "value")this.__value = v;
+		if (k == "op")this.op = v;
+		else if (k == "args")this.args = v;
+		else if (k == "value")this.value = v;
 		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
-		if (k == "op")return this.__op;
-		else if (k == "args")return this.__args;
-		else if (k == "value")return this.__value;
+		if (k == "op")return this.op;
+		else if (k == "args")return this.args;
+		else if (k == "value")return this.value;
 		return use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)

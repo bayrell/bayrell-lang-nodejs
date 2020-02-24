@@ -32,47 +32,42 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode.prototype,
 	{
 		var defProp = use('Runtime.rtl').defProp;
 		var a = Object.getOwnPropertyNames(this);
-		this.__async_await = null;
-		if (a.indexOf("async_await") == -1) defProp(this, "async_await");
-		this.__expression = null;
-		if (a.indexOf("expression") == -1) defProp(this, "expression");
-		this.__html = null;
-		if (a.indexOf("html") == -1) defProp(this, "html");
-		this.__operator = null;
-		if (a.indexOf("operator") == -1) defProp(this, "operator");
-		this.__program = null;
-		if (a.indexOf("program") == -1) defProp(this, "program");
+		this.async_await = null;
+		this.expression = null;
+		this.html = null;
+		this.operator = null;
+		this.program = null;
 		use("Bayrell.Lang.CoreTranslator").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
 		if (o instanceof use("Bayrell.Lang.LangNode.TranslatorNode"))
 		{
-			this.__async_await = o.__async_await;
-			this.__expression = o.__expression;
-			this.__html = o.__html;
-			this.__operator = o.__operator;
-			this.__program = o.__program;
+			this.async_await = o.async_await;
+			this.expression = o.expression;
+			this.html = o.html;
+			this.operator = o.operator;
+			this.program = o.program;
 		}
 		use("Bayrell.Lang.CoreTranslator").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
-		if (k == "async_await")this.__async_await = v;
-		else if (k == "expression")this.__expression = v;
-		else if (k == "html")this.__html = v;
-		else if (k == "operator")this.__operator = v;
-		else if (k == "program")this.__program = v;
+		if (k == "async_await")this.async_await = v;
+		else if (k == "expression")this.expression = v;
+		else if (k == "html")this.html = v;
+		else if (k == "operator")this.operator = v;
+		else if (k == "program")this.program = v;
 		else use("Bayrell.Lang.CoreTranslator").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
-		if (k == "async_await")return this.__async_await;
-		else if (k == "expression")return this.__expression;
-		else if (k == "html")return this.__html;
-		else if (k == "operator")return this.__operator;
-		else if (k == "program")return this.__program;
+		if (k == "async_await")return this.async_await;
+		else if (k == "expression")return this.expression;
+		else if (k == "html")return this.html;
+		else if (k == "operator")return this.operator;
+		else if (k == "program")return this.program;
 		return use("Bayrell.Lang.CoreTranslator").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)

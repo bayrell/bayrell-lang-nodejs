@@ -32,47 +32,42 @@ Object.assign(Bayrell.Lang.OpCodes.OpFor.prototype,
 	{
 		var defProp = use('Runtime.rtl').defProp;
 		var a = Object.getOwnPropertyNames(this);
-		this.__op = "op_for";
-		if (a.indexOf("op") == -1) defProp(this, "op");
-		this.__expr1 = null;
-		if (a.indexOf("expr1") == -1) defProp(this, "expr1");
-		this.__expr2 = null;
-		if (a.indexOf("expr2") == -1) defProp(this, "expr2");
-		this.__expr3 = null;
-		if (a.indexOf("expr3") == -1) defProp(this, "expr3");
-		this.__value = null;
-		if (a.indexOf("value") == -1) defProp(this, "value");
+		this.op = "op_for";
+		this.expr1 = null;
+		this.expr2 = null;
+		this.expr3 = null;
+		this.value = null;
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
 		if (o instanceof use("Bayrell.Lang.OpCodes.OpFor"))
 		{
-			this.__op = o.__op;
-			this.__expr1 = o.__expr1;
-			this.__expr2 = o.__expr2;
-			this.__expr3 = o.__expr3;
-			this.__value = o.__value;
+			this.op = o.op;
+			this.expr1 = o.expr1;
+			this.expr2 = o.expr2;
+			this.expr3 = o.expr3;
+			this.value = o.value;
 		}
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
-		if (k == "op")this.__op = v;
-		else if (k == "expr1")this.__expr1 = v;
-		else if (k == "expr2")this.__expr2 = v;
-		else if (k == "expr3")this.__expr3 = v;
-		else if (k == "value")this.__value = v;
+		if (k == "op")this.op = v;
+		else if (k == "expr1")this.expr1 = v;
+		else if (k == "expr2")this.expr2 = v;
+		else if (k == "expr3")this.expr3 = v;
+		else if (k == "value")this.value = v;
 		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
-		if (k == "op")return this.__op;
-		else if (k == "expr1")return this.__expr1;
-		else if (k == "expr2")return this.__expr2;
-		else if (k == "expr3")return this.__expr3;
-		else if (k == "value")return this.__value;
+		if (k == "op")return this.op;
+		else if (k == "expr1")return this.expr1;
+		else if (k == "expr2")return this.expr2;
+		else if (k == "expr3")return this.expr3;
+		else if (k == "value")return this.value;
 		return use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)

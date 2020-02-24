@@ -32,37 +32,34 @@ Object.assign(Bayrell.Lang.OpCodes.OpInc.prototype,
 	{
 		var defProp = use('Runtime.rtl').defProp;
 		var a = Object.getOwnPropertyNames(this);
-		this.__op = "op_inc";
-		if (a.indexOf("op") == -1) defProp(this, "op");
-		this.__kind = "";
-		if (a.indexOf("kind") == -1) defProp(this, "kind");
-		this.__value = null;
-		if (a.indexOf("value") == -1) defProp(this, "value");
+		this.op = "op_inc";
+		this.kind = "";
+		this.value = null;
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
 		if (o instanceof use("Bayrell.Lang.OpCodes.OpInc"))
 		{
-			this.__op = o.__op;
-			this.__kind = o.__kind;
-			this.__value = o.__value;
+			this.op = o.op;
+			this.kind = o.kind;
+			this.value = o.value;
 		}
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
-		if (k == "op")this.__op = v;
-		else if (k == "kind")this.__kind = v;
-		else if (k == "value")this.__value = v;
+		if (k == "op")this.op = v;
+		else if (k == "kind")this.kind = v;
+		else if (k == "value")this.value = v;
 		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
-		if (k == "op")return this.__op;
-		else if (k == "kind")return this.__kind;
-		else if (k == "value")return this.__value;
+		if (k == "op")return this.op;
+		else if (k == "kind")return this.kind;
+		else if (k == "value")return this.value;
 		return use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)

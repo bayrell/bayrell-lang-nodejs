@@ -31,47 +31,42 @@ Object.assign(Bayrell.Lang.CoreToken.prototype,
 	{
 		var defProp = use('Runtime.rtl').defProp;
 		var a = Object.getOwnPropertyNames(this);
-		this.__kind = "";
-		if (a.indexOf("kind") == -1) defProp(this, "kind");
-		this.__content = "";
-		if (a.indexOf("content") == -1) defProp(this, "content");
-		this.__caret_start = null;
-		if (a.indexOf("caret_start") == -1) defProp(this, "caret_start");
-		this.__caret_end = null;
-		if (a.indexOf("caret_end") == -1) defProp(this, "caret_end");
-		this.__eof = false;
-		if (a.indexOf("eof") == -1) defProp(this, "eof");
+		this.kind = "";
+		this.content = "";
+		this.caret_start = null;
+		this.caret_end = null;
+		this.eof = false;
 		use("Runtime.CoreStruct").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
 		if (o instanceof use("Bayrell.Lang.CoreToken"))
 		{
-			this.__kind = o.__kind;
-			this.__content = o.__content;
-			this.__caret_start = o.__caret_start;
-			this.__caret_end = o.__caret_end;
-			this.__eof = o.__eof;
+			this.kind = o.kind;
+			this.content = o.content;
+			this.caret_start = o.caret_start;
+			this.caret_end = o.caret_end;
+			this.eof = o.eof;
 		}
 		use("Runtime.CoreStruct").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
-		if (k == "kind")this.__kind = v;
-		else if (k == "content")this.__content = v;
-		else if (k == "caret_start")this.__caret_start = v;
-		else if (k == "caret_end")this.__caret_end = v;
-		else if (k == "eof")this.__eof = v;
+		if (k == "kind")this.kind = v;
+		else if (k == "content")this.content = v;
+		else if (k == "caret_start")this.caret_start = v;
+		else if (k == "caret_end")this.caret_end = v;
+		else if (k == "eof")this.eof = v;
 		else use("Runtime.CoreStruct").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
-		if (k == "kind")return this.__kind;
-		else if (k == "content")return this.__content;
-		else if (k == "caret_start")return this.__caret_start;
-		else if (k == "caret_end")return this.__caret_end;
-		else if (k == "eof")return this.__eof;
+		if (k == "kind")return this.kind;
+		else if (k == "content")return this.content;
+		else if (k == "caret_start")return this.caret_start;
+		else if (k == "caret_end")return this.caret_end;
+		else if (k == "eof")return this.eof;
 		return use("Runtime.CoreStruct").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)

@@ -46,77 +46,66 @@ Object.assign(Bayrell.Lang.OpCodes.OpDeclareFunction.prototype,
 	{
 		var defProp = use('Runtime.rtl').defProp;
 		var a = Object.getOwnPropertyNames(this);
-		this.__op = "op_function";
-		if (a.indexOf("op") == -1) defProp(this, "op");
-		this.__name = "";
-		if (a.indexOf("name") == -1) defProp(this, "name");
-		this.__annotations = null;
-		if (a.indexOf("annotations") == -1) defProp(this, "annotations");
-		this.__comments = null;
-		if (a.indexOf("comments") == -1) defProp(this, "comments");
-		this.__args = null;
-		if (a.indexOf("args") == -1) defProp(this, "args");
-		this.__vars = null;
-		if (a.indexOf("vars") == -1) defProp(this, "vars");
-		this.__result_type = null;
-		if (a.indexOf("result_type") == -1) defProp(this, "result_type");
-		this.__expression = null;
-		if (a.indexOf("expression") == -1) defProp(this, "expression");
-		this.__value = null;
-		if (a.indexOf("value") == -1) defProp(this, "value");
-		this.__flags = null;
-		if (a.indexOf("flags") == -1) defProp(this, "flags");
-		this.__is_context = true;
-		if (a.indexOf("is_context") == -1) defProp(this, "is_context");
+		this.op = "op_function";
+		this.name = "";
+		this.annotations = null;
+		this.comments = null;
+		this.args = null;
+		this.vars = null;
+		this.result_type = null;
+		this.expression = null;
+		this.value = null;
+		this.flags = null;
+		this.is_context = true;
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
 		if (o instanceof use("Bayrell.Lang.OpCodes.OpDeclareFunction"))
 		{
-			this.__op = o.__op;
-			this.__name = o.__name;
-			this.__annotations = o.__annotations;
-			this.__comments = o.__comments;
-			this.__args = o.__args;
-			this.__vars = o.__vars;
-			this.__result_type = o.__result_type;
-			this.__expression = o.__expression;
-			this.__value = o.__value;
-			this.__flags = o.__flags;
-			this.__is_context = o.__is_context;
+			this.op = o.op;
+			this.name = o.name;
+			this.annotations = o.annotations;
+			this.comments = o.comments;
+			this.args = o.args;
+			this.vars = o.vars;
+			this.result_type = o.result_type;
+			this.expression = o.expression;
+			this.value = o.value;
+			this.flags = o.flags;
+			this.is_context = o.is_context;
 		}
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
-		if (k == "op")this.__op = v;
-		else if (k == "name")this.__name = v;
-		else if (k == "annotations")this.__annotations = v;
-		else if (k == "comments")this.__comments = v;
-		else if (k == "args")this.__args = v;
-		else if (k == "vars")this.__vars = v;
-		else if (k == "result_type")this.__result_type = v;
-		else if (k == "expression")this.__expression = v;
-		else if (k == "value")this.__value = v;
-		else if (k == "flags")this.__flags = v;
-		else if (k == "is_context")this.__is_context = v;
+		if (k == "op")this.op = v;
+		else if (k == "name")this.name = v;
+		else if (k == "annotations")this.annotations = v;
+		else if (k == "comments")this.comments = v;
+		else if (k == "args")this.args = v;
+		else if (k == "vars")this.vars = v;
+		else if (k == "result_type")this.result_type = v;
+		else if (k == "expression")this.expression = v;
+		else if (k == "value")this.value = v;
+		else if (k == "flags")this.flags = v;
+		else if (k == "is_context")this.is_context = v;
 		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
-		if (k == "op")return this.__op;
-		else if (k == "name")return this.__name;
-		else if (k == "annotations")return this.__annotations;
-		else if (k == "comments")return this.__comments;
-		else if (k == "args")return this.__args;
-		else if (k == "vars")return this.__vars;
-		else if (k == "result_type")return this.__result_type;
-		else if (k == "expression")return this.__expression;
-		else if (k == "value")return this.__value;
-		else if (k == "flags")return this.__flags;
-		else if (k == "is_context")return this.__is_context;
+		if (k == "op")return this.op;
+		else if (k == "name")return this.name;
+		else if (k == "annotations")return this.annotations;
+		else if (k == "comments")return this.comments;
+		else if (k == "args")return this.args;
+		else if (k == "vars")return this.vars;
+		else if (k == "result_type")return this.result_type;
+		else if (k == "expression")return this.expression;
+		else if (k == "value")return this.value;
+		else if (k == "flags")return this.flags;
+		else if (k == "is_context")return this.is_context;
 		return use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)

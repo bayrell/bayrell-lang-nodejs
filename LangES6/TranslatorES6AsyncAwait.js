@@ -33,42 +33,38 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6AsyncAwait.prototype,
 		var defProp = use('Runtime.rtl').defProp;
 		var a = Object.getOwnPropertyNames(this);
 		var __v0 = use("Runtime.Collection");
-		this.__async_stack = new __v0(ctx);
-		if (a.indexOf("async_stack") == -1) defProp(this, "async_stack");
-		this.__pos = use("Runtime.Collection").from([0]);
-		if (a.indexOf("pos") == -1) defProp(this, "pos");
-		this.__async_t = "__async_t";
-		if (a.indexOf("async_t") == -1) defProp(this, "async_t");
-		this.__async_var = "__async_var";
-		if (a.indexOf("async_var") == -1) defProp(this, "async_var");
+		this.async_stack = new __v0(ctx);
+		this.pos = use("Runtime.Collection").from([0]);
+		this.async_t = "__async_t";
+		this.async_var = "__async_var";
 		use("Runtime.CoreStruct").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
 		if (o instanceof use("Bayrell.Lang.LangES6.TranslatorES6AsyncAwait"))
 		{
-			this.__async_stack = o.__async_stack;
-			this.__pos = o.__pos;
-			this.__async_t = o.__async_t;
-			this.__async_var = o.__async_var;
+			this.async_stack = o.async_stack;
+			this.pos = o.pos;
+			this.async_t = o.async_t;
+			this.async_var = o.async_var;
 		}
 		use("Runtime.CoreStruct").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
-		if (k == "async_stack")this.__async_stack = v;
-		else if (k == "pos")this.__pos = v;
-		else if (k == "async_t")this.__async_t = v;
-		else if (k == "async_var")this.__async_var = v;
+		if (k == "async_stack")this.async_stack = v;
+		else if (k == "pos")this.pos = v;
+		else if (k == "async_t")this.async_t = v;
+		else if (k == "async_var")this.async_var = v;
 		else use("Runtime.CoreStruct").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
-		if (k == "async_stack")return this.__async_stack;
-		else if (k == "pos")return this.__pos;
-		else if (k == "async_t")return this.__async_t;
-		else if (k == "async_var")return this.__async_var;
+		if (k == "async_stack")return this.async_stack;
+		else if (k == "pos")return this.pos;
+		else if (k == "async_t")return this.async_t;
+		else if (k == "async_var")return this.async_var;
 		return use("Runtime.CoreStruct").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)

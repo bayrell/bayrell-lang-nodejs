@@ -32,32 +32,30 @@ Object.assign(Bayrell.Lang.OpCodes.OpIfElse.prototype,
 	{
 		var defProp = use('Runtime.rtl').defProp;
 		var a = Object.getOwnPropertyNames(this);
-		this.__condition = null;
-		if (a.indexOf("condition") == -1) defProp(this, "condition");
-		this.__if_true = null;
-		if (a.indexOf("if_true") == -1) defProp(this, "if_true");
+		this.condition = null;
+		this.if_true = null;
 		use("Runtime.CoreStruct").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
 		if (o instanceof use("Bayrell.Lang.OpCodes.OpIfElse"))
 		{
-			this.__condition = o.__condition;
-			this.__if_true = o.__if_true;
+			this.condition = o.condition;
+			this.if_true = o.if_true;
 		}
 		use("Runtime.CoreStruct").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
-		if (k == "condition")this.__condition = v;
-		else if (k == "if_true")this.__if_true = v;
+		if (k == "condition")this.condition = v;
+		else if (k == "if_true")this.if_true = v;
 		else use("Runtime.CoreStruct").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
-		if (k == "condition")return this.__condition;
-		else if (k == "if_true")return this.__if_true;
+		if (k == "condition")return this.condition;
+		else if (k == "if_true")return this.if_true;
 		return use("Runtime.CoreStruct").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)
