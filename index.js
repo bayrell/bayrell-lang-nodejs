@@ -26,7 +26,7 @@ function ObjectAssign(res, obj){
 }
 
 module.exports = {
-	VERSION: '0.8.2',
+	VERSION: '0.8.3',
 };
 
 }
@@ -40,7 +40,7 @@ function ObjectAssign(res, obj){
 }
 
 module.exports = {
-	VERSION: '0.8.2',
+	VERSION: '0.8.3',
 	'Exceptions': {
 		'ParserUnknownError': require("./Exceptions/ParserUnknownError.js"),
 	},

@@ -110,15 +110,11 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayHtml,
 		return use("Runtime.Collection").from([parser,selector]);
 	},
 	/**
-	 * Read css
+	 * Read css body
 	 */
-	readCss: function(ctx, parser)
+	readCssBody: function(ctx, parser)
 	{
-		var caret_start = parser.caret.clone(ctx);
-		var res = parser.parser_base.constructor.matchToken(ctx, parser, "@css");
-		parser = res[0];
-		var res = parser.parser_base.constructor.matchToken(ctx, parser, "{");
-		parser = res[0];
+		var caret_start = parser.caret;
 		var css_str = "";
 		var content = parser.content;
 		var content_sz = parser.content_sz;
@@ -152,6 +148,29 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayHtml,
 				parser = res[0];
 				var s = res[1];
 				css_str += use("Runtime.rtl").toStr(s);
+				/* Set pos, x, y */
+				caret_start = parser.caret.clone(ctx);
+				pos = parser.caret.pos;
+				x = parser.caret.x;
+				y = parser.caret.y;
+				start_pos = pos;
+			}
+			else if (ch == "@")
+			{
+				x = parser.parser_base.constructor.nextX(ctx, parser, ch, x);
+				y = parser.parser_base.constructor.nextY(ctx, parser, ch, y);
+				pos = pos + 1;
+				var res = parser.parser_base.constructor.readUntilStringArr(ctx, parser, use("Runtime.Collection").from(["{"]), false);
+				parser = res[0];
+				var s1 = res[1];
+				var res = parser.parser_base.constructor.matchToken(ctx, parser, "{");
+				parser = res[0];
+				var res = this.readCssBody(ctx, parser);
+				parser = res[0];
+				var s2 = res[1];
+				var res = parser.parser_base.constructor.matchToken(ctx, parser, "}");
+				parser = res[0];
+				css_str += use("Runtime.rtl").toStr(s1 + use("Runtime.rtl").toStr("{") + use("Runtime.rtl").toStr(s2) + use("Runtime.rtl").toStr("}"));
 				/* Set pos, x, y */
 				caret_start = parser.caret.clone(ctx);
 				pos = parser.caret.pos;
@@ -206,6 +225,22 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayHtml,
 			css_str += use("Runtime.rtl").toStr(value);
 		}
 		parser = parser.copy(ctx, { "caret": caret });
+		return use("Runtime.Collection").from([parser,css_str]);
+	},
+	/**
+	 * Read css
+	 */
+	readCss: function(ctx, parser)
+	{
+		var caret_start = parser.caret.clone(ctx);
+		var res = parser.parser_base.constructor.matchToken(ctx, parser, "@css");
+		parser = res[0];
+		var res = parser.parser_base.constructor.matchToken(ctx, parser, "{");
+		parser = res[0];
+		var res = this.readCssBody(ctx, parser);
+		parser = res[0];
+		var css_str = res[1];
+		var caret = parser.caret;
 		var res = parser.parser_base.constructor.matchToken(ctx, parser, "}");
 		parser = res[0];
 		var __v0 = use("Runtime.rs");
