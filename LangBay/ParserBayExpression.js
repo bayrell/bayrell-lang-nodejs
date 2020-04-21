@@ -59,13 +59,13 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayExpression,
 		if (token.content == "!")
 		{
 			var op_code = null;
-			var res = parser.parser_base.constructor.readBaseItem(ctx, look.clone(ctx));
+			var res = parser.parser_base.constructor.readDynamic(ctx, look.clone(ctx));
 			parser = res[0];
 			op_code = res[1];
 			var __v0 = use("Bayrell.Lang.OpCodes.OpMath");
 			return use("Runtime.Collection").from([parser,new __v0(ctx, use("Runtime.Dict").from({"value1":op_code,"math":"!","caret_start":caret_start,"caret_end":parser.caret.clone(ctx)}))]);
 		}
-		return parser.parser_base.constructor.readBaseItem(ctx, parser);
+		return parser.parser_base.constructor.readDynamic(ctx, parser);
 	},
 	/**
 	 * Read bit shift
@@ -436,6 +436,114 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayExpression,
 		return use("Runtime.Collection").from([parser,op_code]);
 	},
 	/**
+	 * Read pipe call
+	 */
+	readPipeCall: function(ctx, parser)
+	{
+		var look = null;
+		var token = null;
+		var op_code = null;
+		var is_context_call = true;
+		var caret_start = parser.caret;
+		var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
+		look = res[0];
+		token = res[1];
+		if (token.content == "@")
+		{
+			is_context_call = false;
+			parser = look;
+		}
+		var args = null;
+		var res = parser.parser_base.constructor.readIdentifier(ctx, parser);
+		parser = res[0];
+		op_code = res[1];
+		var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
+		token = res[1];
+		if (token.content == "(" || token.content == "{")
+		{
+			var res = parser.parser_base.constructor.readCallArgs(ctx, parser);
+			parser = res[0];
+			args = res[1];
+		}
+		var __v0 = use("Bayrell.Lang.OpCodes.OpCall");
+		return use("Runtime.Collection").from([parser,new __v0(ctx, use("Runtime.Dict").from({"obj":op_code,"args":args,"caret_start":caret_start,"caret_end":parser.caret,"is_context":is_context_call}))]);
+	},
+	/**
+	 * Read pipe
+	 */
+	ExpressionPipe: function(ctx, parser)
+	{
+		var look = null;
+		var look_token = null;
+		var op_code = null;
+		var res = this.readTernary(ctx, parser);
+		parser = res[0];
+		op_code = res[1];
+		var caret_start = op_code.caret_start;
+		var res = parser.parser_base.constructor.readToken(ctx, parser);
+		look = res[0];
+		look_token = res[1];
+		while (look_token.content == "->")
+		{
+			parser = look;
+			var value = null;
+			var kind = "";
+			var is_async = false;
+			var res = parser.parser_base.constructor.readToken(ctx, parser);
+			look = res[0];
+			look_token = res[1];
+			if (look_token.content == "await")
+			{
+				is_async = true;
+				parser = look;
+				var res = parser.parser_base.constructor.readToken(ctx, parser);
+				look = res[0];
+				look_token = res[1];
+			}
+			if (look_token.content == "attr")
+			{
+				parser = look;
+				var res = this.readTernary(ctx, parser);
+				parser = res[0];
+				value = res[1];
+				var __v0 = use("Bayrell.Lang.OpCodes.OpPipe");
+				kind = __v0.KIND_ATTR;
+			}
+			else if (look_token.content == "monad")
+			{
+				parser = look;
+				var res = parser.parser_base.constructor.readDynamic(ctx, parser);
+				parser = res[0];
+				value = res[1];
+				var __v0 = use("Bayrell.Lang.OpCodes.OpPipe");
+				kind = __v0.KIND_MONAD;
+			}
+			else if (look_token.content == "method")
+			{
+				parser = look;
+				var __v0 = use("Bayrell.Lang.OpCodes.OpPipe");
+				kind = __v0.KIND_METHOD;
+				var res = this.readPipeCall(ctx, parser);
+				parser = res[0];
+				value = res[1];
+			}
+			else
+			{
+				var __v0 = use("Bayrell.Lang.OpCodes.OpPipe");
+				kind = __v0.KIND_CALL;
+				var res = parser.parser_base.constructor.readDynamic(ctx, parser);
+				parser = res[0];
+				value = res[1];
+			}
+			var __v0 = use("Bayrell.Lang.OpCodes.OpPipe");
+			op_code = new __v0(ctx, use("Runtime.Dict").from({"obj":op_code,"kind":kind,"value":value,"is_async":is_async}));
+			var res = parser.parser_base.constructor.readToken(ctx, parser);
+			look = res[0];
+			look_token = res[1];
+		}
+		return use("Runtime.Collection").from([parser,op_code]);
+	},
+	/**
 	 * Read expression
 	 */
 	readExpression: function(ctx, parser)
@@ -449,11 +557,16 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayExpression,
 		{
 			return parser.parser_html.constructor.readHTML(ctx, parser);
 		}
-		if (token.content == "@css")
+		else if (token.content == "@css")
 		{
 			return parser.parser_html.constructor.readCss(ctx, parser);
 		}
-		return this.readTernary(ctx, parser);
+		else if (token.content == "#ifdef")
+		{
+			var __v0 = use("Bayrell.Lang.OpCodes.OpPreprocessorIfDef");
+			return parser.parser_preprocessor.constructor.readPreprocessorIfDef(ctx, parser, __v0.KIND_EXPRESSION);
+		}
+		return this.ExpressionPipe(ctx, parser);
 	},
 	/* ======================= Class Init Functions ======================= */
 	getCurrentNamespace: function()

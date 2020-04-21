@@ -72,6 +72,8 @@ Object.assign(Bayrell.Lang.OpCodes.OpPreprocessorIfDef,
 {
 	KIND_PROGRAM: "program",
 	KIND_CLASS_BODY: "class_body",
+	KIND_OPERATOR: "operator",
+	KIND_EXPRESSION: "expression",
 	/* ======================= Class Init Functions ======================= */
 	getCurrentNamespace: function()
 	{
@@ -123,6 +125,20 @@ Object.assign(Bayrell.Lang.OpCodes.OpPreprocessorIfDef,
 			]),
 		});
 		if (field_name == "KIND_CLASS_BODY") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.OpCodes.OpPreprocessorIfDef",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "KIND_OPERATOR") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.OpCodes.OpPreprocessorIfDef",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "KIND_EXPRESSION") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpPreprocessorIfDef",
 			"name": field_name,

@@ -34,12 +34,9 @@ Object.assign(Bayrell.Lang.OpCodes.OpPipe.prototype,
 		var a = Object.getOwnPropertyNames(this);
 		this.op = "op_pipe";
 		this.kind = "";
-		this.class_name = "";
-		this.method_name = "";
 		this.obj = null;
-		this.args = null;
-		this.is_await = false;
-		this.is_context = true;
+		this.value = null;
+		this.is_async = false;
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
@@ -48,12 +45,9 @@ Object.assign(Bayrell.Lang.OpCodes.OpPipe.prototype,
 		{
 			this.op = o.op;
 			this.kind = o.kind;
-			this.class_name = o.class_name;
-			this.method_name = o.method_name;
 			this.obj = o.obj;
-			this.args = o.args;
-			this.is_await = o.is_await;
-			this.is_context = o.is_context;
+			this.value = o.value;
+			this.is_async = o.is_async;
 		}
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
 	},
@@ -61,12 +55,9 @@ Object.assign(Bayrell.Lang.OpCodes.OpPipe.prototype,
 	{
 		if (k == "op")this.op = v;
 		else if (k == "kind")this.kind = v;
-		else if (k == "class_name")this.class_name = v;
-		else if (k == "method_name")this.method_name = v;
 		else if (k == "obj")this.obj = v;
-		else if (k == "args")this.args = v;
-		else if (k == "is_await")this.is_await = v;
-		else if (k == "is_context")this.is_context = v;
+		else if (k == "value")this.value = v;
+		else if (k == "is_async")this.is_async = v;
 		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
@@ -74,12 +65,9 @@ Object.assign(Bayrell.Lang.OpCodes.OpPipe.prototype,
 		if (d == undefined) d = null;
 		if (k == "op")return this.op;
 		else if (k == "kind")return this.kind;
-		else if (k == "class_name")return this.class_name;
-		else if (k == "method_name")return this.method_name;
 		else if (k == "obj")return this.obj;
-		else if (k == "args")return this.args;
-		else if (k == "is_await")return this.is_await;
-		else if (k == "is_context")return this.is_context;
+		else if (k == "value")return this.value;
+		else if (k == "is_async")return this.is_async;
 		return use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)
@@ -90,8 +78,11 @@ Object.assign(Bayrell.Lang.OpCodes.OpPipe.prototype,
 Object.assign(Bayrell.Lang.OpCodes.OpPipe, use("Bayrell.Lang.OpCodes.BaseOpCode"));
 Object.assign(Bayrell.Lang.OpCodes.OpPipe,
 {
+	KIND_ATTR: "attr",
+	KIND_ASYNC: "async",
+	KIND_CALL: "method",
 	KIND_METHOD: "method",
-	KIND_LAMBDA: "lambda",
+	KIND_MONAD: "monad",
 	/* ======================= Class Init Functions ======================= */
 	getCurrentNamespace: function()
 	{
@@ -126,12 +117,9 @@ Object.assign(Bayrell.Lang.OpCodes.OpPipe,
 		{
 			a.push("op");
 			a.push("kind");
-			a.push("class_name");
-			a.push("method_name");
 			a.push("obj");
-			a.push("args");
-			a.push("is_await");
-			a.push("is_context");
+			a.push("value");
+			a.push("is_async");
 		}
 		return use("Runtime.Collection").from(a);
 	},
@@ -140,6 +128,27 @@ Object.assign(Bayrell.Lang.OpCodes.OpPipe,
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
 		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
+		if (field_name == "KIND_ATTR") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.OpCodes.OpPipe",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "KIND_ASYNC") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.OpCodes.OpPipe",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "KIND_CALL") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.OpCodes.OpPipe",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
 		if (field_name == "KIND_METHOD") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpPipe",
@@ -147,7 +156,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpPipe,
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "KIND_LAMBDA") return new IntrospectionInfo(ctx, {
+		if (field_name == "KIND_MONAD") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpPipe",
 			"name": field_name,
@@ -168,20 +177,6 @@ Object.assign(Bayrell.Lang.OpCodes.OpPipe,
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "class_name") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.OpCodes.OpPipe",
-			"name": field_name,
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "method_name") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.OpCodes.OpPipe",
-			"name": field_name,
-			"annotations": Collection.from([
-			]),
-		});
 		if (field_name == "obj") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpPipe",
@@ -189,21 +184,14 @@ Object.assign(Bayrell.Lang.OpCodes.OpPipe,
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "args") return new IntrospectionInfo(ctx, {
+		if (field_name == "value") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpPipe",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "is_await") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.OpCodes.OpPipe",
-			"name": field_name,
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "is_context") return new IntrospectionInfo(ctx, {
+		if (field_name == "is_async") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpPipe",
 			"name": field_name,

@@ -596,6 +596,11 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 		{
 			return parser.parser_preprocessor.constructor.readPreprocessor(ctx, parser);
 		}
+		else if (token.content == "#ifdef")
+		{
+			var __v0 = use("Bayrell.Lang.OpCodes.OpPreprocessorIfDef");
+			return parser.parser_preprocessor.constructor.readPreprocessorIfDef(ctx, parser, __v0.KIND_OPERATOR);
+		}
 		else if (token.content == "break")
 		{
 			var __v0 = use("Bayrell.Lang.OpCodes.OpBreak");
@@ -656,6 +661,52 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 	/**
 	 * Read operators
 	 */
+	readOpItems: function(ctx, parser, end_tag)
+	{
+		if (end_tag == undefined) end_tag = "}";
+		var look = null;
+		var token = null;
+		var op_code = null;
+		var __v0 = use("Runtime.Vector");
+		var arr = new __v0(ctx);
+		var caret_start = parser.caret;
+		parser = parser.copy(ctx, { "skip_comments": false });
+		var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
+		look = res[0];
+		token = res[1];
+		parser = parser.copy(ctx, { "skip_comments": true });
+		while (!token.eof && token.content != end_tag)
+		{
+			var parser_value = null;
+			var res = this.readOperator(ctx, parser);
+			parser = res[0];
+			parser_value = res[1];
+			if (parser_value != null)
+			{
+				arr.push(ctx, parser_value);
+			}
+			parser = parser.copy(ctx, { "skip_comments": false });
+			var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
+			look = res[0];
+			token = res[1];
+			parser = parser.copy(ctx, { "skip_comments": true });
+			if (token.content == ";")
+			{
+				parser = look.clone(ctx);
+				parser = parser.copy(ctx, { "skip_comments": false });
+				var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
+				look = res[0];
+				token = res[1];
+				parser = parser.copy(ctx, { "skip_comments": true });
+			}
+		}
+		var __v0 = use("Bayrell.Lang.OpCodes.OpItems");
+		op_code = new __v0(ctx, use("Runtime.Dict").from({"items":arr.toCollection(ctx),"caret_start":caret_start,"caret_end":parser.caret}));
+		return use("Runtime.Collection").from([parser,op_code]);
+	},
+	/**
+	 * Read operators
+	 */
 	readOperators: function(ctx, parser)
 	{
 		var look = null;
@@ -669,44 +720,13 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 		var caret_start = token.caret_start.clone(ctx);
 		if (token.content == "{")
 		{
-			var __v0 = use("Runtime.Vector");
-			var arr = new __v0(ctx);
 			var res = parser.parser_base.constructor.matchToken(ctx, parser, "{");
 			parser = res[0];
-			parser = parser.copy(ctx, { "skip_comments": false });
-			var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-			look = res[0];
-			token = res[1];
-			parser = parser.copy(ctx, { "skip_comments": true });
-			while (!token.eof && token.content != "}")
-			{
-				var parser_value = null;
-				var res = this.readOperator(ctx, parser);
-				parser = res[0];
-				parser_value = res[1];
-				if (parser_value != null)
-				{
-					arr.push(ctx, parser_value);
-				}
-				parser = parser.copy(ctx, { "skip_comments": false });
-				var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-				look = res[0];
-				token = res[1];
-				parser = parser.copy(ctx, { "skip_comments": true });
-				if (token.content == ";")
-				{
-					parser = look.clone(ctx);
-					parser = parser.copy(ctx, { "skip_comments": false });
-					var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-					look = res[0];
-					token = res[1];
-					parser = parser.copy(ctx, { "skip_comments": true });
-				}
-			}
+			var res = this.readOpItems(ctx, parser, "}");
+			parser = res[0];
+			op_code = res[1];
 			var res = parser.parser_base.constructor.matchToken(ctx, parser, "}");
 			parser = res[0];
-			var __v0 = use("Bayrell.Lang.OpCodes.OpItems");
-			op_code = new __v0(ctx, use("Runtime.Dict").from({"items":arr.toCollection(ctx),"caret_start":caret_start,"caret_end":parser.caret.clone(ctx)}));
 		}
 		else
 		{

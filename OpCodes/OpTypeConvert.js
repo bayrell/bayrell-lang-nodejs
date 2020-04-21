@@ -32,7 +32,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpTypeConvert.prototype,
 	{
 		var defProp = use('Runtime.rtl').defProp;
 		var a = Object.getOwnPropertyNames(this);
-		this.op = "op_classof";
+		this.op = "op_type_convert";
 		this.pattern = null;
 		this.value = null;
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,ctx);

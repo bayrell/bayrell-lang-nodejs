@@ -60,6 +60,10 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayPreprocessor,
 		{
 			return this.readPreprocessorSwitch(ctx, start);
 		}
+		if (token.content == "#ifcode")
+		{
+			return this.readPreprocessorIfCode(ctx, start);
+		}
 		return null;
 	},
 	/**
@@ -127,6 +131,42 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayPreprocessor,
 		return use("Runtime.Collection").from([parser,new __v0(ctx, use("Runtime.Dict").from({"items":items.toCollection(ctx),"caret_start":caret_start,"caret_end":parser.caret.clone(ctx)}))]);
 	},
 	/**
+	 * Read preprocessor ifcode
+	 */
+	readPreprocessorIfCode: function(ctx, parser)
+	{
+		var look = null;
+		var token = null;
+		var caret_start = parser.caret;
+		var res = parser.parser_base.constructor.matchToken(ctx, parser, "#ifcode");
+		parser = res[0];
+		token = res[1];
+		/* Read condition */
+		var condition = null;
+		parser = parser.copy(ctx, { "find_ident": false });
+		var res = parser.parser_expression.constructor.readExpression(ctx, parser);
+		parser = res[0];
+		condition = res[1];
+		parser = parser.copy(ctx, { "find_ident": true });
+		/* Read then */
+		var res = parser.parser_base.constructor.matchToken(ctx, parser, "then");
+		parser = res[0];
+		token = res[1];
+		/* Read content */
+		var content = "";
+		var caret_content = parser.caret.clone(ctx);
+		var res = parser.parser_base.constructor.readUntilStringArr(ctx, parser, use("Runtime.Collection").from(["#endif"]), false);
+		parser = res[0];
+		content = res[1];
+		/* Match endif */
+		var res = parser.parser_base.constructor.matchToken(ctx, parser, "#endif");
+		parser = res[0];
+		token = res[1];
+		var __v0 = use("Bayrell.Lang.OpCodes.OpPreprocessorIfCode");
+		var ifcode = new __v0(ctx, use("Runtime.Dict").from({"condition":condition,"content":content,"caret_start":caret_content,"caret_end":parser.caret}));
+		return use("Runtime.Collection").from([parser,ifcode]);
+	},
+	/**
 	 * Read preprocessor ifdef
 	 */
 	readPreprocessorIfDef: function(ctx, parser, kind)
@@ -134,10 +174,10 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayPreprocessor,
 		if (kind == undefined) kind = "";
 		var items = null;
 		var token = null;
+		var caret_start = parser.caret;
 		var res = parser.parser_base.constructor.matchToken(ctx, parser, "#ifdef");
 		parser = res[0];
 		token = res[1];
-		var caret_start = token.caret_start.clone(ctx);
 		/* Read condition */
 		var condition = null;
 		parser = parser.copy(ctx, { "find_ident": false });
@@ -151,6 +191,8 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayPreprocessor,
 		token = res[1];
 		var __v0 = use("Bayrell.Lang.OpCodes.OpPreprocessorIfDef");
 		var __v1 = use("Bayrell.Lang.OpCodes.OpPreprocessorIfDef");
+		var __v2 = use("Bayrell.Lang.OpCodes.OpPreprocessorIfDef");
+		var __v3 = use("Bayrell.Lang.OpCodes.OpPreprocessorIfDef");
 		if (kind == __v0.KIND_PROGRAM)
 		{
 			var res = parser.parser_program.constructor.readProgram(ctx, parser, "#endif");
@@ -168,6 +210,22 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayPreprocessor,
 			parser = res[0];
 			var d = parser.parser_program.constructor.classBodyAnalyze(ctx, parser, items);
 			items = d.item(ctx, "functions");
+		}
+		else if (kind == __v2.KIND_OPERATOR)
+		{
+			var res = parser.parser_operator.constructor.readOpItems(ctx, parser, "#endif");
+			parser = res[0];
+			items = res[1];
+			var res = parser.parser_base.constructor.matchToken(ctx, parser, "#endif");
+			parser = res[0];
+		}
+		else if (kind == __v3.KIND_EXPRESSION)
+		{
+			var res = parser.parser_expression.constructor.readExpression(ctx, parser);
+			parser = res[0];
+			items = res[1];
+			var res = parser.parser_base.constructor.matchToken(ctx, parser, "#endif");
+			parser = res[0];
 		}
 		var __v0 = use("Bayrell.Lang.OpCodes.OpPreprocessorIfDef");
 		return use("Runtime.Collection").from([parser,new __v0(ctx, use("Runtime.Dict").from({"items":items,"condition":condition,"caret_start":caret_start,"caret_end":parser.caret.clone(ctx)}))]);

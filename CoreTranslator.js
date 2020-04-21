@@ -224,12 +224,12 @@ Object.assign(Bayrell.Lang.CoreTranslator,
 		var content = data.get(ctx, "content", "");
 		var var_content = data.get(ctx, "var_content", "");
 		var save_op_code_inc = t.save_op_code_inc;
-		if (var_name == "")
+		if (var_name == "" && content == "")
 		{
 			var_name = this.nextSaveOpCode(ctx, t);
+			data = data.setIm(ctx, "var_name", var_name);
 			save_op_code_inc += 1;
 		}
-		data = data.setIm(ctx, "var_name", var_name);
 		var __v0 = use("Bayrell.Lang.SaveOpCode");
 		var s = new __v0(ctx, data);
 		t = t.copy(ctx, use("Runtime.Dict").from({"save_op_codes":t.save_op_codes.pushIm(ctx, s),"save_op_code_inc":save_op_code_inc}));

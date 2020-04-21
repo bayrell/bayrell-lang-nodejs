@@ -232,7 +232,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPOperator,
 		}
 		if (t.current_function.flags != null && t.current_function.flags.isFlag(ctx, "memorize"))
 		{
-			var content = "$__memorize_value = " + use("Runtime.rtl").toStr(s1) + use("Runtime.rtl").toStr(";");
+			var content = t.s(ctx, "$__memorize_value = " + use("Runtime.rtl").toStr(s1) + use("Runtime.rtl").toStr(";"));
 			content += use("Runtime.rtl").toStr(t.s(ctx, t.expression.constructor.getModuleName(ctx, t, "Runtime.rtl") + use("Runtime.rtl").toStr("::_memorizeSave(\"") + use("Runtime.rtl").toStr(t.current_class_full_name) + use("Runtime.rtl").toStr(".") + use("Runtime.rtl").toStr(t.current_function.name) + use("Runtime.rtl").toStr("\", func_get_args(), $__memorize_value);")));
 			content += use("Runtime.rtl").toStr(t.s(ctx, "return $__memorize_value;"));
 			return use("Runtime.Collection").from([t,content]);
@@ -354,6 +354,16 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPOperator,
 		{
 			return use("Runtime.Collection").from([t,""]);
 		}
+		var __v0 = use("Bayrell.Lang.OpCodes.OpPreprocessorIfDef");
+		var __v1 = use("Bayrell.Lang.OpCodes.OpPreprocessorIfDef");
+		if (kind == __v0.KIND_OPERATOR)
+		{
+			return this.Operators(ctx, t, op_code.items);
+		}
+		else if (kind == __v1.KIND_EXPRESSION)
+		{
+			return t.expression.constructor.Expression(ctx, t, op_code.items);
+		}
 		var content = "";
 		for (var i = 0;i < op_code.items.count(ctx);i++)
 		{
@@ -436,8 +446,9 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPOperator,
 		var __v12 = use("Bayrell.Lang.OpCodes.OpWhile");
 		var __v13 = use("Bayrell.Lang.OpCodes.OpInc");
 		var __v14 = use("Bayrell.Lang.OpCodes.OpPreprocessorIfCode");
-		var __v15 = use("Bayrell.Lang.OpCodes.OpPreprocessorSwitch");
-		var __v16 = use("Bayrell.Lang.OpCodes.OpComment");
+		var __v15 = use("Bayrell.Lang.OpCodes.OpPreprocessorIfDef");
+		var __v16 = use("Bayrell.Lang.OpCodes.OpPreprocessorSwitch");
+		var __v17 = use("Bayrell.Lang.OpCodes.OpComment");
 		if (op_code instanceof __v0)
 		{
 			var res = this.OpAssign(ctx, t, op_code);
@@ -545,6 +556,13 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPOperator,
 		}
 		else if (op_code instanceof __v15)
 		{
+			var __v16 = use("Bayrell.Lang.OpCodes.OpPreprocessorIfDef");
+			var res = this.OpPreprocessorIfDef(ctx, t, op_code, __v16.KIND_OPERATOR);
+			t = res[0];
+			content = res[1];
+		}
+		else if (op_code instanceof __v16)
+		{
 			for (var i = 0;i < op_code.items.count(ctx);i++)
 			{
 				var res = this.OpPreprocessorIfCode(ctx, t, op_code.items.item(ctx, i));
@@ -556,7 +574,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPOperator,
 				content += use("Runtime.rtl").toStr(s);
 			}
 		}
-		else if (op_code instanceof __v16)
+		else if (op_code instanceof __v17)
 		{
 			var res = this.OpComment(ctx, t, op_code);
 			t = res[0];

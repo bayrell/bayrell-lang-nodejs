@@ -146,7 +146,8 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayProgram,
 			}
 			else if (token.content == "#ifdef")
 			{
-				var res = parser.parser_preprocessor.constructor.readPreprocessorIfDef(ctx, parser, "class_body");
+				var __v0 = use("Bayrell.Lang.OpCodes.OpPreprocessorIfDef");
+				var res = parser.parser_preprocessor.constructor.readPreprocessorIfDef(ctx, parser, __v0.KIND_CLASS_BODY);
 				parser = res[0];
 				item = res[1];
 				if (item != null)
@@ -495,7 +496,8 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayProgram,
 				/* Append comments */
 				items.appendVector(ctx, comments);
 				comments.clear(ctx);
-				var res = parser.parser_preprocessor.constructor.readPreprocessorIfDef(ctx, parser, "program");
+				var __v0 = use("Bayrell.Lang.OpCodes.OpPreprocessorIfDef");
+				var res = parser.parser_preprocessor.constructor.readPreprocessorIfDef(ctx, parser, __v0.KIND_PROGRAM);
 				parser = res[0];
 				op_code = res[1];
 				if (op_code != null)

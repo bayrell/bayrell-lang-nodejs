@@ -131,7 +131,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags,
 	 */
 	getFlags: function(ctx)
 	{
-		return use("Runtime.Collection").from(["async","export","static","const","public","private","declare","protected","serializable","cloneable","assignable","memorize","lambda","pure"]);
+		return use("Runtime.Collection").from(["async","export","static","const","public","private","declare","protected","serializable","cloneable","assignable","memorize","pure"]);
 	},
 	/**
 	 * Get flags
