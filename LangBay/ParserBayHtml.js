@@ -53,6 +53,40 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayHtml, use("Runtime.CoreObject"));
 Object.assign(Bayrell.Lang.LangBay.ParserBayHtml,
 {
 	/**
+	 * Retuns css hash
+	 * @param string component class name
+	 * @return string hash
+	 */
+	getCssHash: function(ctx, s)
+	{
+		var __memorize_value = use("Runtime.rtl")._memorizeValue("Bayrell.Lang.LangBay.ParserBayHtml.getCssHash", arguments);
+		if (__memorize_value != use("Runtime.rtl")._memorize_not_found) return __memorize_value;
+		var r = "";
+		var a = "1234567890abcdef";
+		var __v0 = use("Runtime.rs");
+		var sz = __v0.strlen(ctx, s);
+		var h = 0;
+		for (var i = 0;i < sz;i++)
+		{
+			var __v0 = use("Runtime.rs");
+			var __v1 = use("Runtime.rs");
+			var c = __v0.ord(ctx, __v1.substr(ctx, s, i, 1));
+			h = (h << 2) + (h >> 14) + c & 65535;
+		}
+		var p = 0;
+		while (h != 0 || p < 4)
+		{
+			var c = h & 15;
+			h = h >> 4;
+			var __v0 = use("Runtime.rs");
+			r += use("Runtime.rtl").toStr(__v0.substr(ctx, a, c, 1));
+			p = p + 1;
+		}
+		var __memorize_value = r;
+		use("Runtime.rtl")._memorizeSave("Bayrell.Lang.LangBay.ParserBayHtml.getCssHash", arguments, __memorize_value);
+		return __memorize_value;
+	},
+	/**
 	 * Read css selector
 	 */
 	readCssSelector: function(ctx, parser)
@@ -102,11 +136,10 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayHtml,
 		}
 		var __v0 = use("Runtime.rs");
 		var postfix = __v0.substr(ctx, content.ref, start_pos, pos - start_pos);
-		var __v0 = use("Runtime.RuntimeUtils");
-		var selector = "." + use("Runtime.rtl").toStr(postfix) + use("Runtime.rtl").toStr("-") + use("Runtime.rtl").toStr(__v0.getCssHash(ctx, class_name));
+		var selector = "." + use("Runtime.rtl").toStr(postfix) + use("Runtime.rtl").toStr("-") + use("Runtime.rtl").toStr(this.getCssHash(ctx, class_name));
 		var __v0 = use("Bayrell.Lang.Caret");
 		var caret = new __v0(ctx, use("Runtime.Dict").from({"x":x,"y":y,"pos":pos}));
-		parser = parser.copy(ctx, { "caret": caret });
+		parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["caret"]), caret);
 		return use("Runtime.Collection").from([parser,selector]);
 	},
 	/**
@@ -143,10 +176,10 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayHtml,
 				/* Read CSS Selector */
 				var __v0 = use("Bayrell.Lang.Caret");
 				var caret = new __v0(ctx, use("Runtime.Dict").from({"x":x,"y":y,"pos":pos}));
-				parser = parser.copy(ctx, { "caret": caret });
+				parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["caret"]), caret);
 				var res = this.readCssSelector(ctx, parser);
-				parser = res[0];
-				var s = res[1];
+				parser = Runtime.rtl.get(ctx, res, 0);
+				var s = Runtime.rtl.get(ctx, res, 1);
 				css_str += use("Runtime.rtl").toStr(s);
 				/* Set pos, x, y */
 				caret_start = parser.caret.clone(ctx);
@@ -161,15 +194,15 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayHtml,
 				y = parser.parser_base.constructor.nextY(ctx, parser, ch, y);
 				pos = pos + 1;
 				var res = parser.parser_base.constructor.readUntilStringArr(ctx, parser, use("Runtime.Collection").from(["{"]), false);
-				parser = res[0];
-				var s1 = res[1];
+				parser = Runtime.rtl.get(ctx, res, 0);
+				var s1 = Runtime.rtl.get(ctx, res, 1);
 				var res = parser.parser_base.constructor.matchToken(ctx, parser, "{");
-				parser = res[0];
+				parser = Runtime.rtl.get(ctx, res, 0);
 				var res = this.readCssBody(ctx, parser);
-				parser = res[0];
-				var s2 = res[1];
+				parser = Runtime.rtl.get(ctx, res, 0);
+				var s2 = Runtime.rtl.get(ctx, res, 1);
 				var res = parser.parser_base.constructor.matchToken(ctx, parser, "}");
-				parser = res[0];
+				parser = Runtime.rtl.get(ctx, res, 0);
 				css_str += use("Runtime.rtl").toStr(s1 + use("Runtime.rtl").toStr("{") + use("Runtime.rtl").toStr(s2) + use("Runtime.rtl").toStr("}"));
 				/* Set pos, x, y */
 				caret_start = parser.caret.clone(ctx);
@@ -190,14 +223,14 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayHtml,
 				/* Read CSS Block */
 				var __v0 = use("Bayrell.Lang.Caret");
 				var caret = new __v0(ctx, use("Runtime.Dict").from({"x":x,"y":y,"pos":pos}));
-				parser = parser.copy(ctx, { "caret": caret });
+				parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["caret"]), caret);
 				var res = parser.parser_base.constructor.matchToken(ctx, parser, "{");
-				parser = res[0];
+				parser = Runtime.rtl.get(ctx, res, 0);
 				var res = parser.parser_base.constructor.readUntilStringArr(ctx, parser, use("Runtime.Collection").from(["}"]), false);
-				parser = res[0];
-				var s = res[1];
+				parser = Runtime.rtl.get(ctx, res, 0);
+				var s = Runtime.rtl.get(ctx, res, 1);
 				var res = parser.parser_base.constructor.matchToken(ctx, parser, "}");
-				parser = res[0];
+				parser = Runtime.rtl.get(ctx, res, 0);
 				css_str += use("Runtime.rtl").toStr("{" + use("Runtime.rtl").toStr(s) + use("Runtime.rtl").toStr("}"));
 				/* Set pos, x, y */
 				caret_start = parser.caret.clone(ctx);
@@ -224,7 +257,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayHtml,
 		{
 			css_str += use("Runtime.rtl").toStr(value);
 		}
-		parser = parser.copy(ctx, { "caret": caret });
+		parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["caret"]), caret);
 		return use("Runtime.Collection").from([parser,css_str]);
 	},
 	/**
@@ -234,15 +267,15 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayHtml,
 	{
 		var caret_start = parser.caret.clone(ctx);
 		var res = parser.parser_base.constructor.matchToken(ctx, parser, "@css");
-		parser = res[0];
+		parser = Runtime.rtl.get(ctx, res, 0);
 		var res = parser.parser_base.constructor.matchToken(ctx, parser, "{");
-		parser = res[0];
+		parser = Runtime.rtl.get(ctx, res, 0);
 		var res = this.readCssBody(ctx, parser);
-		parser = res[0];
-		var css_str = res[1];
+		parser = Runtime.rtl.get(ctx, res, 0);
+		var css_str = Runtime.rtl.get(ctx, res, 1);
 		var caret = parser.caret;
 		var res = parser.parser_base.constructor.matchToken(ctx, parser, "}");
-		parser = res[0];
+		parser = Runtime.rtl.get(ctx, res, 0);
 		var __v0 = use("Runtime.rs");
 		css_str = __v0.replace(ctx, "\t", "", css_str);
 		var __v0 = use("Runtime.rs");
@@ -267,18 +300,18 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayHtml,
 		if (ch == "<")
 		{
 			var res = this.readHTMLTag(ctx, parser);
-			parser = res[0];
-			item = res[1];
+			parser = Runtime.rtl.get(ctx, res, 0);
+			item = Runtime.rtl.get(ctx, res, 1);
 		}
 		else if (ch == "{")
 		{
 			var res = parser.parser_base.constructor.matchToken(ctx, parser, "{");
-			parser = res[0];
+			parser = Runtime.rtl.get(ctx, res, 0);
 			var res = parser.parser_expression.constructor.readExpression(ctx, parser);
-			parser = res[0];
-			item = res[1];
+			parser = Runtime.rtl.get(ctx, res, 0);
+			item = Runtime.rtl.get(ctx, res, 1);
 			var res = parser.parser_base.constructor.matchToken(ctx, parser, "}");
-			parser = res[0];
+			parser = Runtime.rtl.get(ctx, res, 0);
 		}
 		else if (ch == "@")
 		{
@@ -304,18 +337,18 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayHtml,
 				{
 					res = parser.parser_base.constructor.next(ctx, parser, ch4, x, y, pos);
 				}
-				x = res[0];
-				y = res[1];
-				pos = res[2];
+				x = Runtime.rtl.get(ctx, res, 0);
+				y = Runtime.rtl.get(ctx, res, 1);
+				pos = Runtime.rtl.get(ctx, res, 2);
 			}
 			var __v0 = use("Bayrell.Lang.Caret");
 			caret = new __v0(ctx, use("Runtime.Dict").from({"x":x,"y":y,"pos":pos}));
-			parser = parser.copy(ctx, { "caret": caret });
+			parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["caret"]), caret);
 			var res = parser.parser_base.constructor.matchToken(ctx, parser, "{");
-			parser = res[0];
+			parser = Runtime.rtl.get(ctx, res, 0);
 			var res = parser.parser_expression.constructor.readExpression(ctx, parser);
-			parser = res[0];
-			item = res[1];
+			parser = Runtime.rtl.get(ctx, res, 0);
+			item = Runtime.rtl.get(ctx, res, 1);
 			if (ch3 == "raw")
 			{
 				var __v0 = use("Bayrell.Lang.OpCodes.OpHtmlValue");
@@ -335,7 +368,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayHtml,
 				item = new __v0(ctx, use("Runtime.Dict").from({"kind":__v1.KIND_HTML,"value":item,"caret_start":caret,"caret_end":parser.caret.clone(ctx)}));
 			}
 			var res = parser.parser_base.constructor.matchToken(ctx, parser, "}");
-			parser = res[0];
+			parser = Runtime.rtl.get(ctx, res, 0);
 		}
 		return use("Runtime.Collection").from([parser,item]);
 	},
@@ -350,43 +383,43 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayHtml,
 		var key = "";
 		/* Look token */
 		var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-		look = res[0];
-		token = res[1];
+		look = Runtime.rtl.get(ctx, res, 0);
+		token = Runtime.rtl.get(ctx, res, 1);
 		if (token.content == "@")
 		{
 			parser = look.clone(ctx);
 			key = "@";
 		}
 		var res = parser.parser_base.constructor.readIdentifier(ctx, parser);
-		parser = res[0];
-		ident = res[1];
+		parser = Runtime.rtl.get(ctx, res, 0);
+		ident = Runtime.rtl.get(ctx, res, 1);
 		key += use("Runtime.rtl").toStr(ident.value);
 		/* Read attr */
 		var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-		look = res[0];
-		token = res[1];
+		look = Runtime.rtl.get(ctx, res, 0);
+		token = Runtime.rtl.get(ctx, res, 1);
 		while (token.content == "-")
 		{
 			var res = parser.parser_base.constructor.readIdentifier(ctx, look.clone(ctx));
-			parser = res[0];
-			ident = res[1];
+			parser = Runtime.rtl.get(ctx, res, 0);
+			ident = Runtime.rtl.get(ctx, res, 1);
 			key += use("Runtime.rtl").toStr("-" + use("Runtime.rtl").toStr(ident.value));
 			/* Look next token */
 			var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-			look = res[0];
-			token = res[1];
+			look = Runtime.rtl.get(ctx, res, 0);
+			token = Runtime.rtl.get(ctx, res, 1);
 		}
 		/* Look token */
 		var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-		look = res[0];
-		token = res[1];
+		look = Runtime.rtl.get(ctx, res, 0);
+		token = Runtime.rtl.get(ctx, res, 1);
 		if (token.content == ":")
 		{
 			parser = look.clone(ctx);
 			key += use("Runtime.rtl").toStr(":");
 			var res = parser.parser_base.constructor.readIdentifier(ctx, parser);
-			parser = res[0];
-			ident = res[1];
+			parser = Runtime.rtl.get(ctx, res, 0);
+			ident = Runtime.rtl.get(ctx, res, 1);
 			key += use("Runtime.rtl").toStr(ident.value);
 		}
 		return use("Runtime.Collection").from([parser,key]);
@@ -402,29 +435,35 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayHtml,
 		var ident = null;
 		/* Look token */
 		var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-		look = res[0];
-		token = res[1];
+		look = Runtime.rtl.get(ctx, res, 0);
+		token = Runtime.rtl.get(ctx, res, 1);
 		if (token.content == "{")
 		{
 			var res = parser.parser_base.constructor.matchToken(ctx, parser, "{");
-			parser = res[0];
+			parser = Runtime.rtl.get(ctx, res, 0);
 			var res = parser.parser_expression.constructor.readExpression(ctx, parser);
-			parser = res[0];
-			op_code = res[1];
+			parser = Runtime.rtl.get(ctx, res, 0);
+			op_code = Runtime.rtl.get(ctx, res, 1);
 			var res = parser.parser_base.constructor.matchToken(ctx, parser, "}");
-			parser = res[0];
+			parser = Runtime.rtl.get(ctx, res, 0);
 		}
 		else if (token.content == "@")
 		{
 			var res = this.readHTMLValue(ctx, parser);
-			parser = res[0];
-			op_code = res[1];
+			parser = Runtime.rtl.get(ctx, res, 0);
+			op_code = Runtime.rtl.get(ctx, res, 1);
+		}
+		else if (token.content == "[")
+		{
+			var res = parser.parser_base.constructor.readCollection(ctx, parser);
+			parser = Runtime.rtl.get(ctx, res, 0);
+			op_code = Runtime.rtl.get(ctx, res, 1);
 		}
 		else
 		{
 			var res = parser.parser_base.constructor.readString(ctx, parser);
-			parser = res[0];
-			op_code = res[1];
+			parser = Runtime.rtl.get(ctx, res, 0);
+			op_code = Runtime.rtl.get(ctx, res, 1);
 		}
 		return use("Runtime.Collection").from([parser,op_code]);
 	},
@@ -443,15 +482,15 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayHtml,
 		while (ch != "/" && ch != ">" && caret.pos < content_sz)
 		{
 			var caret_start = caret;
-			parser = parser.copy(ctx, { "caret": caret.clone(ctx) });
+			parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["caret"]), caret.clone(ctx));
 			var res = this.readHTMLAttrKey(ctx, parser);
-			parser = res[0];
-			var key = res[1];
+			parser = Runtime.rtl.get(ctx, res, 0);
+			var key = Runtime.rtl.get(ctx, res, 1);
 			var res = parser.parser_base.constructor.matchToken(ctx, parser, "=");
-			parser = res[0];
+			parser = Runtime.rtl.get(ctx, res, 0);
 			var res = this.readHTMLAttrValue(ctx, parser);
-			parser = res[0];
-			var value = res[1];
+			parser = Runtime.rtl.get(ctx, res, 0);
+			var value = Runtime.rtl.get(ctx, res, 1);
 			var __v0 = use("Bayrell.Lang.OpCodes.OpHtmlAttribute");
 			items.push(ctx, new __v0(ctx, use("Runtime.Dict").from({"key":key,"value":value,"caret_start":caret_start,"caret_end":parser.caret.clone(ctx)})));
 			caret = parser.parser_base.constructor.skipChar(ctx, parser, content, parser.caret.clone(ctx));
@@ -488,7 +527,13 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayHtml,
 		var end_tag_sz = __v0.strlen(ctx, end_tag);
 		var __v0 = use("Runtime.rs");
 		var ch2 = __v0.substr(ctx, content.ref, pos, end_tag_sz);
-		while (ch2 != end_tag && pos < content_sz)
+		var flag_first = true;
+		var first_html_tag = false;
+		if (end_tag == "")
+		{
+			first_html_tag = true;
+		}
+		while ((end_tag == "" || end_tag != "" && ch2 != end_tag) && pos < content_sz)
 		{
 			var __v0 = use("Runtime.rs");
 			var ch = __v0.substr(ctx, content.ref, pos, 1);
@@ -501,6 +546,11 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayHtml,
 				caret = new __v0(ctx, use("Runtime.Dict").from({"x":x,"y":y,"pos":pos}));
 				var __v0 = use("Runtime.rs");
 				value = __v0.trim(ctx, value, "\t\r\n");
+				if (flag_first && first_html_tag)
+				{
+					var __v0 = use("Runtime.rs");
+					value = __v0.trim(ctx, value, " ");
+				}
 				if (value != "")
 				{
 					var __v0 = use("Bayrell.Lang.OpCodes.OpHtmlContent");
@@ -508,10 +558,10 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayHtml,
 					items.push(ctx, item);
 				}
 				/* Read HTML Value */
-				parser = parser.copy(ctx, { "caret": caret });
+				parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["caret"]), caret);
 				var res = this.readHTMLValue(ctx, parser);
-				parser = res[0];
-				item = res[1];
+				parser = Runtime.rtl.get(ctx, res, 0);
+				item = Runtime.rtl.get(ctx, res, 1);
 				items.push(ctx, item);
 				/* Set pos, x, y */
 				caret_start = parser.caret.clone(ctx);
@@ -522,6 +572,10 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayHtml,
 			}
 			else
 			{
+				if (first_html_tag && ch != " " && ch != "\t" && ch != "\r" && ch != "\n")
+				{
+					break;
+				}
 				x = parser.parser_base.constructor.nextX(ctx, parser, ch, x);
 				y = parser.parser_base.constructor.nextY(ctx, parser, ch, y);
 				pos = pos + 1;
@@ -536,6 +590,11 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayHtml,
 		value = __v0.trim(ctx, value, "\t\r\n");
 		var __v0 = use("Bayrell.Lang.Caret");
 		caret = new __v0(ctx, use("Runtime.Dict").from({"x":x,"y":y,"pos":pos}));
+		if (first_html_tag)
+		{
+			var __v0 = use("Runtime.rs");
+			value = __v0.trim(ctx, value, " ");
+		}
 		if (value != "")
 		{
 			var __v0 = use("Bayrell.Lang.OpCodes.OpHtmlContent");
@@ -562,22 +621,22 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayHtml,
 		var tag_name = "";
 		/* Tag start */
 		var res = parser.parser_base.constructor.matchToken(ctx, parser, "<");
-		parser = res[0];
+		parser = Runtime.rtl.get(ctx, res, 0);
 		/* Look token */
 		var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-		look = res[0];
-		token = res[1];
+		look = Runtime.rtl.get(ctx, res, 0);
+		token = Runtime.rtl.get(ctx, res, 1);
 		if (token.content == "{")
 		{
 			op_code_flag = true;
 			var caret1 = parser.caret.clone(ctx);
 			var res = parser.parser_base.constructor.matchToken(ctx, parser, "{");
-			parser = res[0];
+			parser = Runtime.rtl.get(ctx, res, 0);
 			var res = parser.parser_expression.constructor.readExpression(ctx, parser);
-			parser = res[0];
-			op_code_name = res[1];
+			parser = Runtime.rtl.get(ctx, res, 0);
+			op_code_name = Runtime.rtl.get(ctx, res, 1);
 			var res = parser.parser_base.constructor.matchToken(ctx, parser, "}");
-			parser = res[0];
+			parser = Runtime.rtl.get(ctx, res, 0);
 			var caret2 = parser.caret.clone(ctx);
 			var __v0 = use("Runtime.rs");
 			tag_name = __v0.substr(ctx, parser.content.ref, caret1.pos, caret2.pos - caret1.pos);
@@ -590,64 +649,64 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayHtml,
 		else
 		{
 			var res = parser.parser_base.constructor.readIdentifier(ctx, parser, false);
-			parser = res[0];
-			ident = res[1];
+			parser = Runtime.rtl.get(ctx, res, 0);
+			ident = Runtime.rtl.get(ctx, res, 1);
 			tag_name = ident.value;
 		}
 		var res = this.readHTMLAttrs(ctx, parser);
-		parser = res[0];
-		var attrs = res[1];
+		parser = Runtime.rtl.get(ctx, res, 0);
+		var attrs = Runtime.rtl.get(ctx, res, 1);
 		var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-		look = res[0];
-		token = res[1];
+		look = Runtime.rtl.get(ctx, res, 0);
+		token = Runtime.rtl.get(ctx, res, 1);
 		if (token.content == "/")
 		{
 			parser = look.clone(ctx);
 			is_single_flag = true;
 		}
 		var res = parser.parser_base.constructor.matchToken(ctx, parser, ">");
-		parser = res[0];
+		parser = Runtime.rtl.get(ctx, res, 0);
 		if (!is_single_flag)
 		{
 			/* Read items */
 			caret_items_start = parser.caret.clone(ctx);
 			var res = this.readHTMLContent(ctx, parser, "</" + use("Runtime.rtl").toStr(tag_name));
-			parser = res[0];
-			var items = res[1];
+			parser = Runtime.rtl.get(ctx, res, 0);
+			var items = Runtime.rtl.get(ctx, res, 1);
 			caret_items_end = parser.caret.clone(ctx);
 			/* Tag end */
 			if (op_code_flag)
 			{
 				var res = parser.parser_base.constructor.matchToken(ctx, parser, "<");
-				parser = res[0];
+				parser = Runtime.rtl.get(ctx, res, 0);
 				var res = parser.parser_base.constructor.matchToken(ctx, parser, "/");
-				parser = res[0];
+				parser = Runtime.rtl.get(ctx, res, 0);
 				if (tag_name)
 				{
 					var res = parser.parser_base.constructor.matchString(ctx, parser, tag_name);
-					parser = res[0];
+					parser = Runtime.rtl.get(ctx, res, 0);
 				}
 				var res = parser.parser_base.constructor.matchToken(ctx, parser, ">");
-				parser = res[0];
+				parser = Runtime.rtl.get(ctx, res, 0);
 			}
 			else
 			{
 				var res = parser.parser_base.constructor.matchToken(ctx, parser, "<");
-				parser = res[0];
+				parser = Runtime.rtl.get(ctx, res, 0);
 				var res = parser.parser_base.constructor.matchToken(ctx, parser, "/");
-				parser = res[0];
+				parser = Runtime.rtl.get(ctx, res, 0);
 				if (ident != null)
 				{
 					var res = parser.parser_base.constructor.matchToken(ctx, parser, ident.value);
-					parser = res[0];
+					parser = Runtime.rtl.get(ctx, res, 0);
 				}
 				var res = parser.parser_base.constructor.matchToken(ctx, parser, ">");
-				parser = res[0];
+				parser = Runtime.rtl.get(ctx, res, 0);
 			}
 		}
 		var __v0 = use("Bayrell.Lang.OpCodes.OpHtmlTag");
 		var __v1 = use("Bayrell.Lang.OpCodes.OpHtmlItems");
-		var op_code = new __v0(ctx, use("Runtime.Dict").from({"attrs":attrs,"tag_name":tag_name,"op_code_name":op_code_name,"caret_start":caret_start,"caret_end":parser.caret.clone(ctx),"items":(items != null) ? new __v1(ctx, use("Runtime.Dict").from({"caret_start":caret_items_start,"caret_end":caret_items_end,"items":items.toCollection(ctx)})) : null}));
+		var op_code = new __v0(ctx, use("Runtime.Dict").from({"attrs":attrs,"tag_name":tag_name,"op_code_name":op_code_name,"caret_start":caret_start,"caret_end":parser.caret.clone(ctx),"items":(items != null) ? (new __v1(ctx, use("Runtime.Dict").from({"caret_start":caret_items_start,"caret_end":caret_items_end,"items":items.toCollection(ctx)}))) : (null)}));
 		return use("Runtime.Collection").from([parser,op_code]);
 	},
 	/**
@@ -655,31 +714,12 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayHtml,
 	 */
 	readHTML: function(ctx, parser)
 	{
-		var look = null;
-		var token = null;
-		var __v0 = use("Runtime.Vector");
-		var items = new __v0(ctx);
-		var caret_start = parser.caret.clone(ctx);
-		var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-		look = res[0];
-		token = res[1];
-		var __v0 = use("Runtime.rs");
-		var ch2 = __v0.substr(ctx, parser.content.ref, parser.caret.pos, 2);
-		while (!token.eof && token.content == "<" && ch2 != "</")
-		{
-			var res = this.readHTMLTag(ctx, parser);
-			parser = res[0];
-			var op_code = res[1];
-			items.push(ctx, op_code);
-			var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-			look = res[0];
-			token = res[1];
-			var caret = parser.parser_base.constructor.skipChar(ctx, parser, parser.content, parser.caret.clone(ctx));
-			var __v0 = use("Runtime.rs");
-			ch2 = __v0.substr(ctx, parser.content.ref, caret.pos, 2);
-		}
+		var caret_start = parser.caret;
+		var res = this.readHTMLContent(ctx, parser, "");
+		parser = Runtime.rtl.get(ctx, res, 0);
+		var items = Runtime.rtl.get(ctx, res, 1);
 		var __v0 = use("Bayrell.Lang.OpCodes.OpHtmlItems");
-		var op_code = new __v0(ctx, use("Runtime.Dict").from({"caret_start":caret_start,"caret_end":parser.caret.clone(ctx),"items":items.toCollection(ctx)}));
+		var op_code = new __v0(ctx, use("Runtime.Dict").from({"caret_start":caret_start,"caret_end":parser.caret,"items":items}));
 		return use("Runtime.Collection").from([parser,op_code]);
 	},
 	/* ======================= Class Init Functions ======================= */

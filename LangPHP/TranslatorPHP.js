@@ -117,7 +117,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP,
 				continue;
 			}
 			var save = t.save_op_codes.item(ctx, i);
-			var s = (save.content == "") ? t.s(ctx, save.var_name + use("Runtime.rtl").toStr(" = ") + use("Runtime.rtl").toStr(save.var_content) + use("Runtime.rtl").toStr(";")) : save.content;
+			var s = (save.content == "") ? (t.s(ctx, save.var_name + use("Runtime.rtl").toStr(" = ") + use("Runtime.rtl").toStr(save.var_content) + use("Runtime.rtl").toStr(";"))) : (save.content);
 			content += use("Runtime.rtl").toStr(s);
 		}
 		return content;

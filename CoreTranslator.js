@@ -241,8 +241,8 @@ Object.assign(Bayrell.Lang.CoreTranslator,
 	clearSaveOpCode: function(ctx, t)
 	{
 		var __v0 = use("Runtime.Collection");
-		t = t.copy(ctx, { "save_op_codes": new __v0(ctx) });
-		t = t.copy(ctx, { "save_op_code_inc": 0 });
+		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["save_op_codes"]), new __v0(ctx));
+		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["save_op_code_inc"]), 0);
 		return t;
 	},
 	/**
@@ -259,7 +259,7 @@ Object.assign(Bayrell.Lang.CoreTranslator,
 				continue;
 			}
 			var save = t.save_op_codes.item(ctx, i);
-			var s = (save.content == "") ? t.s(ctx, "var " + use("Runtime.rtl").toStr(save.var_name) + use("Runtime.rtl").toStr(" = ") + use("Runtime.rtl").toStr(save.var_content) + use("Runtime.rtl").toStr(";")) : save.content;
+			var s = (save.content == "") ? (t.s(ctx, "var " + use("Runtime.rtl").toStr(save.var_name) + use("Runtime.rtl").toStr(" = ") + use("Runtime.rtl").toStr(save.var_content) + use("Runtime.rtl").toStr(";"))) : (save.content);
 			content += use("Runtime.rtl").toStr(s);
 		}
 		return content;
@@ -274,13 +274,13 @@ Object.assign(Bayrell.Lang.CoreTranslator,
 		var save_op_code_inc = t.save_op_code_inc;
 		var __v0 = use("Runtime.rtl");
 		var res = __v0.apply(ctx, f, args.unshiftIm(ctx, t));
-		t = res[0];
-		var value = res[1];
+		t = Runtime.rtl.get(ctx, res, 0);
+		var value = Runtime.rtl.get(ctx, res, 1);
 		/* Output save op code */
 		var save = t.constructor.outputSaveOpCode(ctx, t, save_op_codes.count(ctx));
 		/* Restore save op codes */
-		t = t.copy(ctx, { "save_op_codes": save_op_codes });
-		t = t.copy(ctx, { "save_op_code_inc": save_op_code_inc });
+		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["save_op_codes"]), save_op_codes);
+		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["save_op_code_inc"]), save_op_code_inc);
 		return use("Runtime.Collection").from([t,save,value]);
 	},
 	/* ======================= Class Init Functions ======================= */

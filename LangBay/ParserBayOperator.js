@@ -54,17 +54,17 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 		var op_code = null;
 		var look = null;
 		var res = parser.parser_base.constructor.matchToken(ctx, parser, "return");
-		parser = res[0];
-		token = res[1];
+		parser = Runtime.rtl.get(ctx, res, 0);
+		token = Runtime.rtl.get(ctx, res, 1);
 		var caret_start = token.caret_start.clone(ctx);
 		var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-		look = res[0];
-		token = res[1];
+		look = Runtime.rtl.get(ctx, res, 0);
+		token = Runtime.rtl.get(ctx, res, 1);
 		if (token.content != ";")
 		{
 			var res = parser.parser_expression.constructor.readExpression(ctx, parser);
-			parser = res[0];
-			op_code = res[1];
+			parser = Runtime.rtl.get(ctx, res, 0);
+			op_code = Runtime.rtl.get(ctx, res, 1);
 		}
 		var __v0 = use("Bayrell.Lang.OpCodes.OpReturn");
 		return use("Runtime.Collection").from([parser,new __v0(ctx, use("Runtime.Dict").from({"expression":op_code,"caret_start":caret_start,"caret_end":parser.caret.clone(ctx)}))]);
@@ -77,12 +77,12 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 		var token = null;
 		var op_code = null;
 		var res = parser.parser_base.constructor.matchToken(ctx, parser, "delete");
-		parser = res[0];
-		token = res[1];
+		parser = Runtime.rtl.get(ctx, res, 0);
+		token = Runtime.rtl.get(ctx, res, 1);
 		var caret_start = token.caret_start.clone(ctx);
 		var res = parser.parser_base.constructor.readDynamic(ctx, parser);
-		parser = res[0];
-		op_code = res[1];
+		parser = Runtime.rtl.get(ctx, res, 0);
+		op_code = Runtime.rtl.get(ctx, res, 1);
 		var __v0 = use("Bayrell.Lang.OpCodes.OpDelete");
 		return use("Runtime.Collection").from([parser,new __v0(ctx, use("Runtime.Dict").from({"op_code":op_code,"caret_start":caret_start,"caret_end":parser.caret.clone(ctx)}))]);
 	},
@@ -94,12 +94,12 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 		var token = null;
 		var op_code = null;
 		var res = parser.parser_base.constructor.matchToken(ctx, parser, "throw");
-		parser = res[0];
-		token = res[1];
+		parser = Runtime.rtl.get(ctx, res, 0);
+		token = Runtime.rtl.get(ctx, res, 1);
 		var caret_start = token.caret_start.clone(ctx);
 		var res = parser.parser_expression.constructor.readExpression(ctx, parser);
-		parser = res[0];
-		op_code = res[1];
+		parser = Runtime.rtl.get(ctx, res, 0);
+		op_code = Runtime.rtl.get(ctx, res, 1);
 		var __v0 = use("Bayrell.Lang.OpCodes.OpThrow");
 		return use("Runtime.Collection").from([parser,new __v0(ctx, use("Runtime.Dict").from({"expression":op_code,"caret_start":caret_start,"caret_end":parser.caret.clone(ctx)}))]);
 	},
@@ -114,17 +114,17 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 		var __v0 = use("Runtime.Vector");
 		var items = new __v0(ctx);
 		var res = parser.parser_base.constructor.matchToken(ctx, parser, "try");
-		parser = res[0];
-		token = res[1];
+		parser = Runtime.rtl.get(ctx, res, 0);
+		token = Runtime.rtl.get(ctx, res, 1);
 		var caret_start = token.caret_start.clone(ctx);
 		/* Try */
 		var res = this.readOperators(ctx, parser);
-		parser = res[0];
-		op_try = res[1];
+		parser = Runtime.rtl.get(ctx, res, 0);
+		op_try = Runtime.rtl.get(ctx, res, 1);
 		/* Catch */
 		var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-		look = res[0];
-		token = res[1];
+		look = Runtime.rtl.get(ctx, res, 0);
+		token = Runtime.rtl.get(ctx, res, 1);
 		while (!token.eof && token.content == "catch")
 		{
 			parser = look.clone(ctx);
@@ -134,31 +134,31 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 			var item_caret_start = token.caret_start.clone(ctx);
 			/* Read ident */
 			var res = parser.parser_base.constructor.matchToken(ctx, parser, "(");
-			parser = res[0];
+			parser = Runtime.rtl.get(ctx, res, 0);
 			var res = parser.parser_base.constructor.readTypeIdentifier(ctx, parser);
-			parser = res[0];
-			pattern = res[1];
+			parser = Runtime.rtl.get(ctx, res, 0);
+			pattern = Runtime.rtl.get(ctx, res, 1);
 			var res = parser.parser_base.constructor.readIdentifier(ctx, parser);
-			parser = res[0];
-			var_op_code = res[1];
+			parser = Runtime.rtl.get(ctx, res, 0);
+			var_op_code = Runtime.rtl.get(ctx, res, 1);
 			var var_name = var_op_code.value;
 			var res = parser.parser_base.constructor.matchToken(ctx, parser, ")");
-			parser = res[0];
+			parser = Runtime.rtl.get(ctx, res, 0);
 			/* Save vars */
 			var save_vars = parser.vars;
-			parser = parser.copy(ctx, { "vars": parser.vars.setIm(ctx, var_name, true) });
+			parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["vars"]), parser.vars.setIm(ctx, var_name, true));
 			/* Catch operators */
 			var res = this.readOperators(ctx, parser);
-			parser = res[0];
-			op_catch = res[1];
+			parser = Runtime.rtl.get(ctx, res, 0);
+			op_catch = Runtime.rtl.get(ctx, res, 1);
 			/* Restore vars */
-			parser = parser.copy(ctx, { "vars": save_vars });
+			parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["vars"]), save_vars);
 			var __v0 = use("Bayrell.Lang.OpCodes.OpTryCatchItem");
 			var item = new __v0(ctx, use("Runtime.Dict").from({"name":var_name,"pattern":pattern,"value":op_catch,"caret_start":item_caret_start,"caret_end":parser.caret.clone(ctx)}));
 			items.push(ctx, item);
 			var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-			look = res[0];
-			token = res[1];
+			look = Runtime.rtl.get(ctx, res, 0);
+			token = Runtime.rtl.get(ctx, res, 1);
 		}
 		var __v0 = use("Bayrell.Lang.OpCodes.OpTryCatch");
 		return use("Runtime.Collection").from([parser,new __v0(ctx, use("Runtime.Dict").from({"op_try":op_try,"items":items.toCollection(ctx),"caret_start":caret_start,"caret_end":parser.caret.clone(ctx)}))]);
@@ -171,8 +171,8 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 		var look = null;
 		var token = null;
 		var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-		look = res[0];
-		token = res[1];
+		look = Runtime.rtl.get(ctx, res, 0);
+		token = Runtime.rtl.get(ctx, res, 1);
 		if (token.content == "then")
 		{
 			return use("Runtime.Collection").from([look,token]);
@@ -187,8 +187,8 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 		var look = null;
 		var token = null;
 		var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-		look = res[0];
-		token = res[1];
+		look = Runtime.rtl.get(ctx, res, 0);
+		token = Runtime.rtl.get(ctx, res, 1);
 		if (token.content == "do")
 		{
 			return use("Runtime.Collection").from([look,token]);
@@ -210,32 +210,32 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 		var __v0 = use("Runtime.Vector");
 		var if_else = new __v0(ctx);
 		var res = parser.parser_base.constructor.matchToken(ctx, parser, "if");
-		parser = res[0];
-		token = res[1];
+		parser = Runtime.rtl.get(ctx, res, 0);
+		token = Runtime.rtl.get(ctx, res, 1);
 		var caret_start = token.caret_start.clone(ctx);
 		/* Read expression */
 		var res = parser.parser_base.constructor.matchToken(ctx, parser, "(");
-		parser = res[0];
+		parser = Runtime.rtl.get(ctx, res, 0);
 		var res = parser.parser_expression.constructor.readExpression(ctx, parser);
-		parser = res[0];
-		if_condition = res[1];
+		parser = Runtime.rtl.get(ctx, res, 0);
+		if_condition = Runtime.rtl.get(ctx, res, 1);
 		var res = parser.parser_base.constructor.matchToken(ctx, parser, ")");
-		parser = res[0];
+		parser = Runtime.rtl.get(ctx, res, 0);
 		var res = this.readThen(ctx, parser);
-		parser = res[0];
+		parser = Runtime.rtl.get(ctx, res, 0);
 		/* If true */
 		var res = this.readOperators(ctx, parser);
-		parser = res[0];
-		if_true = res[1];
+		parser = Runtime.rtl.get(ctx, res, 0);
+		if_true = Runtime.rtl.get(ctx, res, 1);
 		/* Else */
 		var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-		look = res[0];
-		token = res[1];
+		look = Runtime.rtl.get(ctx, res, 0);
+		token = Runtime.rtl.get(ctx, res, 1);
 		while (!token.eof && (token.content == "else" || token.content == "elseif"))
 		{
 			var res = parser.parser_base.constructor.readToken(ctx, look.clone(ctx));
-			look2 = res[0];
-			token2 = res[1];
+			look2 = Runtime.rtl.get(ctx, res, 0);
+			token2 = Runtime.rtl.get(ctx, res, 1);
 			if (token2.content == "elseif" || token2.content == "if")
 			{
 				var ifelse_condition = null;
@@ -250,30 +250,30 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 				}
 				/* Read expression */
 				var res = parser.parser_base.constructor.matchToken(ctx, parser, "(");
-				parser = res[0];
+				parser = Runtime.rtl.get(ctx, res, 0);
 				var res = parser.parser_expression.constructor.readExpression(ctx, parser);
-				parser = res[0];
-				ifelse_condition = res[1];
+				parser = Runtime.rtl.get(ctx, res, 0);
+				ifelse_condition = Runtime.rtl.get(ctx, res, 1);
 				var res = parser.parser_base.constructor.matchToken(ctx, parser, ")");
-				parser = res[0];
+				parser = Runtime.rtl.get(ctx, res, 0);
 				var res = this.readThen(ctx, parser);
-				parser = res[0];
+				parser = Runtime.rtl.get(ctx, res, 0);
 				var res = this.readOperators(ctx, parser);
-				parser = res[0];
-				ifelse_block = res[1];
+				parser = Runtime.rtl.get(ctx, res, 0);
+				ifelse_block = Runtime.rtl.get(ctx, res, 1);
 				var __v0 = use("Bayrell.Lang.OpCodes.OpIfElse");
 				if_else.push(ctx, new __v0(ctx, use("Runtime.Dict").from({"condition":ifelse_condition,"if_true":ifelse_block,"caret_start":token2.caret_start.clone(ctx),"caret_end":parser.caret.clone(ctx)})));
 			}
 			else
 			{
 				var res = this.readOperators(ctx, look.clone(ctx));
-				parser = res[0];
-				if_false = res[1];
+				parser = Runtime.rtl.get(ctx, res, 0);
+				if_false = Runtime.rtl.get(ctx, res, 1);
 				break;
 			}
 			var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-			look = res[0];
-			token = res[1];
+			look = Runtime.rtl.get(ctx, res, 0);
+			token = Runtime.rtl.get(ctx, res, 1);
 		}
 		var __v0 = use("Bayrell.Lang.OpCodes.OpIf");
 		return use("Runtime.Collection").from([parser,new __v0(ctx, use("Runtime.Dict").from({"condition":if_condition,"if_true":if_true,"if_false":if_false,"if_else":if_else.toCollection(ctx),"caret_start":caret_start,"caret_end":parser.caret.clone(ctx)}))]);
@@ -292,35 +292,35 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 		/* Save vars */
 		var save_vars = parser.vars;
 		var res = parser.parser_base.constructor.matchToken(ctx, parser, "for");
-		parser = res[0];
-		token = res[1];
+		parser = Runtime.rtl.get(ctx, res, 0);
+		token = Runtime.rtl.get(ctx, res, 1);
 		var caret_start = token.caret_start.clone(ctx);
 		var res = parser.parser_base.constructor.matchToken(ctx, parser, "(");
-		parser = res[0];
-		token = res[1];
+		parser = Runtime.rtl.get(ctx, res, 0);
+		token = Runtime.rtl.get(ctx, res, 1);
 		var res = this.readAssign(ctx, parser);
-		parser = res[0];
-		expr1 = res[1];
+		parser = Runtime.rtl.get(ctx, res, 0);
+		expr1 = Runtime.rtl.get(ctx, res, 1);
 		var res = parser.parser_base.constructor.matchToken(ctx, parser, ";");
-		parser = res[0];
-		token = res[1];
+		parser = Runtime.rtl.get(ctx, res, 0);
+		token = Runtime.rtl.get(ctx, res, 1);
 		var res = parser.parser_expression.constructor.readExpression(ctx, parser);
-		parser = res[0];
-		expr2 = res[1];
+		parser = Runtime.rtl.get(ctx, res, 0);
+		expr2 = Runtime.rtl.get(ctx, res, 1);
 		var res = parser.parser_base.constructor.matchToken(ctx, parser, ";");
-		parser = res[0];
-		token = res[1];
+		parser = Runtime.rtl.get(ctx, res, 0);
+		token = Runtime.rtl.get(ctx, res, 1);
 		var res = this.readOperator(ctx, parser);
-		parser = res[0];
-		expr3 = res[1];
+		parser = Runtime.rtl.get(ctx, res, 0);
+		expr3 = Runtime.rtl.get(ctx, res, 1);
 		var res = parser.parser_base.constructor.matchToken(ctx, parser, ")");
-		parser = res[0];
-		token = res[1];
+		parser = Runtime.rtl.get(ctx, res, 0);
+		token = Runtime.rtl.get(ctx, res, 1);
 		var res = this.readOperators(ctx, parser);
-		parser = res[0];
-		op_code = res[1];
+		parser = Runtime.rtl.get(ctx, res, 0);
+		op_code = Runtime.rtl.get(ctx, res, 1);
 		/* Restore vars */
-		parser = parser.copy(ctx, { "vars": save_vars });
+		parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["vars"]), save_vars);
 		var __v0 = use("Bayrell.Lang.OpCodes.OpFor");
 		return use("Runtime.Collection").from([parser,new __v0(ctx, use("Runtime.Dict").from({"expr1":expr1,"expr2":expr2,"expr3":expr3,"value":op_code,"caret_start":caret_start,"caret_end":parser.caret.clone(ctx)}))]);
 	},
@@ -334,22 +334,22 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 		var condition = null;
 		var op_code = null;
 		var res = parser.parser_base.constructor.matchToken(ctx, parser, "while");
-		parser = res[0];
-		token = res[1];
+		parser = Runtime.rtl.get(ctx, res, 0);
+		token = Runtime.rtl.get(ctx, res, 1);
 		var caret_start = token.caret_start.clone(ctx);
 		var res = parser.parser_base.constructor.matchToken(ctx, parser, "(");
-		parser = res[0];
+		parser = Runtime.rtl.get(ctx, res, 0);
 		var res = parser.parser_expression.constructor.readExpression(ctx, parser);
-		parser = res[0];
-		condition = res[1];
+		parser = Runtime.rtl.get(ctx, res, 0);
+		condition = Runtime.rtl.get(ctx, res, 1);
 		var res = parser.parser_base.constructor.matchToken(ctx, parser, ")");
-		parser = res[0];
+		parser = Runtime.rtl.get(ctx, res, 0);
 		var res = this.readDo(ctx, parser);
-		parser = res[0];
-		token = res[1];
+		parser = Runtime.rtl.get(ctx, res, 0);
+		token = Runtime.rtl.get(ctx, res, 1);
 		var res = this.readOperators(ctx, parser);
-		parser = res[0];
-		op_code = res[1];
+		parser = Runtime.rtl.get(ctx, res, 0);
+		op_code = Runtime.rtl.get(ctx, res, 1);
 		var __v0 = use("Bayrell.Lang.OpCodes.OpWhile");
 		return use("Runtime.Collection").from([parser,new __v0(ctx, use("Runtime.Dict").from({"condition":condition,"value":op_code,"caret_start":caret_start,"caret_end":parser.caret.clone(ctx)}))]);
 	},
@@ -372,13 +372,13 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 		var kind = __v0.KIND_ASSIGN;
 		var var_name = "";
 		var res = parser.parser_base.constructor.readIdentifier(ctx, parser);
-		parser = res[0];
-		op_code = res[1];
+		parser = Runtime.rtl.get(ctx, res, 0);
+		op_code = Runtime.rtl.get(ctx, res, 1);
 		var caret_start = op_code.caret_start.clone(ctx);
 		var_name = op_code.value;
 		var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-		look = res[0];
-		token = res[1];
+		look = Runtime.rtl.get(ctx, res, 0);
+		token = Runtime.rtl.get(ctx, res, 1);
 		if (token.content == "<=")
 		{
 			var __v0 = use("Runtime.Vector");
@@ -388,12 +388,12 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 				parser = look.clone(ctx);
 				save = parser.clone(ctx);
 				var res = parser.parser_base.constructor.readToken(ctx, parser);
-				parser = res[0];
-				token = res[1];
+				parser = Runtime.rtl.get(ctx, res, 0);
+				token = Runtime.rtl.get(ctx, res, 1);
 				var name = token.content;
 				var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-				look = res[0];
-				token = res[1];
+				look = Runtime.rtl.get(ctx, res, 0);
+				token = Runtime.rtl.get(ctx, res, 1);
 				if (token.content != "<=")
 				{
 					parser = save.clone(ctx);
@@ -411,8 +411,8 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 			}
 			names = arr.toCollection(ctx);
 			var res = parser.parser_expression.constructor.readExpression(ctx, parser);
-			parser = res[0];
-			expression = res[1];
+			parser = Runtime.rtl.get(ctx, res, 0);
+			expression = Runtime.rtl.get(ctx, res, 1);
 			var __v0 = use("Bayrell.Lang.OpCodes.OpAssignStruct");
 			return use("Runtime.Collection").from([parser,new __v0(ctx, use("Runtime.Dict").from({"caret_start":caret_start,"caret_end":parser.caret.clone(ctx),"expression":expression,"var_name":var_name,"names":names}))]);
 		}
@@ -425,59 +425,59 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 			values = new __v0(ctx);
 			parser = start.clone(ctx);
 			var res = parser.parser_base.constructor.readTypeIdentifier(ctx, parser);
-			parser = res[0];
-			pattern = res[1];
+			parser = Runtime.rtl.get(ctx, res, 0);
+			pattern = Runtime.rtl.get(ctx, res, 1);
 			var res = parser.parser_base.constructor.readIdentifier(ctx, parser);
-			parser = res[0];
-			var_op_code = res[1];
+			parser = Runtime.rtl.get(ctx, res, 0);
+			var_op_code = Runtime.rtl.get(ctx, res, 1);
 			var_name = var_op_code.value;
 			/* Read expression */
 			var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-			look = res[0];
-			token = res[1];
+			look = Runtime.rtl.get(ctx, res, 0);
+			token = Runtime.rtl.get(ctx, res, 1);
 			if (token.content == "=")
 			{
 				var res = parser.parser_expression.constructor.readExpression(ctx, look.clone(ctx));
-				parser = res[0];
-				expression = res[1];
+				parser = Runtime.rtl.get(ctx, res, 0);
+				expression = Runtime.rtl.get(ctx, res, 1);
 			}
 			else
 			{
 				expression = null;
 			}
-			parser = parser.copy(ctx, { "vars": parser.vars.setIm(ctx, var_name, true) });
+			parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["vars"]), parser.vars.setIm(ctx, var_name, true));
 			var __v0 = use("Bayrell.Lang.OpCodes.OpAssignValue");
 			values.push(ctx, new __v0(ctx, use("Runtime.Dict").from({"var_name":var_name,"expression":expression,"caret_start":var_op_code.caret_start.clone(ctx),"caret_end":parser.caret.clone(ctx)})));
 			/* Look next token */
 			var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-			look = res[0];
-			token = res[1];
+			look = Runtime.rtl.get(ctx, res, 0);
+			token = Runtime.rtl.get(ctx, res, 1);
 			while (!token.eof && token.content == ",")
 			{
 				var res = parser.parser_base.constructor.readIdentifier(ctx, look.clone(ctx));
-				parser = res[0];
-				var_op_code = res[1];
+				parser = Runtime.rtl.get(ctx, res, 0);
+				var_op_code = Runtime.rtl.get(ctx, res, 1);
 				var_name = var_op_code.value;
 				/* Read expression */
 				var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-				look = res[0];
-				token = res[1];
+				look = Runtime.rtl.get(ctx, res, 0);
+				token = Runtime.rtl.get(ctx, res, 1);
 				if (token.content == "=")
 				{
 					var res = parser.parser_expression.constructor.readExpression(ctx, look.clone(ctx));
-					parser = res[0];
-					expression = res[1];
+					parser = Runtime.rtl.get(ctx, res, 0);
+					expression = Runtime.rtl.get(ctx, res, 1);
 				}
 				else
 				{
 					expression = null;
 				}
-				parser = parser.copy(ctx, { "vars": parser.vars.setIm(ctx, var_name, true) });
+				parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["vars"]), parser.vars.setIm(ctx, var_name, true));
 				var __v0 = use("Bayrell.Lang.OpCodes.OpAssignValue");
 				values.push(ctx, new __v0(ctx, use("Runtime.Dict").from({"var_name":var_name,"expression":expression,"caret_start":var_op_code.caret_start.clone(ctx),"caret_end":parser.caret.clone(ctx)})));
 				var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-				look = res[0];
-				token = res[1];
+				look = Runtime.rtl.get(ctx, res, 0);
+				token = Runtime.rtl.get(ctx, res, 1);
 			}
 			var_name = "";
 			expression = null;
@@ -489,11 +489,11 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 			kind = __v0.KIND_ASSIGN;
 			var op = "";
 			var res = parser.parser_base.constructor.readDynamic(ctx, parser);
-			parser = res[0];
-			var op_code = res[1];
+			parser = Runtime.rtl.get(ctx, res, 0);
+			var op_code = Runtime.rtl.get(ctx, res, 1);
 			var res = parser.parser_base.constructor.readToken(ctx, parser);
-			parser = res[0];
-			token = res[1];
+			parser = Runtime.rtl.get(ctx, res, 0);
+			token = Runtime.rtl.get(ctx, res, 1);
 			if (token.content == "=" || token.content == "+=" || token.content == "-=" || token.content == "~=")
 			{
 				op = token.content;
@@ -504,15 +504,15 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 				throw new __v0(ctx, "Unknown operator " + use("Runtime.rtl").toStr(token.content), token.caret_start.clone(ctx), parser.file_name)
 			}
 			var res = parser.parser_expression.constructor.readExpression(ctx, parser);
-			parser = res[0];
-			expression = res[1];
+			parser = Runtime.rtl.get(ctx, res, 0);
+			expression = Runtime.rtl.get(ctx, res, 1);
 			var __v0 = use("Bayrell.Lang.OpCodes.OpAssignValue");
 			values = use("Runtime.Collection").from([new __v0(ctx, use("Runtime.Dict").from({"op_code":op_code,"expression":expression,"op":op}))]);
 			var_name = "";
 			expression = null;
 		}
 		var __v0 = use("Bayrell.Lang.OpCodes.OpAssign");
-		return use("Runtime.Collection").from([parser,new __v0(ctx, use("Runtime.Dict").from({"pattern":pattern,"values":(values != null) ? values.toCollection(ctx) : null,"caret_start":caret_start,"caret_end":parser.caret.clone(ctx),"expression":expression,"var_name":var_name,"names":names,"kind":kind}))]);
+		return use("Runtime.Collection").from([parser,new __v0(ctx, use("Runtime.Dict").from({"pattern":pattern,"values":(values != null) ? (values.toCollection(ctx)) : (null),"caret_start":caret_start,"caret_end":parser.caret.clone(ctx),"expression":expression,"var_name":var_name,"names":names,"kind":kind}))]);
 	},
 	/**
 	 * Read operator
@@ -526,12 +526,12 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 		var token1 = null;
 		var token2 = null;
 		var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-		look1 = res[0];
-		token1 = res[1];
+		look1 = Runtime.rtl.get(ctx, res, 0);
+		token1 = Runtime.rtl.get(ctx, res, 1);
 		var caret_start = token1.caret_start.clone(ctx);
 		var res = parser.parser_base.constructor.readToken(ctx, look1.clone(ctx));
-		look2 = res[0];
-		token2 = res[1];
+		look2 = Runtime.rtl.get(ctx, res, 0);
+		token2 = Runtime.rtl.get(ctx, res, 1);
 		var look1_content = token1.content;
 		var look2_content = token2.content;
 		if ((look1_content == "++" || look1_content == "--") && parser.parser_base.constructor.isIdentifier(ctx, look2_content))
@@ -542,7 +542,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 			var __v0 = use("Bayrell.Lang.OpCodes.OpInc");
 			var __v1 = use("Bayrell.Lang.OpCodes.OpInc");
 			var __v2 = use("Bayrell.Lang.OpCodes.OpInc");
-			op_code = new __v0(ctx, use("Runtime.Dict").from({"kind":(look1_content == "++") ? __v1.KIND_PRE_INC : __v2.KIND_PRE_DEC,"value":op_code,"caret_start":caret_start,"caret_end":parser.caret.clone(ctx)}));
+			op_code = new __v0(ctx, use("Runtime.Dict").from({"kind":(look1_content == "++") ? (__v1.KIND_PRE_INC) : (__v2.KIND_PRE_DEC),"value":op_code,"caret_start":caret_start,"caret_end":parser.caret.clone(ctx)}));
 			return use("Runtime.Collection").from([parser,op_code]);
 		}
 		if ((look2_content == "++" || look2_content == "--") && parser.parser_base.constructor.isIdentifier(ctx, look1_content))
@@ -553,7 +553,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 			var __v0 = use("Bayrell.Lang.OpCodes.OpInc");
 			var __v1 = use("Bayrell.Lang.OpCodes.OpInc");
 			var __v2 = use("Bayrell.Lang.OpCodes.OpInc");
-			op_code = new __v0(ctx, use("Runtime.Dict").from({"kind":(look2_content == "++") ? __v1.KIND_POST_INC : __v2.KIND_POST_DEC,"value":op_code,"caret_start":caret_start,"caret_end":parser.caret.clone(ctx)}));
+			op_code = new __v0(ctx, use("Runtime.Dict").from({"kind":(look2_content == "++") ? (__v1.KIND_POST_INC) : (__v2.KIND_POST_DEC),"value":op_code,"caret_start":caret_start,"caret_end":parser.caret.clone(ctx)}));
 			return use("Runtime.Collection").from([parser,op_code]);
 		}
 		return use("Runtime.Collection").from([parser,null]);
@@ -565,8 +565,8 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 	{
 		var op_code = null;
 		var res = parser.parser_base.constructor.readDynamic(ctx, parser);
-		parser = res[0];
-		op_code = res[1];
+		parser = Runtime.rtl.get(ctx, res, 0);
+		op_code = Runtime.rtl.get(ctx, res, 1);
 		var __v0 = use("Bayrell.Lang.OpCodes.OpCall");
 		var __v1 = use("Bayrell.Lang.OpCodes.OpPipe");
 		if (op_code instanceof __v0 || op_code instanceof __v1)
@@ -582,12 +582,12 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 	{
 		var look = null;
 		var token = null;
-		parser = parser.copy(ctx, { "skip_comments": false });
+		parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["skip_comments"]), false);
 		var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-		look = res[0];
-		token = res[1];
+		look = Runtime.rtl.get(ctx, res, 0);
+		token = Runtime.rtl.get(ctx, res, 1);
 		var caret_start = token.caret_start.clone(ctx);
-		parser = parser.copy(ctx, { "skip_comments": true });
+		parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["skip_comments"]), true);
 		if (token.content == "/")
 		{
 			return parser.parser_base.constructor.readComment(ctx, parser);
@@ -642,20 +642,35 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 		var op_code = null;
 		/* Read op inc */
 		var res = this.readInc(ctx, parser.clone(ctx));
-		look = res[0];
-		op_code = res[1];
+		look = Runtime.rtl.get(ctx, res, 0);
+		op_code = Runtime.rtl.get(ctx, res, 1);
 		if (op_code != null)
 		{
 			return res;
 		}
 		/* Read op call function */
 		var res = this.readCallFunction(ctx, parser.clone(ctx));
-		look = res[0];
-		op_code = res[1];
+		look = Runtime.rtl.get(ctx, res, 0);
+		op_code = Runtime.rtl.get(ctx, res, 1);
 		if (op_code != null)
 		{
 			return res;
 		}
+		var save_parser = parser;
+		/* Try to read pipe */
+		var res = parser.parser_base.constructor.readIdentifier(ctx, parser);
+		parser = Runtime.rtl.get(ctx, res, 0);
+		op_code = Runtime.rtl.get(ctx, res, 1);
+		var caret_start = op_code.caret_start.clone(ctx);
+		var var_name = op_code.value;
+		var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
+		look = Runtime.rtl.get(ctx, res, 0);
+		token = Runtime.rtl.get(ctx, res, 1);
+		if (token.content == "->")
+		{
+			return parser.parser_expression.constructor.ExpressionPipe(ctx, save_parser);
+		}
+		parser = save_parser;
 		return this.readAssign(ctx, parser);
 	},
 	/**
@@ -670,34 +685,34 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 		var __v0 = use("Runtime.Vector");
 		var arr = new __v0(ctx);
 		var caret_start = parser.caret;
-		parser = parser.copy(ctx, { "skip_comments": false });
+		parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["skip_comments"]), false);
 		var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-		look = res[0];
-		token = res[1];
-		parser = parser.copy(ctx, { "skip_comments": true });
+		look = Runtime.rtl.get(ctx, res, 0);
+		token = Runtime.rtl.get(ctx, res, 1);
+		parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["skip_comments"]), true);
 		while (!token.eof && token.content != end_tag)
 		{
 			var parser_value = null;
 			var res = this.readOperator(ctx, parser);
-			parser = res[0];
-			parser_value = res[1];
+			parser = Runtime.rtl.get(ctx, res, 0);
+			parser_value = Runtime.rtl.get(ctx, res, 1);
 			if (parser_value != null)
 			{
 				arr.push(ctx, parser_value);
 			}
-			parser = parser.copy(ctx, { "skip_comments": false });
+			parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["skip_comments"]), false);
 			var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-			look = res[0];
-			token = res[1];
-			parser = parser.copy(ctx, { "skip_comments": true });
+			look = Runtime.rtl.get(ctx, res, 0);
+			token = Runtime.rtl.get(ctx, res, 1);
+			parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["skip_comments"]), true);
 			if (token.content == ";")
 			{
 				parser = look.clone(ctx);
-				parser = parser.copy(ctx, { "skip_comments": false });
+				parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["skip_comments"]), false);
 				var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-				look = res[0];
-				token = res[1];
-				parser = parser.copy(ctx, { "skip_comments": true });
+				look = Runtime.rtl.get(ctx, res, 0);
+				token = Runtime.rtl.get(ctx, res, 1);
+				parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["skip_comments"]), true);
 			}
 		}
 		var __v0 = use("Bayrell.Lang.OpCodes.OpItems");
@@ -715,29 +730,29 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 		/* Save vars */
 		var save_vars = parser.vars;
 		var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-		look = res[0];
-		token = res[1];
+		look = Runtime.rtl.get(ctx, res, 0);
+		token = Runtime.rtl.get(ctx, res, 1);
 		var caret_start = token.caret_start.clone(ctx);
 		if (token.content == "{")
 		{
 			var res = parser.parser_base.constructor.matchToken(ctx, parser, "{");
-			parser = res[0];
+			parser = Runtime.rtl.get(ctx, res, 0);
 			var res = this.readOpItems(ctx, parser, "}");
-			parser = res[0];
-			op_code = res[1];
+			parser = Runtime.rtl.get(ctx, res, 0);
+			op_code = Runtime.rtl.get(ctx, res, 1);
 			var res = parser.parser_base.constructor.matchToken(ctx, parser, "}");
-			parser = res[0];
+			parser = Runtime.rtl.get(ctx, res, 0);
 		}
 		else
 		{
 			var res = this.readOperator(ctx, parser);
-			parser = res[0];
-			op_code = res[1];
+			parser = Runtime.rtl.get(ctx, res, 0);
+			op_code = Runtime.rtl.get(ctx, res, 1);
 			var res = parser.parser_base.constructor.matchToken(ctx, parser, ";");
-			parser = res[0];
+			parser = Runtime.rtl.get(ctx, res, 0);
 		}
 		/* Restore vars */
-		parser = parser.copy(ctx, { "vars": save_vars });
+		parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["vars"]), save_vars);
 		return use("Runtime.Collection").from([parser,op_code]);
 	},
 	/**
@@ -752,16 +767,16 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 		var __v0 = use("Bayrell.Lang.OpCodes.OpFlags");
 		var current_flags = __v0.getFlags(ctx);
 		var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-		look = res[0];
-		token = res[1];
+		look = Runtime.rtl.get(ctx, res, 0);
+		token = Runtime.rtl.get(ctx, res, 1);
 		while (!token.eof && current_flags.indexOf(ctx, token.content) >= 0)
 		{
 			var flag = token.content;
 			values.set(ctx, "p_" + use("Runtime.rtl").toStr(flag), true);
 			parser = look.clone(ctx);
 			var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-			look = res[0];
-			token = res[1];
+			look = Runtime.rtl.get(ctx, res, 0);
+			token = Runtime.rtl.get(ctx, res, 1);
 		}
 		var __v0 = use("Bayrell.Lang.OpCodes.OpFlags");
 		return use("Runtime.Collection").from([parser,new __v0(ctx, values)]);
@@ -777,10 +792,10 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 		var __v0 = use("Runtime.Vector");
 		var items = new __v0(ctx);
 		var res = parser.parser_base.constructor.matchToken(ctx, parser, "(");
-		parser = res[0];
+		parser = Runtime.rtl.get(ctx, res, 0);
 		var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-		look = res[0];
-		token = res[1];
+		look = Runtime.rtl.get(ctx, res, 0);
+		token = Runtime.rtl.get(ctx, res, 1);
 		while (!token.eof && token.content != ")")
 		{
 			var arg_value = null;
@@ -789,45 +804,45 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 			var arg_start = parser;
 			/* Arg type */
 			var res = parser.parser_base.constructor.readTypeIdentifier(ctx, parser, find_ident);
-			parser = res[0];
-			arg_pattern = res[1];
+			parser = Runtime.rtl.get(ctx, res, 0);
+			arg_pattern = Runtime.rtl.get(ctx, res, 1);
 			/* Arg name */
 			var res = parser.parser_base.constructor.readIdentifier(ctx, parser);
-			parser = res[0];
-			arg_value = res[1];
+			parser = Runtime.rtl.get(ctx, res, 0);
+			arg_value = Runtime.rtl.get(ctx, res, 1);
 			var arg_name = arg_value.value;
 			/* Arg expression */
 			var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-			look = res[0];
-			token = res[1];
+			look = Runtime.rtl.get(ctx, res, 0);
+			token = Runtime.rtl.get(ctx, res, 1);
 			if (token.content == "=")
 			{
 				parser = look.clone(ctx);
 				var save_vars = parser.vars;
 				var __v0 = use("Runtime.Dict");
-				parser = parser.copy(ctx, { "vars": new __v0(ctx) });
+				parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["vars"]), new __v0(ctx));
 				var res = parser.parser_expression.constructor.readExpression(ctx, parser);
-				parser = res[0];
-				arg_expression = res[1];
-				parser = parser.copy(ctx, { "vars": save_vars });
+				parser = Runtime.rtl.get(ctx, res, 0);
+				arg_expression = Runtime.rtl.get(ctx, res, 1);
+				parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["vars"]), save_vars);
 			}
 			/* Register variable in parser */
-			parser = parser.copy(ctx, { "vars": parser.vars.setIm(ctx, arg_name, true) });
+			parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["vars"]), parser.vars.setIm(ctx, arg_name, true));
 			var __v0 = use("Bayrell.Lang.OpCodes.OpDeclareFunctionArg");
 			items.push(ctx, new __v0(ctx, use("Runtime.Dict").from({"pattern":arg_pattern,"name":arg_name,"expression":arg_expression,"caret_start":arg_pattern.caret_start.clone(ctx),"caret_end":parser.caret.clone(ctx)})));
 			var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-			look = res[0];
-			token = res[1];
+			look = Runtime.rtl.get(ctx, res, 0);
+			token = Runtime.rtl.get(ctx, res, 1);
 			if (token.content == ",")
 			{
 				parser = look.clone(ctx);
 				var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-				look = res[0];
-				token = res[1];
+				look = Runtime.rtl.get(ctx, res, 0);
+				token = Runtime.rtl.get(ctx, res, 1);
 			}
 		}
 		var res = parser.parser_base.constructor.matchToken(ctx, parser, ")");
-		parser = res[0];
+		parser = Runtime.rtl.get(ctx, res, 0);
 		return use("Runtime.Collection").from([parser,items.toCollection(ctx)]);
 	},
 	/**
@@ -842,22 +857,22 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 		var __v0 = use("Runtime.Vector");
 		var items = new __v0(ctx);
 		var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-		look = res[0];
-		token = res[1];
+		look = Runtime.rtl.get(ctx, res, 0);
+		token = Runtime.rtl.get(ctx, res, 1);
 		if (token.content == "use")
 		{
 			parser = look.clone(ctx);
 			var res = parser.parser_base.constructor.matchToken(ctx, parser, "(");
-			parser = res[0];
+			parser = Runtime.rtl.get(ctx, res, 0);
 			var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-			look = res[0];
-			token = res[1];
+			look = Runtime.rtl.get(ctx, res, 0);
+			token = Runtime.rtl.get(ctx, res, 1);
 			while (!token.eof && token.content != ")")
 			{
 				var ident = null;
 				var res = parser.parser_base.constructor.readIdentifier(ctx, parser);
-				parser = res[0];
-				ident = res[1];
+				parser = Runtime.rtl.get(ctx, res, 0);
+				ident = Runtime.rtl.get(ctx, res, 1);
 				var name = ident.value;
 				if (vars != null && find_ident)
 				{
@@ -869,18 +884,18 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 				}
 				items.push(ctx, name);
 				var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-				look = res[0];
-				token = res[1];
+				look = Runtime.rtl.get(ctx, res, 0);
+				token = Runtime.rtl.get(ctx, res, 1);
 				if (token.content == ",")
 				{
 					parser = look.clone(ctx);
 					var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-					look = res[0];
-					token = res[1];
+					look = Runtime.rtl.get(ctx, res, 0);
+					token = Runtime.rtl.get(ctx, res, 1);
 				}
 			}
 			var res = parser.parser_base.constructor.matchToken(ctx, parser, ")");
-			parser = res[0];
+			parser = Runtime.rtl.get(ctx, res, 0);
 		}
 		return use("Runtime.Collection").from([parser,items.toCollection(ctx)]);
 	},
@@ -894,21 +909,31 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 		var parser_value = null;
 		var op_code = null;
 		var token = null;
+		var flags = null;
 		/* Clear vars */
 		var save_vars = parser.vars;
 		var __v0 = use("Runtime.Dict");
-		parser = parser.copy(ctx, { "vars": new __v0(ctx) });
+		parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["vars"]), new __v0(ctx));
+		var res = parser.parser_base.constructor.readToken(ctx, parser);
+		look = Runtime.rtl.get(ctx, res, 0);
+		token = Runtime.rtl.get(ctx, res, 1);
+		if (token.content == "async")
+		{
+			parser = look;
+			var __v0 = use("Bayrell.Lang.OpCodes.OpFlags");
+			flags = new __v0(ctx, use("Runtime.Dict").from({"p_async":true}));
+		}
 		var res = parser.parser_base.constructor.readTypeIdentifier(ctx, parser);
-		parser = res[0];
-		parser_value = res[1];
+		parser = Runtime.rtl.get(ctx, res, 0);
+		parser_value = Runtime.rtl.get(ctx, res, 1);
 		var caret_start = parser_value.caret_start.clone(ctx);
 		var result_type = parser_value;
 		var expression = null;
 		var is_context = true;
 		var name = "";
 		var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-		look = res[0];
-		token = res[1];
+		look = Runtime.rtl.get(ctx, res, 0);
+		token = Runtime.rtl.get(ctx, res, 1);
 		if (token.content == "@")
 		{
 			is_context = false;
@@ -917,57 +942,57 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 		if (has_name)
 		{
 			var res = parser.parser_base.constructor.readIdentifier(ctx, parser);
-			parser = res[0];
-			parser_value = res[1];
+			parser = Runtime.rtl.get(ctx, res, 0);
+			parser_value = Runtime.rtl.get(ctx, res, 1);
 			var name = parser_value.value;
 		}
 		/* Read function arguments */
 		var args = null;
 		var res = this.readDeclareFunctionArgs(ctx, parser);
-		parser = res[0];
-		args = res[1];
+		parser = Runtime.rtl.get(ctx, res, 0);
+		args = Runtime.rtl.get(ctx, res, 1);
 		/* Read function variables */
 		var vars = null;
 		var res = this.readDeclareFunctionUse(ctx, parser, save_vars);
-		parser = res[0];
-		vars = res[1];
+		parser = Runtime.rtl.get(ctx, res, 0);
+		vars = Runtime.rtl.get(ctx, res, 1);
 		/* Add variables */
 		vars.each(ctx, (ctx, name) => 
 		{
-			parser = parser.copy(ctx, { "vars": parser.vars.setIm(ctx, name, true) });
+			parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["vars"]), parser.vars.setIm(ctx, name, true));
 		});
 		var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-		look = res[0];
-		token = res[1];
+		look = Runtime.rtl.get(ctx, res, 0);
+		token = Runtime.rtl.get(ctx, res, 1);
 		if (token.content == "=>")
 		{
 			var res = parser.parser_base.constructor.matchToken(ctx, parser, "=>");
-			parser = res[0];
+			parser = Runtime.rtl.get(ctx, res, 0);
 			var res = parser.parser_expression.constructor.readExpression(ctx, parser);
-			parser = res[0];
-			expression = res[1];
+			parser = Runtime.rtl.get(ctx, res, 0);
+			expression = Runtime.rtl.get(ctx, res, 1);
 			op_code = null;
 		}
 		else if (token.content == "{")
 		{
 			var save = parser.clone(ctx);
 			var res = parser.parser_base.constructor.matchToken(ctx, parser, "{");
-			parser = res[0];
+			parser = Runtime.rtl.get(ctx, res, 0);
 			var res = this.readOperators(ctx, save);
-			parser = res[0];
-			op_code = res[1];
+			parser = Runtime.rtl.get(ctx, res, 0);
+			op_code = Runtime.rtl.get(ctx, res, 1);
 		}
 		else if (token.content == ";")
 		{
 			var res = parser.parser_base.constructor.matchToken(ctx, parser, ";");
-			parser = res[0];
+			parser = Runtime.rtl.get(ctx, res, 0);
 			expression = null;
 			op_code = null;
 		}
 		/* Restore vars */
-		parser = parser.copy(ctx, { "vars": save_vars });
+		parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["vars"]), save_vars);
 		var __v0 = use("Bayrell.Lang.OpCodes.OpDeclareFunction");
-		return use("Runtime.Collection").from([parser,new __v0(ctx, use("Runtime.Dict").from({"args":args,"vars":vars,"name":name,"is_context":is_context,"result_type":result_type,"expression":expression,"value":op_code,"caret_start":caret_start,"caret_end":parser.caret.clone(ctx)}))]);
+		return use("Runtime.Collection").from([parser,new __v0(ctx, use("Runtime.Dict").from({"args":args,"vars":vars,"flags":flags,"name":name,"is_context":is_context,"result_type":result_type,"expression":expression,"value":op_code,"caret_start":caret_start,"caret_end":parser.caret.clone(ctx)}))]);
 	},
 	/**
 	 * Returns true if next is function
@@ -982,19 +1007,26 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 		/* Clear vars */
 		var save_vars = parser.vars;
 		var __v0 = use("Runtime.Dict");
-		parser = parser.copy(ctx, { "vars": new __v0(ctx) });
-		parser = parser.copy(ctx, { "find_ident": false });
+		parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["vars"]), new __v0(ctx));
+		parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["find_ident"]), false);
 		var res = false;
 		var __v0 = use("Bayrell.Lang.Exceptions.ParserExpected");
 		try
 		{
+			var res = parser.parser_base.constructor.readToken(ctx, parser);
+			look = Runtime.rtl.get(ctx, res, 0);
+			token = Runtime.rtl.get(ctx, res, 1);
+			if (token.content == "async")
+			{
+				parser = look;
+			}
 			var res = parser.parser_base.constructor.readTypeIdentifier(ctx, parser, false);
-			parser = res[0];
-			parser_value = res[1];
+			parser = Runtime.rtl.get(ctx, res, 0);
+			parser_value = Runtime.rtl.get(ctx, res, 1);
 			var caret_start = parser_value.caret_start.clone(ctx);
 			var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-			look = res[0];
-			token = res[1];
+			look = Runtime.rtl.get(ctx, res, 0);
+			token = Runtime.rtl.get(ctx, res, 1);
 			if (token.content == "@")
 			{
 				parser = look;
@@ -1002,15 +1034,15 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 			if (has_name)
 			{
 				var res = parser.parser_base.constructor.readIdentifier(ctx, parser);
-				parser = res[0];
+				parser = Runtime.rtl.get(ctx, res, 0);
 			}
 			var res = this.readDeclareFunctionArgs(ctx, parser, false);
-			parser = res[0];
+			parser = Runtime.rtl.get(ctx, res, 0);
 			var res = this.readDeclareFunctionUse(ctx, parser, null, false);
-			parser = res[0];
+			parser = Runtime.rtl.get(ctx, res, 0);
 			var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-			look = res[0];
-			token = res[1];
+			look = Runtime.rtl.get(ctx, res, 0);
+			token = Runtime.rtl.get(ctx, res, 1);
 			if (flags != null && flags.p_declare || parser.current_class_kind == "interface")
 			{
 				if (token.content != ";")
@@ -1040,8 +1072,8 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 			}
 		}
 		/* Restore vars */
-		parser = parser.copy(ctx, { "vars": save_vars });
-		parser = parser.copy(ctx, { "find_ident": true });
+		parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["vars"]), save_vars);
+		parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["find_ident"]), true);
 		return res;
 	},
 	/**
@@ -1054,20 +1086,20 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 		var name = null;
 		var params = null;
 		var res = parser.parser_base.constructor.matchToken(ctx, parser, "@");
-		parser = res[0];
-		token = res[1];
+		parser = Runtime.rtl.get(ctx, res, 0);
+		token = Runtime.rtl.get(ctx, res, 1);
 		var caret_start = token.caret_start.clone(ctx);
 		var res = parser.parser_base.constructor.readTypeIdentifier(ctx, parser);
-		parser = res[0];
-		name = res[1];
+		parser = Runtime.rtl.get(ctx, res, 0);
+		name = Runtime.rtl.get(ctx, res, 1);
 		var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
-		look = res[0];
-		token = res[1];
+		look = Runtime.rtl.get(ctx, res, 0);
+		token = Runtime.rtl.get(ctx, res, 1);
 		if (token.content == "{")
 		{
 			var res = parser.parser_base.constructor.readDict(ctx, parser);
-			parser = res[0];
-			params = res[1];
+			parser = Runtime.rtl.get(ctx, res, 0);
+			params = Runtime.rtl.get(ctx, res, 1);
 		}
 		var __v0 = use("Bayrell.Lang.OpCodes.OpAnnotation");
 		return use("Runtime.Collection").from([parser,new __v0(ctx, use("Runtime.Dict").from({"name":name,"params":params}))]);

@@ -22,6 +22,8 @@ if (typeof Bayrell.Lang == 'undefined') Bayrell.Lang = {};
 if (typeof Bayrell.Lang.Exceptions == 'undefined') Bayrell.Lang.Exceptions = {};
 Bayrell.Lang.Exceptions.ParserExpected = function(ctx, s, caret, file, context, prev)
 {
+	if (file == undefined) file = "";
+	if (prev == undefined) prev = null;
 	var __v0 = use("Bayrell.Lang.LangConstant");
 	use("Bayrell.Lang.Exceptions.ParserError").call(this, ctx, s + use("Runtime.rtl").toStr(" expected"), caret, file, __v0.ERROR_PARSER_EXPECTED, context, prev);
 };

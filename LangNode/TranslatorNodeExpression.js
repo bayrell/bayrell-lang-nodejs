@@ -90,8 +90,8 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNodeExpression,
 			if (module_name != new_module_name)
 			{
 				var res = t.constructor.addSaveOpCode(ctx, t, use("Runtime.Dict").from({"op_code":op_code,"var_content":this.useModuleName(ctx, t, module_name)}));
-				t = res[0];
-				var var_name = res[1];
+				t = Runtime.rtl.get(ctx, res, 0);
+				var var_name = Runtime.rtl.get(ctx, res, 1);
 				return use("Runtime.Collection").from([t,var_name]);
 			}
 		}
@@ -110,8 +110,8 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNodeExpression,
 			if (module_name != new_module_name)
 			{
 				var res = t.constructor.addSaveOpCode(ctx, t, use("Runtime.Dict").from({"var_content":this.useModuleName(ctx, t, module_name)}));
-				t = res[0];
-				var_name = res[1];
+				t = Runtime.rtl.get(ctx, res, 0);
+				var_name = Runtime.rtl.get(ctx, res, 1);
 			}
 		}
 		if (var_name == "")
@@ -130,9 +130,13 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNodeExpression,
 		var values = op_code.values.map(ctx, (ctx, op_code) => 
 		{
 			var res = this.Expression(ctx, t, op_code);
-			t = res[0];
-			var s = res[1];
+			t = Runtime.rtl.get(ctx, res, 0);
+			var s = Runtime.rtl.get(ctx, res, 1);
 			return s;
+		});
+		values = values.filter(ctx, (ctx, s) => 
+		{
+			return s != "";
 		});
 		var __v0 = use("Runtime.rs");
 		content = this.useModuleName(ctx, t, "Runtime.Collection") + use("Runtime.rtl").toStr(".from([") + use("Runtime.rtl").toStr(__v0.join(ctx, ",", values)) + use("Runtime.rtl").toStr("])");
@@ -144,12 +148,20 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNodeExpression,
 	OpDict: function(ctx, t, op_code)
 	{
 		var content = "";
-		var values = op_code.values.transition(ctx, (ctx, op_code, key) => 
+		var values = op_code.values.map(ctx, (ctx, pair, key) => 
 		{
-			var res = this.Expression(ctx, t, op_code);
-			t = res[0];
-			var s = res[1];
-			return this.toString(ctx, key) + use("Runtime.rtl").toStr(":") + use("Runtime.rtl").toStr(s);
+			if (pair.condition != null && !t.preprocessor_flags.has(ctx, pair.condition.value))
+			{
+				return "";
+			}
+			var res = this.Expression(ctx, t, pair.value);
+			t = Runtime.rtl.get(ctx, res, 0);
+			var s = Runtime.rtl.get(ctx, res, 1);
+			return this.toString(ctx, pair.key) + use("Runtime.rtl").toStr(":") + use("Runtime.rtl").toStr(s);
+		});
+		values = values.filter(ctx, (ctx, s) => 
+		{
+			return s != "";
 		});
 		var __v0 = use("Runtime.rs");
 		content = this.useModuleName(ctx, t, "Runtime.Dict") + use("Runtime.rtl").toStr(".from({") + use("Runtime.rtl").toStr(__v0.join(ctx, ",", values)) + use("Runtime.rtl").toStr("})");

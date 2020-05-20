@@ -22,6 +22,8 @@ if (typeof Bayrell.Lang == 'undefined') Bayrell.Lang = {};
 if (typeof Bayrell.Lang.Exceptions == 'undefined') Bayrell.Lang.Exceptions = {};
 Bayrell.Lang.Exceptions.ParserError = function(ctx, s, caret, file, code, context, prev)
 {
+	if (file == undefined) file = "";
+	if (prev == undefined) prev = null;
 	use("Bayrell.Lang.Exceptions.ParserUnknownError").call(this, ctx, s, code, context, prev);
 	this.error_line = caret.y + 1;
 	this.error_pos = caret.x + 1;
@@ -40,7 +42,7 @@ Object.assign(Bayrell.Lang.Exceptions.ParserError.prototype,
 		var pos = this.getErrorPos(ctx);
 		if (line != -1)
 		{
-			error_str += use("Runtime.rtl").toStr(" at Ln:" + use("Runtime.rtl").toStr(line) + use("Runtime.rtl").toStr(((pos != "") ? ", Pos:" + use("Runtime.rtl").toStr(pos) : "")));
+			error_str += use("Runtime.rtl").toStr(" at Ln:" + use("Runtime.rtl").toStr(line) + use("Runtime.rtl").toStr(((pos != "") ? (", Pos:" + use("Runtime.rtl").toStr(pos)) : (""))));
 		}
 		if (file != "")
 		{

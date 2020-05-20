@@ -80,7 +80,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpPipe,
 {
 	KIND_ATTR: "attr",
 	KIND_ASYNC: "async",
-	KIND_CALL: "method",
+	KIND_CALL: "call",
 	KIND_METHOD: "method",
 	KIND_MONAD: "monad",
 	/* ======================= Class Init Functions ======================= */

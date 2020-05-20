@@ -50,7 +50,7 @@ Object.assign(Bayrell.Lang.LangUtils,
 	parse: function(ctx, parser, text)
 	{
 		var res = parser.constructor.parse(ctx, parser, text);
-		return res[1];
+		return Runtime.rtl.get(ctx, res, 1);
 	},
 	/**
 	 * Translate BaseOpCode to string
@@ -58,7 +58,7 @@ Object.assign(Bayrell.Lang.LangUtils,
 	translate: function(ctx, translator, op_code)
 	{
 		var res = translator.constructor.translate(ctx, translator, op_code);
-		return res[1];
+		return Runtime.rtl.get(ctx, res, 1);
 	},
 	/* ======================= Class Init Functions ======================= */
 	getCurrentNamespace: function()

@@ -74,9 +74,9 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNodeProgram,
 		var arr = __v0.split(ctx, "\\.", t.current_namespace_name);
 		for (var i = 0;i < arr.count(ctx);i++)
 		{
-			name = name + use("Runtime.rtl").toStr(((i == 0) ? "" : ".")) + use("Runtime.rtl").toStr(arr.item(ctx, i));
+			name = name + use("Runtime.rtl").toStr(((i == 0) ? ("") : ("."))) + use("Runtime.rtl").toStr(arr.item(ctx, i));
 			var s = "if (module.exports." + use("Runtime.rtl").toStr(name) + use("Runtime.rtl").toStr(" == undefined) module.exports.") + use("Runtime.rtl").toStr(name) + use("Runtime.rtl").toStr(" = {};");
-			content += use("Runtime.rtl").toStr((content == 0) ? s : t.s(ctx, s));
+			content += use("Runtime.rtl").toStr((content == 0) ? (s) : (t.s(ctx, s)));
 		}
 		content += use("Runtime.rtl").toStr(t.s(ctx, "module.exports." + use("Runtime.rtl").toStr(t.current_class_full_name) + use("Runtime.rtl").toStr(" = ") + use("Runtime.rtl").toStr(t.current_class_full_name) + use("Runtime.rtl").toStr(";")));
 		return use("Runtime.Collection").from([t,content]);

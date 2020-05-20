@@ -22,6 +22,7 @@ if (typeof Bayrell.Lang == 'undefined') Bayrell.Lang = {};
 if (typeof Bayrell.Lang.Exceptions == 'undefined') Bayrell.Lang.Exceptions = {};
 Bayrell.Lang.Exceptions.ParserUnknownError = function(ctx, s, code, context, prev)
 {
+	if (prev == undefined) prev = null;
 	if (code == -1)
 	{
 		var __v0 = use("Bayrell.Lang.LangConstant");

@@ -26,7 +26,7 @@ function ObjectAssign(res, obj){
 }
 
 module.exports = {
-	VERSION: '0.8.3',
+	VERSION: '0.9.3',
 };
 
 }
@@ -40,7 +40,7 @@ function ObjectAssign(res, obj){
 }
 
 module.exports = {
-	VERSION: '0.8.3',
+	VERSION: '0.9.3',
 	'Exceptions': {
 		'ParserUnknownError': require("./Exceptions/ParserUnknownError.js"),
 	},
@@ -112,6 +112,7 @@ ObjectAssign(module.exports, {
 		'OpDeclareFunctionArg': require("./OpCodes/OpDeclareFunctionArg.js"),
 		'OpDelete': require("./OpCodes/OpDelete.js"),
 		'OpDict': require("./OpCodes/OpDict.js"),
+		'OpDictPair': require("./OpCodes/OpDictPair.js"),
 		'OpEntityName': require("./OpCodes/OpEntityName.js"),
 		'OpFlags': require("./OpCodes/OpFlags.js"),
 		'OpFor': require("./OpCodes/OpFor.js"),
