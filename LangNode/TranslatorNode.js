@@ -22,9 +22,9 @@ if (typeof Bayrell.Lang == 'undefined') Bayrell.Lang = {};
 if (typeof Bayrell.Lang.LangNode == 'undefined') Bayrell.Lang.LangNode = {};
 Bayrell.Lang.LangNode.TranslatorNode = function(ctx)
 {
-	use("Bayrell.Lang.CoreTranslator").apply(this, arguments);
+	use("Bayrell.Lang.LangES6.TranslatorES6").apply(this, arguments);
 };
-Bayrell.Lang.LangNode.TranslatorNode.prototype = Object.create(use("Bayrell.Lang.CoreTranslator").prototype);
+Bayrell.Lang.LangNode.TranslatorNode.prototype = Object.create(use("Bayrell.Lang.LangES6.TranslatorES6").prototype);
 Bayrell.Lang.LangNode.TranslatorNode.prototype.constructor = Bayrell.Lang.LangNode.TranslatorNode;
 Object.assign(Bayrell.Lang.LangNode.TranslatorNode.prototype,
 {
@@ -37,7 +37,10 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode.prototype,
 		this.html = null;
 		this.operator = null;
 		this.program = null;
-		use("Bayrell.Lang.CoreTranslator").prototype._init.call(this,ctx);
+		this.use_module_name = true;
+		this.enable_async_await = true;
+		this.emulate_async_await = false;
+		use("Bayrell.Lang.LangES6.TranslatorES6").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
@@ -48,8 +51,11 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode.prototype,
 			this.html = o.html;
 			this.operator = o.operator;
 			this.program = o.program;
+			this.use_module_name = o.use_module_name;
+			this.enable_async_await = o.enable_async_await;
+			this.emulate_async_await = o.emulate_async_await;
 		}
-		use("Bayrell.Lang.CoreTranslator").prototype.assignObject.call(this,ctx,o);
+		use("Bayrell.Lang.LangES6.TranslatorES6").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
@@ -58,7 +64,10 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode.prototype,
 		else if (k == "html")this.html = v;
 		else if (k == "operator")this.operator = v;
 		else if (k == "program")this.program = v;
-		else use("Bayrell.Lang.CoreTranslator").prototype.assignValue.call(this,ctx,k,v);
+		else if (k == "use_module_name")this.use_module_name = v;
+		else if (k == "enable_async_await")this.enable_async_await = v;
+		else if (k == "emulate_async_await")this.emulate_async_await = v;
+		else use("Bayrell.Lang.LangES6.TranslatorES6").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
@@ -68,14 +77,17 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode.prototype,
 		else if (k == "html")return this.html;
 		else if (k == "operator")return this.operator;
 		else if (k == "program")return this.program;
-		return use("Bayrell.Lang.CoreTranslator").prototype.takeValue.call(this,ctx,k,d);
+		else if (k == "use_module_name")return this.use_module_name;
+		else if (k == "enable_async_await")return this.enable_async_await;
+		else if (k == "emulate_async_await")return this.emulate_async_await;
+		return use("Bayrell.Lang.LangES6.TranslatorES6").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)
 	{
 		return "Bayrell.Lang.LangNode.TranslatorNode";
 	},
 });
-Object.assign(Bayrell.Lang.LangNode.TranslatorNode, use("Bayrell.Lang.CoreTranslator"));
+Object.assign(Bayrell.Lang.LangNode.TranslatorNode, use("Bayrell.Lang.LangES6.TranslatorES6"));
 Object.assign(Bayrell.Lang.LangNode.TranslatorNode,
 {
 	/**
@@ -112,7 +124,7 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode,
 	},
 	getParentClassName: function()
 	{
-		return "Bayrell.Lang.CoreTranslator";
+		return "Bayrell.Lang.LangES6.TranslatorES6";
 	},
 	getClassInfo: function(ctx)
 	{
@@ -138,6 +150,9 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode,
 			a.push("html");
 			a.push("operator");
 			a.push("program");
+			a.push("use_module_name");
+			a.push("enable_async_await");
+			a.push("emulate_async_await");
 		}
 		return use("Runtime.Collection").from(a);
 	},
@@ -181,6 +196,27 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode,
 			"annotations": Collection.from([
 			]),
 		});
+		if (field_name == "use_module_name") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangNode.TranslatorNode",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "enable_async_await") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangNode.TranslatorNode",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "emulate_async_await") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangNode.TranslatorNode",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -194,8 +230,4 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode,
 		return null;
 	},
 });use.add(Bayrell.Lang.LangNode.TranslatorNode);
-if (module.exports == undefined) module.exports = {};
-if (module.exports.Bayrell == undefined) module.exports.Bayrell = {};
-if (module.exports.Bayrell.Lang == undefined) module.exports.Bayrell.Lang = {};
-if (module.exports.Bayrell.Lang.LangNode == undefined) module.exports.Bayrell.Lang.LangNode = {};
-module.exports.Bayrell.Lang.LangNode.TranslatorNode = Bayrell.Lang.LangNode.TranslatorNode;
+module.exports = Bayrell.Lang.LangNode.TranslatorNode;

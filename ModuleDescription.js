@@ -149,7 +149,4 @@ Object.assign(Bayrell.Lang.ModuleDescription,
 		use("Runtime.Interfaces.AssetsInterface"),
 	],
 });use.add(Bayrell.Lang.ModuleDescription);
-if (module.exports == undefined) module.exports = {};
-if (module.exports.Bayrell == undefined) module.exports.Bayrell = {};
-if (module.exports.Bayrell.Lang == undefined) module.exports.Bayrell.Lang = {};
-module.exports.Bayrell.Lang.ModuleDescription = Bayrell.Lang.ModuleDescription;
+module.exports = Bayrell.Lang.ModuleDescription;

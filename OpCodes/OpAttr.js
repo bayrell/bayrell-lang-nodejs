@@ -36,6 +36,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpAttr.prototype,
 		this.kind = "";
 		this.obj = null;
 		this.value = null;
+		this.attrs = null;
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
@@ -46,6 +47,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpAttr.prototype,
 			this.kind = o.kind;
 			this.obj = o.obj;
 			this.value = o.value;
+			this.attrs = o.attrs;
 		}
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
 	},
@@ -55,6 +57,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpAttr.prototype,
 		else if (k == "kind")this.kind = v;
 		else if (k == "obj")this.obj = v;
 		else if (k == "value")this.value = v;
+		else if (k == "attrs")this.attrs = v;
 		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
@@ -64,6 +67,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpAttr.prototype,
 		else if (k == "kind")return this.kind;
 		else if (k == "obj")return this.obj;
 		else if (k == "value")return this.value;
+		else if (k == "attrs")return this.attrs;
 		return use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)
@@ -77,6 +81,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpAttr,
 	KIND_ATTR: "attr",
 	KIND_STATIC: "static",
 	KIND_DYNAMIC: "dynamic",
+	KIND_DYNAMIC_ATTRS: "dynamic_attrs",
 	/* ======================= Class Init Functions ======================= */
 	getCurrentNamespace: function()
 	{
@@ -113,6 +118,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpAttr,
 			a.push("kind");
 			a.push("obj");
 			a.push("value");
+			a.push("attrs");
 		}
 		return use("Runtime.Collection").from(a);
 	},
@@ -136,6 +142,13 @@ Object.assign(Bayrell.Lang.OpCodes.OpAttr,
 			]),
 		});
 		if (field_name == "KIND_DYNAMIC") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.OpCodes.OpAttr",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "KIND_DYNAMIC_ATTRS") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpAttr",
 			"name": field_name,
@@ -170,6 +183,13 @@ Object.assign(Bayrell.Lang.OpCodes.OpAttr,
 			"annotations": Collection.from([
 			]),
 		});
+		if (field_name == "attrs") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.OpCodes.OpAttr",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -183,8 +203,4 @@ Object.assign(Bayrell.Lang.OpCodes.OpAttr,
 		return null;
 	},
 });use.add(Bayrell.Lang.OpCodes.OpAttr);
-if (module.exports == undefined) module.exports = {};
-if (module.exports.Bayrell == undefined) module.exports.Bayrell = {};
-if (module.exports.Bayrell.Lang == undefined) module.exports.Bayrell.Lang = {};
-if (module.exports.Bayrell.Lang.OpCodes == undefined) module.exports.Bayrell.Lang.OpCodes = {};
-module.exports.Bayrell.Lang.OpCodes.OpAttr = Bayrell.Lang.OpCodes.OpAttr;
+module.exports = Bayrell.Lang.OpCodes.OpAttr;

@@ -53,37 +53,24 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNodeExpression, use("Bayrell.Lang.
 Object.assign(Bayrell.Lang.LangNode.TranslatorNodeExpression,
 {
 	/**
-	 * Returns string
-	 */
-	rtlToStr: function(ctx, t, s)
-	{
-		return "use(\"Runtime.rtl\").toStr(" + use("Runtime.rtl").toStr(s) + use("Runtime.rtl").toStr(")");
-	},
-	/**
-	 * Use module name
-	 */
-	useModuleName: function(ctx, t, module_name)
-	{
-		module_name = this.findModuleName(ctx, t, module_name);
-		return "use(" + use("Runtime.rtl").toStr(this.toString(ctx, module_name)) + use("Runtime.rtl").toStr(")");
-	},
-	/**
 	 * OpIdentifier
 	 */
 	OpIdentifier: function(ctx, t, op_code)
 	{
-		var __v0 = use("Bayrell.Lang.OpCodes.OpIdentifier");
-		var __v1 = use("Bayrell.Lang.OpCodes.OpIdentifier");
-		var __v2 = use("Bayrell.Lang.OpCodes.OpIdentifier");
-		if (op_code.kind == __v0.KIND_CONTEXT && op_code.value == "@")
+		if (op_code.value == "@")
 		{
 			return use("Runtime.Collection").from([t,"ctx"]);
 		}
-		else if (op_code.kind == __v1.KIND_CONTEXT && op_code.value == "_")
+		if (op_code.value == "_")
 		{
-			return use("Runtime.Collection").from([t,"ctx.translate"]);
+			return use("Runtime.Collection").from([t,"ctx.constructor.translate"]);
 		}
-		else if (t.modules.has(ctx, op_code.value) || op_code.kind == __v2.KIND_SYS_TYPE)
+		if (op_code.value == "log")
+		{
+			return use("Runtime.Collection").from([t,"console.log"]);
+		}
+		var __v0 = use("Bayrell.Lang.OpCodes.OpIdentifier");
+		if (t.modules.has(ctx, op_code.value) || op_code.kind == __v0.KIND_SYS_TYPE)
 		{
 			var module_name = op_code.value;
 			var new_module_name = this.findModuleName(ctx, t, module_name);
@@ -120,52 +107,6 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNodeExpression,
 			var_name = __v0.join(ctx, ".", op_code.entity_name.names);
 		}
 		return use("Runtime.Collection").from([t,var_name]);
-	},
-	/**
-	 * OpCollection
-	 */
-	OpCollection: function(ctx, t, op_code)
-	{
-		var content = "";
-		var values = op_code.values.map(ctx, (ctx, op_code) => 
-		{
-			var res = this.Expression(ctx, t, op_code);
-			t = Runtime.rtl.get(ctx, res, 0);
-			var s = Runtime.rtl.get(ctx, res, 1);
-			return s;
-		});
-		values = values.filter(ctx, (ctx, s) => 
-		{
-			return s != "";
-		});
-		var __v0 = use("Runtime.rs");
-		content = this.useModuleName(ctx, t, "Runtime.Collection") + use("Runtime.rtl").toStr(".from([") + use("Runtime.rtl").toStr(__v0.join(ctx, ",", values)) + use("Runtime.rtl").toStr("])");
-		return use("Runtime.Collection").from([t,content]);
-	},
-	/**
-	 * OpDict
-	 */
-	OpDict: function(ctx, t, op_code)
-	{
-		var content = "";
-		var values = op_code.values.map(ctx, (ctx, pair, key) => 
-		{
-			if (pair.condition != null && !t.preprocessor_flags.has(ctx, pair.condition.value))
-			{
-				return "";
-			}
-			var res = this.Expression(ctx, t, pair.value);
-			t = Runtime.rtl.get(ctx, res, 0);
-			var s = Runtime.rtl.get(ctx, res, 1);
-			return this.toString(ctx, pair.key) + use("Runtime.rtl").toStr(":") + use("Runtime.rtl").toStr(s);
-		});
-		values = values.filter(ctx, (ctx, s) => 
-		{
-			return s != "";
-		});
-		var __v0 = use("Runtime.rs");
-		content = this.useModuleName(ctx, t, "Runtime.Dict") + use("Runtime.rtl").toStr(".from({") + use("Runtime.rtl").toStr(__v0.join(ctx, ",", values)) + use("Runtime.rtl").toStr("})");
-		return use("Runtime.Collection").from([t,content]);
 	},
 	/* ======================= Class Init Functions ======================= */
 	getCurrentNamespace: function()
@@ -217,8 +158,4 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNodeExpression,
 		return null;
 	},
 });use.add(Bayrell.Lang.LangNode.TranslatorNodeExpression);
-if (module.exports == undefined) module.exports = {};
-if (module.exports.Bayrell == undefined) module.exports.Bayrell = {};
-if (module.exports.Bayrell.Lang == undefined) module.exports.Bayrell.Lang = {};
-if (module.exports.Bayrell.Lang.LangNode == undefined) module.exports.Bayrell.Lang.LangNode = {};
-module.exports.Bayrell.Lang.LangNode.TranslatorNodeExpression = Bayrell.Lang.LangNode.TranslatorNodeExpression;
+module.exports = Bayrell.Lang.LangNode.TranslatorNodeExpression;

@@ -144,7 +144,4 @@ Object.assign(Bayrell.Lang.Caret,
 		return null;
 	},
 });use.add(Bayrell.Lang.Caret);
-if (module.exports == undefined) module.exports = {};
-if (module.exports.Bayrell == undefined) module.exports.Bayrell = {};
-if (module.exports.Bayrell.Lang == undefined) module.exports.Bayrell.Lang = {};
-module.exports.Bayrell.Lang.Caret = Bayrell.Lang.Caret;
+module.exports = Bayrell.Lang.Caret;

@@ -135,8 +135,4 @@ Object.assign(Bayrell.Lang.OpCodes.OpHtmlContent,
 		return null;
 	},
 });use.add(Bayrell.Lang.OpCodes.OpHtmlContent);
-if (module.exports == undefined) module.exports = {};
-if (module.exports.Bayrell == undefined) module.exports.Bayrell = {};
-if (module.exports.Bayrell.Lang == undefined) module.exports.Bayrell.Lang = {};
-if (module.exports.Bayrell.Lang.OpCodes == undefined) module.exports.Bayrell.Lang.OpCodes = {};
-module.exports.Bayrell.Lang.OpCodes.OpHtmlContent = Bayrell.Lang.OpCodes.OpHtmlContent;
+module.exports = Bayrell.Lang.OpCodes.OpHtmlContent;

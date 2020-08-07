@@ -171,8 +171,4 @@ Object.assign(Bayrell.Lang.OpCodes.OpCall,
 		return null;
 	},
 });use.add(Bayrell.Lang.OpCodes.OpCall);
-if (module.exports == undefined) module.exports = {};
-if (module.exports.Bayrell == undefined) module.exports.Bayrell = {};
-if (module.exports.Bayrell.Lang == undefined) module.exports.Bayrell.Lang = {};
-if (module.exports.Bayrell.Lang.OpCodes == undefined) module.exports.Bayrell.Lang.OpCodes = {};
-module.exports.Bayrell.Lang.OpCodes.OpCall = Bayrell.Lang.OpCodes.OpCall;
+module.exports = Bayrell.Lang.OpCodes.OpCall;

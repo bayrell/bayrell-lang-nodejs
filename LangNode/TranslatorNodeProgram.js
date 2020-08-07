@@ -69,16 +69,20 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNodeProgram,
 		var content = "";
 		var name = "";
 		content += use("Runtime.rtl").toStr("use.add(" + use("Runtime.rtl").toStr(t.current_class_full_name) + use("Runtime.rtl").toStr(");"));
-		content += use("Runtime.rtl").toStr(t.s(ctx, "if (module.exports == undefined) module.exports = {};"));
-		var __v0 = use("Runtime.rs");
-		var arr = __v0.split(ctx, "\\.", t.current_namespace_name);
-		for (var i = 0;i < arr.count(ctx);i++)
+		/*
+		content ~= t.s("if (module.exports == undefined) module.exports = {};");
+		Collection<string> arr = rs::split("\\.", t.current_namespace_name);
+		for (int i=0; i<arr.count(); i++)
 		{
-			name = name + use("Runtime.rtl").toStr(((i == 0) ? ("") : ("."))) + use("Runtime.rtl").toStr(arr.item(ctx, i));
-			var s = "if (module.exports." + use("Runtime.rtl").toStr(name) + use("Runtime.rtl").toStr(" == undefined) module.exports.") + use("Runtime.rtl").toStr(name) + use("Runtime.rtl").toStr(" = {};");
-			content += use("Runtime.rtl").toStr((content == 0) ? (s) : (t.s(ctx, s)));
+			name = name ~ ((i == 0) ? "" : ".") ~ arr.item(i);
+			string s = "if (module.exports." ~ name ~ " == undefined) module.exports." ~ name ~ " = {};";
+			content ~= (content == 0) ? s : t.s(s);
 		}
-		content += use("Runtime.rtl").toStr(t.s(ctx, "module.exports." + use("Runtime.rtl").toStr(t.current_class_full_name) + use("Runtime.rtl").toStr(" = ") + use("Runtime.rtl").toStr(t.current_class_full_name) + use("Runtime.rtl").toStr(";")));
+		
+		content ~= t.s("module.exports." ~
+			t.current_class_full_name ~ " = " ~ t.current_class_full_name ~ ";");
+		*/
+		content += use("Runtime.rtl").toStr(t.s(ctx, "module.exports = " + use("Runtime.rtl").toStr(t.current_class_full_name) + use("Runtime.rtl").toStr(";")));
 		return use("Runtime.Collection").from([t,content]);
 	},
 	/* ======================= Class Init Functions ======================= */
@@ -131,8 +135,4 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNodeProgram,
 		return null;
 	},
 });use.add(Bayrell.Lang.LangNode.TranslatorNodeProgram);
-if (module.exports == undefined) module.exports = {};
-if (module.exports.Bayrell == undefined) module.exports.Bayrell = {};
-if (module.exports.Bayrell.Lang == undefined) module.exports.Bayrell.Lang = {};
-if (module.exports.Bayrell.Lang.LangNode == undefined) module.exports.Bayrell.Lang.LangNode = {};
-module.exports.Bayrell.Lang.LangNode.TranslatorNodeProgram = Bayrell.Lang.LangNode.TranslatorNodeProgram;
+module.exports = Bayrell.Lang.LangNode.TranslatorNodeProgram;

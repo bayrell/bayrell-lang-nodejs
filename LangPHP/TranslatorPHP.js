@@ -32,6 +32,8 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP.prototype,
 	{
 		var defProp = use('Runtime.rtl').defProp;
 		var a = Object.getOwnPropertyNames(this);
+		this.is_pipe = false;
+		this.pipe_var_name = "";
 		this.expression = null;
 		this.html = null;
 		this.operator = null;
@@ -42,6 +44,8 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP.prototype,
 	{
 		if (o instanceof use("Bayrell.Lang.LangPHP.TranslatorPHP"))
 		{
+			this.is_pipe = o.is_pipe;
+			this.pipe_var_name = o.pipe_var_name;
 			this.expression = o.expression;
 			this.html = o.html;
 			this.operator = o.operator;
@@ -51,7 +55,9 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP.prototype,
 	},
 	assignValue: function(ctx,k,v)
 	{
-		if (k == "expression")this.expression = v;
+		if (k == "is_pipe")this.is_pipe = v;
+		else if (k == "pipe_var_name")this.pipe_var_name = v;
+		else if (k == "expression")this.expression = v;
 		else if (k == "html")this.html = v;
 		else if (k == "operator")this.operator = v;
 		else if (k == "program")this.program = v;
@@ -60,7 +66,9 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP.prototype,
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
-		if (k == "expression")return this.expression;
+		if (k == "is_pipe")return this.is_pipe;
+		else if (k == "pipe_var_name")return this.pipe_var_name;
+		else if (k == "expression")return this.expression;
 		else if (k == "html")return this.html;
 		else if (k == "operator")return this.operator;
 		else if (k == "program")return this.program;
@@ -154,6 +162,8 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP,
 		if (f==undefined) f=0;
 		if ((f|3)==3)
 		{
+			a.push("is_pipe");
+			a.push("pipe_var_name");
 			a.push("expression");
 			a.push("html");
 			a.push("operator");
@@ -166,6 +176,20 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP,
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
 		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
+		if (field_name == "is_pipe") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangPHP.TranslatorPHP",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "pipe_var_name") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangPHP.TranslatorPHP",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
 		if (field_name == "expression") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangPHP.TranslatorPHP",
@@ -207,8 +231,4 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP,
 		return null;
 	},
 });use.add(Bayrell.Lang.LangPHP.TranslatorPHP);
-if (module.exports == undefined) module.exports = {};
-if (module.exports.Bayrell == undefined) module.exports.Bayrell = {};
-if (module.exports.Bayrell.Lang == undefined) module.exports.Bayrell.Lang = {};
-if (module.exports.Bayrell.Lang.LangPHP == undefined) module.exports.Bayrell.Lang.LangPHP = {};
-module.exports.Bayrell.Lang.LangPHP.TranslatorPHP = Bayrell.Lang.LangPHP.TranslatorPHP;
+module.exports = Bayrell.Lang.LangPHP.TranslatorPHP;

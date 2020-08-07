@@ -105,8 +105,4 @@ Object.assign(Bayrell.Lang.Exceptions.ParserExpected,
 		return null;
 	},
 });use.add(Bayrell.Lang.Exceptions.ParserExpected);
-if (module.exports == undefined) module.exports = {};
-if (module.exports.Bayrell == undefined) module.exports.Bayrell = {};
-if (module.exports.Bayrell.Lang == undefined) module.exports.Bayrell.Lang = {};
-if (module.exports.Bayrell.Lang.Exceptions == undefined) module.exports.Bayrell.Lang.Exceptions = {};
-module.exports.Bayrell.Lang.Exceptions.ParserExpected = Bayrell.Lang.Exceptions.ParserExpected;
+module.exports = Bayrell.Lang.Exceptions.ParserExpected;

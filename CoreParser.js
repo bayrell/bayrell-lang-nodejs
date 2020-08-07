@@ -217,7 +217,4 @@ Object.assign(Bayrell.Lang.CoreParser,
 		return null;
 	},
 });use.add(Bayrell.Lang.CoreParser);
-if (module.exports == undefined) module.exports = {};
-if (module.exports.Bayrell == undefined) module.exports.Bayrell = {};
-if (module.exports.Bayrell.Lang == undefined) module.exports.Bayrell.Lang = {};
-module.exports.Bayrell.Lang.CoreParser = Bayrell.Lang.CoreParser;
+module.exports = Bayrell.Lang.CoreParser;

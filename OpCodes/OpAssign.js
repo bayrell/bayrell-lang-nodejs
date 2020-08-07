@@ -243,8 +243,4 @@ Object.assign(Bayrell.Lang.OpCodes.OpAssign,
 		return null;
 	},
 });use.add(Bayrell.Lang.OpCodes.OpAssign);
-if (module.exports == undefined) module.exports = {};
-if (module.exports.Bayrell == undefined) module.exports.Bayrell = {};
-if (module.exports.Bayrell.Lang == undefined) module.exports.Bayrell.Lang = {};
-if (module.exports.Bayrell.Lang.OpCodes == undefined) module.exports.Bayrell.Lang.OpCodes = {};
-module.exports.Bayrell.Lang.OpCodes.OpAssign = Bayrell.Lang.OpCodes.OpAssign;
+module.exports = Bayrell.Lang.OpCodes.OpAssign;

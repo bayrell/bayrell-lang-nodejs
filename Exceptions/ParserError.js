@@ -124,8 +124,4 @@ Object.assign(Bayrell.Lang.Exceptions.ParserError,
 		return null;
 	},
 });use.add(Bayrell.Lang.Exceptions.ParserError);
-if (module.exports == undefined) module.exports = {};
-if (module.exports.Bayrell == undefined) module.exports.Bayrell = {};
-if (module.exports.Bayrell.Lang == undefined) module.exports.Bayrell.Lang = {};
-if (module.exports.Bayrell.Lang.Exceptions == undefined) module.exports.Bayrell.Lang.Exceptions = {};
-module.exports.Bayrell.Lang.Exceptions.ParserError = Bayrell.Lang.Exceptions.ParserError;
+module.exports = Bayrell.Lang.Exceptions.ParserError;

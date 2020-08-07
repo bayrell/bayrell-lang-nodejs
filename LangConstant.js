@@ -118,7 +118,4 @@ Object.assign(Bayrell.Lang.LangConstant,
 		return null;
 	},
 });use.add(Bayrell.Lang.LangConstant);
-if (module.exports == undefined) module.exports = {};
-if (module.exports.Bayrell == undefined) module.exports.Bayrell = {};
-if (module.exports.Bayrell.Lang == undefined) module.exports.Bayrell.Lang = {};
-module.exports.Bayrell.Lang.LangConstant = Bayrell.Lang.LangConstant;
+module.exports = Bayrell.Lang.LangConstant;

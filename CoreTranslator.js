@@ -488,7 +488,4 @@ Object.assign(Bayrell.Lang.CoreTranslator,
 		return null;
 	},
 });use.add(Bayrell.Lang.CoreTranslator);
-if (module.exports == undefined) module.exports = {};
-if (module.exports.Bayrell == undefined) module.exports.Bayrell = {};
-if (module.exports.Bayrell.Lang == undefined) module.exports.Bayrell.Lang = {};
-module.exports.Bayrell.Lang.CoreTranslator = Bayrell.Lang.CoreTranslator;
+module.exports = Bayrell.Lang.CoreTranslator;

@@ -39,6 +39,8 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay.prototype,
 		this.current_class_kind = "";
 		this.find_identifier = true;
 		this.skip_comments = true;
+		this.pipe_kind = "";
+		this.is_pipe = false;
 		this.parser_base = null;
 		this.parser_expression = null;
 		this.parser_html = null;
@@ -60,6 +62,8 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay.prototype,
 			this.current_class_kind = o.current_class_kind;
 			this.find_identifier = o.find_identifier;
 			this.skip_comments = o.skip_comments;
+			this.pipe_kind = o.pipe_kind;
+			this.is_pipe = o.is_pipe;
 			this.parser_base = o.parser_base;
 			this.parser_expression = o.parser_expression;
 			this.parser_html = o.parser_html;
@@ -80,6 +84,8 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay.prototype,
 		else if (k == "current_class_kind")this.current_class_kind = v;
 		else if (k == "find_identifier")this.find_identifier = v;
 		else if (k == "skip_comments")this.skip_comments = v;
+		else if (k == "pipe_kind")this.pipe_kind = v;
+		else if (k == "is_pipe")this.is_pipe = v;
 		else if (k == "parser_base")this.parser_base = v;
 		else if (k == "parser_expression")this.parser_expression = v;
 		else if (k == "parser_html")this.parser_html = v;
@@ -100,6 +106,8 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay.prototype,
 		else if (k == "current_class_kind")return this.current_class_kind;
 		else if (k == "find_identifier")return this.find_identifier;
 		else if (k == "skip_comments")return this.skip_comments;
+		else if (k == "pipe_kind")return this.pipe_kind;
+		else if (k == "is_pipe")return this.is_pipe;
 		else if (k == "parser_base")return this.parser_base;
 		else if (k == "parser_expression")return this.parser_expression;
 		else if (k == "parser_html")return this.parser_html;
@@ -140,6 +148,45 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 		parser = this.reset(ctx, parser);
 		parser = this.setContent(ctx, parser, content);
 		return parser.parser_program.constructor.readProgram(ctx, parser);
+	},
+	/**
+	 * Find module name
+	 */
+	findModuleName: function(ctx, parser, module_name)
+	{
+		if (module_name == "Collection")
+		{
+			return "Runtime.Collection";
+		}
+		else if (module_name == "Dict")
+		{
+			return "Runtime.Dict";
+		}
+		else if (module_name == "Map")
+		{
+			return "Runtime.Map";
+		}
+		else if (module_name == "Vector")
+		{
+			return "Runtime.Vector";
+		}
+		else if (module_name == "rs")
+		{
+			return "Runtime.rs";
+		}
+		else if (module_name == "rtl")
+		{
+			return "Runtime.rtl";
+		}
+		else if (module_name == "ArrayInterface")
+		{
+			return "";
+		}
+		else if (parser.uses.has(ctx, module_name))
+		{
+			return parser.uses.item(ctx, module_name);
+		}
+		return module_name;
 	},
 	/* ======================= Class Init Functions ======================= */
 	getCurrentNamespace: function()
@@ -182,6 +229,8 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 			a.push("current_class_kind");
 			a.push("find_identifier");
 			a.push("skip_comments");
+			a.push("pipe_kind");
+			a.push("is_pipe");
 			a.push("parser_base");
 			a.push("parser_expression");
 			a.push("parser_html");
@@ -259,6 +308,20 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 			"annotations": Collection.from([
 			]),
 		});
+		if (field_name == "pipe_kind") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "is_pipe") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
 		if (field_name == "parser_base") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
@@ -314,8 +377,4 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 		return null;
 	},
 });use.add(Bayrell.Lang.LangBay.ParserBay);
-if (module.exports == undefined) module.exports = {};
-if (module.exports.Bayrell == undefined) module.exports.Bayrell = {};
-if (module.exports.Bayrell.Lang == undefined) module.exports.Bayrell.Lang = {};
-if (module.exports.Bayrell.Lang.LangBay == undefined) module.exports.Bayrell.Lang.LangBay = {};
-module.exports.Bayrell.Lang.LangBay.ParserBay = Bayrell.Lang.LangBay.ParserBay;
+module.exports = Bayrell.Lang.LangBay.ParserBay;

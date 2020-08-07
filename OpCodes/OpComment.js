@@ -135,8 +135,4 @@ Object.assign(Bayrell.Lang.OpCodes.OpComment,
 		return null;
 	},
 });use.add(Bayrell.Lang.OpCodes.OpComment);
-if (module.exports == undefined) module.exports = {};
-if (module.exports.Bayrell == undefined) module.exports.Bayrell = {};
-if (module.exports.Bayrell.Lang == undefined) module.exports.Bayrell.Lang = {};
-if (module.exports.Bayrell.Lang.OpCodes == undefined) module.exports.Bayrell.Lang.OpCodes = {};
-module.exports.Bayrell.Lang.OpCodes.OpComment = Bayrell.Lang.OpCodes.OpComment;
+module.exports = Bayrell.Lang.OpCodes.OpComment;

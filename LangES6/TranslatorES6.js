@@ -28,46 +28,84 @@ Bayrell.Lang.LangES6.TranslatorES6.prototype = Object.create(use("Bayrell.Lang.C
 Bayrell.Lang.LangES6.TranslatorES6.prototype.constructor = Bayrell.Lang.LangES6.TranslatorES6;
 Object.assign(Bayrell.Lang.LangES6.TranslatorES6.prototype,
 {
+	/**
+	 * Returns true if emulate async await
+	 */
+	isEmulateAsyncAwait: function(ctx)
+	{
+		return this.enable_async_await && this.emulate_async_await;
+	},
+	/**
+	 * Returns true if async await
+	 */
+	isAsyncAwait: function(ctx)
+	{
+		return this.enable_async_await && !this.emulate_async_await;
+	},
 	_init: function(ctx)
 	{
 		var defProp = use('Runtime.rtl').defProp;
 		var a = Object.getOwnPropertyNames(this);
+		this.is_pipe = false;
+		this.pipe_var_name = "";
 		this.async_await = null;
 		this.expression = null;
 		this.html = null;
 		this.operator = null;
 		this.program = null;
+		this.use_module_name = false;
+		this.use_strict = true;
+		this.enable_async_await = true;
+		this.emulate_async_await = true;
 		use("Bayrell.Lang.CoreTranslator").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
 		if (o instanceof use("Bayrell.Lang.LangES6.TranslatorES6"))
 		{
+			this.is_pipe = o.is_pipe;
+			this.pipe_var_name = o.pipe_var_name;
 			this.async_await = o.async_await;
 			this.expression = o.expression;
 			this.html = o.html;
 			this.operator = o.operator;
 			this.program = o.program;
+			this.use_module_name = o.use_module_name;
+			this.use_strict = o.use_strict;
+			this.enable_async_await = o.enable_async_await;
+			this.emulate_async_await = o.emulate_async_await;
 		}
 		use("Bayrell.Lang.CoreTranslator").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
-		if (k == "async_await")this.async_await = v;
+		if (k == "is_pipe")this.is_pipe = v;
+		else if (k == "pipe_var_name")this.pipe_var_name = v;
+		else if (k == "async_await")this.async_await = v;
 		else if (k == "expression")this.expression = v;
 		else if (k == "html")this.html = v;
 		else if (k == "operator")this.operator = v;
 		else if (k == "program")this.program = v;
+		else if (k == "use_module_name")this.use_module_name = v;
+		else if (k == "use_strict")this.use_strict = v;
+		else if (k == "enable_async_await")this.enable_async_await = v;
+		else if (k == "emulate_async_await")this.emulate_async_await = v;
 		else use("Bayrell.Lang.CoreTranslator").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
-		if (k == "async_await")return this.async_await;
+		if (k == "is_pipe")return this.is_pipe;
+		else if (k == "pipe_var_name")return this.pipe_var_name;
+		else if (k == "async_await")return this.async_await;
 		else if (k == "expression")return this.expression;
 		else if (k == "html")return this.html;
 		else if (k == "operator")return this.operator;
 		else if (k == "program")return this.program;
+		else if (k == "use_module_name")return this.use_module_name;
+		else if (k == "use_strict")return this.use_strict;
+		else if (k == "enable_async_await")return this.enable_async_await;
+		else if (k == "emulate_async_await")return this.emulate_async_await;
 		return use("Bayrell.Lang.CoreTranslator").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)
@@ -133,11 +171,17 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6,
 		if (f==undefined) f=0;
 		if ((f|3)==3)
 		{
+			a.push("is_pipe");
+			a.push("pipe_var_name");
 			a.push("async_await");
 			a.push("expression");
 			a.push("html");
 			a.push("operator");
 			a.push("program");
+			a.push("use_module_name");
+			a.push("use_strict");
+			a.push("enable_async_await");
+			a.push("emulate_async_await");
 		}
 		return use("Runtime.Collection").from(a);
 	},
@@ -146,6 +190,20 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6,
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
 		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
+		if (field_name == "is_pipe") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "pipe_var_name") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
 		if (field_name == "async_await") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
@@ -181,6 +239,34 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6,
 			"annotations": Collection.from([
 			]),
 		});
+		if (field_name == "use_module_name") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "use_strict") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "enable_async_await") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "emulate_async_await") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -194,8 +280,4 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6,
 		return null;
 	},
 });use.add(Bayrell.Lang.LangES6.TranslatorES6);
-if (module.exports == undefined) module.exports = {};
-if (module.exports.Bayrell == undefined) module.exports.Bayrell = {};
-if (module.exports.Bayrell.Lang == undefined) module.exports.Bayrell.Lang = {};
-if (module.exports.Bayrell.Lang.LangES6 == undefined) module.exports.Bayrell.Lang.LangES6 = {};
-module.exports.Bayrell.Lang.LangES6.TranslatorES6 = Bayrell.Lang.LangES6.TranslatorES6;
+module.exports = Bayrell.Lang.LangES6.TranslatorES6;

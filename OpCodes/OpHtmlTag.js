@@ -183,8 +183,4 @@ Object.assign(Bayrell.Lang.OpCodes.OpHtmlTag,
 		return null;
 	},
 });use.add(Bayrell.Lang.OpCodes.OpHtmlTag);
-if (module.exports == undefined) module.exports = {};
-if (module.exports.Bayrell == undefined) module.exports.Bayrell = {};
-if (module.exports.Bayrell.Lang == undefined) module.exports.Bayrell.Lang = {};
-if (module.exports.Bayrell.Lang.OpCodes == undefined) module.exports.Bayrell.Lang.OpCodes = {};
-module.exports.Bayrell.Lang.OpCodes.OpHtmlTag = Bayrell.Lang.OpCodes.OpHtmlTag;
+module.exports = Bayrell.Lang.OpCodes.OpHtmlTag;

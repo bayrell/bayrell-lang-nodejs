@@ -70,6 +70,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpIdentifier.prototype,
 Object.assign(Bayrell.Lang.OpCodes.OpIdentifier, use("Bayrell.Lang.OpCodes.BaseOpCode"));
 Object.assign(Bayrell.Lang.OpCodes.OpIdentifier,
 {
+	KIND_PIPE: "pipe",
 	KIND_VARIABLE: "var",
 	KIND_SYS_TYPE: "sys",
 	KIND_SYS_FUNCTION: "sys_fn",
@@ -121,6 +122,13 @@ Object.assign(Bayrell.Lang.OpCodes.OpIdentifier,
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
 		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
+		if (field_name == "KIND_PIPE") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.OpCodes.OpIdentifier",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
 		if (field_name == "KIND_VARIABLE") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpIdentifier",
@@ -211,8 +219,4 @@ Object.assign(Bayrell.Lang.OpCodes.OpIdentifier,
 		return null;
 	},
 });use.add(Bayrell.Lang.OpCodes.OpIdentifier);
-if (module.exports == undefined) module.exports = {};
-if (module.exports.Bayrell == undefined) module.exports.Bayrell = {};
-if (module.exports.Bayrell.Lang == undefined) module.exports.Bayrell.Lang = {};
-if (module.exports.Bayrell.Lang.OpCodes == undefined) module.exports.Bayrell.Lang.OpCodes = {};
-module.exports.Bayrell.Lang.OpCodes.OpIdentifier = Bayrell.Lang.OpCodes.OpIdentifier;
+module.exports = Bayrell.Lang.OpCodes.OpIdentifier;

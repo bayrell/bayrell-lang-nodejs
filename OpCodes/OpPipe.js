@@ -37,6 +37,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpPipe.prototype,
 		this.obj = null;
 		this.value = null;
 		this.is_async = false;
+		this.is_monad = false;
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
@@ -48,6 +49,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpPipe.prototype,
 			this.obj = o.obj;
 			this.value = o.value;
 			this.is_async = o.is_async;
+			this.is_monad = o.is_monad;
 		}
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
 	},
@@ -58,6 +60,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpPipe.prototype,
 		else if (k == "obj")this.obj = v;
 		else if (k == "value")this.value = v;
 		else if (k == "is_async")this.is_async = v;
+		else if (k == "is_monad")this.is_monad = v;
 		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
@@ -68,6 +71,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpPipe.prototype,
 		else if (k == "obj")return this.obj;
 		else if (k == "value")return this.value;
 		else if (k == "is_async")return this.is_async;
+		else if (k == "is_monad")return this.is_monad;
 		return use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)
@@ -79,10 +83,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpPipe, use("Bayrell.Lang.OpCodes.BaseOpCode"
 Object.assign(Bayrell.Lang.OpCodes.OpPipe,
 {
 	KIND_ATTR: "attr",
-	KIND_ASYNC: "async",
 	KIND_CALL: "call",
-	KIND_METHOD: "method",
-	KIND_MONAD: "monad",
 	/* ======================= Class Init Functions ======================= */
 	getCurrentNamespace: function()
 	{
@@ -120,6 +121,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpPipe,
 			a.push("obj");
 			a.push("value");
 			a.push("is_async");
+			a.push("is_monad");
 		}
 		return use("Runtime.Collection").from(a);
 	},
@@ -135,28 +137,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpPipe,
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "KIND_ASYNC") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.OpCodes.OpPipe",
-			"name": field_name,
-			"annotations": Collection.from([
-			]),
-		});
 		if (field_name == "KIND_CALL") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.OpCodes.OpPipe",
-			"name": field_name,
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "KIND_METHOD") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.OpCodes.OpPipe",
-			"name": field_name,
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "KIND_MONAD") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpPipe",
 			"name": field_name,
@@ -198,6 +179,13 @@ Object.assign(Bayrell.Lang.OpCodes.OpPipe,
 			"annotations": Collection.from([
 			]),
 		});
+		if (field_name == "is_monad") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.OpCodes.OpPipe",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -211,8 +199,4 @@ Object.assign(Bayrell.Lang.OpCodes.OpPipe,
 		return null;
 	},
 });use.add(Bayrell.Lang.OpCodes.OpPipe);
-if (module.exports == undefined) module.exports = {};
-if (module.exports.Bayrell == undefined) module.exports.Bayrell = {};
-if (module.exports.Bayrell.Lang == undefined) module.exports.Bayrell.Lang = {};
-if (module.exports.Bayrell.Lang.OpCodes == undefined) module.exports.Bayrell.Lang.OpCodes = {};
-module.exports.Bayrell.Lang.OpCodes.OpPipe = Bayrell.Lang.OpCodes.OpPipe;
+module.exports = Bayrell.Lang.OpCodes.OpPipe;

@@ -53,8 +53,8 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 		var __v0 = use("Runtime.rs");
 		var arr = __v0.split(ctx, "\\.", op_code.name);
 		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["current_namespace_name"]), op_code.name);
-		var __v0 = use("Runtime.rs");
-		return use("Runtime.Collection").from([t,t.s(ctx, "namespace " + use("Runtime.rtl").toStr(__v0.join(ctx, "\\", arr)) + use("Runtime.rtl").toStr(";"))]);
+		var __v1 = use("Runtime.rs");
+		return use("Runtime.Collection").from([t,t.s(ctx, "namespace " + use("Runtime.rtl").toStr(__v1.join(ctx, "\\", arr)) + use("Runtime.rtl").toStr(";"))]);
 	},
 	/**
 	 * OpDeclareFunction
@@ -311,7 +311,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 			var item = op_code.items.item(ctx, i);
 			var __v0 = use("Bayrell.Lang.OpCodes.OpPreprocessorIfCode");
 			var __v1 = use("Bayrell.Lang.OpCodes.OpPreprocessorIfDef");
-			var __v2 = use("Bayrell.Lang.OpCodes.OpPreprocessorSwitch");
+			var __v3 = use("Bayrell.Lang.OpCodes.OpPreprocessorSwitch");
 			if (item instanceof __v0)
 			{
 				var res = t.operator.constructor.OpPreprocessorIfCode(ctx, t, item);
@@ -323,7 +323,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 				var res = t.operator.constructor.OpPreprocessorIfDef(ctx, t, item, __v2.KIND_CLASS_BODY);
 				content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
 			}
-			else if (item instanceof __v2)
+			else if (item instanceof __v3)
 			{
 				for (var j = 0;j < item.items.count(ctx);j++)
 				{
@@ -409,8 +409,8 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 				for (var i = 0;i < op_code.vars.count(ctx);i++)
 				{
 					var variable = op_code.vars.item(ctx, i);
-					var __v2 = use("Bayrell.Lang.OpCodes.OpAssign");
-					if (variable.kind != __v2.KIND_DECLARE)
+					var __v3 = use("Bayrell.Lang.OpCodes.OpAssign");
+					if (variable.kind != __v3.KIND_DECLARE)
 					{
 						continue;
 					}
@@ -439,8 +439,8 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 				for (var i = 0;i < op_code.vars.count(ctx);i++)
 				{
 					var variable = op_code.vars.item(ctx, i);
-					var __v2 = use("Bayrell.Lang.OpCodes.OpAssign");
-					if (variable.kind != __v2.KIND_DECLARE)
+					var __v3 = use("Bayrell.Lang.OpCodes.OpAssign");
+					if (variable.kind != __v3.KIND_DECLARE)
 					{
 						continue;
 					}
@@ -475,8 +475,8 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 				for (var i = 0;i < op_code.vars.count(ctx);i++)
 				{
 					var variable = op_code.vars.item(ctx, i);
-					var __v2 = use("Bayrell.Lang.OpCodes.OpAssign");
-					if (variable.kind != __v2.KIND_DECLARE)
+					var __v3 = use("Bayrell.Lang.OpCodes.OpAssign");
+					if (variable.kind != __v3.KIND_DECLARE)
 					{
 						continue;
 					}
@@ -578,13 +578,13 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 					{
 						continue;
 					}
-					var __v1 = use("Bayrell.Lang.OpCodes.OpAssign");
-					if (variable.kind != __v1.KIND_DECLARE)
+					var __v2 = use("Bayrell.Lang.OpCodes.OpAssign");
+					if (variable.kind != __v2.KIND_DECLARE)
 					{
 						continue;
 					}
-					var __v1 = use("Bayrell.Lang.OpCodes.OpDeclareClass");
-					if (class_kind == __v1.KIND_STRUCT)
+					var __v2 = use("Bayrell.Lang.OpCodes.OpDeclareClass");
+					if (class_kind == __v2.KIND_STRUCT)
 					{
 						is_serializable = true;
 						is_assignable = true;
@@ -610,8 +610,8 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 					{
 						if (!vars.has(ctx, flag))
 						{
-							var __v1 = use("Runtime.Vector");
-							vars.set(ctx, flag, new __v1(ctx));
+							var __v2 = use("Runtime.Vector");
+							vars.set(ctx, flag, new __v2(ctx));
 						}
 						var v = vars.item(ctx, flag);
 						for (var j = 0;j < variable.values.count(ctx);j++)
@@ -773,19 +773,19 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["current_class"]), op_code);
 		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["current_class_name"]), op_code.name);
 		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["current_class_full_name"]), t.current_namespace_name + use("Runtime.rtl").toStr(".") + use("Runtime.rtl").toStr(t.current_class_name));
-		var __v0 = use("Bayrell.Lang.OpCodes.OpDeclareClass");
 		var __v1 = use("Bayrell.Lang.OpCodes.OpDeclareClass");
+		var __v2 = use("Bayrell.Lang.OpCodes.OpDeclareClass");
 		if (op_code.class_extends != null)
 		{
 			var __v0 = use("Runtime.rs");
 			var extends_name = __v0.join(ctx, ".", op_code.class_extends.entity_name.names);
 			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["current_class_extends_name"]), extends_name);
 		}
-		else if (op_code.kind == __v0.KIND_STRUCT)
+		else if (op_code.kind == __v1.KIND_STRUCT)
 		{
 			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["current_class_extends_name"]), "Runtime.CoreStruct");
 		}
-		else if (op_code.kind == __v1.KIND_STRUCT)
+		else if (op_code.kind == __v2.KIND_STRUCT)
 		{
 			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["current_class_extends_name"]), "");
 		}
@@ -961,8 +961,4 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 		return null;
 	},
 });use.add(Bayrell.Lang.LangPHP.TranslatorPHPProgram);
-if (module.exports == undefined) module.exports = {};
-if (module.exports.Bayrell == undefined) module.exports.Bayrell = {};
-if (module.exports.Bayrell.Lang == undefined) module.exports.Bayrell.Lang = {};
-if (module.exports.Bayrell.Lang.LangPHP == undefined) module.exports.Bayrell.Lang.LangPHP = {};
-module.exports.Bayrell.Lang.LangPHP.TranslatorPHPProgram = Bayrell.Lang.LangPHP.TranslatorPHPProgram;
+module.exports = Bayrell.Lang.LangPHP.TranslatorPHPProgram;

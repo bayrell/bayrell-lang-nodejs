@@ -16,140 +16,109 @@
  *  limitations under the License.
  */
 
-if (false){
-
-function ObjectAssign(res, obj){
-	for (var key in obj){
-		if (res[key] == undefined) res[key] = obj[key];
-		else if (res[key] instanceof Object) ObjectAssign(res[key], obj[key]);
-	}
+var exports = {
+	VERSION: '0.10.0',
+	MODULE_NAME: 'Bayrell.Lang',
 }
 
-module.exports = {
-	VERSION: '0.9.3',
-};
-
-}
-else{
-
-function ObjectAssign(res, obj){
-	for (var key in obj){
-		if (res[key] == undefined) res[key] = obj[key];
-		else if (res[key] instanceof Object) ObjectAssign(res[key], obj[key]);
-	}
-}
-
-module.exports = {
-	VERSION: '0.9.3',
-	'Exceptions': {
-		'ParserUnknownError': require("./Exceptions/ParserUnknownError.js"),
-	},
-	'OpCodes': {
-		'BaseOpCode': require("./OpCodes/BaseOpCode.js"),
-	},
-	'Caret': require("./Caret.js"),
-	'CoreParser': require("./CoreParser.js"),
-	'CoreToken': require("./CoreToken.js"),
-	'CoreTranslator': require("./CoreTranslator.js"),
-	'LangConstant': require("./LangConstant.js"),
-	'LangUtils': require("./LangUtils.js"),
-	'ModuleDescription': require("./ModuleDescription.js"),
-	'SaveOpCode': require("./SaveOpCode.js"),
-};
-
-
-ObjectAssign(module.exports, {
-	'Exceptions': {
-		'ParserEOF': require("./Exceptions/ParserEOF.js"),
-		'ParserError': require("./Exceptions/ParserError.js"),
-		'ParserExpected': require("./Exceptions/ParserExpected.js"),
-	},
-	'LangBay': {
-		'ParserBay': require("./LangBay/ParserBay.js"),
-		'ParserBayBase': require("./LangBay/ParserBayBase.js"),
-		'ParserBayExpression': require("./LangBay/ParserBayExpression.js"),
-		'ParserBayHtml': require("./LangBay/ParserBayHtml.js"),
-		'ParserBayOperator': require("./LangBay/ParserBayOperator.js"),
-		'ParserBayPreprocessor': require("./LangBay/ParserBayPreprocessor.js"),
-		'ParserBayProgram': require("./LangBay/ParserBayProgram.js"),
-	},
-	'LangES6': {
-		'AsyncAwait': require("./LangES6/AsyncAwait.js"),
-		'TranslatorES6': require("./LangES6/TranslatorES6.js"),
-		'TranslatorES6AsyncAwait': require("./LangES6/TranslatorES6AsyncAwait.js"),
-		'TranslatorES6Expression': require("./LangES6/TranslatorES6Expression.js"),
-		'TranslatorES6Html': require("./LangES6/TranslatorES6Html.js"),
-		'TranslatorES6Operator': require("./LangES6/TranslatorES6Operator.js"),
-		'TranslatorES6Program': require("./LangES6/TranslatorES6Program.js"),
-	},
-	'LangNode': {
-		'TranslatorNode': require("./LangNode/TranslatorNode.js"),
-		'TranslatorNodeExpression': require("./LangNode/TranslatorNodeExpression.js"),
-		'TranslatorNodeProgram': require("./LangNode/TranslatorNodeProgram.js"),
-	},
-	'LangPHP': {
-		'TranslatorPHP': require("./LangPHP/TranslatorPHP.js"),
-		'TranslatorPHPExpression': require("./LangPHP/TranslatorPHPExpression.js"),
-		'TranslatorPHPHtml': require("./LangPHP/TranslatorPHPHtml.js"),
-		'TranslatorPHPOperator': require("./LangPHP/TranslatorPHPOperator.js"),
-		'TranslatorPHPProgram': require("./LangPHP/TranslatorPHPProgram.js"),
-	},
-	'OpCodes': {
-		'OpAnnotation': require("./OpCodes/OpAnnotation.js"),
-		'OpAssign': require("./OpCodes/OpAssign.js"),
-		'OpAssignStruct': require("./OpCodes/OpAssignStruct.js"),
-		'OpAssignValue': require("./OpCodes/OpAssignValue.js"),
-		'OpAttr': require("./OpCodes/OpAttr.js"),
-		'OpBreak': require("./OpCodes/OpBreak.js"),
-		'OpCall': require("./OpCodes/OpCall.js"),
-		'OpClassOf': require("./OpCodes/OpClassOf.js"),
-		'OpClassRef': require("./OpCodes/OpClassRef.js"),
-		'OpCollection': require("./OpCodes/OpCollection.js"),
-		'OpComment': require("./OpCodes/OpComment.js"),
-		'OpContinue': require("./OpCodes/OpContinue.js"),
-		'OpDeclareClass': require("./OpCodes/OpDeclareClass.js"),
-		'OpDeclareFunction': require("./OpCodes/OpDeclareFunction.js"),
-		'OpDeclareFunctionArg': require("./OpCodes/OpDeclareFunctionArg.js"),
-		'OpDelete': require("./OpCodes/OpDelete.js"),
-		'OpDict': require("./OpCodes/OpDict.js"),
-		'OpDictPair': require("./OpCodes/OpDictPair.js"),
-		'OpEntityName': require("./OpCodes/OpEntityName.js"),
-		'OpFlags': require("./OpCodes/OpFlags.js"),
-		'OpFor': require("./OpCodes/OpFor.js"),
-		'OpHtmlAttribute': require("./OpCodes/OpHtmlAttribute.js"),
-		'OpHtmlContent': require("./OpCodes/OpHtmlContent.js"),
-		'OpHtmlItems': require("./OpCodes/OpHtmlItems.js"),
-		'OpHtmlTag': require("./OpCodes/OpHtmlTag.js"),
-		'OpHtmlValue': require("./OpCodes/OpHtmlValue.js"),
-		'OpIdentifier': require("./OpCodes/OpIdentifier.js"),
-		'OpIf': require("./OpCodes/OpIf.js"),
-		'OpIfElse': require("./OpCodes/OpIfElse.js"),
-		'OpInc': require("./OpCodes/OpInc.js"),
-		'OpItems': require("./OpCodes/OpItems.js"),
-		'OpMath': require("./OpCodes/OpMath.js"),
-		'OpMethod': require("./OpCodes/OpMethod.js"),
-		'OpModule': require("./OpCodes/OpModule.js"),
-		'OpNamespace': require("./OpCodes/OpNamespace.js"),
-		'OpNew': require("./OpCodes/OpNew.js"),
-		'OpNumber': require("./OpCodes/OpNumber.js"),
-		'OpPipe': require("./OpCodes/OpPipe.js"),
-		'OpPreprocessorIfCode': require("./OpCodes/OpPreprocessorIfCode.js"),
-		'OpPreprocessorIfDef': require("./OpCodes/OpPreprocessorIfDef.js"),
-		'OpPreprocessorSwitch': require("./OpCodes/OpPreprocessorSwitch.js"),
-		'OpReturn': require("./OpCodes/OpReturn.js"),
-		'OpString': require("./OpCodes/OpString.js"),
-		'OpTernary': require("./OpCodes/OpTernary.js"),
-		'OpTryCatch': require("./OpCodes/OpTryCatch.js"),
-		'OpTryCatchItem': require("./OpCodes/OpTryCatchItem.js"),
-		'OpThrow': require("./OpCodes/OpThrow.js"),
-		'OpTypeConvert': require("./OpCodes/OpTypeConvert.js"),
-		'OpTypeIdentifier': require("./OpCodes/OpTypeIdentifier.js"),
-		'OpUse': require("./OpCodes/OpUse.js"),
-		'OpWhile': require("./OpCodes/OpWhile.js"),
-	},
+function add(name)
+{
+	var module_name = exports.MODULE_NAME;
 	
-});
-
-require('bayrell').use.add_exports(module.exports);
-
+	name = name
+		.substr(module_name.length + 1)
+		.replace(".", "/")
+	;
+	
+	var path = __dirname + "/" + name + ".js";
+	var obj = require(path);
 }
+
+add("Bayrell.Lang.Exceptions.ParserUnknownError");
+add("Bayrell.Lang.OpCodes.BaseOpCode");
+add("Bayrell.Lang.Caret");
+add("Bayrell.Lang.CoreParser");
+add("Bayrell.Lang.CoreToken");
+add("Bayrell.Lang.CoreTranslator");
+add("Bayrell.Lang.LangConstant");
+add("Bayrell.Lang.LangUtils");
+add("Bayrell.Lang.ModuleDescription");
+add("Bayrell.Lang.SaveOpCode");
+add("Bayrell.Lang.Exceptions.ParserEOF");
+add("Bayrell.Lang.Exceptions.ParserError");
+add("Bayrell.Lang.Exceptions.ParserExpected");
+add("Bayrell.Lang.LangBay.ParserBay");
+add("Bayrell.Lang.LangBay.ParserBayBase");
+add("Bayrell.Lang.LangBay.ParserBayExpression");
+add("Bayrell.Lang.LangBay.ParserBayHtml");
+add("Bayrell.Lang.LangBay.ParserBayOperator");
+add("Bayrell.Lang.LangBay.ParserBayPreprocessor");
+add("Bayrell.Lang.LangBay.ParserBayProgram");
+add("Bayrell.Lang.LangES6.AsyncAwait");
+add("Bayrell.Lang.LangES6.TranslatorES6");
+add("Bayrell.Lang.LangES6.TranslatorES6AsyncAwait");
+add("Bayrell.Lang.LangES6.TranslatorES6Expression");
+add("Bayrell.Lang.LangES6.TranslatorES6Html");
+add("Bayrell.Lang.LangES6.TranslatorES6Operator");
+add("Bayrell.Lang.LangES6.TranslatorES6Program");
+add("Bayrell.Lang.LangNode.TranslatorNode");
+add("Bayrell.Lang.LangNode.TranslatorNodeExpression");
+add("Bayrell.Lang.LangNode.TranslatorNodeProgram");
+add("Bayrell.Lang.LangPHP.TranslatorPHP");
+add("Bayrell.Lang.LangPHP.TranslatorPHPExpression");
+add("Bayrell.Lang.LangPHP.TranslatorPHPHtml");
+add("Bayrell.Lang.LangPHP.TranslatorPHPOperator");
+add("Bayrell.Lang.LangPHP.TranslatorPHPProgram");
+add("Bayrell.Lang.OpCodes.OpAnnotation");
+add("Bayrell.Lang.OpCodes.OpAssign");
+add("Bayrell.Lang.OpCodes.OpAssignStruct");
+add("Bayrell.Lang.OpCodes.OpAssignValue");
+add("Bayrell.Lang.OpCodes.OpAttr");
+add("Bayrell.Lang.OpCodes.OpBreak");
+add("Bayrell.Lang.OpCodes.OpCall");
+add("Bayrell.Lang.OpCodes.OpClassOf");
+add("Bayrell.Lang.OpCodes.OpClassRef");
+add("Bayrell.Lang.OpCodes.OpCollection");
+add("Bayrell.Lang.OpCodes.OpComment");
+add("Bayrell.Lang.OpCodes.OpContinue");
+add("Bayrell.Lang.OpCodes.OpDeclareClass");
+add("Bayrell.Lang.OpCodes.OpDeclareFunction");
+add("Bayrell.Lang.OpCodes.OpDeclareFunctionArg");
+add("Bayrell.Lang.OpCodes.OpDelete");
+add("Bayrell.Lang.OpCodes.OpDict");
+add("Bayrell.Lang.OpCodes.OpDictPair");
+add("Bayrell.Lang.OpCodes.OpEntityName");
+add("Bayrell.Lang.OpCodes.OpFlags");
+add("Bayrell.Lang.OpCodes.OpFor");
+add("Bayrell.Lang.OpCodes.OpHtmlAttribute");
+add("Bayrell.Lang.OpCodes.OpHtmlContent");
+add("Bayrell.Lang.OpCodes.OpHtmlItems");
+add("Bayrell.Lang.OpCodes.OpHtmlTag");
+add("Bayrell.Lang.OpCodes.OpHtmlValue");
+add("Bayrell.Lang.OpCodes.OpIdentifier");
+add("Bayrell.Lang.OpCodes.OpIf");
+add("Bayrell.Lang.OpCodes.OpIfElse");
+add("Bayrell.Lang.OpCodes.OpInc");
+add("Bayrell.Lang.OpCodes.OpItems");
+add("Bayrell.Lang.OpCodes.OpMath");
+add("Bayrell.Lang.OpCodes.OpMethod");
+add("Bayrell.Lang.OpCodes.OpModule");
+add("Bayrell.Lang.OpCodes.OpNamespace");
+add("Bayrell.Lang.OpCodes.OpNew");
+add("Bayrell.Lang.OpCodes.OpNumber");
+add("Bayrell.Lang.OpCodes.OpPipe");
+add("Bayrell.Lang.OpCodes.OpPreprocessorIfCode");
+add("Bayrell.Lang.OpCodes.OpPreprocessorIfDef");
+add("Bayrell.Lang.OpCodes.OpPreprocessorSwitch");
+add("Bayrell.Lang.OpCodes.OpReturn");
+add("Bayrell.Lang.OpCodes.OpString");
+add("Bayrell.Lang.OpCodes.OpTernary");
+add("Bayrell.Lang.OpCodes.OpTryCatch");
+add("Bayrell.Lang.OpCodes.OpTryCatchItem");
+add("Bayrell.Lang.OpCodes.OpThrow");
+add("Bayrell.Lang.OpCodes.OpTypeConvert");
+add("Bayrell.Lang.OpCodes.OpTypeIdentifier");
+add("Bayrell.Lang.OpCodes.OpUse");
+add("Bayrell.Lang.OpCodes.OpWhile");
+
+module.exports = exports;

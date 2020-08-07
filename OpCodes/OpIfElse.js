@@ -135,8 +135,4 @@ Object.assign(Bayrell.Lang.OpCodes.OpIfElse,
 		return null;
 	},
 });use.add(Bayrell.Lang.OpCodes.OpIfElse);
-if (module.exports == undefined) module.exports = {};
-if (module.exports.Bayrell == undefined) module.exports.Bayrell = {};
-if (module.exports.Bayrell.Lang == undefined) module.exports.Bayrell.Lang = {};
-if (module.exports.Bayrell.Lang.OpCodes == undefined) module.exports.Bayrell.Lang.OpCodes = {};
-module.exports.Bayrell.Lang.OpCodes.OpIfElse = Bayrell.Lang.OpCodes.OpIfElse;
+module.exports = Bayrell.Lang.OpCodes.OpIfElse;

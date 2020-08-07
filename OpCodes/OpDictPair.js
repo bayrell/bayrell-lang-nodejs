@@ -147,8 +147,4 @@ Object.assign(Bayrell.Lang.OpCodes.OpDictPair,
 		return null;
 	},
 });use.add(Bayrell.Lang.OpCodes.OpDictPair);
-if (module.exports == undefined) module.exports = {};
-if (module.exports.Bayrell == undefined) module.exports.Bayrell = {};
-if (module.exports.Bayrell.Lang == undefined) module.exports.Bayrell.Lang = {};
-if (module.exports.Bayrell.Lang.OpCodes == undefined) module.exports.Bayrell.Lang.OpCodes = {};
-module.exports.Bayrell.Lang.OpCodes.OpDictPair = Bayrell.Lang.OpCodes.OpDictPair;
+module.exports = Bayrell.Lang.OpCodes.OpDictPair;

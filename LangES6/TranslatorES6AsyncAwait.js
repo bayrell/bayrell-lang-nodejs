@@ -287,10 +287,11 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6AsyncAwait,
 		content += use("Runtime.rtl").toStr(t.s(ctx, "{"));
 		t = t.levelInc(ctx);
 		/* Loop Assign */
-		var __v0 = use("Bayrell.Lang.OpCodes.OpAssign");
-		if (op_code.expr1 instanceof __v0)
+		var __v1 = use("Bayrell.Lang.OpCodes.OpAssign");
+		if (op_code.expr1 instanceof __v1)
 		{
-			var res = t.constructor.saveOpCodeCall(ctx, t, t.operator.staticMethod("OpAssign"), use("Runtime.Collection").from([op_code.expr1]));
+			var __v2 = use("Runtime.rtl");
+			var res = t.constructor.saveOpCodeCall(ctx, t, __v2.method(ctx, t.operator.getClassName(ctx), "OpAssign"), use("Runtime.Collection").from([op_code.expr1]));
 			t = Runtime.rtl.get(ctx, res, 0);
 			var save = Runtime.rtl.get(ctx, res, 1);
 			var value = Runtime.rtl.get(ctx, res, 2);
@@ -302,7 +303,8 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6AsyncAwait,
 		}
 		else
 		{
-			var res = t.constructor.saveOpCodeCall(ctx, t, t.expression.staticMethod("Expression"), use("Runtime.Collection").from([op_code.expr1]));
+			var __v3 = use("Runtime.rtl");
+			var res = t.constructor.saveOpCodeCall(ctx, t, __v3.method(ctx, t.expression.getClassName(ctx), "Expression"), use("Runtime.Collection").from([op_code.expr1]));
 			t = Runtime.rtl.get(ctx, res, 0);
 			var save = Runtime.rtl.get(ctx, res, 1);
 			var value = Runtime.rtl.get(ctx, res, 2);
@@ -324,7 +326,8 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6AsyncAwait,
 		content += use("Runtime.rtl").toStr(t.s(ctx, "{"));
 		t = t.levelInc(ctx);
 		/* Call condition expression */
-		var res = t.constructor.saveOpCodeCall(ctx, t, t.expression.staticMethod("Expression"), use("Runtime.Collection").from([op_code.expr2]));
+		var __v1 = use("Runtime.rtl");
+		var res = t.constructor.saveOpCodeCall(ctx, t, __v1.method(ctx, t.expression.getClassName(ctx), "Expression"), use("Runtime.Collection").from([op_code.expr2]));
 		t = Runtime.rtl.get(ctx, res, 0);
 		var save = Runtime.rtl.get(ctx, res, 1);
 		var value = Runtime.rtl.get(ctx, res, 2);
@@ -378,7 +381,8 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6AsyncAwait,
 		var async_t = t.async_await.async_t;
 		var async_var = t.async_await.async_var;
 		/* Call condition expression */
-		var res = t.constructor.saveOpCodeCall(ctx, t, t.expression.staticMethod("Expression"), use("Runtime.Collection").from([condition]));
+		var __v0 = use("Runtime.rtl");
+		var res = t.constructor.saveOpCodeCall(ctx, t, __v0.method(ctx, t.expression.getClassName(ctx), "Expression"), use("Runtime.Collection").from([condition]));
 		t = Runtime.rtl.get(ctx, res, 0);
 		var save = Runtime.rtl.get(ctx, res, 1);
 		var value = Runtime.rtl.get(ctx, res, 2);
@@ -611,7 +615,8 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6AsyncAwait,
 		content += use("Runtime.rtl").toStr(t.s(ctx, "{"));
 		t = t.levelInc(ctx);
 		/* Call condition expression */
-		var res = t.constructor.saveOpCodeCall(ctx, t, t.expression.staticMethod("Expression"), use("Runtime.Collection").from([op_code.condition]));
+		var __v1 = use("Runtime.rtl");
+		var res = t.constructor.saveOpCodeCall(ctx, t, __v1.method(ctx, t.expression.getClassName(ctx), "Expression"), use("Runtime.Collection").from([op_code.condition]));
 		t = Runtime.rtl.get(ctx, res, 0);
 		var save = Runtime.rtl.get(ctx, res, 1);
 		var value = Runtime.rtl.get(ctx, res, 2);
@@ -806,8 +811,4 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6AsyncAwait,
 		return null;
 	},
 });use.add(Bayrell.Lang.LangES6.TranslatorES6AsyncAwait);
-if (module.exports == undefined) module.exports = {};
-if (module.exports.Bayrell == undefined) module.exports.Bayrell = {};
-if (module.exports.Bayrell.Lang == undefined) module.exports.Bayrell.Lang = {};
-if (module.exports.Bayrell.Lang.LangES6 == undefined) module.exports.Bayrell.Lang.LangES6 = {};
-module.exports.Bayrell.Lang.LangES6.TranslatorES6AsyncAwait = Bayrell.Lang.LangES6.TranslatorES6AsyncAwait;
+module.exports = Bayrell.Lang.LangES6.TranslatorES6AsyncAwait;

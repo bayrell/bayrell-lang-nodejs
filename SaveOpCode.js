@@ -158,7 +158,4 @@ Object.assign(Bayrell.Lang.SaveOpCode,
 		return null;
 	},
 });use.add(Bayrell.Lang.SaveOpCode);
-if (module.exports == undefined) module.exports = {};
-if (module.exports.Bayrell == undefined) module.exports.Bayrell = {};
-if (module.exports.Bayrell.Lang == undefined) module.exports.Bayrell.Lang = {};
-module.exports.Bayrell.Lang.SaveOpCode = Bayrell.Lang.SaveOpCode;
+module.exports = Bayrell.Lang.SaveOpCode;

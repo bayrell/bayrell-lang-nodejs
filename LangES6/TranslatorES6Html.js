@@ -56,8 +56,8 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 		}
 		var __v0 = use("Runtime.rs");
 		var ch1 = __v0.substr(ctx, tag_name, 0, 1);
-		var __v0 = use("Runtime.rs");
-		var ch2 = __v0.strtoupper(ctx, ch1);
+		var __v1 = use("Runtime.rs");
+		var ch2 = __v1.strtoupper(ctx, ch1);
 		return ch1 == "{" || ch1 == ch2;
 	},
 	/**
@@ -116,16 +116,16 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 			var attr_key = attr.key;
 			var __v0 = use("Runtime.rs");
 			var ch = __v0.substr(ctx, attr_key, 0, 1);
-			var __v0 = use("Runtime.rs");
 			var __v1 = use("Runtime.rs");
+			var __v3 = use("Runtime.rs");
 			if (attr_key == "@class")
 			{
 				attr_class.push(ctx, "this.getCssName(ctx, " + use("Runtime.rtl").toStr(attr_value) + use("Runtime.rtl").toStr(")"));
-				var __v0 = use("Bayrell.Lang.OpCodes.OpString");
-				if (!has_attr_key && attr.value instanceof __v0)
+				var __v1 = use("Bayrell.Lang.OpCodes.OpString");
+				if (!has_attr_key && attr.value instanceof __v1)
 				{
-					var __v1 = use("Runtime.rs");
-					var arr = __v1.split(ctx, " ", attr.value.value);
+					var __v2 = use("Runtime.rs");
+					var arr = __v2.split(ctx, " ", attr.value.value);
 					attr_key_value = t.expression.constructor.toString(ctx, Runtime.rtl.get(ctx, arr, 0) + use("Runtime.rtl").toStr("-") + use("Runtime.rtl").toStr(item_pos));
 					has_attr_key = true;
 				}
@@ -145,18 +145,18 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 				attr_key_value = attr_value;
 				return "";
 			}
-			else if (__v0.substr(ctx, attr_key, 0, 7) == "@event:")
+			else if (__v1.substr(ctx, attr_key, 0, 7) == "@event:")
 			{
-				var __v1 = use("Runtime.rs");
-				var event_name = __v1.substr(ctx, attr_key, 7);
+				var __v2 = use("Runtime.rs");
+				var event_name = __v2.substr(ctx, attr_key, 7);
 				event_name = t.expression.constructor.findModuleName(ctx, t, event_name);
 				attr_key = "@event:" + use("Runtime.rtl").toStr(event_name);
 				attr_value = "[" + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, t.current_class_full_name)) + use("Runtime.rtl").toStr(",") + use("Runtime.rtl").toStr(attr_value) + use("Runtime.rtl").toStr("]");
 			}
-			else if (__v1.substr(ctx, attr_key, 0, 12) == "@eventAsync:")
+			else if (__v3.substr(ctx, attr_key, 0, 12) == "@eventAsync:")
 			{
-				var __v2 = use("Runtime.rs");
-				var event_name = __v2.substr(ctx, attr_key, 12);
+				var __v4 = use("Runtime.rs");
+				var event_name = __v4.substr(ctx, attr_key, 12);
 				event_name = t.expression.constructor.findModuleName(ctx, t, event_name);
 				attr_key = "@eventAsync:" + use("Runtime.rtl").toStr(event_name);
 				attr_value = "[" + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, t.current_class_full_name)) + use("Runtime.rtl").toStr(",") + use("Runtime.rtl").toStr(attr_value) + use("Runtime.rtl").toStr("]");
@@ -179,8 +179,8 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 		});
 		if (attr_class.count(ctx) > 0)
 		{
-			var __v0 = use("Runtime.rs");
-			attrs = attrs.pushIm(ctx, "\"class\":" + use("Runtime.rtl").toStr(__v0.join(ctx, " + \" \" + ", attr_class)));
+			var __v1 = use("Runtime.rs");
+			attrs = attrs.pushIm(ctx, "\"class\":" + use("Runtime.rtl").toStr(__v1.join(ctx, " + \" \" + ", attr_class)));
 		}
 		if (attr_key_value != "")
 		{
@@ -188,8 +188,8 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 		}
 		if (attrs.count(ctx) > 0)
 		{
-			var __v0 = use("Runtime.rs");
-			attr_s = "{" + use("Runtime.rtl").toStr(__v0.join(ctx, ",", attrs)) + use("Runtime.rtl").toStr("}");
+			var __v1 = use("Runtime.rs");
+			attr_s = "{" + use("Runtime.rtl").toStr(__v1.join(ctx, ",", attrs)) + use("Runtime.rtl").toStr("}");
 		}
 		return use("Runtime.Collection").from([t,attr_s]);
 	},
@@ -462,8 +462,4 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 		return null;
 	},
 });use.add(Bayrell.Lang.LangES6.TranslatorES6Html);
-if (module.exports == undefined) module.exports = {};
-if (module.exports.Bayrell == undefined) module.exports.Bayrell = {};
-if (module.exports.Bayrell.Lang == undefined) module.exports.Bayrell.Lang = {};
-if (module.exports.Bayrell.Lang.LangES6 == undefined) module.exports.Bayrell.Lang.LangES6 = {};
-module.exports.Bayrell.Lang.LangES6.TranslatorES6Html = Bayrell.Lang.LangES6.TranslatorES6Html;
+module.exports = Bayrell.Lang.LangES6.TranslatorES6Html;

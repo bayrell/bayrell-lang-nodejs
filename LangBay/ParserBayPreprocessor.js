@@ -118,8 +118,8 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayPreprocessor,
 			var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
 			look = Runtime.rtl.get(ctx, res, 0);
 			token = Runtime.rtl.get(ctx, res, 1);
-			var __v0 = use("Bayrell.Lang.OpCodes.OpPreprocessorIfCode");
-			var ifcode = new __v0(ctx, use("Runtime.Dict").from({"condition":condition,"content":content,"caret_start":caret_content,"caret_end":parser.caret.clone(ctx)}));
+			var __v1 = use("Bayrell.Lang.OpCodes.OpPreprocessorIfCode");
+			var ifcode = new __v1(ctx, use("Runtime.Dict").from({"condition":condition,"content":content,"caret_start":caret_content,"caret_end":parser.caret.clone(ctx)}));
 			items.push(ctx, ifcode);
 		}
 		/* Restore vars */
@@ -127,8 +127,8 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayPreprocessor,
 		/* read endswitch */
 		var res = parser.parser_base.constructor.matchToken(ctx, parser, "#endswitch");
 		parser = Runtime.rtl.get(ctx, res, 0);
-		var __v0 = use("Bayrell.Lang.OpCodes.OpPreprocessorSwitch");
-		return use("Runtime.Collection").from([parser,new __v0(ctx, use("Runtime.Dict").from({"items":items.toCollection(ctx),"caret_start":caret_start,"caret_end":parser.caret.clone(ctx)}))]);
+		var __v1 = use("Bayrell.Lang.OpCodes.OpPreprocessorSwitch");
+		return use("Runtime.Collection").from([parser,new __v1(ctx, use("Runtime.Dict").from({"items":items.toCollection(ctx),"caret_start":caret_start,"caret_end":parser.caret.clone(ctx)}))]);
 	},
 	/**
 	 * Read preprocessor ifcode
@@ -280,8 +280,4 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayPreprocessor,
 		return null;
 	},
 });use.add(Bayrell.Lang.LangBay.ParserBayPreprocessor);
-if (module.exports == undefined) module.exports = {};
-if (module.exports.Bayrell == undefined) module.exports.Bayrell = {};
-if (module.exports.Bayrell.Lang == undefined) module.exports.Bayrell.Lang = {};
-if (module.exports.Bayrell.Lang.LangBay == undefined) module.exports.Bayrell.Lang.LangBay = {};
-module.exports.Bayrell.Lang.LangBay.ParserBayPreprocessor = Bayrell.Lang.LangBay.ParserBayPreprocessor;
+module.exports = Bayrell.Lang.LangBay.ParserBayPreprocessor;

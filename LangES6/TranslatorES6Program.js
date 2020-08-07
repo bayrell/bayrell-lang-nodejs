@@ -64,8 +64,8 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 		{
 			return this.toPattern(ctx, t, pattern);
 		})) : (null);
-		var __v0 = use("Runtime.rs");
-		var b = (a != null) ? (",\"t\":[" + use("Runtime.rtl").toStr(__v0.join(ctx, ",", a)) + use("Runtime.rtl").toStr("]")) : ("");
+		var __v1 = use("Runtime.rs");
+		var b = (a != null) ? (",\"t\":[" + use("Runtime.rtl").toStr(__v1.join(ctx, ",", a)) + use("Runtime.rtl").toStr("]")) : ("");
 		return "{\"e\":" + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, e)) + use("Runtime.rtl").toStr(b) + use("Runtime.rtl").toStr("}");
 	},
 	/**
@@ -105,10 +105,15 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 		}
 		/* Set current function */
 		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["current_function"]), op_code);
+		var is_async = "";
+		if (op_code.isFlag(ctx, "async") && t.isAsyncAwait(ctx))
+		{
+			is_async = "async ";
+		}
 		var s = "";
 		var res = t.operator.constructor.OpDeclareFunctionArgs(ctx, t, op_code);
 		var args = Runtime.rtl.get(ctx, res, 1);
-		s += use("Runtime.rtl").toStr(op_code.name + use("Runtime.rtl").toStr(": function(") + use("Runtime.rtl").toStr(args) + use("Runtime.rtl").toStr(")"));
+		s += use("Runtime.rtl").toStr(op_code.name + use("Runtime.rtl").toStr(": ") + use("Runtime.rtl").toStr(is_async) + use("Runtime.rtl").toStr("function(") + use("Runtime.rtl").toStr(args) + use("Runtime.rtl").toStr(")"));
 		var res = t.operator.constructor.OpDeclareFunctionBody(ctx, t, op_code);
 		s += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
 		s += use("Runtime.rtl").toStr(",");
@@ -374,10 +379,15 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 					}
 					/* Set function name */
 					t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["current_function"]), f);
+					var is_async = "";
+					if (f.isFlag(ctx, "async") && t.isAsyncAwait(ctx))
+					{
+						is_async = "async ";
+					}
 					var s = "";
 					var res = t.operator.constructor.OpDeclareFunctionArgs(ctx, t, f);
 					var args = Runtime.rtl.get(ctx, res, 1);
-					s += use("Runtime.rtl").toStr(f.name + use("Runtime.rtl").toStr(": function(") + use("Runtime.rtl").toStr(args) + use("Runtime.rtl").toStr(")"));
+					s += use("Runtime.rtl").toStr(f.name + use("Runtime.rtl").toStr(": ") + use("Runtime.rtl").toStr(is_async) + use("Runtime.rtl").toStr("function(") + use("Runtime.rtl").toStr(args) + use("Runtime.rtl").toStr(")"));
 					var res = t.operator.constructor.OpDeclareFunctionBody(ctx, t, f);
 					s += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
 					s += use("Runtime.rtl").toStr(",");
@@ -481,13 +491,13 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 					{
 						continue;
 					}
-					var __v1 = use("Bayrell.Lang.OpCodes.OpAssign");
-					if (variable.kind != __v1.KIND_DECLARE)
+					var __v2 = use("Bayrell.Lang.OpCodes.OpAssign");
+					if (variable.kind != __v2.KIND_DECLARE)
 					{
 						continue;
 					}
-					var __v1 = use("Bayrell.Lang.OpCodes.OpDeclareClass");
-					if (class_kind == __v1.KIND_STRUCT)
+					var __v2 = use("Bayrell.Lang.OpCodes.OpDeclareClass");
+					if (class_kind == __v2.KIND_STRUCT)
 					{
 						is_serializable = true;
 						is_assignable = true;
@@ -513,8 +523,8 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 					{
 						if (!vars.has(ctx, flag))
 						{
-							var __v1 = use("Runtime.Vector");
-							vars.set(ctx, flag, new __v1(ctx));
+							var __v2 = use("Runtime.Vector");
+							vars.set(ctx, flag, new __v2(ctx));
 						}
 						var v = vars.item(ctx, flag);
 						for (var j = 0;j < variable.values.count(ctx);j++)
@@ -734,10 +744,15 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 				}
 				/* Set function name */
 				t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["current_function"]), f);
+				var is_async = "";
+				if (f.isFlag(ctx, "async") && t.isAsyncAwait(ctx))
+				{
+					is_async = "async ";
+				}
 				var s = "";
 				var res = t.operator.constructor.OpDeclareFunctionArgs(ctx, t, f);
 				var args = Runtime.rtl.get(ctx, res, 1);
-				s += use("Runtime.rtl").toStr(f.name + use("Runtime.rtl").toStr(": function(") + use("Runtime.rtl").toStr(args) + use("Runtime.rtl").toStr(")"));
+				s += use("Runtime.rtl").toStr(f.name + use("Runtime.rtl").toStr(": ") + use("Runtime.rtl").toStr(is_async) + use("Runtime.rtl").toStr("function(") + use("Runtime.rtl").toStr(args) + use("Runtime.rtl").toStr(")"));
 				var res = t.operator.constructor.OpDeclareFunctionBody(ctx, t, f);
 				s += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
 				s += use("Runtime.rtl").toStr(",");
@@ -869,8 +884,8 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 			for (var i = 0;i < op_code.vars.count(ctx);i++)
 			{
 				var variable = op_code.vars.item(ctx, i);
-				var __v1 = use("Bayrell.Lang.OpCodes.OpAssign");
-				if (variable.kind != __v1.KIND_DECLARE)
+				var __v2 = use("Bayrell.Lang.OpCodes.OpAssign");
+				if (variable.kind != __v2.KIND_DECLARE)
 				{
 					continue;
 				}
@@ -902,8 +917,8 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 			for (var i = 0;i < op_code.vars.count(ctx);i++)
 			{
 				var variable = op_code.vars.item(ctx, i);
-				var __v1 = use("Bayrell.Lang.OpCodes.OpAssign");
-				if (variable.kind != __v1.KIND_DECLARE)
+				var __v2 = use("Bayrell.Lang.OpCodes.OpAssign");
+				if (variable.kind != __v2.KIND_DECLARE)
 				{
 					continue;
 				}
@@ -942,8 +957,8 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 			for (var i = 0;i < op_code.vars.count(ctx);i++)
 			{
 				var variable = op_code.vars.item(ctx, i);
-				var __v1 = use("Bayrell.Lang.OpCodes.OpAssign");
-				if (variable.kind != __v1.KIND_DECLARE)
+				var __v2 = use("Bayrell.Lang.OpCodes.OpAssign");
+				if (variable.kind != __v2.KIND_DECLARE)
 				{
 					continue;
 				}
@@ -983,7 +998,14 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 	 */
 	OpDeclareClassFooter: function(ctx, t, op_code)
 	{
-		var content = t.s(ctx, "Runtime.rtl.defClass(" + use("Runtime.rtl").toStr(t.current_class_full_name) + use("Runtime.rtl").toStr(");"));
+		var content = "";
+		var rtl_module_name = t.expression.constructor.useModuleName(ctx, t, "Runtime.rtl");
+		if (!t.use_module_name)
+		{
+			content += use("Runtime.rtl").toStr(t.s(ctx, rtl_module_name + use("Runtime.rtl").toStr(".defClass(") + use("Runtime.rtl").toStr(t.current_class_full_name) + use("Runtime.rtl").toStr(");")));
+			content += use("Runtime.rtl").toStr(t.s(ctx, "window[\"" + use("Runtime.rtl").toStr(t.current_class_full_name) + use("Runtime.rtl").toStr("\"] = ") + use("Runtime.rtl").toStr(t.current_class_full_name) + use("Runtime.rtl").toStr(";")));
+		}
+		content += use("Runtime.rtl").toStr(t.s(ctx, "if (typeof module != \"undefined\" && typeof module.exports != \"undefined\") " + use("Runtime.rtl").toStr("module.exports = ") + use("Runtime.rtl").toStr(t.current_class_full_name) + use("Runtime.rtl").toStr(";")));
 		return use("Runtime.Collection").from([t,content]);
 	},
 	/**
@@ -999,19 +1021,19 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["current_class"]), op_code);
 		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["current_class_name"]), op_code.name);
 		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["current_class_full_name"]), t.current_namespace_name + use("Runtime.rtl").toStr(".") + use("Runtime.rtl").toStr(t.current_class_name));
-		var __v0 = use("Bayrell.Lang.OpCodes.OpDeclareClass");
 		var __v1 = use("Bayrell.Lang.OpCodes.OpDeclareClass");
+		var __v2 = use("Bayrell.Lang.OpCodes.OpDeclareClass");
 		if (op_code.class_extends != null)
 		{
 			var __v0 = use("Runtime.rs");
 			var extends_name = __v0.join(ctx, ".", op_code.class_extends.entity_name.names);
 			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["current_class_extends_name"]), extends_name);
 		}
-		else if (op_code.kind == __v0.KIND_STRUCT)
+		else if (op_code.kind == __v1.KIND_STRUCT)
 		{
 			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["current_class_extends_name"]), "Runtime.CoreStruct");
 		}
-		else if (op_code.kind == __v1.KIND_STRUCT)
+		else if (op_code.kind == __v2.KIND_STRUCT)
 		{
 			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["current_class_extends_name"]), "");
 		}
@@ -1086,8 +1108,13 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 	 */
 	translateProgramHeader: function(ctx, t, op_code)
 	{
-		var content = "\"use strict;\"";
-		content += use("Runtime.rtl").toStr(t.s(ctx, "var use = (typeof Runtime != 'undefined' && typeof Runtime.rtl != 'undefined')" + use("Runtime.rtl").toStr(" ? Runtime.rtl.find_class : null;")));
+		var content = "";
+		if (t.use_strict)
+		{
+			content = t.s(ctx, "\"use strict;\"");
+		}
+		/* content ~= t.s("var use = (typeof Runtime != 'undefined' && typeof Runtime.rtl != 'undefined')"~
+			" ? Runtime.rtl.find_class : null;"); */
 		return use("Runtime.Collection").from([t,content]);
 	},
 	/**
@@ -1121,7 +1148,8 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 				content += use("Runtime.rtl").toStr(s);
 			}
 		}
-		return use("Runtime.Collection").from([t,content]);
+		var __v0 = use("Runtime.rs");
+		return use("Runtime.Collection").from([t,__v0.trim(ctx, content)]);
 	},
 	/* ======================= Class Init Functions ======================= */
 	getCurrentNamespace: function()
@@ -1173,8 +1201,4 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 		return null;
 	},
 });use.add(Bayrell.Lang.LangES6.TranslatorES6Program);
-if (module.exports == undefined) module.exports = {};
-if (module.exports.Bayrell == undefined) module.exports.Bayrell = {};
-if (module.exports.Bayrell.Lang == undefined) module.exports.Bayrell.Lang = {};
-if (module.exports.Bayrell.Lang.LangES6 == undefined) module.exports.Bayrell.Lang.LangES6 = {};
-module.exports.Bayrell.Lang.LangES6.TranslatorES6Program = Bayrell.Lang.LangES6.TranslatorES6Program;
+module.exports = Bayrell.Lang.LangES6.TranslatorES6Program;

@@ -179,8 +179,4 @@ Object.assign(Bayrell.Lang.OpCodes.OpInc,
 		return null;
 	},
 });use.add(Bayrell.Lang.OpCodes.OpInc);
-if (module.exports == undefined) module.exports = {};
-if (module.exports.Bayrell == undefined) module.exports.Bayrell = {};
-if (module.exports.Bayrell.Lang == undefined) module.exports.Bayrell.Lang = {};
-if (module.exports.Bayrell.Lang.OpCodes == undefined) module.exports.Bayrell.Lang.OpCodes = {};
-module.exports.Bayrell.Lang.OpCodes.OpInc = Bayrell.Lang.OpCodes.OpInc;
+module.exports = Bayrell.Lang.OpCodes.OpInc;
