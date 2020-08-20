@@ -21,9 +21,9 @@ if (typeof Bayrell == 'undefined') Bayrell = {};
 if (typeof Bayrell.Lang == 'undefined') Bayrell.Lang = {};
 Bayrell.Lang.CoreToken = function(ctx)
 {
-	use("Runtime.CoreStruct").apply(this, arguments);
+	use("Runtime.BaseStruct").apply(this, arguments);
 };
-Bayrell.Lang.CoreToken.prototype = Object.create(use("Runtime.CoreStruct").prototype);
+Bayrell.Lang.CoreToken.prototype = Object.create(use("Runtime.BaseStruct").prototype);
 Bayrell.Lang.CoreToken.prototype.constructor = Bayrell.Lang.CoreToken;
 Object.assign(Bayrell.Lang.CoreToken.prototype,
 {
@@ -36,7 +36,7 @@ Object.assign(Bayrell.Lang.CoreToken.prototype,
 		this.caret_start = null;
 		this.caret_end = null;
 		this.eof = false;
-		use("Runtime.CoreStruct").prototype._init.call(this,ctx);
+		use("Runtime.BaseStruct").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
@@ -48,7 +48,7 @@ Object.assign(Bayrell.Lang.CoreToken.prototype,
 			this.caret_end = o.caret_end;
 			this.eof = o.eof;
 		}
-		use("Runtime.CoreStruct").prototype.assignObject.call(this,ctx,o);
+		use("Runtime.BaseStruct").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
@@ -57,7 +57,7 @@ Object.assign(Bayrell.Lang.CoreToken.prototype,
 		else if (k == "caret_start")this.caret_start = v;
 		else if (k == "caret_end")this.caret_end = v;
 		else if (k == "eof")this.eof = v;
-		else use("Runtime.CoreStruct").prototype.assignValue.call(this,ctx,k,v);
+		else use("Runtime.BaseStruct").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
@@ -67,14 +67,14 @@ Object.assign(Bayrell.Lang.CoreToken.prototype,
 		else if (k == "caret_start")return this.caret_start;
 		else if (k == "caret_end")return this.caret_end;
 		else if (k == "eof")return this.eof;
-		return use("Runtime.CoreStruct").prototype.takeValue.call(this,ctx,k,d);
+		return use("Runtime.BaseStruct").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)
 	{
 		return "Bayrell.Lang.CoreToken";
 	},
 });
-Object.assign(Bayrell.Lang.CoreToken, use("Runtime.CoreStruct"));
+Object.assign(Bayrell.Lang.CoreToken, use("Runtime.BaseStruct"));
 Object.assign(Bayrell.Lang.CoreToken,
 {
 	/* ======================= Class Init Functions ======================= */
@@ -88,7 +88,7 @@ Object.assign(Bayrell.Lang.CoreToken,
 	},
 	getParentClassName: function()
 	{
-		return "Runtime.CoreStruct";
+		return "Runtime.BaseStruct";
 	},
 	getClassInfo: function(ctx)
 	{

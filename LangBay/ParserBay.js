@@ -41,6 +41,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay.prototype,
 		this.skip_comments = true;
 		this.pipe_kind = "";
 		this.is_pipe = false;
+		this.is_html = false;
 		this.parser_base = null;
 		this.parser_expression = null;
 		this.parser_html = null;
@@ -64,6 +65,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay.prototype,
 			this.skip_comments = o.skip_comments;
 			this.pipe_kind = o.pipe_kind;
 			this.is_pipe = o.is_pipe;
+			this.is_html = o.is_html;
 			this.parser_base = o.parser_base;
 			this.parser_expression = o.parser_expression;
 			this.parser_html = o.parser_html;
@@ -86,6 +88,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay.prototype,
 		else if (k == "skip_comments")this.skip_comments = v;
 		else if (k == "pipe_kind")this.pipe_kind = v;
 		else if (k == "is_pipe")this.is_pipe = v;
+		else if (k == "is_html")this.is_html = v;
 		else if (k == "parser_base")this.parser_base = v;
 		else if (k == "parser_expression")this.parser_expression = v;
 		else if (k == "parser_html")this.parser_html = v;
@@ -108,6 +111,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay.prototype,
 		else if (k == "skip_comments")return this.skip_comments;
 		else if (k == "pipe_kind")return this.pipe_kind;
 		else if (k == "is_pipe")return this.is_pipe;
+		else if (k == "is_html")return this.is_html;
 		else if (k == "parser_base")return this.parser_base;
 		else if (k == "parser_expression")return this.parser_expression;
 		else if (k == "parser_html")return this.parser_html;
@@ -231,6 +235,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 			a.push("skip_comments");
 			a.push("pipe_kind");
 			a.push("is_pipe");
+			a.push("is_html");
 			a.push("parser_base");
 			a.push("parser_expression");
 			a.push("parser_html");
@@ -316,6 +321,13 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 			]),
 		});
 		if (field_name == "is_pipe") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "is_html") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
 			"name": field_name,

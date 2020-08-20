@@ -537,6 +537,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPOperator,
 		var __v15 = use("Bayrell.Lang.OpCodes.OpPreprocessorIfDef");
 		var __v17 = use("Bayrell.Lang.OpCodes.OpPreprocessorSwitch");
 		var __v18 = use("Bayrell.Lang.OpCodes.OpComment");
+		var __v19 = use("Bayrell.Lang.OpCodes.OpSafe");
 		if (op_code instanceof __v0)
 		{
 			var res = this.OpAssign(ctx, t, op_code);
@@ -668,6 +669,12 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPOperator,
 			t = Runtime.rtl.get(ctx, res, 0);
 			content = Runtime.rtl.get(ctx, res, 1);
 		}
+		else if (op_code instanceof __v19)
+		{
+			var res = this.Operators(ctx, t, op_code.items);
+			t = Runtime.rtl.get(ctx, res, 0);
+			content = Runtime.rtl.get(ctx, res, 1);
+		}
 		/* Output save op code */
 		var save = t.constructor.outputSaveOpCode(ctx, t, save_op_codes.count(ctx));
 		if (save != "")
@@ -695,6 +702,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPOperator,
 			return op_code instanceof __v0 || op_code instanceof __v1 || op_code instanceof __v2 || op_code instanceof __v3 || op_code instanceof __v4;
 		};
 		var __v0 = use("Bayrell.Lang.OpCodes.OpItems");
+		var __v1 = use("Bayrell.Lang.OpCodes.OpHtmlItems");
 		if (op_code instanceof __v0)
 		{
 			for (var i = 0;i < op_code.items.count(ctx);i++)
@@ -704,6 +712,28 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPOperator,
 				t = Runtime.rtl.get(ctx, res, 0);
 				content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
 			}
+		}
+		else if (op_code instanceof __v1)
+		{
+			var save_html_var_name = t.html_var_name;
+			var save_is_html = t.is_html;
+			/* Save op codes */
+			var save_op_codes = t.save_op_codes;
+			var save_op_code_inc = t.save_op_code_inc;
+			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["is_html"]), true);
+			var res = t.html.constructor.OpHtmlItems(ctx, t, op_code);
+			t = Runtime.rtl.get(ctx, res, 0);
+			/* Output save op code */
+			var save = t.constructor.outputSaveOpCode(ctx, t, save_op_codes.count(ctx));
+			if (save != "")
+			{
+				content = save;
+			}
+			/* Output content */
+			content += use("Runtime.rtl").toStr(t.s(ctx, save_html_var_name + use("Runtime.rtl").toStr(" .= ") + use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1)) + use("Runtime.rtl").toStr(";")));
+			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["save_op_codes"]), save_op_codes);
+			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["save_op_code_inc"]), save_op_code_inc);
+			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["is_html"]), save_is_html);
 		}
 		else
 		{
@@ -752,9 +782,9 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPOperator,
 		var save_t = t;
 		var content = "";
 		t = t.levelInc(ctx);
-		if (f.value)
+		if (f.items)
 		{
-			var res = t.operator.constructor.Operators(ctx, t, f.value);
+			var res = t.operator.constructor.Operators(ctx, t, f.items);
 			t = Runtime.rtl.get(ctx, res, 0);
 			content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
 		}

@@ -34,6 +34,8 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP.prototype,
 		var a = Object.getOwnPropertyNames(this);
 		this.is_pipe = false;
 		this.pipe_var_name = "";
+		this.html_var_name = "";
+		this.is_html = false;
 		this.expression = null;
 		this.html = null;
 		this.operator = null;
@@ -46,6 +48,8 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP.prototype,
 		{
 			this.is_pipe = o.is_pipe;
 			this.pipe_var_name = o.pipe_var_name;
+			this.html_var_name = o.html_var_name;
+			this.is_html = o.is_html;
 			this.expression = o.expression;
 			this.html = o.html;
 			this.operator = o.operator;
@@ -57,6 +61,8 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP.prototype,
 	{
 		if (k == "is_pipe")this.is_pipe = v;
 		else if (k == "pipe_var_name")this.pipe_var_name = v;
+		else if (k == "html_var_name")this.html_var_name = v;
+		else if (k == "is_html")this.is_html = v;
 		else if (k == "expression")this.expression = v;
 		else if (k == "html")this.html = v;
 		else if (k == "operator")this.operator = v;
@@ -68,6 +74,8 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP.prototype,
 		if (d == undefined) d = null;
 		if (k == "is_pipe")return this.is_pipe;
 		else if (k == "pipe_var_name")return this.pipe_var_name;
+		else if (k == "html_var_name")return this.html_var_name;
+		else if (k == "is_html")return this.is_html;
 		else if (k == "expression")return this.expression;
 		else if (k == "html")return this.html;
 		else if (k == "operator")return this.operator;
@@ -164,6 +172,8 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP,
 		{
 			a.push("is_pipe");
 			a.push("pipe_var_name");
+			a.push("html_var_name");
+			a.push("is_html");
 			a.push("expression");
 			a.push("html");
 			a.push("operator");
@@ -184,6 +194,20 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP,
 			]),
 		});
 		if (field_name == "pipe_var_name") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangPHP.TranslatorPHP",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "html_var_name") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangPHP.TranslatorPHP",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "is_html") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangPHP.TranslatorPHP",
 			"name": field_name,

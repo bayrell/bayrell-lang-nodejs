@@ -20,53 +20,56 @@ var use = require('bayrell').use;
 if (typeof Bayrell == 'undefined') Bayrell = {};
 if (typeof Bayrell.Lang == 'undefined') Bayrell.Lang = {};
 if (typeof Bayrell.Lang.OpCodes == 'undefined') Bayrell.Lang.OpCodes = {};
-Bayrell.Lang.OpCodes.BaseOpCode = function(ctx)
+Bayrell.Lang.OpCodes.OpCurry = function(ctx)
 {
-	use("Runtime.BaseStruct").apply(this, arguments);
+	use("Bayrell.Lang.OpCodes.BaseOpCode").apply(this, arguments);
 };
-Bayrell.Lang.OpCodes.BaseOpCode.prototype = Object.create(use("Runtime.BaseStruct").prototype);
-Bayrell.Lang.OpCodes.BaseOpCode.prototype.constructor = Bayrell.Lang.OpCodes.BaseOpCode;
-Object.assign(Bayrell.Lang.OpCodes.BaseOpCode.prototype,
+Bayrell.Lang.OpCodes.OpCurry.prototype = Object.create(use("Bayrell.Lang.OpCodes.BaseOpCode").prototype);
+Bayrell.Lang.OpCodes.OpCurry.prototype.constructor = Bayrell.Lang.OpCodes.OpCurry;
+Object.assign(Bayrell.Lang.OpCodes.OpCurry.prototype,
 {
 	_init: function(ctx)
 	{
 		var defProp = use('Runtime.rtl').defProp;
 		var a = Object.getOwnPropertyNames(this);
-		this.caret_start = null;
-		this.caret_end = null;
-		use("Runtime.BaseStruct").prototype._init.call(this,ctx);
+		this.op = "op_curry";
+		this.obj = null;
+		this.args = null;
+		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
-		if (o instanceof use("Bayrell.Lang.OpCodes.BaseOpCode"))
+		if (o instanceof use("Bayrell.Lang.OpCodes.OpCurry"))
 		{
-			this.caret_start = o.caret_start;
-			this.caret_end = o.caret_end;
+			this.op = o.op;
+			this.obj = o.obj;
+			this.args = o.args;
 		}
-		use("Runtime.BaseStruct").prototype.assignObject.call(this,ctx,o);
+		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
-		if (k == "caret_start")this.caret_start = v;
-		else if (k == "caret_end")this.caret_end = v;
-		else use("Runtime.BaseStruct").prototype.assignValue.call(this,ctx,k,v);
+		if (k == "op")this.op = v;
+		else if (k == "obj")this.obj = v;
+		else if (k == "args")this.args = v;
+		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
-		if (k == "caret_start")return this.caret_start;
-		else if (k == "caret_end")return this.caret_end;
-		return use("Runtime.BaseStruct").prototype.takeValue.call(this,ctx,k,d);
+		if (k == "op")return this.op;
+		else if (k == "obj")return this.obj;
+		else if (k == "args")return this.args;
+		return use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)
 	{
-		return "Bayrell.Lang.OpCodes.BaseOpCode";
+		return "Bayrell.Lang.OpCodes.OpCurry";
 	},
 });
-Object.assign(Bayrell.Lang.OpCodes.BaseOpCode, use("Runtime.BaseStruct"));
-Object.assign(Bayrell.Lang.OpCodes.BaseOpCode,
+Object.assign(Bayrell.Lang.OpCodes.OpCurry, use("Bayrell.Lang.OpCodes.BaseOpCode"));
+Object.assign(Bayrell.Lang.OpCodes.OpCurry,
 {
-	op: "",
 	/* ======================= Class Init Functions ======================= */
 	getCurrentNamespace: function()
 	{
@@ -74,11 +77,11 @@ Object.assign(Bayrell.Lang.OpCodes.BaseOpCode,
 	},
 	getCurrentClassName: function()
 	{
-		return "Bayrell.Lang.OpCodes.BaseOpCode";
+		return "Bayrell.Lang.OpCodes.OpCurry";
 	},
 	getParentClassName: function()
 	{
-		return "Runtime.BaseStruct";
+		return "Bayrell.Lang.OpCodes.BaseOpCode";
 	},
 	getClassInfo: function(ctx)
 	{
@@ -87,8 +90,8 @@ Object.assign(Bayrell.Lang.OpCodes.BaseOpCode,
 		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
-			"class_name": "Bayrell.Lang.OpCodes.BaseOpCode",
-			"name": "Bayrell.Lang.OpCodes.BaseOpCode",
+			"class_name": "Bayrell.Lang.OpCodes.OpCurry",
+			"name": "Bayrell.Lang.OpCodes.OpCurry",
 			"annotations": Collection.from([
 			]),
 		});
@@ -99,8 +102,9 @@ Object.assign(Bayrell.Lang.OpCodes.BaseOpCode,
 		if (f==undefined) f=0;
 		if ((f|3)==3)
 		{
-			a.push("caret_start");
-			a.push("caret_end");
+			a.push("op");
+			a.push("obj");
+			a.push("args");
 		}
 		return use("Runtime.Collection").from(a);
 	},
@@ -111,21 +115,21 @@ Object.assign(Bayrell.Lang.OpCodes.BaseOpCode,
 		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
 		if (field_name == "op") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.OpCodes.BaseOpCode",
+			"class_name": "Bayrell.Lang.OpCodes.OpCurry",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "caret_start") return new IntrospectionInfo(ctx, {
+		if (field_name == "obj") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.OpCodes.BaseOpCode",
+			"class_name": "Bayrell.Lang.OpCodes.OpCurry",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "caret_end") return new IntrospectionInfo(ctx, {
+		if (field_name == "args") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.OpCodes.BaseOpCode",
+			"class_name": "Bayrell.Lang.OpCodes.OpCurry",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -142,5 +146,5 @@ Object.assign(Bayrell.Lang.OpCodes.BaseOpCode,
 	{
 		return null;
 	},
-});use.add(Bayrell.Lang.OpCodes.BaseOpCode);
-module.exports = Bayrell.Lang.OpCodes.BaseOpCode;
+});use.add(Bayrell.Lang.OpCodes.OpCurry);
+module.exports = Bayrell.Lang.OpCodes.OpCurry;

@@ -22,9 +22,9 @@ if (typeof Bayrell.Lang == 'undefined') Bayrell.Lang = {};
 if (typeof Bayrell.Lang.LangES6 == 'undefined') Bayrell.Lang.LangES6 = {};
 Bayrell.Lang.LangES6.TranslatorES6Program = function(ctx)
 {
-	use("Runtime.CoreStruct").apply(this, arguments);
+	use("Runtime.BaseStruct").apply(this, arguments);
 };
-Bayrell.Lang.LangES6.TranslatorES6Program.prototype = Object.create(use("Runtime.CoreStruct").prototype);
+Bayrell.Lang.LangES6.TranslatorES6Program.prototype = Object.create(use("Runtime.BaseStruct").prototype);
 Bayrell.Lang.LangES6.TranslatorES6Program.prototype.constructor = Bayrell.Lang.LangES6.TranslatorES6Program;
 Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program.prototype,
 {
@@ -33,23 +33,23 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program.prototype,
 		if (o instanceof use("Bayrell.Lang.LangES6.TranslatorES6Program"))
 		{
 		}
-		use("Runtime.CoreStruct").prototype.assignObject.call(this,ctx,o);
+		use("Runtime.BaseStruct").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
-		use("Runtime.CoreStruct").prototype.assignValue.call(this,ctx,k,v);
+		use("Runtime.BaseStruct").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
-		return use("Runtime.CoreStruct").prototype.takeValue.call(this,ctx,k,d);
+		return use("Runtime.BaseStruct").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)
 	{
 		return "Bayrell.Lang.LangES6.TranslatorES6Program";
 	},
 });
-Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program, use("Runtime.CoreStruct"));
+Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program, use("Runtime.BaseStruct"));
 Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 {
 	/**
@@ -175,7 +175,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 					content += use("Runtime.rtl").toStr(t.s(ctx, s));
 				}
 			}
-			var res = t.operator.constructor.Operators(ctx, t, (op_code.fn_create.expression) ? (op_code.fn_create.expression) : (op_code.fn_create.value));
+			var res = t.operator.constructor.Operators(ctx, t, (op_code.fn_create.expression) ? (op_code.fn_create.expression) : (op_code.fn_create.items));
 			t = Runtime.rtl.get(ctx, res, 0);
 			content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
 		}
@@ -781,7 +781,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 			{
 				return !variable.flags.isFlag(ctx, "static");
 			});
-			if (t.current_class_full_name != "Runtime.CoreObject" && vars.count(ctx) > 0)
+			if (t.current_class_full_name != "Runtime.BaseObject" && vars.count(ctx) > 0)
 			{
 				content += use("Runtime.rtl").toStr(t.s(ctx, "_init: function(ctx)"));
 				content += use("Runtime.rtl").toStr(t.s(ctx, "{"));
@@ -1031,7 +1031,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 		}
 		else if (op_code.kind == __v1.KIND_STRUCT)
 		{
-			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["current_class_extends_name"]), "Runtime.CoreStruct");
+			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["current_class_extends_name"]), "Runtime.BaseStruct");
 		}
 		else if (op_code.kind == __v2.KIND_STRUCT)
 		{
@@ -1162,7 +1162,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 	},
 	getParentClassName: function()
 	{
-		return "Runtime.CoreStruct";
+		return "Runtime.BaseStruct";
 	},
 	getClassInfo: function(ctx)
 	{

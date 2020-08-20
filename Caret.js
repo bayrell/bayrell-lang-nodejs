@@ -21,9 +21,9 @@ if (typeof Bayrell == 'undefined') Bayrell = {};
 if (typeof Bayrell.Lang == 'undefined') Bayrell.Lang = {};
 Bayrell.Lang.Caret = function(ctx)
 {
-	use("Runtime.CoreStruct").apply(this, arguments);
+	use("Runtime.BaseStruct").apply(this, arguments);
 };
-Bayrell.Lang.Caret.prototype = Object.create(use("Runtime.CoreStruct").prototype);
+Bayrell.Lang.Caret.prototype = Object.create(use("Runtime.BaseStruct").prototype);
 Bayrell.Lang.Caret.prototype.constructor = Bayrell.Lang.Caret;
 Object.assign(Bayrell.Lang.Caret.prototype,
 {
@@ -32,7 +32,7 @@ Object.assign(Bayrell.Lang.Caret.prototype,
 		this.pos = 0;
 		this.x = 0;
 		this.y = 0;
-		use("Runtime.CoreStruct").prototype._init.call(this,ctx);
+		use("Runtime.BaseStruct").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
@@ -42,14 +42,14 @@ Object.assign(Bayrell.Lang.Caret.prototype,
 			this.x = o.x;
 			this.y = o.y;
 		}
-		use("Runtime.CoreStruct").prototype.assignObject.call(this,ctx,o);
+		use("Runtime.BaseStruct").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
 		if (k == "pos")this.pos = v;
 		else if (k == "x")this.x = v;
 		else if (k == "y")this.y = v;
-		else use("Runtime.CoreStruct").prototype.assignValue.call(this,ctx,k,v);
+		else use("Runtime.BaseStruct").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
@@ -57,14 +57,14 @@ Object.assign(Bayrell.Lang.Caret.prototype,
 		if (k == "pos")return this.pos;
 		else if (k == "x")return this.x;
 		else if (k == "y")return this.y;
-		return use("Runtime.CoreStruct").prototype.takeValue.call(this,ctx,k,d);
+		return use("Runtime.BaseStruct").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)
 	{
 		return "Bayrell.Lang.Caret";
 	},
 });
-Object.assign(Bayrell.Lang.Caret, use("Runtime.CoreStruct"));
+Object.assign(Bayrell.Lang.Caret, use("Runtime.BaseStruct"));
 Object.assign(Bayrell.Lang.Caret,
 {
 	/* ======================= Class Init Functions ======================= */
@@ -78,7 +78,7 @@ Object.assign(Bayrell.Lang.Caret,
 	},
 	getParentClassName: function()
 	{
-		return "Runtime.CoreStruct";
+		return "Runtime.BaseStruct";
 	},
 	getClassInfo: function(ctx)
 	{

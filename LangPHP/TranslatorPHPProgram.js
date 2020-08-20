@@ -219,7 +219,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 		open += use("Runtime.rtl").toStr(t.s(ctx, "{"));
 		t = t.levelInc(ctx);
 		/* Function body */
-		var res = t.operator.constructor.Operators(ctx, t, (op_code.fn_create.expression) ? (op_code.fn_create.expression) : (op_code.fn_create.value));
+		var res = t.operator.constructor.Operators(ctx, t, (op_code.fn_create.expression) ? (op_code.fn_create.expression) : (op_code.fn_create.items));
 		t = Runtime.rtl.get(ctx, res, 0);
 		content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
 		/* Constructor end */
@@ -350,7 +350,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 			{
 				return !variable.flags.isFlag(ctx, "static");
 			});
-			if (t.current_class_full_name != "Runtime.CoreObject" && vars.count(ctx) > 0)
+			if (t.current_class_full_name != "Runtime.BaseObject" && vars.count(ctx) > 0)
 			{
 				content += use("Runtime.rtl").toStr(t.s(ctx, "function _init($ctx)"));
 				content += use("Runtime.rtl").toStr(t.s(ctx, "{"));
@@ -783,7 +783,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 		}
 		else if (op_code.kind == __v1.KIND_STRUCT)
 		{
-			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["current_class_extends_name"]), "Runtime.CoreStruct");
+			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["current_class_extends_name"]), "Runtime.BaseStruct");
 		}
 		else if (op_code.kind == __v2.KIND_STRUCT)
 		{

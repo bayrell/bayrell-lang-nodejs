@@ -22,9 +22,9 @@ if (typeof Bayrell.Lang == 'undefined') Bayrell.Lang = {};
 if (typeof Bayrell.Lang.OpCodes == 'undefined') Bayrell.Lang.OpCodes = {};
 Bayrell.Lang.OpCodes.OpIfElse = function(ctx)
 {
-	use("Runtime.CoreStruct").apply(this, arguments);
+	use("Runtime.BaseStruct").apply(this, arguments);
 };
-Bayrell.Lang.OpCodes.OpIfElse.prototype = Object.create(use("Runtime.CoreStruct").prototype);
+Bayrell.Lang.OpCodes.OpIfElse.prototype = Object.create(use("Runtime.BaseStruct").prototype);
 Bayrell.Lang.OpCodes.OpIfElse.prototype.constructor = Bayrell.Lang.OpCodes.OpIfElse;
 Object.assign(Bayrell.Lang.OpCodes.OpIfElse.prototype,
 {
@@ -34,7 +34,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpIfElse.prototype,
 		var a = Object.getOwnPropertyNames(this);
 		this.condition = null;
 		this.if_true = null;
-		use("Runtime.CoreStruct").prototype._init.call(this,ctx);
+		use("Runtime.BaseStruct").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
@@ -43,27 +43,27 @@ Object.assign(Bayrell.Lang.OpCodes.OpIfElse.prototype,
 			this.condition = o.condition;
 			this.if_true = o.if_true;
 		}
-		use("Runtime.CoreStruct").prototype.assignObject.call(this,ctx,o);
+		use("Runtime.BaseStruct").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
 		if (k == "condition")this.condition = v;
 		else if (k == "if_true")this.if_true = v;
-		else use("Runtime.CoreStruct").prototype.assignValue.call(this,ctx,k,v);
+		else use("Runtime.BaseStruct").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
 		if (k == "condition")return this.condition;
 		else if (k == "if_true")return this.if_true;
-		return use("Runtime.CoreStruct").prototype.takeValue.call(this,ctx,k,d);
+		return use("Runtime.BaseStruct").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)
 	{
 		return "Bayrell.Lang.OpCodes.OpIfElse";
 	},
 });
-Object.assign(Bayrell.Lang.OpCodes.OpIfElse, use("Runtime.CoreStruct"));
+Object.assign(Bayrell.Lang.OpCodes.OpIfElse, use("Runtime.BaseStruct"));
 Object.assign(Bayrell.Lang.OpCodes.OpIfElse,
 {
 	/* ======================= Class Init Functions ======================= */
@@ -77,7 +77,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpIfElse,
 	},
 	getParentClassName: function()
 	{
-		return "Runtime.CoreStruct";
+		return "Runtime.BaseStruct";
 	},
 	getClassInfo: function(ctx)
 	{

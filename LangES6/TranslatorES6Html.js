@@ -355,18 +355,52 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 		{
 			return use("Runtime.Collection").from([t,""]);
 		}
+		var save_control_name = t.html_var_name;
+		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["html_var_name"]), control_name);
 		var content = "";
 		for (var i = 0;i < op_code.items.count(ctx);i++)
 		{
 			var item = op_code.items.item(ctx, i);
-			var res = this.OpHtmlTag(ctx, t, item, i, control_name);
-			t = Runtime.rtl.get(ctx, res, 0);
-			content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
+			var __v0 = use("Bayrell.Lang.OpCodes.OpAssign");
+			var __v1 = use("Bayrell.Lang.OpCodes.OpFor");
+			var __v2 = use("Bayrell.Lang.OpCodes.OpIf");
+			var __v3 = use("Bayrell.Lang.OpCodes.OpWhile");
+			if (item instanceof __v0)
+			{
+				var res = t.operator.constructor.OpAssign(ctx, t, item);
+				t = Runtime.rtl.get(ctx, res, 0);
+				content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
+			}
+			else if (item instanceof __v1)
+			{
+				var res = t.operator.constructor.OpFor(ctx, t, item);
+				t = Runtime.rtl.get(ctx, res, 0);
+				content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
+			}
+			else if (item instanceof __v2)
+			{
+				var res = t.operator.constructor.OpIf(ctx, t, item);
+				t = Runtime.rtl.get(ctx, res, 0);
+				content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
+			}
+			else if (item instanceof __v3)
+			{
+				var res = t.operator.constructor.OpWhile(ctx, t, item);
+				t = Runtime.rtl.get(ctx, res, 0);
+				content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
+			}
+			else
+			{
+				var res = this.OpHtmlTag(ctx, t, item, i, control_name);
+				t = Runtime.rtl.get(ctx, res, 0);
+				content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
+			}
 		}
 		if (control_name != "control")
 		{
 			content += use("Runtime.rtl").toStr(t.s(ctx, "RenderDriver.p(" + use("Runtime.rtl").toStr(control_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(control_name) + use("Runtime.rtl").toStr("_childs);")));
 		}
+		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["html_var_name"]), save_control_name);
 		return use("Runtime.Collection").from([t,content]);
 	},
 	/**
@@ -388,12 +422,12 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 		content += use("Runtime.rtl").toStr(t.s(ctx, "{"));
 		t = t.levelInc(ctx);
 		content += use("Runtime.rtl").toStr(t.s(ctx, "var __vnull = null;"));
-		content += use("Runtime.rtl").toStr(t.s(ctx, "var control_childs = [];"));
-		var res = this.OpHtmlChilds(ctx, t, op_code, "control");
+		content += use("Runtime.rtl").toStr(t.s(ctx, "var __control_childs = [];"));
+		var res = this.OpHtmlChilds(ctx, t, op_code, "__control");
 		t = Runtime.rtl.get(ctx, res, 0);
 		content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
 		content += use("Runtime.rtl").toStr(t.s2(ctx, ""));
-		content += use("Runtime.rtl").toStr(t.s(ctx, "return control_childs;"));
+		content += use("Runtime.rtl").toStr(t.s(ctx, "return __control_childs;"));
 		t = t.levelDec(ctx);
 		content += use("Runtime.rtl").toStr(t.s(ctx, "}"));
 		/* Restore save op codes */

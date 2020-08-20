@@ -22,9 +22,9 @@ if (typeof Bayrell.Lang == 'undefined') Bayrell.Lang = {};
 if (typeof Bayrell.Lang.OpCodes == 'undefined') Bayrell.Lang.OpCodes = {};
 Bayrell.Lang.OpCodes.OpFlags = function(ctx)
 {
-	use("Runtime.CoreStruct").apply(this, arguments);
+	use("Runtime.BaseStruct").apply(this, arguments);
 };
-Bayrell.Lang.OpCodes.OpFlags.prototype = Object.create(use("Runtime.CoreStruct").prototype);
+Bayrell.Lang.OpCodes.OpFlags.prototype = Object.create(use("Runtime.BaseStruct").prototype);
 Bayrell.Lang.OpCodes.OpFlags.prototype.constructor = Bayrell.Lang.OpCodes.OpFlags;
 Object.assign(Bayrell.Lang.OpCodes.OpFlags.prototype,
 {
@@ -58,7 +58,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags.prototype,
 		this.p_memorize = false;
 		this.p_lambda = false;
 		this.p_pure = false;
-		use("Runtime.CoreStruct").prototype._init.call(this,ctx);
+		use("Runtime.BaseStruct").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
@@ -79,7 +79,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags.prototype,
 			this.p_lambda = o.p_lambda;
 			this.p_pure = o.p_pure;
 		}
-		use("Runtime.CoreStruct").prototype.assignObject.call(this,ctx,o);
+		use("Runtime.BaseStruct").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
@@ -97,7 +97,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags.prototype,
 		else if (k == "p_memorize")this.p_memorize = v;
 		else if (k == "p_lambda")this.p_lambda = v;
 		else if (k == "p_pure")this.p_pure = v;
-		else use("Runtime.CoreStruct").prototype.assignValue.call(this,ctx,k,v);
+		else use("Runtime.BaseStruct").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
@@ -116,14 +116,14 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags.prototype,
 		else if (k == "p_memorize")return this.p_memorize;
 		else if (k == "p_lambda")return this.p_lambda;
 		else if (k == "p_pure")return this.p_pure;
-		return use("Runtime.CoreStruct").prototype.takeValue.call(this,ctx,k,d);
+		return use("Runtime.BaseStruct").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)
 	{
 		return "Bayrell.Lang.OpCodes.OpFlags";
 	},
 });
-Object.assign(Bayrell.Lang.OpCodes.OpFlags, use("Runtime.CoreStruct"));
+Object.assign(Bayrell.Lang.OpCodes.OpFlags, use("Runtime.BaseStruct"));
 Object.assign(Bayrell.Lang.OpCodes.OpFlags,
 {
 	/**
@@ -155,7 +155,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags,
 	},
 	getParentClassName: function()
 	{
-		return "Runtime.CoreStruct";
+		return "Runtime.BaseStruct";
 	},
 	getClassInfo: function(ctx)
 	{

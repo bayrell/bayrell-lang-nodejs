@@ -298,7 +298,8 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPExpression,
 		if (next_op_code == undefined) next_op_code = null;
 		var __v0 = use("Bayrell.Lang.OpCodes.OpIdentifier");
 		var __v1 = use("Bayrell.Lang.OpCodes.OpAttr");
-		var __v3 = use("Bayrell.Lang.OpCodes.OpCall");
+		var __v3 = use("Bayrell.Lang.OpCodes.OpCurry");
+		var __v4 = use("Bayrell.Lang.OpCodes.OpCall");
 		if (op_code instanceof __v0)
 		{
 			return this.OpIdentifier(ctx, t, op_code);
@@ -468,6 +469,16 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPExpression,
 			return use("Runtime.Collection").from([t,s]);
 		}
 		else if (op_code instanceof __v3)
+		{
+			var res = this.OpCurry(ctx, t, op_code);
+			t = Runtime.rtl.get(ctx, res, 0);
+			var content = Runtime.rtl.get(ctx, res, 1);
+			var res = t.constructor.addSaveOpCode(ctx, t, use("Runtime.Dict").from({"var_content":content}));
+			t = Runtime.rtl.get(ctx, res, 0);
+			var var_name = Runtime.rtl.get(ctx, res, 1);
+			return use("Runtime.Collection").from([t,var_name]);
+		}
+		else if (op_code instanceof __v4)
 		{
 			return this.OpCall(ctx, t, op_code);
 		}
@@ -753,6 +764,106 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPExpression,
 		return use("Runtime.Collection").from([t,content]);
 	},
 	/**
+	 * OpCurry
+	 */
+	OpCurry: function(ctx, t, op_code)
+	{
+		var content = "";
+		var s = "";
+		var args = op_code.args.filter(ctx, (ctx, arg) => 
+		{
+			var __v0 = use("Bayrell.Lang.OpCodes.OpCurryArg");
+			return arg instanceof __v0;
+		}).sortIm(ctx, (ctx, arg1, arg2) => 
+		{
+			return (arg1.pos > arg2.pos) ? (1) : ((arg1.pos < arg2.pos) ? (-1) : (0));
+		});
+		var use_obj_item = "";
+		var __v0 = use("Bayrell.Lang.OpCodes.OpIdentifier");
+		if (op_code.obj instanceof __v0)
+		{
+			var __v1 = use("Bayrell.Lang.OpCodes.OpIdentifier");
+			if (op_code.obj.kind == __v1.KIND_VARIABLE)
+			{
+				use_obj_item = "$" + use("Runtime.rtl").toStr(op_code.obj.value);
+			}
+		}
+		var args_sz = args.count(ctx);
+		for (var i = 0;i < args_sz;i++)
+		{
+			var arg = args.item(ctx, i);
+			var s_use = "";
+			var __v0 = use("Runtime.Vector");
+			var arr_use = new __v0(ctx);
+			for (var j = 0;j < i;j++)
+			{
+				var arg_use = args.item(ctx, j);
+				arr_use.push(ctx, "$__varg" + use("Runtime.rtl").toStr(arg_use.pos));
+			}
+			if (use_obj_item != "")
+			{
+				arr_use.push(ctx, use_obj_item);
+			}
+			if (arr_use.count(ctx) > 0)
+			{
+				var __v1 = use("Runtime.rs");
+				s_use = " use (" + use("Runtime.rtl").toStr(__v1.join(ctx, ", ", arr_use)) + use("Runtime.rtl").toStr(")");
+			}
+			if (args_sz - 1 == i)
+			{
+				content += use("Runtime.rtl").toStr("function ($ctx, $__varg" + use("Runtime.rtl").toStr(arg.pos) + use("Runtime.rtl").toStr(")") + use("Runtime.rtl").toStr(s_use) + use("Runtime.rtl").toStr("{return "));
+			}
+			else
+			{
+				content += use("Runtime.rtl").toStr("function ($__ctx" + use("Runtime.rtl").toStr(arg.pos) + use("Runtime.rtl").toStr(", $__varg") + use("Runtime.rtl").toStr(arg.pos) + use("Runtime.rtl").toStr(")") + use("Runtime.rtl").toStr(s_use) + use("Runtime.rtl").toStr("{return "));
+			}
+		}
+		var flag = false;
+		var res = this.Dynamic(ctx, t, op_code.obj, op_code);
+		t = Runtime.rtl.get(ctx, res, 0);
+		content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
+		if (s == "parent")
+		{
+			var f_name = t.current_function.name;
+			if (f_name == "constructor")
+			{
+				f_name = "__construct";
+			}
+			s = "parent::" + use("Runtime.rtl").toStr(f_name) + use("Runtime.rtl").toStr("(");
+			content += use("Runtime.rtl").toStr(s);
+		}
+		else
+		{
+			content += use("Runtime.rtl").toStr("(");
+		}
+		content += use("Runtime.rtl").toStr("$ctx");
+		flag = true;
+		for (var i = 0;i < op_code.args.count(ctx);i++)
+		{
+			s = "";
+			var item = op_code.args.item(ctx, i);
+			var __v0 = use("Bayrell.Lang.OpCodes.OpCurryArg");
+			if (item instanceof __v0)
+			{
+				s += use("Runtime.rtl").toStr("$__varg" + use("Runtime.rtl").toStr(item.pos));
+			}
+			else
+			{
+				var res = this.Expression(ctx, t, item);
+				t = Runtime.rtl.get(ctx, res, 0);
+				s = Runtime.rtl.get(ctx, res, 1);
+			}
+			content += use("Runtime.rtl").toStr(((flag) ? (", ") : ("")) + use("Runtime.rtl").toStr(s));
+			flag = true;
+		}
+		content += use("Runtime.rtl").toStr(")");
+		for (var i = 0;i < args_sz;i++)
+		{
+			content += use("Runtime.rtl").toStr(";}");
+		}
+		return use("Runtime.Collection").from([t,content]);
+	},
+	/**
 	 * OpCall
 	 */
 	OpCall: function(ctx, t, op_code)
@@ -877,9 +988,34 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPExpression,
 			else if (op_item.kind == __v2.KIND_CALL)
 			{
 				t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["is_pipe"]), true);
-				var res = this.Dynamic(ctx, t, op_item.value);
-				t = Runtime.rtl.get(ctx, res, 0);
-				value = Runtime.rtl.get(ctx, res, 1);
+				var args = "";
+				var is_instance_method = false;
+				var __v3 = use("Bayrell.Lang.OpCodes.OpCall");
+				var __v4 = use("Bayrell.Lang.OpCodes.OpAttr");
+				var __v5 = use("Bayrell.Lang.OpCodes.OpAttr");
+				if (op_item.value instanceof __v3 && op_item.value.obj instanceof __v4 && op_item.value.obj.kind == __v5.KIND_ATTR)
+				{
+					is_instance_method = true;
+					value = t.pipe_var_name + use("Runtime.rtl").toStr(".val");
+					value += use("Runtime.rtl").toStr("." + use("Runtime.rtl").toStr(op_item.value.obj.value.value));
+					value += use("Runtime.rtl").toStr(".bind(" + use("Runtime.rtl").toStr(t.pipe_var_name) + use("Runtime.rtl").toStr(".val)"));
+					var flag = false;
+					for (var i = 0;i < op_item.value.args.count(ctx);i++)
+					{
+						var item = op_item.value.args.item(ctx, i);
+						var res = t.expression.constructor.Expression(ctx, t, item);
+						t = Runtime.rtl.get(ctx, res, 0);
+						var s_arg = Runtime.rtl.get(ctx, res, 1);
+						args += use("Runtime.rtl").toStr(((flag) ? (", ") : ("")) + use("Runtime.rtl").toStr(s_arg));
+						flag = true;
+					}
+				}
+				else
+				{
+					var res = this.Dynamic(ctx, t, op_item.value);
+					t = Runtime.rtl.get(ctx, res, 0);
+					value = Runtime.rtl.get(ctx, res, 1);
+				}
 				if (!op_item.is_async || !t.enable_async_await)
 				{
 					if (op_item.is_monad)
@@ -888,7 +1024,14 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPExpression,
 					}
 					else
 					{
-						s1 = var_name + use("Runtime.rtl").toStr("->call($ctx, ") + use("Runtime.rtl").toStr(value) + use("Runtime.rtl").toStr(")");
+						if (is_instance_method)
+						{
+							s1 = var_name + use("Runtime.rtl").toStr("->callMethod(ctx, ") + use("Runtime.rtl").toStr(value) + use("Runtime.rtl").toStr(", [") + use("Runtime.rtl").toStr(args) + use("Runtime.rtl").toStr("])");
+						}
+						else
+						{
+							s1 = var_name + use("Runtime.rtl").toStr("->call($ctx, ") + use("Runtime.rtl").toStr(value) + use("Runtime.rtl").toStr(")");
+						}
 					}
 				}
 				else if (op_item.is_async && t.current_function.isFlag(ctx, "async"))
@@ -899,7 +1042,14 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPExpression,
 					}
 					else
 					{
-						s1 = var_name + use("Runtime.rtl").toStr("->callAsync($ctx, ") + use("Runtime.rtl").toStr(value) + use("Runtime.rtl").toStr(")");
+						if (is_instance_method)
+						{
+							s1 = var_name + use("Runtime.rtl").toStr("->callMethodAsync(ctx, ") + use("Runtime.rtl").toStr(value) + use("Runtime.rtl").toStr(", [") + use("Runtime.rtl").toStr(args) + use("Runtime.rtl").toStr("])");
+						}
+						else
+						{
+							s1 = var_name + use("Runtime.rtl").toStr("->callAsync($ctx, ") + use("Runtime.rtl").toStr(value) + use("Runtime.rtl").toStr(")");
+						}
 					}
 				}
 				t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["is_pipe"]), false);
@@ -972,12 +1122,13 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPExpression,
 		var __v10 = use("Bayrell.Lang.OpCodes.OpAttr");
 		var __v11 = use("Bayrell.Lang.OpCodes.OpCall");
 		var __v12 = use("Bayrell.Lang.OpCodes.OpClassOf");
-		var __v13 = use("Bayrell.Lang.OpCodes.OpPipe");
-		var __v14 = use("Bayrell.Lang.OpCodes.OpTernary");
-		var __v15 = use("Bayrell.Lang.OpCodes.OpTypeConvert");
-		var __v16 = use("Bayrell.Lang.OpCodes.OpDeclareFunction");
-		var __v17 = use("Bayrell.Lang.OpCodes.OpHtmlItems");
-		var __v18 = use("Bayrell.Lang.OpCodes.OpPreprocessorIfDef");
+		var __v13 = use("Bayrell.Lang.OpCodes.OpCurry");
+		var __v14 = use("Bayrell.Lang.OpCodes.OpPipe");
+		var __v15 = use("Bayrell.Lang.OpCodes.OpTernary");
+		var __v16 = use("Bayrell.Lang.OpCodes.OpTypeConvert");
+		var __v17 = use("Bayrell.Lang.OpCodes.OpDeclareFunction");
+		var __v18 = use("Bayrell.Lang.OpCodes.OpHtmlItems");
+		var __v19 = use("Bayrell.Lang.OpCodes.OpPreprocessorIfDef");
 		if (op_code instanceof __v0)
 		{
 			var res = this.OpIdentifier(ctx, t, op_code);
@@ -1059,36 +1210,44 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPExpression,
 		}
 		else if (op_code instanceof __v13)
 		{
-			return this.OpPipe(ctx, t, op_code);
+			var res = this.OpCurry(ctx, t, op_code);
+			t = Runtime.rtl.get(ctx, res, 0);
+			content = Runtime.rtl.get(ctx, res, 1);
 		}
 		else if (op_code instanceof __v14)
+		{
+			return this.OpPipe(ctx, t, op_code);
+		}
+		else if (op_code instanceof __v15)
 		{
 			var res = this.OpTernary(ctx, t, op_code);
 			t = Runtime.rtl.get(ctx, res, 0);
 			content = Runtime.rtl.get(ctx, res, 1);
 		}
-		else if (op_code instanceof __v15)
+		else if (op_code instanceof __v16)
 		{
 			var res = this.OpTypeConvert(ctx, t, op_code);
 			t = Runtime.rtl.get(ctx, res, 0);
 			content = Runtime.rtl.get(ctx, res, 1);
 		}
-		else if (op_code instanceof __v16)
+		else if (op_code instanceof __v17)
 		{
 			var res = this.OpDeclareFunction(ctx, t, op_code);
 			t = Runtime.rtl.get(ctx, res, 0);
 			content = Runtime.rtl.get(ctx, res, 1);
 		}
-		else if (op_code instanceof __v17)
+		else if (op_code instanceof __v18)
 		{
+			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["is_html"]), true);
 			var res = t.html.constructor.OpHtmlItems(ctx, t, op_code);
 			t = Runtime.rtl.get(ctx, res, 0);
 			content = Runtime.rtl.get(ctx, res, 1);
+			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["is_html"]), false);
 		}
-		else if (op_code instanceof __v18)
+		else if (op_code instanceof __v19)
 		{
-			var __v19 = use("Bayrell.Lang.OpCodes.OpPreprocessorIfDef");
-			var res = t.operator.constructor.OpPreprocessorIfDef(ctx, t, op_code, __v19.KIND_EXPRESSION);
+			var __v20 = use("Bayrell.Lang.OpCodes.OpPreprocessorIfDef");
+			var res = t.operator.constructor.OpPreprocessorIfDef(ctx, t, op_code, __v20.KIND_EXPRESSION);
 			t = Runtime.rtl.get(ctx, res, 0);
 			content = Runtime.rtl.get(ctx, res, 1);
 		}

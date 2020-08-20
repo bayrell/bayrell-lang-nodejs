@@ -22,9 +22,9 @@ if (typeof Bayrell.Lang == 'undefined') Bayrell.Lang = {};
 if (typeof Bayrell.Lang.LangES6 == 'undefined') Bayrell.Lang.LangES6 = {};
 Bayrell.Lang.LangES6.AsyncAwait = function(ctx)
 {
-	use("Runtime.CoreStruct").apply(this, arguments);
+	use("Runtime.BaseStruct").apply(this, arguments);
 };
-Bayrell.Lang.LangES6.AsyncAwait.prototype = Object.create(use("Runtime.CoreStruct").prototype);
+Bayrell.Lang.LangES6.AsyncAwait.prototype = Object.create(use("Runtime.BaseStruct").prototype);
 Bayrell.Lang.LangES6.AsyncAwait.prototype.constructor = Bayrell.Lang.LangES6.AsyncAwait;
 Object.assign(Bayrell.Lang.LangES6.AsyncAwait.prototype,
 {
@@ -34,7 +34,7 @@ Object.assign(Bayrell.Lang.LangES6.AsyncAwait.prototype,
 		var a = Object.getOwnPropertyNames(this);
 		this.start_pos = "";
 		this.end_pos = "";
-		use("Runtime.CoreStruct").prototype._init.call(this,ctx);
+		use("Runtime.BaseStruct").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
@@ -43,27 +43,27 @@ Object.assign(Bayrell.Lang.LangES6.AsyncAwait.prototype,
 			this.start_pos = o.start_pos;
 			this.end_pos = o.end_pos;
 		}
-		use("Runtime.CoreStruct").prototype.assignObject.call(this,ctx,o);
+		use("Runtime.BaseStruct").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
 		if (k == "start_pos")this.start_pos = v;
 		else if (k == "end_pos")this.end_pos = v;
-		else use("Runtime.CoreStruct").prototype.assignValue.call(this,ctx,k,v);
+		else use("Runtime.BaseStruct").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
 		if (k == "start_pos")return this.start_pos;
 		else if (k == "end_pos")return this.end_pos;
-		return use("Runtime.CoreStruct").prototype.takeValue.call(this,ctx,k,d);
+		return use("Runtime.BaseStruct").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)
 	{
 		return "Bayrell.Lang.LangES6.AsyncAwait";
 	},
 });
-Object.assign(Bayrell.Lang.LangES6.AsyncAwait, use("Runtime.CoreStruct"));
+Object.assign(Bayrell.Lang.LangES6.AsyncAwait, use("Runtime.BaseStruct"));
 Object.assign(Bayrell.Lang.LangES6.AsyncAwait,
 {
 	/* ======================= Class Init Functions ======================= */
@@ -77,7 +77,7 @@ Object.assign(Bayrell.Lang.LangES6.AsyncAwait,
 	},
 	getParentClassName: function()
 	{
-		return "Runtime.CoreStruct";
+		return "Runtime.BaseStruct";
 	},
 	getClassInfo: function(ctx)
 	{

@@ -54,7 +54,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpDeclareFunction.prototype,
 		this.vars = null;
 		this.result_type = null;
 		this.expression = null;
-		this.value = null;
+		this.items = null;
 		this.flags = null;
 		this.is_context = true;
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,ctx);
@@ -71,7 +71,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpDeclareFunction.prototype,
 			this.vars = o.vars;
 			this.result_type = o.result_type;
 			this.expression = o.expression;
-			this.value = o.value;
+			this.items = o.items;
 			this.flags = o.flags;
 			this.is_context = o.is_context;
 		}
@@ -87,7 +87,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpDeclareFunction.prototype,
 		else if (k == "vars")this.vars = v;
 		else if (k == "result_type")this.result_type = v;
 		else if (k == "expression")this.expression = v;
-		else if (k == "value")this.value = v;
+		else if (k == "items")this.items = v;
 		else if (k == "flags")this.flags = v;
 		else if (k == "is_context")this.is_context = v;
 		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
@@ -103,7 +103,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpDeclareFunction.prototype,
 		else if (k == "vars")return this.vars;
 		else if (k == "result_type")return this.result_type;
 		else if (k == "expression")return this.expression;
-		else if (k == "value")return this.value;
+		else if (k == "items")return this.items;
 		else if (k == "flags")return this.flags;
 		else if (k == "is_context")return this.is_context;
 		return use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.takeValue.call(this,ctx,k,d);
@@ -156,7 +156,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpDeclareFunction,
 			a.push("vars");
 			a.push("result_type");
 			a.push("expression");
-			a.push("value");
+			a.push("items");
 			a.push("flags");
 			a.push("is_context");
 		}
@@ -223,7 +223,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpDeclareFunction,
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "value") return new IntrospectionInfo(ctx, {
+		if (field_name == "items") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpDeclareFunction",
 			"name": field_name,

@@ -50,10 +50,10 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayPreprocessor,
 	 */
 	readPreprocessor: function(ctx, parser)
 	{
-		var start = parser.clone(ctx);
+		var start = parser;
 		var look = null;
 		var token = null;
-		var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
+		var res = parser.parser_base.constructor.readToken(ctx, parser);
 		look = Runtime.rtl.get(ctx, res, 0);
 		token = Runtime.rtl.get(ctx, res, 1);
 		if (token.content == "#switch")
@@ -82,20 +82,20 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayPreprocessor,
 		var res = parser.parser_base.constructor.matchToken(ctx, parser, "#switch");
 		parser = Runtime.rtl.get(ctx, res, 0);
 		token = Runtime.rtl.get(ctx, res, 1);
-		var caret_start = token.caret_start.clone(ctx);
-		var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
+		var caret_start = token.caret_start;
+		var res = parser.parser_base.constructor.readToken(ctx, parser);
 		look = Runtime.rtl.get(ctx, res, 0);
 		token = Runtime.rtl.get(ctx, res, 1);
 		while (token.content == "#case")
 		{
-			parser = look.clone(ctx);
+			parser = look;
 			/* Skip ifcode */
-			var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
+			var res = parser.parser_base.constructor.readToken(ctx, parser);
 			look = Runtime.rtl.get(ctx, res, 0);
 			token = Runtime.rtl.get(ctx, res, 1);
 			if (token.content == "ifcode")
 			{
-				parser = look.clone(ctx);
+				parser = look;
 			}
 			/* Read condition */
 			var condition = null;
@@ -110,16 +110,16 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayPreprocessor,
 			token = Runtime.rtl.get(ctx, res, 1);
 			/* Read content */
 			var content = "";
-			var caret_content = parser.caret.clone(ctx);
+			var caret_content = parser.caret;
 			var res = parser.parser_base.constructor.readUntilStringArr(ctx, parser, use("Runtime.Collection").from(["#case","#endswitch"]), false);
 			parser = Runtime.rtl.get(ctx, res, 0);
 			content = Runtime.rtl.get(ctx, res, 1);
 			/* Look content */
-			var res = parser.parser_base.constructor.readToken(ctx, parser.clone(ctx));
+			var res = parser.parser_base.constructor.readToken(ctx, parser);
 			look = Runtime.rtl.get(ctx, res, 0);
 			token = Runtime.rtl.get(ctx, res, 1);
 			var __v1 = use("Bayrell.Lang.OpCodes.OpPreprocessorIfCode");
-			var ifcode = new __v1(ctx, use("Runtime.Dict").from({"condition":condition,"content":content,"caret_start":caret_content,"caret_end":parser.caret.clone(ctx)}));
+			var ifcode = new __v1(ctx, use("Runtime.Dict").from({"condition":condition,"content":content,"caret_start":caret_content,"caret_end":parser.caret}));
 			items.push(ctx, ifcode);
 		}
 		/* Restore vars */
@@ -128,7 +128,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayPreprocessor,
 		var res = parser.parser_base.constructor.matchToken(ctx, parser, "#endswitch");
 		parser = Runtime.rtl.get(ctx, res, 0);
 		var __v1 = use("Bayrell.Lang.OpCodes.OpPreprocessorSwitch");
-		return use("Runtime.Collection").from([parser,new __v1(ctx, use("Runtime.Dict").from({"items":items.toCollection(ctx),"caret_start":caret_start,"caret_end":parser.caret.clone(ctx)}))]);
+		return use("Runtime.Collection").from([parser,new __v1(ctx, use("Runtime.Dict").from({"items":items.toCollection(ctx),"caret_start":caret_start,"caret_end":parser.caret}))]);
 	},
 	/**
 	 * Read preprocessor ifcode
@@ -154,7 +154,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayPreprocessor,
 		token = Runtime.rtl.get(ctx, res, 1);
 		/* Read content */
 		var content = "";
-		var caret_content = parser.caret.clone(ctx);
+		var caret_content = parser.caret;
 		var res = parser.parser_base.constructor.readUntilStringArr(ctx, parser, use("Runtime.Collection").from(["#endif"]), false);
 		parser = Runtime.rtl.get(ctx, res, 0);
 		content = Runtime.rtl.get(ctx, res, 1);
@@ -228,7 +228,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayPreprocessor,
 			parser = Runtime.rtl.get(ctx, res, 0);
 		}
 		var __v0 = use("Bayrell.Lang.OpCodes.OpPreprocessorIfDef");
-		return use("Runtime.Collection").from([parser,new __v0(ctx, use("Runtime.Dict").from({"items":items,"condition":condition,"caret_start":caret_start,"caret_end":parser.caret.clone(ctx)}))]);
+		return use("Runtime.Collection").from([parser,new __v0(ctx, use("Runtime.Dict").from({"items":items,"condition":condition,"caret_start":caret_start,"caret_end":parser.caret}))]);
 	},
 	/* ======================= Class Init Functions ======================= */
 	getCurrentNamespace: function()

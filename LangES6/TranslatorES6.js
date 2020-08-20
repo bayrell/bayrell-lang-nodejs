@@ -48,6 +48,8 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6.prototype,
 		var a = Object.getOwnPropertyNames(this);
 		this.is_pipe = false;
 		this.pipe_var_name = "";
+		this.html_var_name = "";
+		this.is_html = false;
 		this.async_await = null;
 		this.expression = null;
 		this.html = null;
@@ -65,6 +67,8 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6.prototype,
 		{
 			this.is_pipe = o.is_pipe;
 			this.pipe_var_name = o.pipe_var_name;
+			this.html_var_name = o.html_var_name;
+			this.is_html = o.is_html;
 			this.async_await = o.async_await;
 			this.expression = o.expression;
 			this.html = o.html;
@@ -81,6 +85,8 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6.prototype,
 	{
 		if (k == "is_pipe")this.is_pipe = v;
 		else if (k == "pipe_var_name")this.pipe_var_name = v;
+		else if (k == "html_var_name")this.html_var_name = v;
+		else if (k == "is_html")this.is_html = v;
 		else if (k == "async_await")this.async_await = v;
 		else if (k == "expression")this.expression = v;
 		else if (k == "html")this.html = v;
@@ -97,6 +103,8 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6.prototype,
 		if (d == undefined) d = null;
 		if (k == "is_pipe")return this.is_pipe;
 		else if (k == "pipe_var_name")return this.pipe_var_name;
+		else if (k == "html_var_name")return this.html_var_name;
+		else if (k == "is_html")return this.is_html;
 		else if (k == "async_await")return this.async_await;
 		else if (k == "expression")return this.expression;
 		else if (k == "html")return this.html;
@@ -173,6 +181,8 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6,
 		{
 			a.push("is_pipe");
 			a.push("pipe_var_name");
+			a.push("html_var_name");
+			a.push("is_html");
 			a.push("async_await");
 			a.push("expression");
 			a.push("html");
@@ -198,6 +208,20 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6,
 			]),
 		});
 		if (field_name == "pipe_var_name") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "html_var_name") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "is_html") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
 			"name": field_name,

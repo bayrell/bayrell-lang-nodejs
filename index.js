@@ -17,7 +17,7 @@
  */
 
 var exports = {
-	VERSION: '0.10.0',
+	VERSION: '0.10.1',
 	MODULE_NAME: 'Bayrell.Lang',
 }
 
@@ -81,6 +81,8 @@ add("Bayrell.Lang.OpCodes.OpClassRef");
 add("Bayrell.Lang.OpCodes.OpCollection");
 add("Bayrell.Lang.OpCodes.OpComment");
 add("Bayrell.Lang.OpCodes.OpContinue");
+add("Bayrell.Lang.OpCodes.OpCurry");
+add("Bayrell.Lang.OpCodes.OpCurryArg");
 add("Bayrell.Lang.OpCodes.OpDeclareClass");
 add("Bayrell.Lang.OpCodes.OpDeclareFunction");
 add("Bayrell.Lang.OpCodes.OpDeclareFunctionArg");
@@ -111,6 +113,7 @@ add("Bayrell.Lang.OpCodes.OpPreprocessorIfCode");
 add("Bayrell.Lang.OpCodes.OpPreprocessorIfDef");
 add("Bayrell.Lang.OpCodes.OpPreprocessorSwitch");
 add("Bayrell.Lang.OpCodes.OpReturn");
+add("Bayrell.Lang.OpCodes.OpSafe");
 add("Bayrell.Lang.OpCodes.OpString");
 add("Bayrell.Lang.OpCodes.OpTernary");
 add("Bayrell.Lang.OpCodes.OpTryCatch");

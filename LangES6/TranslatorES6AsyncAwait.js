@@ -22,9 +22,9 @@ if (typeof Bayrell.Lang == 'undefined') Bayrell.Lang = {};
 if (typeof Bayrell.Lang.LangES6 == 'undefined') Bayrell.Lang.LangES6 = {};
 Bayrell.Lang.LangES6.TranslatorES6AsyncAwait = function(ctx)
 {
-	use("Runtime.CoreStruct").apply(this, arguments);
+	use("Runtime.BaseStruct").apply(this, arguments);
 };
-Bayrell.Lang.LangES6.TranslatorES6AsyncAwait.prototype = Object.create(use("Runtime.CoreStruct").prototype);
+Bayrell.Lang.LangES6.TranslatorES6AsyncAwait.prototype = Object.create(use("Runtime.BaseStruct").prototype);
 Bayrell.Lang.LangES6.TranslatorES6AsyncAwait.prototype.constructor = Bayrell.Lang.LangES6.TranslatorES6AsyncAwait;
 Object.assign(Bayrell.Lang.LangES6.TranslatorES6AsyncAwait.prototype,
 {
@@ -37,7 +37,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6AsyncAwait.prototype,
 		this.pos = use("Runtime.Collection").from([0]);
 		this.async_t = "__async_t";
 		this.async_var = "__async_var";
-		use("Runtime.CoreStruct").prototype._init.call(this,ctx);
+		use("Runtime.BaseStruct").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
@@ -48,7 +48,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6AsyncAwait.prototype,
 			this.async_t = o.async_t;
 			this.async_var = o.async_var;
 		}
-		use("Runtime.CoreStruct").prototype.assignObject.call(this,ctx,o);
+		use("Runtime.BaseStruct").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
@@ -56,7 +56,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6AsyncAwait.prototype,
 		else if (k == "pos")this.pos = v;
 		else if (k == "async_t")this.async_t = v;
 		else if (k == "async_var")this.async_var = v;
-		else use("Runtime.CoreStruct").prototype.assignValue.call(this,ctx,k,v);
+		else use("Runtime.BaseStruct").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
@@ -65,14 +65,14 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6AsyncAwait.prototype,
 		else if (k == "pos")return this.pos;
 		else if (k == "async_t")return this.async_t;
 		else if (k == "async_var")return this.async_var;
-		return use("Runtime.CoreStruct").prototype.takeValue.call(this,ctx,k,d);
+		return use("Runtime.BaseStruct").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)
 	{
 		return "Bayrell.Lang.LangES6.TranslatorES6AsyncAwait";
 	},
 });
-Object.assign(Bayrell.Lang.LangES6.TranslatorES6AsyncAwait, use("Runtime.CoreStruct"));
+Object.assign(Bayrell.Lang.LangES6.TranslatorES6AsyncAwait, use("Runtime.BaseStruct"));
 Object.assign(Bayrell.Lang.LangES6.TranslatorES6AsyncAwait,
 {
 	/**
@@ -677,9 +677,9 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6AsyncAwait,
 		s1 += use("Runtime.rtl").toStr(t.s(ctx, "if (" + use("Runtime.rtl").toStr(async_t) + use("Runtime.rtl").toStr(".pos(ctx) == ") + use("Runtime.rtl").toStr(this.currentPos(ctx, t)) + use("Runtime.rtl").toStr(")")));
 		s1 += use("Runtime.rtl").toStr(t.s(ctx, "{"));
 		t = t.levelInc(ctx);
-		if (f.value)
+		if (f.items)
 		{
-			var res = t.operator.constructor.Operators(ctx, t, f.value);
+			var res = t.operator.constructor.Operators(ctx, t, f.items);
 			t = Runtime.rtl.get(ctx, res, 0);
 			s1 += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
 		}
@@ -737,7 +737,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6AsyncAwait,
 	},
 	getParentClassName: function()
 	{
-		return "Runtime.CoreStruct";
+		return "Runtime.BaseStruct";
 	},
 	getClassInfo: function(ctx)
 	{

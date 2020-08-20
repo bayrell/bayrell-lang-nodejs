@@ -21,9 +21,9 @@ if (typeof Bayrell == 'undefined') Bayrell = {};
 if (typeof Bayrell.Lang == 'undefined') Bayrell.Lang = {};
 Bayrell.Lang.CoreTranslator = function(ctx)
 {
-	use("Runtime.CoreStruct").apply(this, arguments);
+	use("Runtime.BaseStruct").apply(this, arguments);
 };
-Bayrell.Lang.CoreTranslator.prototype = Object.create(use("Runtime.CoreStruct").prototype);
+Bayrell.Lang.CoreTranslator.prototype = Object.create(use("Runtime.BaseStruct").prototype);
 Bayrell.Lang.CoreTranslator.prototype.constructor = Bayrell.Lang.CoreTranslator;
 Object.assign(Bayrell.Lang.CoreTranslator.prototype,
 {
@@ -108,7 +108,7 @@ Object.assign(Bayrell.Lang.CoreTranslator.prototype,
 		this.crlf = "\n";
 		this.flag_struct_check_types = false;
 		this.preprocessor_flags = null;
-		use("Runtime.CoreStruct").prototype._init.call(this,ctx);
+		use("Runtime.BaseStruct").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
@@ -134,7 +134,7 @@ Object.assign(Bayrell.Lang.CoreTranslator.prototype,
 			this.flag_struct_check_types = o.flag_struct_check_types;
 			this.preprocessor_flags = o.preprocessor_flags;
 		}
-		use("Runtime.CoreStruct").prototype.assignObject.call(this,ctx,o);
+		use("Runtime.BaseStruct").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
@@ -157,7 +157,7 @@ Object.assign(Bayrell.Lang.CoreTranslator.prototype,
 		else if (k == "crlf")this.crlf = v;
 		else if (k == "flag_struct_check_types")this.flag_struct_check_types = v;
 		else if (k == "preprocessor_flags")this.preprocessor_flags = v;
-		else use("Runtime.CoreStruct").prototype.assignValue.call(this,ctx,k,v);
+		else use("Runtime.BaseStruct").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
@@ -181,14 +181,14 @@ Object.assign(Bayrell.Lang.CoreTranslator.prototype,
 		else if (k == "crlf")return this.crlf;
 		else if (k == "flag_struct_check_types")return this.flag_struct_check_types;
 		else if (k == "preprocessor_flags")return this.preprocessor_flags;
-		return use("Runtime.CoreStruct").prototype.takeValue.call(this,ctx,k,d);
+		return use("Runtime.BaseStruct").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)
 	{
 		return "Bayrell.Lang.CoreTranslator";
 	},
 });
-Object.assign(Bayrell.Lang.CoreTranslator, use("Runtime.CoreStruct"));
+Object.assign(Bayrell.Lang.CoreTranslator, use("Runtime.BaseStruct"));
 Object.assign(Bayrell.Lang.CoreTranslator,
 {
 	/**
@@ -294,7 +294,7 @@ Object.assign(Bayrell.Lang.CoreTranslator,
 	},
 	getParentClassName: function()
 	{
-		return "Runtime.CoreStruct";
+		return "Runtime.BaseStruct";
 	},
 	getClassInfo: function(ctx)
 	{
