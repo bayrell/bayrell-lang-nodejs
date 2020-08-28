@@ -996,13 +996,12 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPExpression,
 				if (op_item.value instanceof __v3 && op_item.value.obj instanceof __v4 && op_item.value.obj.kind == __v5.KIND_ATTR)
 				{
 					is_instance_method = true;
-					value = t.pipe_var_name + use("Runtime.rtl").toStr(".val");
-					value += use("Runtime.rtl").toStr("." + use("Runtime.rtl").toStr(op_item.value.obj.value.value));
-					value += use("Runtime.rtl").toStr(".bind(" + use("Runtime.rtl").toStr(t.pipe_var_name) + use("Runtime.rtl").toStr(".val)"));
+					value = t.pipe_var_name + use("Runtime.rtl").toStr("->val");
+					value += use("Runtime.rtl").toStr("->" + use("Runtime.rtl").toStr(op_item.value.obj.value.value));
 					var flag = false;
-					for (var i = 0;i < op_item.value.args.count(ctx);i++)
+					for (var j = 0;j < op_item.value.args.count(ctx);j++)
 					{
-						var item = op_item.value.args.item(ctx, i);
+						var item = op_item.value.args.item(ctx, j);
 						var res = t.expression.constructor.Expression(ctx, t, item);
 						t = Runtime.rtl.get(ctx, res, 0);
 						var s_arg = Runtime.rtl.get(ctx, res, 1);

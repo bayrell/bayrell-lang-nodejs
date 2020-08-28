@@ -980,21 +980,26 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Operator,
 			var save_html_var_name = t.html_var_name;
 			var save_is_html = t.is_html;
 			/* Save op codes */
-			var save_op_codes = t.save_op_codes;
-			var save_op_code_inc = t.save_op_code_inc;
+			/*
+			Collection<SaveOpCode> save_op_codes = t.save_op_codes;
+			int save_op_code_inc = t.save_op_code_inc;
+			*/
 			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["is_html"]), true);
-			var res = t.html.constructor.OpHtmlItems(ctx, t, op_code);
+			var res = t.html.constructor.OpHtmlChilds(ctx, t, op_code, save_html_var_name, false);
 			t = Runtime.rtl.get(ctx, res, 0);
+			content = Runtime.rtl.get(ctx, res, 1);
 			/* Output save op code */
-			var save = t.constructor.outputSaveOpCode(ctx, t, save_op_codes.count(ctx));
-			if (save != "")
-			{
-				content = save;
-			}
+			/*
+			string save = t::outputSaveOpCode(t, save_op_codes.count());
+			if (save != "") content = save;
+			*/
 			/* Output content */
-			content += use("Runtime.rtl").toStr(t.s(ctx, save_html_var_name + use("Runtime.rtl").toStr("_childs.push(") + use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1)) + use("Runtime.rtl").toStr(");")));
-			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["save_op_codes"]), save_op_codes);
-			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["save_op_code_inc"]), save_op_code_inc);
+			/*
+			content ~= t.s(save_html_var_name ~ "_childs.push(" ~ res[1] ~ ");");
+			
+			t <= save_op_codes <= save_op_codes;
+			t <= save_op_code_inc <= save_op_code_inc;
+			*/
 			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["is_html"]), save_is_html);
 		}
 		else
@@ -1042,7 +1047,6 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Operator,
 		/* Save op codes */
 		var save_op_codes = t.save_op_codes;
 		var save_op_code_inc = t.save_op_code_inc;
-		t = t.constructor.clearSaveOpCode(ctx, t);
 		var content = "";
 		t = t.levelInc(ctx);
 		if (f.args)

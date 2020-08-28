@@ -88,7 +88,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 				var res = t.expression.constructor.Expression(ctx, t, op_code.value);
 				t = Runtime.rtl.get(ctx, res, 0);
 				var value = Runtime.rtl.get(ctx, res, 1);
-				value = t.expression.constructor.useModuleName(ctx, t, "RenderHelper") + use("Runtime.rtl").toStr(".json_encode(ctx, ") + use("Runtime.rtl").toStr(value) + use("Runtime.rtl").toStr(")");
+				value = "this.json_encode(ctx, " + use("Runtime.rtl").toStr(value) + use("Runtime.rtl").toStr(")");
 				return use("Runtime.Collection").from([t,value]);
 			}
 		}
@@ -107,6 +107,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 		var attr_class = new __v0(ctx);
 		var attr_s = "null";
 		var attr_key_value = "";
+		var attr_elem_name = "";
 		var has_attr_key = false;
 		var attrs = attrs.map(ctx, (ctx, attr) => 
 		{
@@ -114,49 +115,42 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 			t = Runtime.rtl.get(ctx, res, 0);
 			var attr_value = Runtime.rtl.get(ctx, res, 1);
 			var attr_key = attr.key;
-			var __v0 = use("Runtime.rs");
-			var ch = __v0.substr(ctx, attr_key, 0, 1);
 			var __v1 = use("Runtime.rs");
-			var __v3 = use("Runtime.rs");
-			if (attr_key == "@class")
-			{
-				attr_class.push(ctx, "this.getCssName(ctx, " + use("Runtime.rtl").toStr(attr_value) + use("Runtime.rtl").toStr(")"));
-				var __v1 = use("Bayrell.Lang.OpCodes.OpString");
-				if (!has_attr_key && attr.value instanceof __v1)
-				{
-					var __v2 = use("Runtime.rs");
-					var arr = __v2.split(ctx, " ", attr.value.value);
-					attr_key_value = t.expression.constructor.toString(ctx, Runtime.rtl.get(ctx, arr, 0) + use("Runtime.rtl").toStr("-") + use("Runtime.rtl").toStr(item_pos));
-					has_attr_key = true;
-				}
-				return "";
-			}
-			else if (attr_key == "class")
+			var ch = __v1.substr(ctx, attr_key, 0, 1);
+			var __v2 = use("Runtime.rs");
+			var __v4 = use("Runtime.rs");
+			if (attr_key == "class")
 			{
 				attr_class.push(ctx, attr_value);
+				var __v2 = use("Bayrell.Lang.OpCodes.OpString");
+				if (attr_elem_name == "" && attr.value instanceof __v2)
+				{
+					var __v3 = use("Runtime.rs");
+					var arr = __v3.split(ctx, " ", attr.value.value);
+					attr_elem_name = t.expression.constructor.toString(ctx, Runtime.rtl.get(ctx, arr, 0));
+				}
 				return "";
 			}
 			else if (attr_key == "@key")
 			{
-				has_attr_key = true;
 				var res = this.OpHtmlAttr(ctx, t, attr);
 				t = Runtime.rtl.get(ctx, res, 0);
 				attr_value = Runtime.rtl.get(ctx, res, 1);
 				attr_key_value = attr_value;
 				return "";
 			}
-			else if (__v1.substr(ctx, attr_key, 0, 7) == "@event:")
+			else if (__v2.substr(ctx, attr_key, 0, 7) == "@event:")
 			{
-				var __v2 = use("Runtime.rs");
-				var event_name = __v2.substr(ctx, attr_key, 7);
+				var __v3 = use("Runtime.rs");
+				var event_name = __v3.substr(ctx, attr_key, 7);
 				event_name = t.expression.constructor.findModuleName(ctx, t, event_name);
 				attr_key = "@event:" + use("Runtime.rtl").toStr(event_name);
 				attr_value = "[" + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, t.current_class_full_name)) + use("Runtime.rtl").toStr(",") + use("Runtime.rtl").toStr(attr_value) + use("Runtime.rtl").toStr("]");
 			}
-			else if (__v3.substr(ctx, attr_key, 0, 12) == "@eventAsync:")
+			else if (__v4.substr(ctx, attr_key, 0, 12) == "@eventAsync:")
 			{
-				var __v4 = use("Runtime.rs");
-				var event_name = __v4.substr(ctx, attr_key, 12);
+				var __v5 = use("Runtime.rs");
+				var event_name = __v5.substr(ctx, attr_key, 12);
 				event_name = t.expression.constructor.findModuleName(ctx, t, event_name);
 				attr_key = "@eventAsync:" + use("Runtime.rtl").toStr(event_name);
 				attr_value = "[" + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, t.current_class_full_name)) + use("Runtime.rtl").toStr(",") + use("Runtime.rtl").toStr(attr_value) + use("Runtime.rtl").toStr("]");
@@ -179,12 +173,18 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 		});
 		if (attr_class.count(ctx) > 0)
 		{
+			attr_class.push(ctx, "this.getCssHash()");
+			/*attr_class.push( t.expression::toString("h-" ~ ParserBayHtml::getCssHash(t.current_class_full_name)) );*/
 			var __v1 = use("Runtime.rs");
-			attrs = attrs.pushIm(ctx, "\"class\":" + use("Runtime.rtl").toStr(__v1.join(ctx, " + \" \" + ", attr_class)));
+			attrs = attrs.pushIm(ctx, "\"class\":" + use("Runtime.rtl").toStr("[") + use("Runtime.rtl").toStr(__v1.join(ctx, ", ", attr_class)) + use("Runtime.rtl").toStr("].join(\" \")"));
 		}
 		if (attr_key_value != "")
 		{
 			attrs = attrs.pushIm(ctx, "\"@key\":" + use("Runtime.rtl").toStr(attr_key_value));
+		}
+		if (attr_elem_name != "")
+		{
+			attrs = attrs.pushIm(ctx, "\"@elem_name\":" + use("Runtime.rtl").toStr(attr_elem_name));
 		}
 		if (attrs.count(ctx) > 0)
 		{
@@ -192,6 +192,32 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 			attr_s = "{" + use("Runtime.rtl").toStr(__v1.join(ctx, ",", attrs)) + use("Runtime.rtl").toStr("}");
 		}
 		return use("Runtime.Collection").from([t,attr_s]);
+	},
+	/**
+	 * Returns class name
+	 */
+	getOpHtmlAttrsClassName: function(ctx, attrs)
+	{
+		var __v0 = use("Runtime.Vector");
+		var class_names = new __v0(ctx);
+		if (attrs != "")
+		{
+			for (var attrs_i = 0;attrs_i < attrs.count(ctx);attrs_i++)
+			{
+				var attr = Runtime.rtl.get(ctx, attrs, attrs_i);
+				var attr_key = attr.key;
+				if (attr_key == "class")
+				{
+					var __v1 = use("Bayrell.Lang.OpCodes.OpString");
+					if (attr.value instanceof __v1)
+					{
+						class_names.push(ctx, attr.value.value);
+					}
+				}
+			}
+		}
+		var __v1 = use("Runtime.rs");
+		return __v1.join(ctx, " ", class_names);
 	},
 	/**
 	 * Translator html template
@@ -207,7 +233,8 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 		if (op_code instanceof __v0)
 		{
 			var item_value = t.expression.constructor.toString(ctx, op_code.value);
-			content += use("Runtime.rtl").toStr(t.s(ctx, "[__vnull, " + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs] = ") + use("Runtime.rtl").toStr("RenderDriver.e(") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs") + use("Runtime.rtl").toStr(", \"text\", {\"content\": ") + use("Runtime.rtl").toStr(item_value) + use("Runtime.rtl").toStr("}, ") + use("Runtime.rtl").toStr(item_pos) + use("Runtime.rtl").toStr(");")));
+			content += use("Runtime.rtl").toStr(t.s(ctx, "/* Text */"));
+			content += use("Runtime.rtl").toStr(t.s(ctx, "[__vnull, " + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs] = ") + use("Runtime.rtl").toStr("RenderDriver.e(") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs") + use("Runtime.rtl").toStr(", \"text\", {\"content\": ") + use("Runtime.rtl").toStr(item_value) + use("Runtime.rtl").toStr("});")));
 		}
 		else if (op_code instanceof __v1)
 		{
@@ -231,16 +258,19 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 			var __v4 = use("Bayrell.Lang.OpCodes.OpHtmlValue");
 			if (op_code.kind == __v2.KIND_RAW)
 			{
-				content += use("Runtime.rtl").toStr(t.s(ctx, "[__vnull, " + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs] = ") + use("Runtime.rtl").toStr("RenderDriver.e(") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs") + use("Runtime.rtl").toStr(", \"raw\", {\"content\": ") + use("Runtime.rtl").toStr(item_value) + use("Runtime.rtl").toStr("}, ") + use("Runtime.rtl").toStr(item_pos) + use("Runtime.rtl").toStr(");")));
+				content += use("Runtime.rtl").toStr(t.s(ctx, "/* Raw */"));
+				content += use("Runtime.rtl").toStr(t.s(ctx, "[__vnull, " + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs] = ") + use("Runtime.rtl").toStr("RenderDriver.e(") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs") + use("Runtime.rtl").toStr(", \"raw\", {\"content\": ") + use("Runtime.rtl").toStr(item_value) + use("Runtime.rtl").toStr("});")));
 			}
 			else if (op_code.kind == __v3.KIND_HTML)
 			{
-				content += use("Runtime.rtl").toStr(t.s(ctx, "[__vnull, " + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs] = ") + use("Runtime.rtl").toStr("RenderDriver.e(") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs") + use("Runtime.rtl").toStr(", \"html\", {\"content\": ") + use("Runtime.rtl").toStr(item_value) + use("Runtime.rtl").toStr("}, ") + use("Runtime.rtl").toStr(item_pos) + use("Runtime.rtl").toStr(");")));
+				content += use("Runtime.rtl").toStr(t.s(ctx, "/* Html */"));
+				content += use("Runtime.rtl").toStr(t.s(ctx, "[__vnull, " + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs] = ") + use("Runtime.rtl").toStr("RenderDriver.e(") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs") + use("Runtime.rtl").toStr(", \"html\", {\"content\": ") + use("Runtime.rtl").toStr(item_value) + use("Runtime.rtl").toStr("});")));
 			}
 			else if (op_code.kind == __v4.KIND_JSON)
 			{
+				content += use("Runtime.rtl").toStr(t.s(ctx, "/* Text */"));
 				item_value = "this.json_encode(ctx, " + use("Runtime.rtl").toStr(item_value) + use("Runtime.rtl").toStr(")");
-				content += use("Runtime.rtl").toStr(t.s(ctx, "[__vnull, " + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs] = ") + use("Runtime.rtl").toStr("RenderDriver.e(") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs") + use("Runtime.rtl").toStr(", \"text\", {\"content\": ") + use("Runtime.rtl").toStr(item_value) + use("Runtime.rtl").toStr("}, ") + use("Runtime.rtl").toStr(item_pos) + use("Runtime.rtl").toStr(");")));
+				content += use("Runtime.rtl").toStr(t.s(ctx, "[__vnull, " + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs] = ") + use("Runtime.rtl").toStr("RenderDriver.e(") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs") + use("Runtime.rtl").toStr(", \"text\", {\"content\": ") + use("Runtime.rtl").toStr(item_value) + use("Runtime.rtl").toStr("});")));
 			}
 		}
 		else if (op_code instanceof __v2)
@@ -258,14 +288,13 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 					var res = t.constructor.incSaveOpCode(ctx, t);
 					t = Runtime.rtl.get(ctx, res, 0);
 					new_var_name = Runtime.rtl.get(ctx, res, 1);
-					content += use("Runtime.rtl").toStr(t.s2(ctx, ""));
 					content += use("Runtime.rtl").toStr(t.s(ctx, "/* Items */"));
 					content += use("Runtime.rtl").toStr(t.s(ctx, "var " + use("Runtime.rtl").toStr(new_var_name) + use("Runtime.rtl").toStr("; var ") + use("Runtime.rtl").toStr(new_var_name) + use("Runtime.rtl").toStr("_childs = [];")));
-					content += use("Runtime.rtl").toStr(t.s(ctx, "[" + use("Runtime.rtl").toStr(new_var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs] = ") + use("Runtime.rtl").toStr("RenderDriver.e(") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs") + use("Runtime.rtl").toStr(", \"empty\", null, ") + use("Runtime.rtl").toStr(item_pos) + use("Runtime.rtl").toStr(");")));
+					content += use("Runtime.rtl").toStr(t.s(ctx, "[" + use("Runtime.rtl").toStr(new_var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs] = ") + use("Runtime.rtl").toStr("RenderDriver.e(") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs") + use("Runtime.rtl").toStr(", \"empty\", null);")));
 				}
 				else
 				{
-					content += use("Runtime.rtl").toStr(t.s(ctx, "[__vnull, " + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs] = ") + use("Runtime.rtl").toStr("RenderDriver.e(") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs") + use("Runtime.rtl").toStr(", \"empty\", null, ") + use("Runtime.rtl").toStr(item_pos) + use("Runtime.rtl").toStr(");")));
+					content += use("Runtime.rtl").toStr(t.s(ctx, "[__vnull, " + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs] = ") + use("Runtime.rtl").toStr("RenderDriver.e(") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs") + use("Runtime.rtl").toStr(", \"empty\", null);")));
 				}
 			}
 			else if (is_component)
@@ -286,14 +315,13 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 					var res = this.OpHtmlItems(ctx, t, op_code.items);
 					t = Runtime.rtl.get(ctx, res, 0);
 					var f = Runtime.rtl.get(ctx, res, 1);
-					content += use("Runtime.rtl").toStr(t.s2(ctx, ""));
 					content += use("Runtime.rtl").toStr(t.s(ctx, "/* Component '" + use("Runtime.rtl").toStr(op_code.tag_name) + use("Runtime.rtl").toStr("' */")));
-					content += use("Runtime.rtl").toStr(t.s(ctx, "[__vnull, " + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs] = ") + use("Runtime.rtl").toStr("RenderDriver.e(") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs") + use("Runtime.rtl").toStr(", \"component\", {\"name\": ") + use("Runtime.rtl").toStr(tag_name) + use("Runtime.rtl").toStr(",\"attrs\": ") + use("Runtime.rtl").toStr(attrs) + use("Runtime.rtl").toStr(", \"layout\": layout, \"content\": ") + use("Runtime.rtl").toStr(f) + use("Runtime.rtl").toStr("}, ") + use("Runtime.rtl").toStr(item_pos) + use("Runtime.rtl").toStr(");")));
+					content += use("Runtime.rtl").toStr(t.s(ctx, "[__vnull, " + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs] = ") + use("Runtime.rtl").toStr("RenderDriver.e(") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs") + use("Runtime.rtl").toStr(", \"component\", {\"name\": ") + use("Runtime.rtl").toStr(tag_name) + use("Runtime.rtl").toStr(",\"attrs\": ") + use("Runtime.rtl").toStr(attrs) + use("Runtime.rtl").toStr(", \"layout\": layout, \"content\": ") + use("Runtime.rtl").toStr(f) + use("Runtime.rtl").toStr("});")));
 					has_childs = false;
 				}
 				else
 				{
-					content += use("Runtime.rtl").toStr(t.s(ctx, "[__vnull, " + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs] = ") + use("Runtime.rtl").toStr("RenderDriver.e(") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs") + use("Runtime.rtl").toStr(", \"component\", {\"name\": ") + use("Runtime.rtl").toStr(tag_name) + use("Runtime.rtl").toStr(",\"attrs\": ") + use("Runtime.rtl").toStr(attrs) + use("Runtime.rtl").toStr(", \"layout\": layout}, ") + use("Runtime.rtl").toStr(item_pos) + use("Runtime.rtl").toStr(");")));
+					content += use("Runtime.rtl").toStr(t.s(ctx, "[__vnull, " + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs] = ") + use("Runtime.rtl").toStr("RenderDriver.e(") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs") + use("Runtime.rtl").toStr(", \"component\", {\"name\": ") + use("Runtime.rtl").toStr(tag_name) + use("Runtime.rtl").toStr(",\"attrs\": ") + use("Runtime.rtl").toStr(attrs) + use("Runtime.rtl").toStr(", \"layout\": layout});")));
 				}
 			}
 			else
@@ -301,24 +329,32 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 				var tag_name = t.expression.constructor.toString(ctx, op_code.tag_name);
 				if (has_childs)
 				{
+					var attr_class_name = this.getOpHtmlAttrsClassName(ctx, op_code.attrs);
+					var __v3 = use("Runtime.rs");
+					attr_class_name = __v3.replace(ctx, " ", ".", attr_class_name);
+					if (attr_class_name != "")
+					{
+						attr_class_name = "." + use("Runtime.rtl").toStr(attr_class_name);
+					}
 					var res = t.constructor.incSaveOpCode(ctx, t);
 					t = Runtime.rtl.get(ctx, res, 0);
 					new_var_name = Runtime.rtl.get(ctx, res, 1);
-					content += use("Runtime.rtl").toStr(t.s2(ctx, ""));
-					content += use("Runtime.rtl").toStr(t.s(ctx, "/* Element '" + use("Runtime.rtl").toStr(op_code.tag_name) + use("Runtime.rtl").toStr("' */")));
+					content += use("Runtime.rtl").toStr(t.s(ctx, "/* Element '" + use("Runtime.rtl").toStr(op_code.tag_name) + use("Runtime.rtl").toStr(attr_class_name) + use("Runtime.rtl").toStr("' */")));
 					content += use("Runtime.rtl").toStr(t.s(ctx, "var " + use("Runtime.rtl").toStr(new_var_name) + use("Runtime.rtl").toStr("; var ") + use("Runtime.rtl").toStr(new_var_name) + use("Runtime.rtl").toStr("_childs = [];")));
-					content += use("Runtime.rtl").toStr(t.s(ctx, "[" + use("Runtime.rtl").toStr(new_var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs] = ") + use("Runtime.rtl").toStr("RenderDriver.e(") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs") + use("Runtime.rtl").toStr(", \"element\", {\"name\": ") + use("Runtime.rtl").toStr(tag_name) + use("Runtime.rtl").toStr(",\"attrs\": ") + use("Runtime.rtl").toStr(attrs) + use("Runtime.rtl").toStr("}, ") + use("Runtime.rtl").toStr(item_pos) + use("Runtime.rtl").toStr(");")));
+					content += use("Runtime.rtl").toStr(t.s(ctx, "[" + use("Runtime.rtl").toStr(new_var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs] = ") + use("Runtime.rtl").toStr("RenderDriver.e(") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs") + use("Runtime.rtl").toStr(", \"element\", {\"name\": ") + use("Runtime.rtl").toStr(tag_name) + use("Runtime.rtl").toStr(",\"attrs\": ") + use("Runtime.rtl").toStr(attrs) + use("Runtime.rtl").toStr("});")));
 				}
 				else
 				{
-					content += use("Runtime.rtl").toStr(t.s(ctx, "[__vnull, " + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs] = ") + use("Runtime.rtl").toStr("RenderDriver.e(") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs") + use("Runtime.rtl").toStr(", \"element\", {\"name\": ") + use("Runtime.rtl").toStr(tag_name) + use("Runtime.rtl").toStr(",\"attrs\": ") + use("Runtime.rtl").toStr(attrs) + use("Runtime.rtl").toStr("}, ") + use("Runtime.rtl").toStr(item_pos) + use("Runtime.rtl").toStr(", false);")));
+					content += use("Runtime.rtl").toStr(t.s(ctx, "[__vnull, " + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs] = ") + use("Runtime.rtl").toStr("RenderDriver.e(") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs") + use("Runtime.rtl").toStr(", \"element\", {\"name\": ") + use("Runtime.rtl").toStr(tag_name) + use("Runtime.rtl").toStr(",\"attrs\": ") + use("Runtime.rtl").toStr(attrs) + use("Runtime.rtl").toStr("});")));
 				}
 			}
 			if (has_childs)
 			{
+				content += use("Runtime.rtl").toStr(t.s2(ctx, ""));
 				var res = this.OpHtmlChilds(ctx, t, op_code.items, new_var_name);
 				t = Runtime.rtl.get(ctx, res, 0);
 				content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
+				content += use("Runtime.rtl").toStr(t.s(ctx, "RenderDriver.p(" + use("Runtime.rtl").toStr(new_var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(new_var_name) + use("Runtime.rtl").toStr("_childs);")));
 			}
 			if (op_code.tag_name == "")
 			{
@@ -342,7 +378,8 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 			/* Restore op codes */
 			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["save_op_codes"]), save_op_codes);
 			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["save_op_code_inc"]), save_op_code_inc);
-			content += use("Runtime.rtl").toStr(t.s(ctx, "[__vnull, " + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs] = ") + use("Runtime.rtl").toStr("RenderDriver.e(") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs") + use("Runtime.rtl").toStr(", \"text\", {\"content\": ") + use("Runtime.rtl").toStr(item_value) + use("Runtime.rtl").toStr("}, ") + use("Runtime.rtl").toStr(item_pos) + use("Runtime.rtl").toStr(");")));
+			content += use("Runtime.rtl").toStr(t.s(ctx, "/* Text */"));
+			content += use("Runtime.rtl").toStr(t.s(ctx, "[__vnull, " + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs] = ") + use("Runtime.rtl").toStr("RenderDriver.e(") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_childs") + use("Runtime.rtl").toStr(", \"text\", {\"content\": ") + use("Runtime.rtl").toStr(item_value) + use("Runtime.rtl").toStr("});")));
 		}
 		return use("Runtime.Collection").from([t,content]);
 	},
@@ -357,14 +394,24 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 		}
 		var save_control_name = t.html_var_name;
 		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["html_var_name"]), control_name);
+		var next_space = true;
 		var content = "";
 		for (var i = 0;i < op_code.items.count(ctx);i++)
 		{
 			var item = op_code.items.item(ctx, i);
+			if (i > 0 && next_space)
+			{
+				content += use("Runtime.rtl").toStr(t.s2(ctx, ""));
+			}
+			if (!next_space)
+			{
+				next_space = true;
+			}
 			var __v0 = use("Bayrell.Lang.OpCodes.OpAssign");
-			var __v1 = use("Bayrell.Lang.OpCodes.OpFor");
-			var __v2 = use("Bayrell.Lang.OpCodes.OpIf");
-			var __v3 = use("Bayrell.Lang.OpCodes.OpWhile");
+			var __v1 = use("Bayrell.Lang.OpCodes.OpComment");
+			var __v2 = use("Bayrell.Lang.OpCodes.OpFor");
+			var __v3 = use("Bayrell.Lang.OpCodes.OpIf");
+			var __v4 = use("Bayrell.Lang.OpCodes.OpWhile");
 			if (item instanceof __v0)
 			{
 				var res = t.operator.constructor.OpAssign(ctx, t, item);
@@ -373,17 +420,24 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 			}
 			else if (item instanceof __v1)
 			{
+				var res = t.operator.constructor.OpComment(ctx, t, item);
+				t = Runtime.rtl.get(ctx, res, 0);
+				content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
+				next_space = false;
+			}
+			else if (item instanceof __v2)
+			{
 				var res = t.operator.constructor.OpFor(ctx, t, item);
 				t = Runtime.rtl.get(ctx, res, 0);
 				content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
 			}
-			else if (item instanceof __v2)
+			else if (item instanceof __v3)
 			{
 				var res = t.operator.constructor.OpIf(ctx, t, item);
 				t = Runtime.rtl.get(ctx, res, 0);
 				content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
 			}
-			else if (item instanceof __v3)
+			else if (item instanceof __v4)
 			{
 				var res = t.operator.constructor.OpWhile(ctx, t, item);
 				t = Runtime.rtl.get(ctx, res, 0);
@@ -396,10 +450,12 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 				content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
 			}
 		}
-		if (control_name != "control")
+		/*
+		if (control_name != "control" and patch_flag)
 		{
-			content += use("Runtime.rtl").toStr(t.s(ctx, "RenderDriver.p(" + use("Runtime.rtl").toStr(control_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(control_name) + use("Runtime.rtl").toStr("_childs);")));
+			content ~= t.s("RenderDriver.p(" ~ control_name ~ ", " ~ control_name ~ "_childs);");
 		}
+		*/
 		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["html_var_name"]), save_control_name);
 		return use("Runtime.Collection").from([t,content]);
 	},
@@ -418,14 +474,16 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 		var save_op_code_inc = t.save_op_code_inc;
 		t = t.constructor.clearSaveOpCode(ctx, t);
 		var content = "";
-		content += use("Runtime.rtl").toStr("(control) =>");
+		content += use("Runtime.rtl").toStr("(__control) =>");
 		content += use("Runtime.rtl").toStr(t.s(ctx, "{"));
 		t = t.levelInc(ctx);
 		content += use("Runtime.rtl").toStr(t.s(ctx, "var __vnull = null;"));
 		content += use("Runtime.rtl").toStr(t.s(ctx, "var __control_childs = [];"));
+		content += use("Runtime.rtl").toStr(t.s2(ctx, ""));
 		var res = this.OpHtmlChilds(ctx, t, op_code, "__control");
 		t = Runtime.rtl.get(ctx, res, 0);
 		content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
+		/*content ~= t.s("RenderDriver.p(__control, __control_childs);");*/
 		content += use("Runtime.rtl").toStr(t.s2(ctx, ""));
 		content += use("Runtime.rtl").toStr(t.s(ctx, "return __control_childs;"));
 		t = t.levelDec(ctx);

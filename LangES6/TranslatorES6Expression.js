@@ -1011,9 +1011,9 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Expression,
 					value += use("Runtime.rtl").toStr("." + use("Runtime.rtl").toStr(op_item.value.obj.value.value));
 					value += use("Runtime.rtl").toStr(".bind(" + use("Runtime.rtl").toStr(t.pipe_var_name) + use("Runtime.rtl").toStr(".val)"));
 					var flag = false;
-					for (var i = 0;i < op_item.value.args.count(ctx);i++)
+					for (var j = 0;j < op_item.value.args.count(ctx);j++)
 					{
-						var item = op_item.value.args.item(ctx, i);
+						var item = op_item.value.args.item(ctx, j);
 						var res = t.expression.constructor.Expression(ctx, t, item);
 						t = Runtime.rtl.get(ctx, res, 0);
 						var s_arg = Runtime.rtl.get(ctx, res, 1);
