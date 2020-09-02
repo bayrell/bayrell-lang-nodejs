@@ -114,9 +114,9 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 		}
 		content += use("Runtime.rtl").toStr(t.s(ctx, "if ($field_name == " + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, f.name)) + use("Runtime.rtl").toStr(")")));
 		t = t.levelInc(ctx);
-		content += use("Runtime.rtl").toStr(t.s(ctx, "return new \\Runtime\\Annotations\\IntrospectionInfo($ctx, ["));
+		content += use("Runtime.rtl").toStr(t.s(ctx, "return new \\Runtime\\IntrospectionInfo($ctx, ["));
 		t = t.levelInc(ctx);
-		content += use("Runtime.rtl").toStr(t.s(ctx, "\"kind\"=>\\Runtime\\Annotations\\IntrospectionInfo::ITEM_METHOD,"));
+		content += use("Runtime.rtl").toStr(t.s(ctx, "\"kind\"=>\\Runtime\\IntrospectionInfo::ITEM_METHOD,"));
 		content += use("Runtime.rtl").toStr(t.s(ctx, "\"class_name\"=>" + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, t.current_class_full_name)) + use("Runtime.rtl").toStr(",")));
 		content += use("Runtime.rtl").toStr(t.s(ctx, "\"name\"=>" + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, f.name)) + use("Runtime.rtl").toStr(",")));
 		content += use("Runtime.rtl").toStr(t.s(ctx, "\"annotations\"=>\\Runtime\\Collection::from(["));
@@ -534,9 +534,9 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 			content += use("Runtime.rtl").toStr(t.s(ctx, "{"));
 			t = t.levelInc(ctx);
 			t = t.constructor.clearSaveOpCode(ctx, t);
-			content += use("Runtime.rtl").toStr(t.s(ctx, "return new \\Runtime\\Annotations\\IntrospectionInfo($ctx, ["));
+			content += use("Runtime.rtl").toStr(t.s(ctx, "return new \\Runtime\\IntrospectionInfo($ctx, ["));
 			t = t.levelInc(ctx);
-			content += use("Runtime.rtl").toStr(t.s(ctx, "\"kind\"=>\\Runtime\\Annotations\\IntrospectionInfo::ITEM_CLASS,"));
+			content += use("Runtime.rtl").toStr(t.s(ctx, "\"kind\"=>\\Runtime\\IntrospectionInfo::ITEM_CLASS,"));
 			content += use("Runtime.rtl").toStr(t.s(ctx, "\"class_name\"=>" + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, t.current_class_full_name)) + use("Runtime.rtl").toStr(",")));
 			content += use("Runtime.rtl").toStr(t.s(ctx, "\"name\"=>" + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, t.current_class_full_name)) + use("Runtime.rtl").toStr(",")));
 			content += use("Runtime.rtl").toStr(t.s(ctx, "\"annotations\"=>\\Runtime\\Collection::from(["));
@@ -656,9 +656,9 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 					});
 					t = t.constructor.clearSaveOpCode(ctx, t);
 					var __v1 = use("Runtime.rs");
-					content += use("Runtime.rtl").toStr(t.s(ctx, "if (" + use("Runtime.rtl").toStr(__v1.join(ctx, " or ", v)) + use("Runtime.rtl").toStr(") ") + use("Runtime.rtl").toStr("return new \\Runtime\\Annotations\\IntrospectionInfo($ctx, [")));
+					content += use("Runtime.rtl").toStr(t.s(ctx, "if (" + use("Runtime.rtl").toStr(__v1.join(ctx, " or ", v)) + use("Runtime.rtl").toStr(") ") + use("Runtime.rtl").toStr("return new \\Runtime\\IntrospectionInfo($ctx, [")));
 					t = t.levelInc(ctx);
-					content += use("Runtime.rtl").toStr(t.s(ctx, "\"kind\"=>\\Runtime\\Annotations\\IntrospectionInfo::ITEM_FIELD,"));
+					content += use("Runtime.rtl").toStr(t.s(ctx, "\"kind\"=>\\Runtime\\IntrospectionInfo::ITEM_FIELD,"));
 					content += use("Runtime.rtl").toStr(t.s(ctx, "\"class_name\"=>" + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, t.current_class_full_name)) + use("Runtime.rtl").toStr(",")));
 					content += use("Runtime.rtl").toStr(t.s(ctx, "\"name\"=> $field_name,"));
 					content += use("Runtime.rtl").toStr(t.s(ctx, "\"annotations\"=>\\Runtime\\Collection::from(["));
@@ -928,7 +928,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
+		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Bayrell.Lang.LangPHP.TranslatorPHPProgram",
@@ -947,7 +947,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
+		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 		return null;
 	},
 	getMethodsList: function(ctx)

@@ -220,7 +220,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 		t = t.levelInc(ctx);
 		s1 += use("Runtime.rtl").toStr(t.s(ctx, "var Collection = " + use("Runtime.rtl").toStr(t.expression.constructor.useModuleName(ctx, t, "Runtime.Collection")) + use("Runtime.rtl").toStr(";")));
 		s1 += use("Runtime.rtl").toStr(t.s(ctx, "var Dict = " + use("Runtime.rtl").toStr(t.expression.constructor.useModuleName(ctx, t, "Runtime.Dict")) + use("Runtime.rtl").toStr(";")));
-		s1 += use("Runtime.rtl").toStr(t.s(ctx, "var IntrospectionInfo = " + use("Runtime.rtl").toStr(t.expression.constructor.useModuleName(ctx, t, "Runtime.Annotations.IntrospectionInfo")) + use("Runtime.rtl").toStr(";")));
+		s1 += use("Runtime.rtl").toStr(t.s(ctx, "var IntrospectionInfo = " + use("Runtime.rtl").toStr(t.expression.constructor.useModuleName(ctx, t, "Runtime.IntrospectionInfo")) + use("Runtime.rtl").toStr(";")));
 		s1 += use("Runtime.rtl").toStr(t.s(ctx, "return new IntrospectionInfo(ctx, {"));
 		t = t.levelInc(ctx);
 		s1 += use("Runtime.rtl").toStr(t.s(ctx, "\"kind\": IntrospectionInfo.ITEM_METHOD,"));
@@ -438,7 +438,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 			var s1 = "";
 			s1 += use("Runtime.rtl").toStr(t.s(ctx, "var Collection = " + use("Runtime.rtl").toStr(t.expression.constructor.useModuleName(ctx, t, "Runtime.Collection")) + use("Runtime.rtl").toStr(";")));
 			s1 += use("Runtime.rtl").toStr(t.s(ctx, "var Dict = " + use("Runtime.rtl").toStr(t.expression.constructor.useModuleName(ctx, t, "Runtime.Dict")) + use("Runtime.rtl").toStr(";")));
-			s1 += use("Runtime.rtl").toStr(t.s(ctx, "var IntrospectionInfo = " + use("Runtime.rtl").toStr(t.expression.constructor.useModuleName(ctx, t, "Runtime.Annotations.IntrospectionInfo")) + use("Runtime.rtl").toStr(";")));
+			s1 += use("Runtime.rtl").toStr(t.s(ctx, "var IntrospectionInfo = " + use("Runtime.rtl").toStr(t.expression.constructor.useModuleName(ctx, t, "Runtime.IntrospectionInfo")) + use("Runtime.rtl").toStr(";")));
 			s1 += use("Runtime.rtl").toStr(t.s(ctx, "return new IntrospectionInfo(ctx, {"));
 			t = t.levelInc(ctx);
 			s1 += use("Runtime.rtl").toStr(t.s(ctx, "\"kind\": IntrospectionInfo.ITEM_CLASS,"));
@@ -558,7 +558,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 			{
 				content += use("Runtime.rtl").toStr(t.s(ctx, "var Collection = " + use("Runtime.rtl").toStr(t.expression.constructor.useModuleName(ctx, t, "Runtime.Collection")) + use("Runtime.rtl").toStr(";")));
 				content += use("Runtime.rtl").toStr(t.s(ctx, "var Dict = " + use("Runtime.rtl").toStr(t.expression.constructor.useModuleName(ctx, t, "Runtime.Dict")) + use("Runtime.rtl").toStr(";")));
-				content += use("Runtime.rtl").toStr(t.s(ctx, "var IntrospectionInfo = " + use("Runtime.rtl").toStr(t.expression.constructor.useModuleName(ctx, t, "Runtime.Annotations.IntrospectionInfo")) + use("Runtime.rtl").toStr(";")));
+				content += use("Runtime.rtl").toStr(t.s(ctx, "var IntrospectionInfo = " + use("Runtime.rtl").toStr(t.expression.constructor.useModuleName(ctx, t, "Runtime.IntrospectionInfo")) + use("Runtime.rtl").toStr(";")));
 				for (var i = 0;i < op_code.vars.count(ctx);i++)
 				{
 					var variable = op_code.vars.item(ctx, i);
@@ -1168,7 +1168,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
+		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Bayrell.Lang.LangES6.TranslatorES6Program",
@@ -1187,7 +1187,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
+		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 		return null;
 	},
 	getMethodsList: function(ctx)
