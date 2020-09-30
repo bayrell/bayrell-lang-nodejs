@@ -98,12 +98,24 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPHtml,
 			t = Runtime.rtl.get(ctx, res, 0);
 			v_model = "\\Runtime\\rtl::attr($ctx, $model, " + use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1)) + use("Runtime.rtl").toStr(", null)");
 		}
+		var __v1 = use("Runtime.lib");
+		var bind = op_code.attrs.findItem(ctx, __v1.equalAttr(ctx, "key", "@name"));
+		if (bind)
+		{
+			var res = t.expression.constructor.Expression(ctx, t, bind.value);
+			t = Runtime.rtl.get(ctx, res, 0);
+			v_model = "\\Runtime\\rtl::attr($ctx, $model, " + use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1)) + use("Runtime.rtl").toStr(", null)");
+		}
 		content += use("Runtime.rtl").toStr(t.s(ctx, "/* Component '" + use("Runtime.rtl").toStr(tag_name) + use("Runtime.rtl").toStr("' */")));
 		content += use("Runtime.rtl").toStr(t.s(ctx, var_name + use("Runtime.rtl").toStr("_params = [];")));
 		for (var i = 0;i < op_code.attrs.count(ctx);i++)
 		{
 			var attr = op_code.attrs.item(ctx, i);
 			if (attr.key == "@bind")
+			{
+				continue;
+			}
+			if (attr.key == "@name")
 			{
 				continue;
 			}
@@ -115,27 +127,33 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPHtml,
 			{
 				continue;
 			}
-			var res = this.OpHtmlAttr(ctx, t, attr);
-			t = Runtime.rtl.get(ctx, res, 0);
-			var attr_value = Runtime.rtl.get(ctx, res, 1);
-			content += use("Runtime.rtl").toStr(t.s(ctx, var_name + use("Runtime.rtl").toStr("_params[") + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, attr.key)) + use("Runtime.rtl").toStr("] = ") + use("Runtime.rtl").toStr(attr_value) + use("Runtime.rtl").toStr(";")));
+			if (attr.is_spread)
+			{
+				content += use("Runtime.rtl").toStr(t.s(ctx, "if($" + use("Runtime.rtl").toStr(attr.value.value) + use("Runtime.rtl").toStr("!=null)") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_params = array_merge(") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_params,$") + use("Runtime.rtl").toStr(attr.value.value) + use("Runtime.rtl").toStr("->_map);")));
+			}
+			else
+			{
+				var res = this.OpHtmlAttr(ctx, t, attr);
+				t = Runtime.rtl.get(ctx, res, 0);
+				var attr_value = Runtime.rtl.get(ctx, res, 1);
+				content += use("Runtime.rtl").toStr(t.s(ctx, var_name + use("Runtime.rtl").toStr("_params[") + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, attr.key)) + use("Runtime.rtl").toStr("] = ") + use("Runtime.rtl").toStr(attr_value) + use("Runtime.rtl").toStr(";")));
+			}
 		}
-		content += use("Runtime.rtl").toStr(t.s(ctx, var_name + use("Runtime.rtl").toStr("_content = \"\";")));
-		var __v1 = use("Runtime.rtl");
-		var f = __v1.method(ctx, this.getCurrentClassName(ctx), "OpHtmlItems");
+		content += use("Runtime.rtl").toStr(t.s(ctx, var_name + use("Runtime.rtl").toStr("_content = [];")));
+		var __v2 = use("Runtime.rtl");
+		var f = __v2.method(ctx, this.getCurrentClassName(ctx), "OpHtmlItems");
 		var res = t.constructor.saveOpCodeCall(ctx, t, f, use("Runtime.Collection").from([op_code.items,var_name + use("Runtime.rtl").toStr("_content")]));
 		t = Runtime.rtl.get(ctx, res, 0);
 		content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
-		/*content ~= t.s(var_name~"_content .= " ~ res[2] ~ ";");*/
 		if (op_code.op_code_name)
 		{
 			content += use("Runtime.rtl").toStr(t.s(ctx, var_name + use("Runtime.rtl").toStr("_name = \\Runtime\\rtl::find_class(") + use("Runtime.rtl").toStr(module_name) + use("Runtime.rtl").toStr(");")));
-			content += use("Runtime.rtl").toStr(t.s(ctx, var_name + use("Runtime.rtl").toStr(" = ") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_name::render($ctx, $layout,") + use("Runtime.rtl").toStr(v_model) + use("Runtime.rtl").toStr(",\\Runtime\\Dict::from(") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_params),") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_content);")));
+			content += use("Runtime.rtl").toStr(t.s(ctx, var_name + use("Runtime.rtl").toStr(" = [") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_name::render($ctx, $layout,") + use("Runtime.rtl").toStr(v_model) + use("Runtime.rtl").toStr(",\\Runtime\\Dict::from(") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_params),") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_content)];")));
 		}
 		else
 		{
 			content += use("Runtime.rtl").toStr(t.s(ctx, var_name + use("Runtime.rtl").toStr("_name = \\Runtime\\rtl::find_class(") + use("Runtime.rtl").toStr(module_name) + use("Runtime.rtl").toStr(");")));
-			content += use("Runtime.rtl").toStr(t.s(ctx, var_name + use("Runtime.rtl").toStr(" = ") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_name::render($ctx, $layout,") + use("Runtime.rtl").toStr(v_model) + use("Runtime.rtl").toStr(",\\Runtime\\Dict::from(") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_params),") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_content);")));
+			content += use("Runtime.rtl").toStr(t.s(ctx, var_name + use("Runtime.rtl").toStr(" = [") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_name::render($ctx, $layout,") + use("Runtime.rtl").toStr(v_model) + use("Runtime.rtl").toStr(",\\Runtime\\Dict::from(") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_params),") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_content)];")));
 		}
 		var res = t.constructor.addSaveOpCode(ctx, t, use("Runtime.Dict").from({"op_code":op_code,"var_name":var_name,"content":content}));
 		t = Runtime.rtl.get(ctx, res, 0);
@@ -180,22 +198,19 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPHtml,
 	/**
 	 * Translator html template
 	 */
-	OpHtmlTag: function(ctx, t, op_code)
+	OpHtmlAttrs: function(ctx, t, attrs)
 	{
-		if (this.isComponent(ctx, op_code.tag_name))
-		{
-			return this.OpHtmlComponent(ctx, t, op_code);
-		}
 		var __v0 = use("Runtime.Vector");
 		var attr_class = new __v0(ctx);
-		var res = t.constructor.incSaveOpCode(ctx, t);
-		t = Runtime.rtl.get(ctx, res, 0);
-		var var_name = Runtime.rtl.get(ctx, res, 1);
 		var attr_s = "";
 		var attr_key_value = "";
 		var has_attr_key = false;
-		var attrs = op_code.attrs.map(ctx, (ctx, attr) => 
+		var res_attrs = attrs.map(ctx, (ctx, attr) => 
 		{
+			if (attr.is_spread)
+			{
+				return "";
+			}
 			var attr_key = attr.key;
 			var attr_value = "";
 			/*
@@ -240,7 +255,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPHtml,
 				attr_key_value = attr_value;
 				return "";
 			}
-			if (attr_key == "@bind")
+			if (attr_key == "@bind" || attr_key == "@name")
 			{
 				attr_key = "value";
 				var res = t.expression.constructor.Expression(ctx, t, attr.value);
@@ -261,22 +276,50 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPHtml,
 			}
 			return attr_key + use("Runtime.rtl").toStr("=\"'.static::escapeAttr($ctx, ") + use("Runtime.rtl").toStr(attr_value) + use("Runtime.rtl").toStr(").'\"");
 		});
-		attrs = attrs.filter(ctx, (ctx, s) => 
+		res_attrs = res_attrs.filter(ctx, (ctx, s) => 
 		{
 			return s != "";
 		});
 		if (attr_class.count(ctx) > 0)
 		{
-			attr_class.push(ctx, "static::getCssHash()");
+			attr_class.push(ctx, "static::getCssHash($ctx)");
 			/*attr_class.push( t.expression::toString("h-" ~ ParserBayHtml::getCssHash(t.current_class_full_name)) );*/
 			var __v1 = use("Runtime.rs");
-			attrs = attrs.pushIm(ctx, "class=" + use("Runtime.rtl").toStr("\"'.") + use("Runtime.rtl").toStr(__v1.join(ctx, ".\" \".", attr_class)) + use("Runtime.rtl").toStr(".'\""));
+			res_attrs = res_attrs.pushIm(ctx, "class=" + use("Runtime.rtl").toStr("\"'.") + use("Runtime.rtl").toStr(__v1.join(ctx, ".\" \".", attr_class)) + use("Runtime.rtl").toStr(".'\""));
 		}
-		if (attrs.count(ctx) > 0)
+		if (res_attrs.count(ctx) > 0)
 		{
 			var __v1 = use("Runtime.rs");
-			attr_s = " " + use("Runtime.rtl").toStr(__v1.join(ctx, " ", attrs));
+			attr_s = " " + use("Runtime.rtl").toStr(__v1.join(ctx, " ", res_attrs));
 		}
+		/* Add spreads */
+		for (var i = 0;i < attrs.count(ctx);i++)
+		{
+			var attr = Runtime.rtl.get(ctx, attrs, i);
+			if (!attr.is_spread)
+			{
+				continue;
+			}
+			attr_s += use("Runtime.rtl").toStr(" ' . static::joinAttrs($ctx, $" + use("Runtime.rtl").toStr(attr.value.value) + use("Runtime.rtl").toStr(") . '"));
+		}
+		return use("Runtime.Collection").from([t,attr_s]);
+	},
+	/**
+	 * Translator html template
+	 */
+	OpHtmlTag: function(ctx, t, op_code)
+	{
+		if (this.isComponent(ctx, op_code.tag_name))
+		{
+			return this.OpHtmlComponent(ctx, t, op_code);
+		}
+		/* Output attrs */
+		var res = this.OpHtmlAttrs(ctx, t, op_code.attrs);
+		t = Runtime.rtl.get(ctx, res, 0);
+		var attr_s = Runtime.rtl.get(ctx, res, 1);
+		var res = t.constructor.incSaveOpCode(ctx, t);
+		t = Runtime.rtl.get(ctx, res, 0);
+		var var_name = Runtime.rtl.get(ctx, res, 1);
 		var content = "";
 		if (op_code.tag_name != "")
 		{
@@ -284,30 +327,30 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPHtml,
 		}
 		if (this.isSingleTag(ctx, op_code.tag_name))
 		{
-			content += use("Runtime.rtl").toStr(t.s(ctx, var_name + use("Runtime.rtl").toStr(" = '<") + use("Runtime.rtl").toStr(op_code.tag_name) + use("Runtime.rtl").toStr(attr_s) + use("Runtime.rtl").toStr(" />';")));
+			content += use("Runtime.rtl").toStr(t.s(ctx, var_name + use("Runtime.rtl").toStr(" = ['<") + use("Runtime.rtl").toStr(op_code.tag_name) + use("Runtime.rtl").toStr(attr_s) + use("Runtime.rtl").toStr(" />'];")));
 		}
 		else
 		{
 			if (op_code.tag_name != "")
 			{
-				content += use("Runtime.rtl").toStr(t.s(ctx, var_name + use("Runtime.rtl").toStr(" = '<") + use("Runtime.rtl").toStr(op_code.tag_name) + use("Runtime.rtl").toStr(attr_s) + use("Runtime.rtl").toStr(">';")));
+				content += use("Runtime.rtl").toStr(t.s(ctx, var_name + use("Runtime.rtl").toStr(" = ['<") + use("Runtime.rtl").toStr(op_code.tag_name) + use("Runtime.rtl").toStr(attr_s) + use("Runtime.rtl").toStr(">'];")));
 			}
 			else
 			{
-				content += use("Runtime.rtl").toStr(t.s(ctx, var_name + use("Runtime.rtl").toStr(" = \"\";")));
+				content += use("Runtime.rtl").toStr(t.s(ctx, var_name + use("Runtime.rtl").toStr(" = [];")));
 			}
 			var flag_value = false;
 			if (!flag_value)
 			{
-				var __v1 = use("Runtime.rtl");
-				var f = __v1.method(ctx, this.getCurrentClassName(ctx), "OpHtmlItems");
+				var __v0 = use("Runtime.rtl");
+				var f = __v0.method(ctx, this.getCurrentClassName(ctx), "OpHtmlItems");
 				var res = t.constructor.saveOpCodeCall(ctx, t, f, use("Runtime.Collection").from([op_code.items,var_name]));
 				t = Runtime.rtl.get(ctx, res, 0);
 				content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
 			}
 			if (op_code.tag_name != "")
 			{
-				content += use("Runtime.rtl").toStr(t.s(ctx, var_name + use("Runtime.rtl").toStr(" .= '</") + use("Runtime.rtl").toStr(op_code.tag_name) + use("Runtime.rtl").toStr(">';")));
+				content += use("Runtime.rtl").toStr(t.s(ctx, "static::p(" + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr(", '</") + use("Runtime.rtl").toStr(op_code.tag_name) + use("Runtime.rtl").toStr(">');")));
 			}
 		}
 		var res = t.constructor.addSaveOpCode(ctx, t, use("Runtime.Dict").from({"op_code":op_code,"var_name":var_name,"content":content}));
@@ -331,7 +374,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPHtml,
 			var res = t.constructor.incSaveOpCode(ctx, t);
 			t = Runtime.rtl.get(ctx, res, 0);
 			var var_name = Runtime.rtl.get(ctx, res, 1);
-			content += use("Runtime.rtl").toStr(t.s(ctx, var_name + use("Runtime.rtl").toStr(" = \"\";")));
+			content += use("Runtime.rtl").toStr(t.s(ctx, var_name + use("Runtime.rtl").toStr(" = [];")));
 		}
 		var save_html_var_name = t.html_var_name;
 		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["html_var_name"]), var_name);
@@ -339,6 +382,10 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPHtml,
 		{
 			var item = op_code.items.item(ctx, i);
 			var item_value = "";
+			var op_content = "";
+			/* Save op codes */
+			var save_op_codes = t.save_op_codes;
+			var save_op_code_inc = t.save_op_code_inc;
 			var __v0 = use("Bayrell.Lang.OpCodes.OpHtmlContent");
 			var __v1 = use("Bayrell.Lang.OpCodes.OpHtmlTag");
 			var __v2 = use("Bayrell.Lang.OpCodes.OpHtmlValue");
@@ -387,35 +434,31 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPHtml,
 			{
 				var res = t.operator.constructor.OpAssign(ctx, t, item);
 				t = Runtime.rtl.get(ctx, res, 0);
-				content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
-				continue;
+				op_content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
 			}
 			else if (item instanceof __v4)
 			{
 				var res = t.operator.constructor.OpComment(ctx, t, item);
 				t = Runtime.rtl.get(ctx, res, 0);
-				content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
+				op_content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
 			}
 			else if (item instanceof __v5)
 			{
 				var res = t.operator.constructor.OpFor(ctx, t, item);
 				t = Runtime.rtl.get(ctx, res, 0);
-				content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
-				continue;
+				op_content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
 			}
 			else if (item instanceof __v6)
 			{
 				var res = t.operator.constructor.OpIf(ctx, t, item);
 				t = Runtime.rtl.get(ctx, res, 0);
-				content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
-				continue;
+				op_content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
 			}
 			else if (item instanceof __v7)
 			{
 				var res = t.operator.constructor.OpWhile(ctx, t, item);
 				t = Runtime.rtl.get(ctx, res, 0);
-				content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
-				continue;
+				op_content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
 			}
 			else
 			{
@@ -424,9 +467,22 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPHtml,
 				item_value = Runtime.rtl.get(ctx, res, 1);
 				item_value = "static::escapeHtml($ctx, " + use("Runtime.rtl").toStr(item_value) + use("Runtime.rtl").toStr(")");
 			}
+			/* Output save op code */
+			var save = t.constructor.outputSaveOpCode(ctx, t, save_op_codes.count(ctx));
+			if (save != "")
+			{
+				content += use("Runtime.rtl").toStr(save);
+			}
+			if (op_content != "")
+			{
+				content += use("Runtime.rtl").toStr(op_content);
+			}
+			/* Restore save op codes */
+			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["save_op_codes"]), save_op_codes);
+			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["save_op_code_inc"]), save_op_code_inc);
 			if (item_value != "")
 			{
-				content += use("Runtime.rtl").toStr(t.s(ctx, var_name + use("Runtime.rtl").toStr(" .= ") + use("Runtime.rtl").toStr(item_value) + use("Runtime.rtl").toStr(";")));
+				content += use("Runtime.rtl").toStr(t.s(ctx, "static::p(" + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(item_value) + use("Runtime.rtl").toStr(");")));
 			}
 		}
 		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["html_var_name"]), save_html_var_name);

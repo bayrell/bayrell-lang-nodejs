@@ -35,6 +35,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpHtmlAttribute.prototype,
 		this.op = "op_html_attr";
 		this.key = "";
 		this.value = "";
+		this.is_spread = false;
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
@@ -44,6 +45,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpHtmlAttribute.prototype,
 			this.op = o.op;
 			this.key = o.key;
 			this.value = o.value;
+			this.is_spread = o.is_spread;
 		}
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
 	},
@@ -52,6 +54,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpHtmlAttribute.prototype,
 		if (k == "op")this.op = v;
 		else if (k == "key")this.key = v;
 		else if (k == "value")this.value = v;
+		else if (k == "is_spread")this.is_spread = v;
 		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
@@ -60,6 +63,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpHtmlAttribute.prototype,
 		if (k == "op")return this.op;
 		else if (k == "key")return this.key;
 		else if (k == "value")return this.value;
+		else if (k == "is_spread")return this.is_spread;
 		return use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)
@@ -105,6 +109,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpHtmlAttribute,
 			a.push("op");
 			a.push("key");
 			a.push("value");
+			a.push("is_spread");
 		}
 		return use("Runtime.Collection").from(a);
 	},
@@ -128,6 +133,13 @@ Object.assign(Bayrell.Lang.OpCodes.OpHtmlAttribute,
 			]),
 		});
 		if (field_name == "value") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.OpCodes.OpHtmlAttribute",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "is_spread") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpHtmlAttribute",
 			"name": field_name,

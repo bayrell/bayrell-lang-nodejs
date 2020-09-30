@@ -730,7 +730,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPOperator,
 				content = save;
 			}
 			/* Output content */
-			content += use("Runtime.rtl").toStr(t.s(ctx, save_html_var_name + use("Runtime.rtl").toStr(" .= ") + use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1)) + use("Runtime.rtl").toStr(";")));
+			content += use("Runtime.rtl").toStr(t.s(ctx, "static::p(" + use("Runtime.rtl").toStr(save_html_var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1)) + use("Runtime.rtl").toStr(");")));
 			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["save_op_codes"]), save_op_codes);
 			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["save_op_code_inc"]), save_op_code_inc);
 			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["is_html"]), save_is_html);
@@ -780,6 +780,8 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPOperator,
 	OpDeclareFunctionBody: function(ctx, t, f)
 	{
 		var save_t = t;
+		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["is_pipe"]), false);
+		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["is_html"]), false);
 		var content = "";
 		t = t.levelInc(ctx);
 		if (f.items)

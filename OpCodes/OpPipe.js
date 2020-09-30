@@ -84,6 +84,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpPipe,
 {
 	KIND_ATTR: "attr",
 	KIND_CALL: "call",
+	KIND_METHOD: "method",
 	/* ======================= Class Init Functions ======================= */
 	getCurrentNamespace: function()
 	{
@@ -138,6 +139,13 @@ Object.assign(Bayrell.Lang.OpCodes.OpPipe,
 			]),
 		});
 		if (field_name == "KIND_CALL") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.OpCodes.OpPipe",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "KIND_METHOD") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpPipe",
 			"name": field_name,

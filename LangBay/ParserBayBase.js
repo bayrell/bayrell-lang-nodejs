@@ -559,7 +559,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayBase,
 		}
 		var __v1 = use("Runtime.rs");
 		s = __v1.substr(ctx, content.ref, pos, 7);
-		if (s == "#ifcode" || s == "#switch" || s == "#elseif")
+		if (s == "#ifcode" || s == "#switch" || s == "#elseif" || s == "%render")
 		{
 			return s;
 		}
@@ -583,7 +583,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayBase,
 		}
 		var __v5 = use("Runtime.rs");
 		s = __v5.substr(ctx, content.ref, pos, 3);
-		if (s == "!--" || s == "!==" || s == "===" || s == "#if" || s == "%if")
+		if (s == "!--" || s == "!==" || s == "===" || s == "..." || s == "#if" || s == "%if")
 		{
 			return s;
 		}

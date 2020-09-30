@@ -109,8 +109,12 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 		var attr_key_value = "";
 		var attr_elem_name = "";
 		var has_attr_key = false;
-		var attrs = attrs.map(ctx, (ctx, attr) => 
+		var res_attrs = attrs.map(ctx, (ctx, attr) => 
 		{
+			if (attr.is_spread)
+			{
+				return "";
+			}
 			var res = this.OpHtmlAttr(ctx, t, attr);
 			t = Runtime.rtl.get(ctx, res, 0);
 			var attr_value = Runtime.rtl.get(ctx, res, 1);
@@ -155,41 +159,49 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 				attr_key = "@eventAsync:" + use("Runtime.rtl").toStr(event_name);
 				attr_value = "[" + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, t.current_class_full_name)) + use("Runtime.rtl").toStr(",") + use("Runtime.rtl").toStr(attr_value) + use("Runtime.rtl").toStr("]");
 			}
-			else if (attr_key == "@ref")
+			else if (attr_key == "@ref" || attr_key == "@bind" || attr_key == "@name")
 			{
 				attr_value = "[" + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, t.current_class_full_name)) + use("Runtime.rtl").toStr(",") + use("Runtime.rtl").toStr(attr_value) + use("Runtime.rtl").toStr("]");
 			}
-			else if (attr_key == "@bind")
-			{
-				var s = "";
-				s = t.expression.constructor.toString(ctx, attr_key) + use("Runtime.rtl").toStr(":") + use("Runtime.rtl").toStr("[") + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, t.current_class_full_name)) + use("Runtime.rtl").toStr(",") + use("Runtime.rtl").toStr(attr_value) + use("Runtime.rtl").toStr("]");
-				return s;
-			}
 			return t.expression.constructor.toString(ctx, attr_key) + use("Runtime.rtl").toStr(":") + use("Runtime.rtl").toStr(attr_value);
 		});
-		attrs = attrs.filter(ctx, (ctx, s) => 
+		res_attrs = res_attrs.filter(ctx, (ctx, s) => 
 		{
 			return s != "";
 		});
 		if (attr_class.count(ctx) > 0)
 		{
-			attr_class.push(ctx, "this.getCssHash()");
+			attr_class.push(ctx, "this.getCssHash(ctx)");
 			/*attr_class.push( t.expression::toString("h-" ~ ParserBayHtml::getCssHash(t.current_class_full_name)) );*/
 			var __v1 = use("Runtime.rs");
-			attrs = attrs.pushIm(ctx, "\"class\":" + use("Runtime.rtl").toStr("[") + use("Runtime.rtl").toStr(__v1.join(ctx, ", ", attr_class)) + use("Runtime.rtl").toStr("].join(\" \")"));
+			res_attrs = res_attrs.pushIm(ctx, "\"class\":" + use("Runtime.rtl").toStr("[") + use("Runtime.rtl").toStr(__v1.join(ctx, ", ", attr_class)) + use("Runtime.rtl").toStr("].join(\" \")"));
 		}
 		if (attr_key_value != "")
 		{
-			attrs = attrs.pushIm(ctx, "\"@key\":" + use("Runtime.rtl").toStr(attr_key_value));
+			res_attrs = res_attrs.pushIm(ctx, "\"@key\":" + use("Runtime.rtl").toStr(attr_key_value));
 		}
 		if (attr_elem_name != "")
 		{
-			attrs = attrs.pushIm(ctx, "\"@elem_name\":" + use("Runtime.rtl").toStr(attr_elem_name));
+			res_attrs = res_attrs.pushIm(ctx, "\"@elem_name\":" + use("Runtime.rtl").toStr(attr_elem_name));
 		}
-		if (attrs.count(ctx) > 0)
+		if (res_attrs.count(ctx) > 0)
 		{
 			var __v1 = use("Runtime.rs");
-			attr_s = "{" + use("Runtime.rtl").toStr(__v1.join(ctx, ",", attrs)) + use("Runtime.rtl").toStr("}");
+			attr_s = "{" + use("Runtime.rtl").toStr(__v1.join(ctx, ",", res_attrs)) + use("Runtime.rtl").toStr("}");
+		}
+		else
+		{
+			attr_s = "{}";
+		}
+		/* Add spreads */
+		for (var i = 0;i < attrs.count(ctx);i++)
+		{
+			var attr = Runtime.rtl.get(ctx, attrs, i);
+			if (!attr.is_spread)
+			{
+				continue;
+			}
+			attr_s = "this.mergeAttrs(ctx, " + use("Runtime.rtl").toStr(attr_s) + use("Runtime.rtl").toStr(",") + use("Runtime.rtl").toStr(attr.value.value) + use("Runtime.rtl").toStr(")");
 		}
 		return use("Runtime.Collection").from([t,attr_s]);
 	},
@@ -399,6 +411,10 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 		for (var i = 0;i < op_code.items.count(ctx);i++)
 		{
 			var item = op_code.items.item(ctx, i);
+			/* Save op codes */
+			var save_op_codes = t.save_op_codes;
+			var save_op_code_inc = t.save_op_code_inc;
+			var op_content = "";
 			if (i > 0 && next_space)
 			{
 				content += use("Runtime.rtl").toStr(t.s2(ctx, ""));
@@ -416,39 +432,52 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 			{
 				var res = t.operator.constructor.OpAssign(ctx, t, item);
 				t = Runtime.rtl.get(ctx, res, 0);
-				content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
+				op_content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
 			}
 			else if (item instanceof __v1)
 			{
 				var res = t.operator.constructor.OpComment(ctx, t, item);
 				t = Runtime.rtl.get(ctx, res, 0);
-				content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
+				op_content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
 				next_space = false;
 			}
 			else if (item instanceof __v2)
 			{
 				var res = t.operator.constructor.OpFor(ctx, t, item);
 				t = Runtime.rtl.get(ctx, res, 0);
-				content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
+				op_content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
 			}
 			else if (item instanceof __v3)
 			{
 				var res = t.operator.constructor.OpIf(ctx, t, item);
 				t = Runtime.rtl.get(ctx, res, 0);
-				content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
+				op_content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
 			}
 			else if (item instanceof __v4)
 			{
 				var res = t.operator.constructor.OpWhile(ctx, t, item);
 				t = Runtime.rtl.get(ctx, res, 0);
-				content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
+				op_content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
 			}
 			else
 			{
 				var res = this.OpHtmlTag(ctx, t, item, i, control_name);
 				t = Runtime.rtl.get(ctx, res, 0);
-				content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
+				op_content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
 			}
+			/* Output save op code */
+			var save = t.constructor.outputSaveOpCode(ctx, t, save_op_codes.count(ctx));
+			if (save != "")
+			{
+				content += use("Runtime.rtl").toStr(save);
+			}
+			if (op_content != "")
+			{
+				content += use("Runtime.rtl").toStr(op_content);
+			}
+			/* Restore save op codes */
+			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["save_op_codes"]), save_op_codes);
+			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["save_op_code_inc"]), save_op_code_inc);
 		}
 		/*
 		if (control_name != "control" and patch_flag)
@@ -472,7 +501,6 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 		var save_t = t;
 		var save_op_codes = t.save_op_codes;
 		var save_op_code_inc = t.save_op_code_inc;
-		t = t.constructor.clearSaveOpCode(ctx, t);
 		var content = "";
 		content += use("Runtime.rtl").toStr("(__control) =>");
 		content += use("Runtime.rtl").toStr(t.s(ctx, "{"));

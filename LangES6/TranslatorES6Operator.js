@@ -1040,6 +1040,8 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Operator,
 	OpDeclareFunctionBody: function(ctx, t, f)
 	{
 		var save_t = t;
+		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["is_pipe"]), false);
+		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["is_html"]), false);
 		if (f.isFlag(ctx, "async") && t.isEmulateAsyncAwait(ctx))
 		{
 			return t.async_await.constructor.OpDeclareFunctionBody(ctx, t, f);

@@ -524,7 +524,8 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayExpression,
 					var arg1;
 					var arg2;
 					var __v4 = use("Bayrell.Lang.OpCodes.OpPipe");
-					kind = __v4.KIND_MONAD;
+					kind = __v4.KIND_CALL;
+					is_monad = true;
 					var __v12 = use("Bayrell.Lang.Exceptions.ParserError");
 					try
 					{
@@ -582,13 +583,15 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayExpression,
 					parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["is_pipe"]), true);
 					if (look_token.content == ".")
 					{
-						var __v6 = use("Bayrell.Lang.OpCodes.OpAttr");
-						parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["pipe_kind"]), __v6.KIND_ATTR);
+						var __v6 = use("Bayrell.Lang.OpCodes.OpPipe");
+						kind = __v6.KIND_METHOD;
+						var __v7 = use("Bayrell.Lang.OpCodes.OpAttr");
+						parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["pipe_kind"]), __v7.KIND_ATTR);
 					}
 					else
 					{
-						var __v7 = use("Bayrell.Lang.OpCodes.OpAttr");
-						parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["pipe_kind"]), __v7.KIND_STATIC);
+						var __v8 = use("Bayrell.Lang.OpCodes.OpAttr");
+						parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["pipe_kind"]), __v8.KIND_STATIC);
 					}
 					var res = parser.parser_base.constructor.readDynamic(ctx, parser);
 					parser = Runtime.rtl.get(ctx, res, 0);

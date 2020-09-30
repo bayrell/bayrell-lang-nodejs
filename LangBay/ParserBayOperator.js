@@ -992,9 +992,11 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 		var token = null;
 		var flags = null;
 		/* Clear vars */
+		var save_is_html = parser.is_html;
 		var save_vars = parser.vars;
 		var __v0 = use("Runtime.Dict");
 		parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["vars"]), new __v0(ctx));
+		parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["is_html"]), false);
 		var res = parser.parser_base.constructor.readToken(ctx, parser);
 		look = Runtime.rtl.get(ctx, res, 0);
 		token = Runtime.rtl.get(ctx, res, 1);
@@ -1072,6 +1074,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 		}
 		/* Restore vars */
 		parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["vars"]), save_vars);
+		parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["is_html"]), save_is_html);
 		var __v1 = use("Bayrell.Lang.OpCodes.OpDeclareFunction");
 		return use("Runtime.Collection").from([parser,new __v1(ctx, use("Runtime.Dict").from({"args":args,"vars":vars,"flags":flags,"name":name,"is_context":is_context,"result_type":result_type,"expression":expression,"items":op_code,"caret_start":caret_start,"caret_end":parser.caret}))]);
 	},
