@@ -116,6 +116,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpTryCatch,
 		if (field_name == "op") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpTryCatch",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -123,6 +124,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpTryCatch,
 		if (field_name == "op_try") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpTryCatch",
+			"t": "Bayrell.Lang.OpCodes.BaseOpCode",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -130,6 +132,8 @@ Object.assign(Bayrell.Lang.OpCodes.OpTryCatch,
 		if (field_name == "items") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpTryCatch",
+			"t": "Runtime.Collection",
+			"s": ["Bayrell.Lang.OpCodes.OpTryCatchItem"],
 			"name": field_name,
 			"annotations": Collection.from([
 			]),

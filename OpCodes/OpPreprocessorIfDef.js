@@ -120,6 +120,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpPreprocessorIfDef,
 		if (field_name == "KIND_PROGRAM") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpPreprocessorIfDef",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -127,6 +128,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpPreprocessorIfDef,
 		if (field_name == "KIND_CLASS_BODY") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpPreprocessorIfDef",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -134,6 +136,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpPreprocessorIfDef,
 		if (field_name == "KIND_OPERATOR") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpPreprocessorIfDef",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -141,6 +144,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpPreprocessorIfDef,
 		if (field_name == "KIND_EXPRESSION") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpPreprocessorIfDef",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -148,6 +152,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpPreprocessorIfDef,
 		if (field_name == "op") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpPreprocessorIfDef",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -155,6 +160,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpPreprocessorIfDef,
 		if (field_name == "condition") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpPreprocessorIfDef",
+			"t": "Bayrell.Lang.OpCodes.BaseOpCode",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -162,6 +168,8 @@ Object.assign(Bayrell.Lang.OpCodes.OpPreprocessorIfDef,
 		if (field_name == "items") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpPreprocessorIfDef",
+			"t": "Runtime.Collection",
+			"s": ["Bayrell.Lang.OpCodes.BaseOpCode"],
 			"name": field_name,
 			"annotations": Collection.from([
 			]),

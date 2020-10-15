@@ -126,6 +126,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpIf,
 		if (field_name == "op") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpIf",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -133,6 +134,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpIf,
 		if (field_name == "condition") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpIf",
+			"t": "Bayrell.Lang.OpCodes.BaseOpCode",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -140,6 +142,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpIf,
 		if (field_name == "if_true") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpIf",
+			"t": "Bayrell.Lang.OpCodes.BaseOpCode",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -147,6 +150,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpIf,
 		if (field_name == "if_false") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpIf",
+			"t": "Bayrell.Lang.OpCodes.BaseOpCode",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -154,6 +158,8 @@ Object.assign(Bayrell.Lang.OpCodes.OpIf,
 		if (field_name == "if_else") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpIf",
+			"t": "Runtime.Collection",
+			"s": ["Bayrell.Lang.OpCodes.OpIfElse"],
 			"name": field_name,
 			"annotations": Collection.from([
 			]),

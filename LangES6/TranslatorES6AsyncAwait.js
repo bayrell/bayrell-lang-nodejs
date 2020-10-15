@@ -773,6 +773,8 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6AsyncAwait,
 		if (field_name == "async_stack") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangES6.TranslatorES6AsyncAwait",
+			"t": "Runtime.Collection",
+			"s": ["Bayrell.Lang.LangES6.AsyncAwait"],
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -780,6 +782,8 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6AsyncAwait,
 		if (field_name == "pos") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangES6.TranslatorES6AsyncAwait",
+			"t": "Runtime.Collection",
+			"s": ["int"],
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -787,6 +791,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6AsyncAwait,
 		if (field_name == "async_t") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangES6.TranslatorES6AsyncAwait",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -794,6 +799,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6AsyncAwait,
 		if (field_name == "async_var") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangES6.TranslatorES6AsyncAwait",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),

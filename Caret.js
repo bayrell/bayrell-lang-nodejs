@@ -113,6 +113,7 @@ Object.assign(Bayrell.Lang.Caret,
 		if (field_name == "pos") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.Caret",
+			"t": "int",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -120,6 +121,7 @@ Object.assign(Bayrell.Lang.Caret,
 		if (field_name == "x") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.Caret",
+			"t": "int",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -127,6 +129,7 @@ Object.assign(Bayrell.Lang.Caret,
 		if (field_name == "y") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.Caret",
+			"t": "int",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),

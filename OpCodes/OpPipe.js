@@ -134,6 +134,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpPipe,
 		if (field_name == "KIND_ATTR") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpPipe",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -141,6 +142,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpPipe,
 		if (field_name == "KIND_CALL") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpPipe",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -148,6 +150,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpPipe,
 		if (field_name == "KIND_METHOD") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpPipe",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -155,6 +158,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpPipe,
 		if (field_name == "op") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpPipe",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -162,6 +166,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpPipe,
 		if (field_name == "kind") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpPipe",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -169,6 +174,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpPipe,
 		if (field_name == "obj") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpPipe",
+			"t": "Bayrell.Lang.OpCodes.BaseOpCode",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -176,6 +182,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpPipe,
 		if (field_name == "value") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpPipe",
+			"t": "Bayrell.Lang.OpCodes.BaseOpCode",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -183,6 +190,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpPipe,
 		if (field_name == "is_async") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpPipe",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -190,6 +198,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpPipe,
 		if (field_name == "is_monad") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpPipe",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),

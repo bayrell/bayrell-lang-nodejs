@@ -42,6 +42,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay.prototype,
 		this.pipe_kind = "";
 		this.is_pipe = false;
 		this.is_html = false;
+		this.is_local_css = false;
 		this.parser_base = null;
 		this.parser_expression = null;
 		this.parser_html = null;
@@ -66,6 +67,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay.prototype,
 			this.pipe_kind = o.pipe_kind;
 			this.is_pipe = o.is_pipe;
 			this.is_html = o.is_html;
+			this.is_local_css = o.is_local_css;
 			this.parser_base = o.parser_base;
 			this.parser_expression = o.parser_expression;
 			this.parser_html = o.parser_html;
@@ -89,6 +91,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay.prototype,
 		else if (k == "pipe_kind")this.pipe_kind = v;
 		else if (k == "is_pipe")this.is_pipe = v;
 		else if (k == "is_html")this.is_html = v;
+		else if (k == "is_local_css")this.is_local_css = v;
 		else if (k == "parser_base")this.parser_base = v;
 		else if (k == "parser_expression")this.parser_expression = v;
 		else if (k == "parser_html")this.parser_html = v;
@@ -112,6 +115,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay.prototype,
 		else if (k == "pipe_kind")return this.pipe_kind;
 		else if (k == "is_pipe")return this.is_pipe;
 		else if (k == "is_html")return this.is_html;
+		else if (k == "is_local_css")return this.is_local_css;
 		else if (k == "parser_base")return this.parser_base;
 		else if (k == "parser_expression")return this.parser_expression;
 		else if (k == "parser_html")return this.parser_html;
@@ -236,6 +240,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 			a.push("pipe_kind");
 			a.push("is_pipe");
 			a.push("is_html");
+			a.push("is_local_css");
 			a.push("parser_base");
 			a.push("parser_expression");
 			a.push("parser_html");
@@ -253,6 +258,8 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 		if (field_name == "vars") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"t": "Runtime.Dict",
+			"s": ["bool"],
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -260,6 +267,8 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 		if (field_name == "uses") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"t": "Runtime.Dict",
+			"s": ["string"],
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -267,6 +276,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 		if (field_name == "current_namespace") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"t": "Bayrell.Lang.OpCodes.OpNamespace",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -274,6 +284,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 		if (field_name == "current_class") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"t": "Bayrell.Lang.OpCodes.OpDeclareClass",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -281,6 +292,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 		if (field_name == "current_namespace_name") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -288,6 +300,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 		if (field_name == "current_class_name") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -295,6 +308,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 		if (field_name == "current_class_kind") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -302,6 +316,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 		if (field_name == "find_identifier") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -309,6 +324,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 		if (field_name == "skip_comments") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -316,6 +332,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 		if (field_name == "pipe_kind") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -323,6 +340,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 		if (field_name == "is_pipe") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -330,6 +348,15 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 		if (field_name == "is_html") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"t": "bool",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "is_local_css") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -337,6 +364,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 		if (field_name == "parser_base") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"t": "Bayrell.Lang.LangBay.ParserBayBase",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -344,6 +372,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 		if (field_name == "parser_expression") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"t": "Bayrell.Lang.LangBay.ParserBayExpression",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -351,6 +380,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 		if (field_name == "parser_html") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"t": "Bayrell.Lang.LangBay.ParserBayHtml",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -358,6 +388,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 		if (field_name == "parser_operator") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"t": "Bayrell.Lang.LangBay.ParserBayOperator",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -365,6 +396,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 		if (field_name == "parser_preprocessor") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"t": "Bayrell.Lang.LangBay.ParserBayPreprocessor",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -372,6 +404,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 		if (field_name == "parser_program") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"t": "Bayrell.Lang.LangBay.ParserBayProgram",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),

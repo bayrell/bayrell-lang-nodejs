@@ -111,6 +111,8 @@ Object.assign(Bayrell.Lang.OpCodes.OpModule,
 		if (field_name == "uses") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpModule",
+			"t": "Runtime.Dict",
+			"s": ["string"],
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -118,6 +120,8 @@ Object.assign(Bayrell.Lang.OpCodes.OpModule,
 		if (field_name == "items") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpModule",
+			"t": "Runtime.Collection",
+			"s": ["Bayrell.Lang.OpCodes.BaseOpCode"],
 			"name": field_name,
 			"annotations": Collection.from([
 			]),

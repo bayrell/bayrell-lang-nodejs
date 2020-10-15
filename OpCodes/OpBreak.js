@@ -106,6 +106,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpBreak,
 		if (field_name == "op") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpBreak",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),

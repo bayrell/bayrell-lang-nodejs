@@ -111,6 +111,7 @@ Object.assign(Bayrell.Lang.LangES6.AsyncAwait,
 		if (field_name == "start_pos") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangES6.AsyncAwait",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -118,6 +119,7 @@ Object.assign(Bayrell.Lang.LangES6.AsyncAwait,
 		if (field_name == "end_pos") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangES6.AsyncAwait",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),

@@ -17,7 +17,7 @@
  */
 
 var exports = {
-	VERSION: '0.10.4',
+	VERSION: '0.10.5',
 	MODULE_NAME: 'Bayrell.Lang',
 }
 

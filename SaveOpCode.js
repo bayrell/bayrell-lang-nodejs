@@ -120,6 +120,7 @@ Object.assign(Bayrell.Lang.SaveOpCode,
 		if (field_name == "var_name") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.SaveOpCode",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -127,6 +128,7 @@ Object.assign(Bayrell.Lang.SaveOpCode,
 		if (field_name == "var_content") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.SaveOpCode",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -134,6 +136,7 @@ Object.assign(Bayrell.Lang.SaveOpCode,
 		if (field_name == "content") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.SaveOpCode",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -141,6 +144,7 @@ Object.assign(Bayrell.Lang.SaveOpCode,
 		if (field_name == "op_code") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.SaveOpCode",
+			"t": "Bayrell.Lang.OpCodes.BaseOpCode",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),

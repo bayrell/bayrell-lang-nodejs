@@ -201,6 +201,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags,
 		if (field_name == "p_async") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -208,6 +209,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags,
 		if (field_name == "p_export") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -215,6 +217,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags,
 		if (field_name == "p_static") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -222,6 +225,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags,
 		if (field_name == "p_const") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -229,6 +233,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags,
 		if (field_name == "p_public") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -236,6 +241,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags,
 		if (field_name == "p_private") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -243,6 +249,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags,
 		if (field_name == "p_protected") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -250,6 +257,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags,
 		if (field_name == "p_declare") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -257,6 +265,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags,
 		if (field_name == "p_serializable") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -264,6 +273,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags,
 		if (field_name == "p_cloneable") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -271,6 +281,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags,
 		if (field_name == "p_assignable") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -278,6 +289,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags,
 		if (field_name == "p_memorize") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -285,6 +297,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags,
 		if (field_name == "p_lambda") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -292,6 +305,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags,
 		if (field_name == "p_pure") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),

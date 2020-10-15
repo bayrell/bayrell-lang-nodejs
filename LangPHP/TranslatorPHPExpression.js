@@ -60,6 +60,8 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPExpression,
 		s = __v3.replace(ctx, "\r", "\\r", s);
 		var __v4 = use("Runtime.re");
 		s = __v4.replace(ctx, "\t", "\\t", s);
+		var __v5 = use("Runtime.re");
+		s = __v5.replace(ctx, "\\$", "\\$", s);
 		return "\"" + use("Runtime.rtl").toStr(s) + use("Runtime.rtl").toStr("\"");
 	},
 	/**
@@ -264,7 +266,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPExpression,
 		var content = "";
 		var values = op_code.values.map(ctx, (ctx, pair, key) => 
 		{
-			if (pair.condition != null && !t.preprocessor_flags.has(ctx, pair.condition.value))
+			if (pair.condition != null && Runtime.rtl.get(ctx, t.preprocessor_flags, pair.condition.value) != true)
 			{
 				return "";
 			}

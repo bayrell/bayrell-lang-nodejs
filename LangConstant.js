@@ -87,6 +87,7 @@ Object.assign(Bayrell.Lang.LangConstant,
 		if (field_name == "ERROR_PARSER") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangConstant",
+			"t": "int",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -94,6 +95,7 @@ Object.assign(Bayrell.Lang.LangConstant,
 		if (field_name == "ERROR_PARSER_EOF") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangConstant",
+			"t": "int",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -101,6 +103,7 @@ Object.assign(Bayrell.Lang.LangConstant,
 		if (field_name == "ERROR_PARSER_EXPECTED") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangConstant",
+			"t": "int",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),

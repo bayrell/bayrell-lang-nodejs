@@ -111,6 +111,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpHtmlContent,
 		if (field_name == "op") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpHtmlContent",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -118,6 +119,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpHtmlContent,
 		if (field_name == "value") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpHtmlContent",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),

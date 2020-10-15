@@ -55,10 +55,14 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6.prototype,
 		this.html = null;
 		this.operator = null;
 		this.program = null;
+		this.frontend = true;
+		this.backend = false;
 		this.use_module_name = false;
 		this.use_strict = true;
 		this.enable_async_await = true;
 		this.emulate_async_await = true;
+		this.enable_context = true;
+		this.enable_check_types = true;
 		use("Bayrell.Lang.CoreTranslator").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
@@ -74,10 +78,14 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6.prototype,
 			this.html = o.html;
 			this.operator = o.operator;
 			this.program = o.program;
+			this.frontend = o.frontend;
+			this.backend = o.backend;
 			this.use_module_name = o.use_module_name;
 			this.use_strict = o.use_strict;
 			this.enable_async_await = o.enable_async_await;
 			this.emulate_async_await = o.emulate_async_await;
+			this.enable_context = o.enable_context;
+			this.enable_check_types = o.enable_check_types;
 		}
 		use("Bayrell.Lang.CoreTranslator").prototype.assignObject.call(this,ctx,o);
 	},
@@ -92,10 +100,14 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6.prototype,
 		else if (k == "html")this.html = v;
 		else if (k == "operator")this.operator = v;
 		else if (k == "program")this.program = v;
+		else if (k == "frontend")this.frontend = v;
+		else if (k == "backend")this.backend = v;
 		else if (k == "use_module_name")this.use_module_name = v;
 		else if (k == "use_strict")this.use_strict = v;
 		else if (k == "enable_async_await")this.enable_async_await = v;
 		else if (k == "emulate_async_await")this.emulate_async_await = v;
+		else if (k == "enable_context")this.enable_context = v;
+		else if (k == "enable_check_types")this.enable_check_types = v;
 		else use("Bayrell.Lang.CoreTranslator").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
@@ -110,10 +122,14 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6.prototype,
 		else if (k == "html")return this.html;
 		else if (k == "operator")return this.operator;
 		else if (k == "program")return this.program;
+		else if (k == "frontend")return this.frontend;
+		else if (k == "backend")return this.backend;
 		else if (k == "use_module_name")return this.use_module_name;
 		else if (k == "use_strict")return this.use_strict;
 		else if (k == "enable_async_await")return this.enable_async_await;
 		else if (k == "emulate_async_await")return this.emulate_async_await;
+		else if (k == "enable_context")return this.enable_context;
+		else if (k == "enable_check_types")return this.enable_check_types;
 		return use("Bayrell.Lang.CoreTranslator").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)
@@ -137,7 +153,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6,
 		var __v5 = use("Bayrell.Lang.LangES6.TranslatorES6Program");
 		var __v6 = use("Runtime.Collection");
 		var __v7 = use("Runtime.Collection");
-		return t.copy(ctx, use("Runtime.Dict").from({"value":"","current_namespace_name":"","modules":new __v0(ctx),"async_await":new __v1(ctx),"expression":new __v2(ctx),"html":new __v3(ctx),"operator":new __v4(ctx),"program":new __v5(ctx),"save_vars":new __v6(ctx),"save_op_codes":new __v7(ctx),"save_op_code_inc":0,"preprocessor_flags":use("Runtime.Dict").from({"FRONTEND":true,"ES6":true,"JAVASCRIPT":true})}));
+		return t.copy(ctx, use("Runtime.Dict").from({"value":"","current_namespace_name":"","modules":new __v0(ctx),"async_await":new __v1(ctx),"expression":new __v2(ctx),"html":new __v3(ctx),"operator":new __v4(ctx),"program":new __v5(ctx),"save_vars":new __v6(ctx),"save_op_codes":new __v7(ctx),"save_op_code_inc":0,"preprocessor_flags":use("Runtime.Dict").from({"ES6":true,"JAVASCRIPT":true,"FRONTEND":t.frontend,"BACKEND":t.backend,"USE_MODULE_NAME":t.use_module_name,"USE_STRICT":t.use_strict,"ENABLE_ASYNC_AWAIT":t.enable_async_await,"EMULATE_ASYNC_AWAIT":t.emulate_async_await,"ENABLE_CONTEXT":t.enable_context,"ENABLE_CHECK_TYPES":t.enable_check_types})}));
 	},
 	/**
 	 * Translate BaseOpCode
@@ -188,10 +204,14 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6,
 			a.push("html");
 			a.push("operator");
 			a.push("program");
+			a.push("frontend");
+			a.push("backend");
 			a.push("use_module_name");
 			a.push("use_strict");
 			a.push("enable_async_await");
 			a.push("emulate_async_await");
+			a.push("enable_context");
+			a.push("enable_check_types");
 		}
 		return use("Runtime.Collection").from(a);
 	},
@@ -203,6 +223,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6,
 		if (field_name == "is_pipe") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -210,6 +231,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6,
 		if (field_name == "pipe_var_name") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -217,6 +239,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6,
 		if (field_name == "html_var_name") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -224,6 +247,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6,
 		if (field_name == "is_html") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -231,6 +255,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6,
 		if (field_name == "async_await") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
+			"t": "Bayrell.Lang.LangES6.TranslatorES6AsyncAwait",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -238,6 +263,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6,
 		if (field_name == "expression") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
+			"t": "Bayrell.Lang.LangES6.TranslatorES6Expression",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -245,6 +271,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6,
 		if (field_name == "html") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
+			"t": "Bayrell.Lang.LangES6.TranslatorES6Html",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -252,6 +279,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6,
 		if (field_name == "operator") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
+			"t": "Bayrell.Lang.LangES6.TranslatorES6Operator",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -259,6 +287,23 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6,
 		if (field_name == "program") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
+			"t": "Bayrell.Lang.LangES6.TranslatorES6Program",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "frontend") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
+			"t": "bool",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "backend") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -266,6 +311,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6,
 		if (field_name == "use_module_name") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -273,6 +319,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6,
 		if (field_name == "use_strict") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -280,6 +327,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6,
 		if (field_name == "enable_async_await") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -287,6 +335,23 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6,
 		if (field_name == "emulate_async_await") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
+			"t": "bool",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "enable_context") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
+			"t": "bool",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "enable_check_types") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),

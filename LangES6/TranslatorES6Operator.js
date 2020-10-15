@@ -690,7 +690,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Operator,
 	OpPreprocessorIfCode: function(ctx, t, op_code)
 	{
 		var content = "";
-		if (t.preprocessor_flags.has(ctx, op_code.condition.value))
+		if (Runtime.rtl.get(ctx, t.preprocessor_flags, op_code.condition.value) == true)
 		{
 			var __v0 = use("Runtime.rs");
 			content = __v0.trim(ctx, op_code.content);
@@ -702,7 +702,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Operator,
 	 */
 	OpPreprocessorIfDef: function(ctx, t, op_code, kind)
 	{
-		if (!t.preprocessor_flags.has(ctx, op_code.condition.value))
+		if (!(Runtime.rtl.get(ctx, t.preprocessor_flags, op_code.condition.value) == true))
 		{
 			return use("Runtime.Collection").from([t,""]);
 		}

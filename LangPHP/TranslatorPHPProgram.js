@@ -149,7 +149,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 		var __v1 = use("Bayrell.Lang.OpCodes.OpDeclareFunction");
 		if (item instanceof __v0)
 		{
-			if (t.preprocessor_flags.has(ctx, item.condition.value))
+			if (Runtime.rtl.get(ctx, t.preprocessor_flags, item.condition.value) == true)
 			{
 				for (var i = 0;i < item.items.count(ctx);i++)
 				{
@@ -176,7 +176,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 		var __v1 = use("Bayrell.Lang.OpCodes.OpDeclareFunction");
 		if (item instanceof __v0)
 		{
-			if (t.preprocessor_flags.has(ctx, item.condition.value))
+			if (Runtime.rtl.get(ctx, t.preprocessor_flags, item.condition.value) == true)
 			{
 				for (var i = 0;i < item.items.count(ctx);i++)
 				{
@@ -654,12 +654,26 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 					{
 						return "$field_name == " + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, var_name));
 					});
-					t = t.constructor.clearSaveOpCode(ctx, t);
 					var __v1 = use("Runtime.rs");
-					content += use("Runtime.rtl").toStr(t.s(ctx, "if (" + use("Runtime.rtl").toStr(__v1.join(ctx, " or ", v)) + use("Runtime.rtl").toStr(") ") + use("Runtime.rtl").toStr("return new \\Runtime\\IntrospectionInfo($ctx, [")));
+					var var_type = __v1.join(ctx, ".", t.expression.constructor.findModuleNames(ctx, t, variable.pattern.entity_name.names));
+					var var_sub_types = (variable.pattern.template != null) ? (variable.pattern.template.map(ctx, (ctx, op_code) => 
+					{
+						var __v2 = use("Runtime.rs");
+						return __v2.join(ctx, ".", t.expression.constructor.findModuleNames(ctx, t, op_code.entity_name.names));
+					})) : (use("Runtime.Collection").from([]));
+					var_sub_types = var_sub_types.map(ctx, t.expression.constructor.toString);
+					t = t.constructor.clearSaveOpCode(ctx, t);
+					var __v2 = use("Runtime.rs");
+					content += use("Runtime.rtl").toStr(t.s(ctx, "if (" + use("Runtime.rtl").toStr(__v2.join(ctx, " or ", v)) + use("Runtime.rtl").toStr(") ") + use("Runtime.rtl").toStr("return new \\Runtime\\IntrospectionInfo($ctx, [")));
 					t = t.levelInc(ctx);
 					content += use("Runtime.rtl").toStr(t.s(ctx, "\"kind\"=>\\Runtime\\IntrospectionInfo::ITEM_FIELD,"));
 					content += use("Runtime.rtl").toStr(t.s(ctx, "\"class_name\"=>" + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, t.current_class_full_name)) + use("Runtime.rtl").toStr(",")));
+					content += use("Runtime.rtl").toStr(t.s(ctx, "\"t\"=> " + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, var_type)) + use("Runtime.rtl").toStr(",")));
+					if (var_sub_types.count(ctx) > 0)
+					{
+						var __v3 = use("Runtime.rs");
+						content += use("Runtime.rtl").toStr(t.s(ctx, "\"s\"=> [" + use("Runtime.rtl").toStr(__v3.join(ctx, ", ", var_sub_types)) + use("Runtime.rtl").toStr("],")));
+					}
 					content += use("Runtime.rtl").toStr(t.s(ctx, "\"name\"=> $field_name,"));
 					content += use("Runtime.rtl").toStr(t.s(ctx, "\"annotations\"=>\\Runtime\\Collection::from(["));
 					t = t.levelInc(ctx);

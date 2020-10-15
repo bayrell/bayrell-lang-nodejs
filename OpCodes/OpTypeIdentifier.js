@@ -116,6 +116,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpTypeIdentifier,
 		if (field_name == "op") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpTypeIdentifier",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -123,6 +124,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpTypeIdentifier,
 		if (field_name == "entity_name") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpTypeIdentifier",
+			"t": "Bayrell.Lang.OpCodes.OpEntityName",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -130,6 +132,8 @@ Object.assign(Bayrell.Lang.OpCodes.OpTypeIdentifier,
 		if (field_name == "template") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpTypeIdentifier",
+			"t": "Runtime.Collection",
+			"s": ["Bayrell.Lang.OpCodes.OpTypeIdentifier"],
 			"name": field_name,
 			"annotations": Collection.from([
 			]),

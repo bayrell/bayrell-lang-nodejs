@@ -111,6 +111,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpClassOf,
 		if (field_name == "op") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpClassOf",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -118,6 +119,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpClassOf,
 		if (field_name == "entity_name") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpClassOf",
+			"t": "Bayrell.Lang.OpCodes.OpEntityName",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),

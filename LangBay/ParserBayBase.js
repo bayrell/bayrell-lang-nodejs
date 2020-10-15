@@ -1514,10 +1514,6 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayBase,
 			parser = Runtime.rtl.get(ctx, res, 0);
 			args = Runtime.rtl.get(ctx, res, 1);
 		}
-		else
-		{
-			this.matchToken(ctx, parser, "(");
-		}
 		var __v0 = use("Bayrell.Lang.OpCodes.OpNew");
 		return use("Runtime.Collection").from([parser,new __v0(ctx, use("Runtime.Dict").from({"args":args,"value":op_code,"caret_start":caret_start,"caret_end":parser.caret}))]);
 	},

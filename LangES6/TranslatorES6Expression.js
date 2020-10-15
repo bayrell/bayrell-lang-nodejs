@@ -251,7 +251,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Expression,
 		var content = "";
 		var values = op_code.values.map(ctx, (ctx, pair, key) => 
 		{
-			if (pair.condition != null && !t.preprocessor_flags.has(ctx, pair.condition.value))
+			if (pair.condition != null && Runtime.rtl.get(ctx, t.preprocessor_flags, pair.condition.value) != true)
 			{
 				return "";
 			}
@@ -404,9 +404,16 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Expression,
 						s += use("Runtime.rtl").toStr(".constructor." + use("Runtime.rtl").toStr(attr.value.value));
 						first_item += use("Runtime.rtl").toStr(".constructor");
 					}
-					else if (prev_kind == "parent" && !t.current_function.isStatic(ctx))
+					else if (prev_kind == "parent")
 					{
-						s += use("Runtime.rtl").toStr(".prototype." + use("Runtime.rtl").toStr(attr.value.value) + use("Runtime.rtl").toStr(".bind(this)"));
+						if (t.current_function.isStatic(ctx))
+						{
+							s += use("Runtime.rtl").toStr("." + use("Runtime.rtl").toStr(attr.value.value) + use("Runtime.rtl").toStr(".bind(this)"));
+						}
+						else
+						{
+							s += use("Runtime.rtl").toStr(".prototype." + use("Runtime.rtl").toStr(attr.value.value) + use("Runtime.rtl").toStr(".bind(this)"));
+						}
 					}
 					else
 					{

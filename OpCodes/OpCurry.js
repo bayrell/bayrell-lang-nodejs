@@ -116,6 +116,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpCurry,
 		if (field_name == "op") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpCurry",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -123,6 +124,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpCurry,
 		if (field_name == "obj") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpCurry",
+			"t": "Bayrell.Lang.OpCodes.BaseOpCode",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -130,6 +132,8 @@ Object.assign(Bayrell.Lang.OpCodes.OpCurry,
 		if (field_name == "args") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpCurry",
+			"t": "Runtime.Collection",
+			"s": ["Bayrell.Lang.OpCodes.BaseOpCode"],
 			"name": field_name,
 			"annotations": Collection.from([
 			]),

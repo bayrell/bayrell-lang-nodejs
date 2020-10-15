@@ -112,6 +112,7 @@ Object.assign(Bayrell.Lang.OpCodes.BaseOpCode,
 		if (field_name == "op") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.BaseOpCode",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -119,6 +120,7 @@ Object.assign(Bayrell.Lang.OpCodes.BaseOpCode,
 		if (field_name == "caret_start") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.BaseOpCode",
+			"t": "Bayrell.Lang.Caret",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -126,6 +128,7 @@ Object.assign(Bayrell.Lang.OpCodes.BaseOpCode,
 		if (field_name == "caret_end") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.BaseOpCode",
+			"t": "Bayrell.Lang.Caret",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),

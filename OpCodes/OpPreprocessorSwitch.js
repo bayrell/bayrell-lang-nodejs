@@ -111,6 +111,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpPreprocessorSwitch,
 		if (field_name == "op") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpPreprocessorSwitch",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -118,6 +119,8 @@ Object.assign(Bayrell.Lang.OpCodes.OpPreprocessorSwitch,
 		if (field_name == "items") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpPreprocessorSwitch",
+			"t": "Runtime.Collection",
+			"s": ["Bayrell.Lang.OpCodes.OpPreprocessorIfCode"],
 			"name": field_name,
 			"annotations": Collection.from([
 			]),

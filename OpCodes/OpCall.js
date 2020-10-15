@@ -126,6 +126,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpCall,
 		if (field_name == "op") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpCall",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -133,6 +134,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpCall,
 		if (field_name == "obj") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpCall",
+			"t": "Bayrell.Lang.OpCodes.BaseOpCode",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -140,6 +142,8 @@ Object.assign(Bayrell.Lang.OpCodes.OpCall,
 		if (field_name == "args") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpCall",
+			"t": "Runtime.Collection",
+			"s": ["Bayrell.Lang.OpCodes.BaseOpCode"],
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -147,6 +151,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpCall,
 		if (field_name == "is_await") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpCall",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -154,6 +159,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpCall,
 		if (field_name == "is_context") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpCall",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),

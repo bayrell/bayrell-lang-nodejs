@@ -426,7 +426,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPOperator,
 	OpPreprocessorIfCode: function(ctx, t, op_code)
 	{
 		var content = "";
-		if (t.preprocessor_flags.has(ctx, op_code.condition.value))
+		if (Runtime.rtl.get(ctx, t.preprocessor_flags, op_code.condition.value) == true)
 		{
 			var __v0 = use("Runtime.rs");
 			content = __v0.trim(ctx, op_code.content);
@@ -438,7 +438,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPOperator,
 	 */
 	OpPreprocessorIfDef: function(ctx, t, op_code, kind)
 	{
-		if (!t.preprocessor_flags.has(ctx, op_code.condition.value))
+		if (!(Runtime.rtl.get(ctx, t.preprocessor_flags, op_code.condition.value) == true))
 		{
 			return use("Runtime.Collection").from([t,""]);
 		}
@@ -730,7 +730,10 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPOperator,
 				content = save;
 			}
 			/* Output content */
-			content += use("Runtime.rtl").toStr(t.s(ctx, "static::p(" + use("Runtime.rtl").toStr(save_html_var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1)) + use("Runtime.rtl").toStr(");")));
+			if (Runtime.rtl.get(ctx, res, 1) != "")
+			{
+				content += use("Runtime.rtl").toStr(t.s(ctx, "static::p(" + use("Runtime.rtl").toStr(save_html_var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1)) + use("Runtime.rtl").toStr(");")));
+			}
 			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["save_op_codes"]), save_op_codes);
 			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["save_op_code_inc"]), save_op_code_inc);
 			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["is_html"]), save_is_html);

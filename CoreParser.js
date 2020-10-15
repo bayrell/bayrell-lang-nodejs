@@ -165,6 +165,7 @@ Object.assign(Bayrell.Lang.CoreParser,
 		if (field_name == "tab_size") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.CoreParser",
+			"t": "int",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -172,6 +173,7 @@ Object.assign(Bayrell.Lang.CoreParser,
 		if (field_name == "file_name") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.CoreParser",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -179,6 +181,7 @@ Object.assign(Bayrell.Lang.CoreParser,
 		if (field_name == "content") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.CoreParser",
+			"t": "Runtime.Reference",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -186,6 +189,7 @@ Object.assign(Bayrell.Lang.CoreParser,
 		if (field_name == "content_sz") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.CoreParser",
+			"t": "int",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -193,6 +197,7 @@ Object.assign(Bayrell.Lang.CoreParser,
 		if (field_name == "caret") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.CoreParser",
+			"t": "Bayrell.Lang.Caret",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -200,6 +205,7 @@ Object.assign(Bayrell.Lang.CoreParser,
 		if (field_name == "find_ident") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.CoreParser",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),

@@ -125,6 +125,7 @@ Object.assign(Bayrell.Lang.CoreToken,
 		if (field_name == "kind") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.CoreToken",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -132,6 +133,7 @@ Object.assign(Bayrell.Lang.CoreToken,
 		if (field_name == "content") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.CoreToken",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -139,6 +141,7 @@ Object.assign(Bayrell.Lang.CoreToken,
 		if (field_name == "caret_start") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.CoreToken",
+			"t": "Bayrell.Lang.Caret",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -146,6 +149,7 @@ Object.assign(Bayrell.Lang.CoreToken,
 		if (field_name == "caret_end") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.CoreToken",
+			"t": "Bayrell.Lang.Caret",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -153,6 +157,7 @@ Object.assign(Bayrell.Lang.CoreToken,
 		if (field_name == "eof") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.CoreToken",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),

@@ -120,6 +120,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpInc,
 		if (field_name == "KIND_PRE_INC") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpInc",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -127,6 +128,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpInc,
 		if (field_name == "KIND_PRE_DEC") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpInc",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -134,6 +136,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpInc,
 		if (field_name == "KIND_POST_INC") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpInc",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -141,6 +144,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpInc,
 		if (field_name == "KIND_POST_DEC") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpInc",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -148,6 +152,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpInc,
 		if (field_name == "op") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpInc",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -155,6 +160,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpInc,
 		if (field_name == "kind") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpInc",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -162,6 +168,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpInc,
 		if (field_name == "value") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpInc",
+			"t": "Bayrell.Lang.OpCodes.BaseOpCode",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),

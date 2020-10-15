@@ -111,6 +111,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpNamespace,
 		if (field_name == "op") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpNamespace",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -118,6 +119,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpNamespace,
 		if (field_name == "name") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpNamespace",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),

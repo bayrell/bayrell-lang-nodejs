@@ -40,6 +40,10 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP.prototype,
 		this.html = null;
 		this.operator = null;
 		this.program = null;
+		this.frontend = false;
+		this.backend = true;
+		this.enable_context = true;
+		this.enable_check_types = true;
 		use("Bayrell.Lang.CoreTranslator").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
@@ -54,6 +58,10 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP.prototype,
 			this.html = o.html;
 			this.operator = o.operator;
 			this.program = o.program;
+			this.frontend = o.frontend;
+			this.backend = o.backend;
+			this.enable_context = o.enable_context;
+			this.enable_check_types = o.enable_check_types;
 		}
 		use("Bayrell.Lang.CoreTranslator").prototype.assignObject.call(this,ctx,o);
 	},
@@ -67,6 +75,10 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP.prototype,
 		else if (k == "html")this.html = v;
 		else if (k == "operator")this.operator = v;
 		else if (k == "program")this.program = v;
+		else if (k == "frontend")this.frontend = v;
+		else if (k == "backend")this.backend = v;
+		else if (k == "enable_context")this.enable_context = v;
+		else if (k == "enable_check_types")this.enable_check_types = v;
 		else use("Bayrell.Lang.CoreTranslator").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
@@ -80,6 +92,10 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP.prototype,
 		else if (k == "html")return this.html;
 		else if (k == "operator")return this.operator;
 		else if (k == "program")return this.program;
+		else if (k == "frontend")return this.frontend;
+		else if (k == "backend")return this.backend;
+		else if (k == "enable_context")return this.enable_context;
+		else if (k == "enable_check_types")return this.enable_check_types;
 		return use("Bayrell.Lang.CoreTranslator").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)
@@ -102,7 +118,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP,
 		var __v4 = use("Bayrell.Lang.LangPHP.TranslatorPHPProgram");
 		var __v5 = use("Runtime.Collection");
 		var __v6 = use("Runtime.Collection");
-		return t.copy(ctx, use("Runtime.Dict").from({"value":"","current_namespace_name":"","modules":new __v0(ctx),"expression":new __v1(ctx),"html":new __v2(ctx),"operator":new __v3(ctx),"program":new __v4(ctx),"save_vars":new __v5(ctx),"save_op_codes":new __v6(ctx),"save_op_code_inc":0,"preprocessor_flags":use("Runtime.Dict").from({"BACKEND":true,"PHP":true})}));
+		return t.copy(ctx, use("Runtime.Dict").from({"value":"","current_namespace_name":"","modules":new __v0(ctx),"expression":new __v1(ctx),"html":new __v2(ctx),"operator":new __v3(ctx),"program":new __v4(ctx),"save_vars":new __v5(ctx),"save_op_codes":new __v6(ctx),"save_op_code_inc":0,"preprocessor_flags":use("Runtime.Dict").from({"PHP":true,"FRONTEND":t.frontend,"BACKEND":t.backend,"ENABLE_CONTEXT":t.enable_context,"ENABLE_CHECK_TYPES":t.enable_check_types})}));
 	},
 	/**
 	 * Translate BaseOpCode
@@ -178,6 +194,10 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP,
 			a.push("html");
 			a.push("operator");
 			a.push("program");
+			a.push("frontend");
+			a.push("backend");
+			a.push("enable_context");
+			a.push("enable_check_types");
 		}
 		return use("Runtime.Collection").from(a);
 	},
@@ -189,6 +209,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP,
 		if (field_name == "is_pipe") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangPHP.TranslatorPHP",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -196,6 +217,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP,
 		if (field_name == "pipe_var_name") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangPHP.TranslatorPHP",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -203,6 +225,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP,
 		if (field_name == "html_var_name") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangPHP.TranslatorPHP",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -210,6 +233,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP,
 		if (field_name == "is_html") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangPHP.TranslatorPHP",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -217,6 +241,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP,
 		if (field_name == "expression") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangPHP.TranslatorPHP",
+			"t": "Bayrell.Lang.LangPHP.TranslatorPHPExpression",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -224,6 +249,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP,
 		if (field_name == "html") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangPHP.TranslatorPHP",
+			"t": "Bayrell.Lang.LangPHP.TranslatorPHPHtml",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -231,6 +257,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP,
 		if (field_name == "operator") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangPHP.TranslatorPHP",
+			"t": "Bayrell.Lang.LangPHP.TranslatorPHPOperator",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -238,6 +265,39 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP,
 		if (field_name == "program") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangPHP.TranslatorPHP",
+			"t": "Bayrell.Lang.LangPHP.TranslatorPHPProgram",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "frontend") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangPHP.TranslatorPHP",
+			"t": "bool",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "backend") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangPHP.TranslatorPHP",
+			"t": "bool",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "enable_context") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangPHP.TranslatorPHP",
+			"t": "bool",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "enable_check_types") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangPHP.TranslatorPHP",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),

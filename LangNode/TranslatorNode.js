@@ -164,6 +164,7 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode,
 		if (field_name == "async_await") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangNode.TranslatorNode",
+			"t": "Bayrell.Lang.LangES6.TranslatorES6AsyncAwait",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -171,6 +172,7 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode,
 		if (field_name == "expression") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangNode.TranslatorNode",
+			"t": "Bayrell.Lang.LangES6.TranslatorES6Expression",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -178,6 +180,7 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode,
 		if (field_name == "html") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangNode.TranslatorNode",
+			"t": "Bayrell.Lang.LangES6.TranslatorES6Html",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -185,6 +188,7 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode,
 		if (field_name == "operator") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangNode.TranslatorNode",
+			"t": "Bayrell.Lang.LangES6.TranslatorES6Operator",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -192,6 +196,7 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode,
 		if (field_name == "program") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangNode.TranslatorNode",
+			"t": "Bayrell.Lang.LangES6.TranslatorES6Program",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -199,6 +204,7 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode,
 		if (field_name == "use_module_name") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangNode.TranslatorNode",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -206,6 +212,7 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode,
 		if (field_name == "enable_async_await") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangNode.TranslatorNode",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -213,6 +220,7 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode,
 		if (field_name == "emulate_async_await") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangNode.TranslatorNode",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),

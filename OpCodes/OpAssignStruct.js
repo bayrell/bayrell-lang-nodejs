@@ -126,6 +126,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpAssignStruct,
 		if (field_name == "var_name") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpAssignStruct",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -133,6 +134,8 @@ Object.assign(Bayrell.Lang.OpCodes.OpAssignStruct,
 		if (field_name == "annotations") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpAssignStruct",
+			"t": "Runtime.Collection",
+			"s": ["Bayrell.Lang.OpCodes.OpAnnotation"],
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -140,6 +143,8 @@ Object.assign(Bayrell.Lang.OpCodes.OpAssignStruct,
 		if (field_name == "comments") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpAssignStruct",
+			"t": "Runtime.Collection",
+			"s": ["Bayrell.Lang.OpCodes.OpComment"],
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -147,6 +152,8 @@ Object.assign(Bayrell.Lang.OpCodes.OpAssignStruct,
 		if (field_name == "names") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpAssignStruct",
+			"t": "Runtime.Collection",
+			"s": ["var"],
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -154,6 +161,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpAssignStruct,
 		if (field_name == "expression") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpAssignStruct",
+			"t": "Bayrell.Lang.OpCodes.BaseOpCode",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),

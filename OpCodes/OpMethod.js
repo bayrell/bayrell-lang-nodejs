@@ -124,6 +124,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpMethod,
 		if (field_name == "KIND_ATTR") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpMethod",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -131,6 +132,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpMethod,
 		if (field_name == "KIND_STATIC") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpMethod",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -138,6 +140,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpMethod,
 		if (field_name == "KIND_CLASS") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpMethod",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -145,6 +148,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpMethod,
 		if (field_name == "op") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpMethod",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -152,6 +156,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpMethod,
 		if (field_name == "value1") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpMethod",
+			"t": "Bayrell.Lang.OpCodes.BaseOpCode",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -159,6 +164,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpMethod,
 		if (field_name == "value2") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpMethod",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -166,6 +172,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpMethod,
 		if (field_name == "kind") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpMethod",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
