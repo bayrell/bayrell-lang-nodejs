@@ -1031,7 +1031,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPExpression,
 				value = Runtime.rtl.get(ctx, res, 1);
 				s2 = "try{ ";
 				s2 += use("Runtime.rtl").toStr(var_name + use("Runtime.rtl").toStr("=(") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("->val!=null && ") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("->err==null) ? new \\Runtime\\Monad($ctx, ") + use("Runtime.rtl").toStr(value) + use("Runtime.rtl").toStr(") : ") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr(";"));
-				s2 += use("Runtime.rtl").toStr(" } catch (Exception $err) { ");
+				s2 += use("Runtime.rtl").toStr(" } catch (\\Exception $err) { ");
 				s2 += use("Runtime.rtl").toStr(var_name + use("Runtime.rtl").toStr("=new \\Runtime\\Monad($ctx, null, $err);"));
 				s2 += use("Runtime.rtl").toStr(" }");
 			}
