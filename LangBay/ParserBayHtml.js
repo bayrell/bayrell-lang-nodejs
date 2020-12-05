@@ -1377,10 +1377,29 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayHtml,
 					var res = parser.parser_base.constructor.matchToken(ctx, parser, ">");
 					parser = Runtime.rtl.get(ctx, res, 0);
 				}
+				else if (item_name == "meta")
+				{
+					var res = parser.parser_base.constructor.readCollection(ctx, parser);
+					parser = Runtime.rtl.get(ctx, res, 0);
+					var arr = Runtime.rtl.get(ctx, res, 1);
+					var __v13 = use("Bayrell.Lang.OpCodes.OpDeclareFunction");
+					var __v14 = use("Bayrell.Lang.OpCodes.OpFlags");
+					var f = new __v13(ctx, use("Runtime.Dict").from({"args":use("Runtime.Collection").from([]),"vars":use("Runtime.Collection").from([]),"flags":new __v14(ctx, use("Runtime.Dict").from({"p_static":true,"p_pure":true})),"name":"meta","result_type":"Collection","expression":arr,"items":null,"caret_start":caret_start,"caret_end":parser.caret}));
+					items.push(ctx, f);
+					/* Read meta footer */
+					var res = parser.parser_base.constructor.matchToken(ctx, parser, "<");
+					parser = Runtime.rtl.get(ctx, res, 0);
+					var res = parser.parser_base.constructor.matchToken(ctx, parser, "/");
+					parser = Runtime.rtl.get(ctx, res, 0);
+					var res = parser.parser_base.constructor.matchToken(ctx, parser, "meta");
+					parser = Runtime.rtl.get(ctx, res, 0);
+					var res = parser.parser_base.constructor.matchToken(ctx, parser, ">");
+					parser = Runtime.rtl.get(ctx, res, 0);
+				}
 				else
 				{
-					var __v13 = use("Bayrell.Lang.Exceptions.ParserError");
-					throw new __v13(ctx, "Unknown identifier '" + use("Runtime.rtl").toStr(item_name) + use("Runtime.rtl").toStr("'"), item_token.caret_start, parser.file_name)
+					var __v15 = use("Bayrell.Lang.Exceptions.ParserError");
+					throw new __v15(ctx, "Unknown identifier '" + use("Runtime.rtl").toStr(item_name) + use("Runtime.rtl").toStr("'"), item_token.caret_start, parser.file_name)
 				}
 			}
 			else if (token.content == "/")
