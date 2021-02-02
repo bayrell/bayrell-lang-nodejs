@@ -9,7 +9,7 @@ var use = require('bayrell').use;
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *
- *      https://www.bayrell.org/licenses/APACHE-LICENSE-2.0.html
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,31 +33,6 @@ Object.assign(Bayrell.Lang.Caret.prototype,
 		this.x = 0;
 		this.y = 0;
 		use("Runtime.BaseStruct").prototype._init.call(this,ctx);
-	},
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.Caret"))
-		{
-			this.pos = o.pos;
-			this.x = o.x;
-			this.y = o.y;
-		}
-		use("Runtime.BaseStruct").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		if (k == "pos")this.pos = v;
-		else if (k == "x")this.x = v;
-		else if (k == "y")this.y = v;
-		else use("Runtime.BaseStruct").prototype.assignValue.call(this,ctx,k,v);
-	},
-	takeValue: function(ctx,k,d)
-	{
-		if (d == undefined) d = null;
-		if (k == "pos")return this.pos;
-		else if (k == "x")return this.x;
-		else if (k == "y")return this.y;
-		return use("Runtime.BaseStruct").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)
 	{
@@ -97,7 +72,7 @@ Object.assign(Bayrell.Lang.Caret,
 	{
 		var a = [];
 		if (f==undefined) f=0;
-		if ((f|2)==2)
+		if ((f&2)==2)
 		{
 			a.push("pos");
 			a.push("x");
@@ -113,32 +88,34 @@ Object.assign(Bayrell.Lang.Caret,
 		if (field_name == "pos") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.Caret",
-			"t": "int",
 			"name": field_name,
+			"t": "int",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "x") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.Caret",
-			"t": "int",
 			"name": field_name,
+			"t": "int",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "y") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.Caret",
-			"t": "int",
 			"name": field_name,
+			"t": "int",
 			"annotations": Collection.from([
 			]),
 		});
 		return null;
 	},
-	getMethodsList: function(ctx)
+	getMethodsList: function(ctx,f)
 	{
-		var a = [
+		if (f==undefined) f=0;
+		var a = [];
+		if ((f&4)==4) a=[
 		];
 		return use("Runtime.Collection").from(a);
 	},

@@ -9,7 +9,7 @@ var use = require('bayrell').use;
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *
- *      https://www.bayrell.org/licenses/APACHE-LICENSE-2.0.html
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -313,7 +313,7 @@ Object.assign(Bayrell.Lang.CoreTranslator,
 	{
 		var a = [];
 		if (f==undefined) f=0;
-		if ((f|3)==3)
+		if ((f&3)==3)
 		{
 			a.push("current_namespace_name");
 			a.push("current_class_name");
@@ -345,165 +345,167 @@ Object.assign(Bayrell.Lang.CoreTranslator,
 		if (field_name == "current_namespace_name") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.CoreTranslator",
-			"t": "string",
 			"name": field_name,
+			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "current_class_name") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.CoreTranslator",
-			"t": "string",
 			"name": field_name,
+			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "current_class_full_name") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.CoreTranslator",
-			"t": "string",
 			"name": field_name,
+			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "current_class_extends_name") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.CoreTranslator",
-			"t": "string",
 			"name": field_name,
+			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "current_class") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.CoreTranslator",
-			"t": "Bayrell.Lang.OpCodes.OpDeclareClass",
 			"name": field_name,
+			"t": "Bayrell.Lang.OpCodes.OpDeclareClass",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "current_function") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.CoreTranslator",
-			"t": "Bayrell.Lang.OpCodes.OpDeclareFunction",
 			"name": field_name,
+			"t": "Bayrell.Lang.OpCodes.OpDeclareFunction",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "modules") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.CoreTranslator",
+			"name": field_name,
 			"t": "Runtime.Dict",
 			"s": ["string"],
-			"name": field_name,
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "vars") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.CoreTranslator",
+			"name": field_name,
 			"t": "Runtime.Dict",
 			"s": ["bool"],
-			"name": field_name,
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "save_vars") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.CoreTranslator",
+			"name": field_name,
 			"t": "Runtime.Collection",
 			"s": ["string"],
-			"name": field_name,
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "save_op_codes") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.CoreTranslator",
+			"name": field_name,
 			"t": "Runtime.Collection",
 			"s": ["Bayrell.Lang.SaveOpCode"],
-			"name": field_name,
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "save_op_code_inc") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.CoreTranslator",
-			"t": "int",
 			"name": field_name,
+			"t": "int",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "is_static_function") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.CoreTranslator",
-			"t": "bool",
 			"name": field_name,
+			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "is_operation") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.CoreTranslator",
-			"t": "bool",
 			"name": field_name,
+			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "opcode_level") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.CoreTranslator",
-			"t": "int",
 			"name": field_name,
+			"t": "int",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "indent_level") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.CoreTranslator",
-			"t": "int",
 			"name": field_name,
+			"t": "int",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "indent") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.CoreTranslator",
-			"t": "string",
 			"name": field_name,
+			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "crlf") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.CoreTranslator",
-			"t": "string",
 			"name": field_name,
+			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "flag_struct_check_types") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.CoreTranslator",
-			"t": "bool",
 			"name": field_name,
+			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "preprocessor_flags") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.CoreTranslator",
+			"name": field_name,
 			"t": "Runtime.Dict",
 			"s": ["bool"],
-			"name": field_name,
 			"annotations": Collection.from([
 			]),
 		});
 		return null;
 	},
-	getMethodsList: function(ctx)
+	getMethodsList: function(ctx,f)
 	{
-		var a = [
+		if (f==undefined) f=0;
+		var a = [];
+		if ((f&4)==4) a=[
 		];
 		return use("Runtime.Collection").from(a);
 	},

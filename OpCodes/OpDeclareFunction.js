@@ -9,7 +9,7 @@ var use = require('bayrell').use;
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *
- *      https://www.bayrell.org/licenses/APACHE-LICENSE-2.0.html
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -146,7 +146,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpDeclareFunction,
 	{
 		var a = [];
 		if (f==undefined) f=0;
-		if ((f|3)==3)
+		if ((f&3)==3)
 		{
 			a.push("op");
 			a.push("name");
@@ -170,100 +170,102 @@ Object.assign(Bayrell.Lang.OpCodes.OpDeclareFunction,
 		if (field_name == "op") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpDeclareFunction",
-			"t": "string",
 			"name": field_name,
+			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "name") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpDeclareFunction",
-			"t": "string",
 			"name": field_name,
+			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "annotations") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpDeclareFunction",
+			"name": field_name,
 			"t": "Runtime.Collection",
 			"s": ["Bayrell.Lang.OpCodes.OpAnnotation"],
-			"name": field_name,
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "comments") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpDeclareFunction",
+			"name": field_name,
 			"t": "Runtime.Collection",
 			"s": ["Bayrell.Lang.OpCodes.OpComment"],
-			"name": field_name,
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "args") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpDeclareFunction",
+			"name": field_name,
 			"t": "Runtime.Collection",
 			"s": ["Bayrell.Lang.OpCodes.OpDeclareFunctionArg"],
-			"name": field_name,
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "vars") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpDeclareFunction",
+			"name": field_name,
 			"t": "Runtime.Collection",
 			"s": ["string"],
-			"name": field_name,
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "result_type") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpDeclareFunction",
-			"t": "Bayrell.Lang.OpCodes.BaseOpCode",
 			"name": field_name,
+			"t": "Bayrell.Lang.OpCodes.BaseOpCode",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "expression") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpDeclareFunction",
-			"t": "Bayrell.Lang.OpCodes.BaseOpCode",
 			"name": field_name,
+			"t": "Bayrell.Lang.OpCodes.BaseOpCode",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "items") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpDeclareFunction",
-			"t": "Bayrell.Lang.OpCodes.BaseOpCode",
 			"name": field_name,
+			"t": "Bayrell.Lang.OpCodes.BaseOpCode",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "flags") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpDeclareFunction",
-			"t": "Bayrell.Lang.OpCodes.OpFlags",
 			"name": field_name,
+			"t": "Bayrell.Lang.OpCodes.OpFlags",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "is_context") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpDeclareFunction",
-			"t": "bool",
 			"name": field_name,
+			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
 		return null;
 	},
-	getMethodsList: function(ctx)
+	getMethodsList: function(ctx,f)
 	{
-		var a = [
+		if (f==undefined) f=0;
+		var a = [];
+		if ((f&4)==4) a=[
 		];
 		return use("Runtime.Collection").from(a);
 	},

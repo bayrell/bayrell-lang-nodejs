@@ -9,7 +9,7 @@ var use = require('bayrell').use;
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *
- *      https://www.bayrell.org/licenses/APACHE-LICENSE-2.0.html
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,19 +24,6 @@ Bayrell.Lang.ModuleDescription = function(ctx)
 };
 Object.assign(Bayrell.Lang.ModuleDescription.prototype,
 {
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.ModuleDescription"))
-		{
-		}
-	},
-	assignValue: function(ctx,k,v)
-	{
-	},
-	takeValue: function(ctx,k,d)
-	{
-		if (d == undefined) d = null;
-	},
 	getClassName: function(ctx)
 	{
 		return "Bayrell.Lang.ModuleDescription";
@@ -58,7 +45,7 @@ Object.assign(Bayrell.Lang.ModuleDescription,
 	 */
 	getModuleVersion: function(ctx)
 	{
-		return "0.10.7";
+		return "0.10.8";
 	},
 	/**
 	 * Returns required modules
@@ -114,9 +101,11 @@ Object.assign(Bayrell.Lang.ModuleDescription,
 		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 		return null;
 	},
-	getMethodsList: function(ctx)
+	getMethodsList: function(ctx,f)
 	{
-		var a = [
+		if (f==undefined) f=0;
+		var a = [];
+		if ((f&4)==4) a=[
 		];
 		return use("Runtime.Collection").from(a);
 	},

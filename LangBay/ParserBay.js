@@ -9,7 +9,7 @@ var use = require('bayrell').use;
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *
- *      https://www.bayrell.org/licenses/APACHE-LICENSE-2.0.html
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -50,79 +50,6 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay.prototype,
 		this.parser_preprocessor = null;
 		this.parser_program = null;
 		use("Bayrell.Lang.CoreParser").prototype._init.call(this,ctx);
-	},
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.LangBay.ParserBay"))
-		{
-			this.vars = o.vars;
-			this.uses = o.uses;
-			this.current_namespace = o.current_namespace;
-			this.current_class = o.current_class;
-			this.current_namespace_name = o.current_namespace_name;
-			this.current_class_name = o.current_class_name;
-			this.current_class_kind = o.current_class_kind;
-			this.find_identifier = o.find_identifier;
-			this.skip_comments = o.skip_comments;
-			this.pipe_kind = o.pipe_kind;
-			this.is_pipe = o.is_pipe;
-			this.is_html = o.is_html;
-			this.is_local_css = o.is_local_css;
-			this.parser_base = o.parser_base;
-			this.parser_expression = o.parser_expression;
-			this.parser_html = o.parser_html;
-			this.parser_operator = o.parser_operator;
-			this.parser_preprocessor = o.parser_preprocessor;
-			this.parser_program = o.parser_program;
-		}
-		use("Bayrell.Lang.CoreParser").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		if (k == "vars")this.vars = v;
-		else if (k == "uses")this.uses = v;
-		else if (k == "current_namespace")this.current_namespace = v;
-		else if (k == "current_class")this.current_class = v;
-		else if (k == "current_namespace_name")this.current_namespace_name = v;
-		else if (k == "current_class_name")this.current_class_name = v;
-		else if (k == "current_class_kind")this.current_class_kind = v;
-		else if (k == "find_identifier")this.find_identifier = v;
-		else if (k == "skip_comments")this.skip_comments = v;
-		else if (k == "pipe_kind")this.pipe_kind = v;
-		else if (k == "is_pipe")this.is_pipe = v;
-		else if (k == "is_html")this.is_html = v;
-		else if (k == "is_local_css")this.is_local_css = v;
-		else if (k == "parser_base")this.parser_base = v;
-		else if (k == "parser_expression")this.parser_expression = v;
-		else if (k == "parser_html")this.parser_html = v;
-		else if (k == "parser_operator")this.parser_operator = v;
-		else if (k == "parser_preprocessor")this.parser_preprocessor = v;
-		else if (k == "parser_program")this.parser_program = v;
-		else use("Bayrell.Lang.CoreParser").prototype.assignValue.call(this,ctx,k,v);
-	},
-	takeValue: function(ctx,k,d)
-	{
-		if (d == undefined) d = null;
-		if (k == "vars")return this.vars;
-		else if (k == "uses")return this.uses;
-		else if (k == "current_namespace")return this.current_namespace;
-		else if (k == "current_class")return this.current_class;
-		else if (k == "current_namespace_name")return this.current_namespace_name;
-		else if (k == "current_class_name")return this.current_class_name;
-		else if (k == "current_class_kind")return this.current_class_kind;
-		else if (k == "find_identifier")return this.find_identifier;
-		else if (k == "skip_comments")return this.skip_comments;
-		else if (k == "pipe_kind")return this.pipe_kind;
-		else if (k == "is_pipe")return this.is_pipe;
-		else if (k == "is_html")return this.is_html;
-		else if (k == "is_local_css")return this.is_local_css;
-		else if (k == "parser_base")return this.parser_base;
-		else if (k == "parser_expression")return this.parser_expression;
-		else if (k == "parser_html")return this.parser_html;
-		else if (k == "parser_operator")return this.parser_operator;
-		else if (k == "parser_preprocessor")return this.parser_preprocessor;
-		else if (k == "parser_program")return this.parser_program;
-		return use("Bayrell.Lang.CoreParser").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)
 	{
@@ -226,7 +153,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 	{
 		var a = [];
 		if (f==undefined) f=0;
-		if ((f|2)==2)
+		if ((f&2)==2)
 		{
 			a.push("vars");
 			a.push("uses");
@@ -258,162 +185,164 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 		if (field_name == "vars") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"name": field_name,
 			"t": "Runtime.Dict",
 			"s": ["bool"],
-			"name": field_name,
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "uses") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"name": field_name,
 			"t": "Runtime.Dict",
 			"s": ["string"],
-			"name": field_name,
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "current_namespace") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"t": "Bayrell.Lang.OpCodes.OpNamespace",
 			"name": field_name,
+			"t": "Bayrell.Lang.OpCodes.OpNamespace",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "current_class") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"t": "Bayrell.Lang.OpCodes.OpDeclareClass",
 			"name": field_name,
+			"t": "Bayrell.Lang.OpCodes.OpDeclareClass",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "current_namespace_name") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"t": "string",
 			"name": field_name,
+			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "current_class_name") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"t": "string",
 			"name": field_name,
+			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "current_class_kind") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"t": "string",
 			"name": field_name,
+			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "find_identifier") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"t": "bool",
 			"name": field_name,
+			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "skip_comments") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"t": "bool",
 			"name": field_name,
+			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "pipe_kind") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"t": "string",
 			"name": field_name,
+			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "is_pipe") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"t": "bool",
 			"name": field_name,
+			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "is_html") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"t": "bool",
 			"name": field_name,
+			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "is_local_css") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"t": "bool",
 			"name": field_name,
+			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "parser_base") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"t": "Bayrell.Lang.LangBay.ParserBayBase",
 			"name": field_name,
+			"t": "Bayrell.Lang.LangBay.ParserBayBase",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "parser_expression") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"t": "Bayrell.Lang.LangBay.ParserBayExpression",
 			"name": field_name,
+			"t": "Bayrell.Lang.LangBay.ParserBayExpression",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "parser_html") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"t": "Bayrell.Lang.LangBay.ParserBayHtml",
 			"name": field_name,
+			"t": "Bayrell.Lang.LangBay.ParserBayHtml",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "parser_operator") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"t": "Bayrell.Lang.LangBay.ParserBayOperator",
 			"name": field_name,
+			"t": "Bayrell.Lang.LangBay.ParserBayOperator",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "parser_preprocessor") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"t": "Bayrell.Lang.LangBay.ParserBayPreprocessor",
 			"name": field_name,
+			"t": "Bayrell.Lang.LangBay.ParserBayPreprocessor",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "parser_program") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"t": "Bayrell.Lang.LangBay.ParserBayProgram",
 			"name": field_name,
+			"t": "Bayrell.Lang.LangBay.ParserBayProgram",
 			"annotations": Collection.from([
 			]),
 		});
 		return null;
 	},
-	getMethodsList: function(ctx)
+	getMethodsList: function(ctx,f)
 	{
-		var a = [
+		if (f==undefined) f=0;
+		var a = [];
+		if ((f&4)==4) a=[
 		];
 		return use("Runtime.Collection").from(a);
 	},

@@ -9,7 +9,7 @@ var use = require('bayrell').use;
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *
- *      https://www.bayrell.org/licenses/APACHE-LICENSE-2.0.html
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,19 +25,6 @@ Bayrell.Lang.LangPHP.TranslatorPHPProgram = function(ctx)
 };
 Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram.prototype,
 {
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.LangPHP.TranslatorPHPProgram"))
-		{
-		}
-	},
-	assignValue: function(ctx,k,v)
-	{
-	},
-	takeValue: function(ctx,k,d)
-	{
-		if (d == undefined) d = null;
-	},
 	getClassName: function(ctx)
 	{
 		return "Bayrell.Lang.LangPHP.TranslatorPHPProgram";
@@ -114,11 +101,18 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 		}
 		content += use("Runtime.rtl").toStr(t.s(ctx, "if ($field_name == " + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, f.name)) + use("Runtime.rtl").toStr(")")));
 		t = t.levelInc(ctx);
-		content += use("Runtime.rtl").toStr(t.s(ctx, "return new \\Runtime\\IntrospectionInfo($ctx, ["));
-		t = t.levelInc(ctx);
-		content += use("Runtime.rtl").toStr(t.s(ctx, "\"kind\"=>\\Runtime\\IntrospectionInfo::ITEM_METHOD,"));
-		content += use("Runtime.rtl").toStr(t.s(ctx, "\"class_name\"=>" + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, t.current_class_full_name)) + use("Runtime.rtl").toStr(",")));
-		content += use("Runtime.rtl").toStr(t.s(ctx, "\"name\"=>" + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, f.name)) + use("Runtime.rtl").toStr(",")));
+		if (t.enable_introspection)
+		{
+			content += use("Runtime.rtl").toStr(t.s(ctx, "return new \\Runtime\\IntrospectionInfo($ctx, ["));
+			t = t.levelInc(ctx);
+			content += use("Runtime.rtl").toStr(t.s(ctx, "\"class_name\"=>" + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, t.current_class_full_name)) + use("Runtime.rtl").toStr(",")));
+			content += use("Runtime.rtl").toStr(t.s(ctx, "\"name\"=>" + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, f.name)) + use("Runtime.rtl").toStr(",")));
+		}
+		else
+		{
+			content += use("Runtime.rtl").toStr(t.s(ctx, "return \\Runtime\\Dict::from(["));
+			t = t.levelInc(ctx);
+		}
 		content += use("Runtime.rtl").toStr(t.s(ctx, "\"annotations\"=>\\Runtime\\Collection::from(["));
 		t = t.levelInc(ctx);
 		for (var j = 0;j < f.annotations.count(ctx);j++)
@@ -396,7 +390,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 			}
 			/* Struct */
 			var __v1 = use("Bayrell.Lang.OpCodes.OpDeclareClass");
-			if (class_kind == __v1.KIND_STRUCT)
+			if (class_kind == __v1.KIND_STRUCT && (t.flag_struct_check_types || t.enable_introspection))
 			{
 				/* Assign Object */
 				content += use("Runtime.rtl").toStr(t.s(ctx, "function assignObject($ctx,$o)"));
@@ -534,11 +528,19 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 			content += use("Runtime.rtl").toStr(t.s(ctx, "{"));
 			t = t.levelInc(ctx);
 			t = t.constructor.clearSaveOpCode(ctx, t);
-			content += use("Runtime.rtl").toStr(t.s(ctx, "return new \\Runtime\\IntrospectionInfo($ctx, ["));
-			t = t.levelInc(ctx);
-			content += use("Runtime.rtl").toStr(t.s(ctx, "\"kind\"=>\\Runtime\\IntrospectionInfo::ITEM_CLASS,"));
-			content += use("Runtime.rtl").toStr(t.s(ctx, "\"class_name\"=>" + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, t.current_class_full_name)) + use("Runtime.rtl").toStr(",")));
-			content += use("Runtime.rtl").toStr(t.s(ctx, "\"name\"=>" + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, t.current_class_full_name)) + use("Runtime.rtl").toStr(",")));
+			if (t.enable_introspection)
+			{
+				content += use("Runtime.rtl").toStr(t.s(ctx, "return new \\Runtime\\IntrospectionInfo($ctx, ["));
+				t = t.levelInc(ctx);
+				content += use("Runtime.rtl").toStr(t.s(ctx, "\"kind\"=>\\Runtime\\IntrospectionInfo::ITEM_CLASS,"));
+				content += use("Runtime.rtl").toStr(t.s(ctx, "\"class_name\"=>" + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, t.current_class_full_name)) + use("Runtime.rtl").toStr(",")));
+				content += use("Runtime.rtl").toStr(t.s(ctx, "\"name\"=>" + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, t.current_class_full_name)) + use("Runtime.rtl").toStr(",")));
+			}
+			else
+			{
+				content += use("Runtime.rtl").toStr(t.s(ctx, "return \\Runtime\\Dict::from(["));
+				t = t.levelInc(ctx);
+			}
 			content += use("Runtime.rtl").toStr(t.s(ctx, "\"annotations\"=>\\Runtime\\Collection::from(["));
 			t = t.levelInc(ctx);
 			for (var j = 0;j < op_code.annotations.count(ctx);j++)
@@ -623,12 +625,12 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 				}
 				vars.each(ctx, (ctx, v, flag) => 
 				{
-					content += use("Runtime.rtl").toStr(t.s(ctx, "if (($f|" + use("Runtime.rtl").toStr(flag) + use("Runtime.rtl").toStr(")==") + use("Runtime.rtl").toStr(flag) + use("Runtime.rtl").toStr(")")));
+					content += use("Runtime.rtl").toStr(t.s(ctx, "if (($f&" + use("Runtime.rtl").toStr(flag) + use("Runtime.rtl").toStr(")==") + use("Runtime.rtl").toStr(flag) + use("Runtime.rtl").toStr(")")));
 					content += use("Runtime.rtl").toStr(t.s(ctx, "{"));
 					t = t.levelInc(ctx);
 					v.each(ctx, (ctx, varname) => 
 					{
-						content += use("Runtime.rtl").toStr(t.s(ctx, "$a[] = " + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, varname)) + use("Runtime.rtl").toStr(";")));
+						content += use("Runtime.rtl").toStr(t.s(ctx, "$a[]=" + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, varname)) + use("Runtime.rtl").toStr(";")));
 					});
 					t = t.levelDec(ctx);
 					content += use("Runtime.rtl").toStr(t.s(ctx, "}"));
@@ -663,18 +665,27 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 					})) : (use("Runtime.Collection").from([]));
 					var_sub_types = var_sub_types.map(ctx, t.expression.constructor.toString);
 					t = t.constructor.clearSaveOpCode(ctx, t);
-					var __v2 = use("Runtime.rs");
-					content += use("Runtime.rtl").toStr(t.s(ctx, "if (" + use("Runtime.rtl").toStr(__v2.join(ctx, " or ", v)) + use("Runtime.rtl").toStr(") ") + use("Runtime.rtl").toStr("return new \\Runtime\\IntrospectionInfo($ctx, [")));
-					t = t.levelInc(ctx);
-					content += use("Runtime.rtl").toStr(t.s(ctx, "\"kind\"=>\\Runtime\\IntrospectionInfo::ITEM_FIELD,"));
-					content += use("Runtime.rtl").toStr(t.s(ctx, "\"class_name\"=>" + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, t.current_class_full_name)) + use("Runtime.rtl").toStr(",")));
-					content += use("Runtime.rtl").toStr(t.s(ctx, "\"t\"=> " + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, var_type)) + use("Runtime.rtl").toStr(",")));
-					if (var_sub_types.count(ctx) > 0)
+					if (t.enable_introspection)
+					{
+						var __v2 = use("Runtime.rs");
+						content += use("Runtime.rtl").toStr(t.s(ctx, "if (" + use("Runtime.rtl").toStr(__v2.join(ctx, " or ", v)) + use("Runtime.rtl").toStr(") ") + use("Runtime.rtl").toStr("return new \\Runtime\\IntrospectionInfo($ctx, [")));
+						t = t.levelInc(ctx);
+						content += use("Runtime.rtl").toStr(t.s(ctx, "\"kind\"=>\\Runtime\\IntrospectionInfo::ITEM_FIELD,"));
+						content += use("Runtime.rtl").toStr(t.s(ctx, "\"class_name\"=>" + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, t.current_class_full_name)) + use("Runtime.rtl").toStr(",")));
+						content += use("Runtime.rtl").toStr(t.s(ctx, "\"name\"=>$field_name,"));
+					}
+					else
 					{
 						var __v3 = use("Runtime.rs");
-						content += use("Runtime.rtl").toStr(t.s(ctx, "\"s\"=> [" + use("Runtime.rtl").toStr(__v3.join(ctx, ", ", var_sub_types)) + use("Runtime.rtl").toStr("],")));
+						content += use("Runtime.rtl").toStr(t.s(ctx, "if (" + use("Runtime.rtl").toStr(__v3.join(ctx, " or ", v)) + use("Runtime.rtl").toStr(") ") + use("Runtime.rtl").toStr("return \\Runtime\\Dict::from([")));
+						t = t.levelInc(ctx);
 					}
-					content += use("Runtime.rtl").toStr(t.s(ctx, "\"name\"=> $field_name,"));
+					content += use("Runtime.rtl").toStr(t.s(ctx, "\"t\"=>" + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, var_type)) + use("Runtime.rtl").toStr(",")));
+					if (var_sub_types.count(ctx) > 0)
+					{
+						var __v2 = use("Runtime.rs");
+						content += use("Runtime.rtl").toStr(t.s(ctx, "\"s\"=> [" + use("Runtime.rtl").toStr(__v2.join(ctx, ", ", var_sub_types)) + use("Runtime.rtl").toStr("],")));
+					}
 					content += use("Runtime.rtl").toStr(t.s(ctx, "\"annotations\"=>\\Runtime\\Collection::from(["));
 					t = t.levelInc(ctx);
 					for (var j = 0;j < variable.annotations.count(ctx);j++)
@@ -698,10 +709,11 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 			t = t.levelDec(ctx);
 			content += use("Runtime.rtl").toStr(t.s(ctx, "}"));
 			/* Get methods list of the function */
-			content += use("Runtime.rtl").toStr(t.s(ctx, "static function getMethodsList($ctx)"));
+			content += use("Runtime.rtl").toStr(t.s(ctx, "static function getMethodsList($ctx,$f=0)"));
 			content += use("Runtime.rtl").toStr(t.s(ctx, "{"));
 			t = t.levelInc(ctx);
-			content += use("Runtime.rtl").toStr(t.s(ctx, "$a = ["));
+			content += use("Runtime.rtl").toStr(t.s(ctx, "$a = [];"));
+			content += use("Runtime.rtl").toStr(t.s(ctx, "if (($f&4)==4) $a=["));
 			t = t.levelInc(ctx);
 			if (op_code.functions != null)
 			{
@@ -923,6 +935,20 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 				content += use("Runtime.rtl").toStr(s);
 			}
 		}
+		var __v0 = use("Runtime.rs");
+		content = __v0.trim(ctx, content);
+		/* Disable context */
+		if (t.enable_context == false)
+		{
+			var __v1 = use("Runtime.rs");
+			content = __v1.replace(ctx, "\\(\\$ctx\\)", "()", content);
+			var __v2 = use("Runtime.rs");
+			content = __v2.replace(ctx, "\\(\\$ctx, ", "(", content);
+			var __v3 = use("Runtime.rs");
+			content = __v3.replace(ctx, "\\(\\$ctx,", "(", content);
+			var __v4 = use("Runtime.rs");
+			content = __v4.replace(ctx, "\\,\\$ctx,", ",", content);
+		}
 		return use("Runtime.Collection").from([t,content]);
 	},
 	/* ======================= Class Init Functions ======================= */
@@ -964,9 +990,11 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 		return null;
 	},
-	getMethodsList: function(ctx)
+	getMethodsList: function(ctx,f)
 	{
-		var a = [
+		if (f==undefined) f=0;
+		var a = [];
+		if ((f&4)==4) a=[
 		];
 		return use("Runtime.Collection").from(a);
 	},

@@ -9,7 +9,7 @@ var use = require('bayrell').use;
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *
- *      https://www.bayrell.org/licenses/APACHE-LICENSE-2.0.html
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,40 +43,6 @@ Object.assign(Bayrell.Lang.CoreParser.prototype,
 		this.caret = null;
 		this.find_ident = true;
 		use("Runtime.BaseStruct").prototype._init.call(this,ctx);
-	},
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.CoreParser"))
-		{
-			this.tab_size = o.tab_size;
-			this.file_name = o.file_name;
-			this.content = o.content;
-			this.content_sz = o.content_sz;
-			this.caret = o.caret;
-			this.find_ident = o.find_ident;
-		}
-		use("Runtime.BaseStruct").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		if (k == "tab_size")this.tab_size = v;
-		else if (k == "file_name")this.file_name = v;
-		else if (k == "content")this.content = v;
-		else if (k == "content_sz")this.content_sz = v;
-		else if (k == "caret")this.caret = v;
-		else if (k == "find_ident")this.find_ident = v;
-		else use("Runtime.BaseStruct").prototype.assignValue.call(this,ctx,k,v);
-	},
-	takeValue: function(ctx,k,d)
-	{
-		if (d == undefined) d = null;
-		if (k == "tab_size")return this.tab_size;
-		else if (k == "file_name")return this.file_name;
-		else if (k == "content")return this.content;
-		else if (k == "content_sz")return this.content_sz;
-		else if (k == "caret")return this.caret;
-		else if (k == "find_ident")return this.find_ident;
-		return use("Runtime.BaseStruct").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)
 	{
@@ -146,7 +112,7 @@ Object.assign(Bayrell.Lang.CoreParser,
 	{
 		var a = [];
 		if (f==undefined) f=0;
-		if ((f|2)==2)
+		if ((f&2)==2)
 		{
 			a.push("tab_size");
 			a.push("file_name");
@@ -165,56 +131,58 @@ Object.assign(Bayrell.Lang.CoreParser,
 		if (field_name == "tab_size") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.CoreParser",
-			"t": "int",
 			"name": field_name,
+			"t": "int",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "file_name") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.CoreParser",
-			"t": "string",
 			"name": field_name,
+			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "content") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.CoreParser",
-			"t": "Runtime.Reference",
 			"name": field_name,
+			"t": "Runtime.Reference",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "content_sz") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.CoreParser",
-			"t": "int",
 			"name": field_name,
+			"t": "int",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "caret") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.CoreParser",
-			"t": "Bayrell.Lang.Caret",
 			"name": field_name,
+			"t": "Bayrell.Lang.Caret",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "find_ident") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.CoreParser",
-			"t": "bool",
 			"name": field_name,
+			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
 		return null;
 	},
-	getMethodsList: function(ctx)
+	getMethodsList: function(ctx,f)
 	{
-		var a = [
+		if (f==undefined) f=0;
+		var a = [];
+		if ((f&4)==4) a=[
 		];
 		return use("Runtime.Collection").from(a);
 	},

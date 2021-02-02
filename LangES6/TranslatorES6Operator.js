@@ -9,7 +9,7 @@ var use = require('bayrell').use;
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *
- *      https://www.bayrell.org/licenses/APACHE-LICENSE-2.0.html
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -380,33 +380,40 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Operator,
 				}
 				else
 				{
-					var __v5 = use("Bayrell.Lang.OpCodes.OpAssign");
-					if (op_code.kind == __v5.KIND_DECLARE)
+					if (item.op_code != null && item.op_code.value == "@" && t.enable_context == false)
 					{
-						if (t.current_function.isFlag(ctx, "async") && t.isEmulateAsyncAwait(ctx))
-						{
-							s = item.var_name;
-						}
-						else
-						{
-							s = "var " + use("Runtime.rtl").toStr(item.var_name);
-						}
+						s = t.expression.constructor.useModuleName(ctx, t, "rtl") + use("Runtime.rtl").toStr(".setContext(") + use("Runtime.rtl").toStr(item_expression) + use("Runtime.rtl").toStr(")");
 					}
 					else
 					{
-						var res = t.expression.constructor.OpIdentifier(ctx, t, item.op_code);
-						t = Runtime.rtl.get(ctx, res, 0);
-						s = Runtime.rtl.get(ctx, res, 1);
-					}
-					if (item_expression != "")
-					{
-						if (op == "~=")
+						var __v5 = use("Bayrell.Lang.OpCodes.OpAssign");
+						if (op_code.kind == __v5.KIND_DECLARE)
 						{
-							s += use("Runtime.rtl").toStr(" += " + use("Runtime.rtl").toStr(item_expression));
+							if (t.current_function.isFlag(ctx, "async") && t.isEmulateAsyncAwait(ctx))
+							{
+								s = item.var_name;
+							}
+							else
+							{
+								s = "var " + use("Runtime.rtl").toStr(item.var_name);
+							}
 						}
 						else
 						{
-							s += use("Runtime.rtl").toStr(" " + use("Runtime.rtl").toStr(op) + use("Runtime.rtl").toStr(" ") + use("Runtime.rtl").toStr(item_expression));
+							var res = t.expression.constructor.OpIdentifier(ctx, t, item.op_code);
+							t = Runtime.rtl.get(ctx, res, 0);
+							s = Runtime.rtl.get(ctx, res, 1);
+						}
+						if (item_expression != "")
+						{
+							if (op == "~=")
+							{
+								s += use("Runtime.rtl").toStr(" += " + use("Runtime.rtl").toStr(item_expression));
+							}
+							else
+							{
+								s += use("Runtime.rtl").toStr(" " + use("Runtime.rtl").toStr(op) + use("Runtime.rtl").toStr(" ") + use("Runtime.rtl").toStr(item_expression));
+							}
 						}
 					}
 				}
@@ -1151,9 +1158,11 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Operator,
 		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 		return null;
 	},
-	getMethodsList: function(ctx)
+	getMethodsList: function(ctx,f)
 	{
-		var a = [
+		if (f==undefined) f=0;
+		var a = [];
+		if ((f&4)==4) a=[
 		];
 		return use("Runtime.Collection").from(a);
 	},

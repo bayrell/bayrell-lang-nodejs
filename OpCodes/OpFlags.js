@@ -9,7 +9,7 @@ var use = require('bayrell').use;
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *
- *      https://www.bayrell.org/licenses/APACHE-LICENSE-2.0.html
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -174,7 +174,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags,
 	{
 		var a = [];
 		if (f==undefined) f=0;
-		if ((f|3)==3)
+		if ((f&3)==3)
 		{
 			a.push("p_async");
 			a.push("p_export");
@@ -201,120 +201,122 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags,
 		if (field_name == "p_async") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
-			"t": "bool",
 			"name": field_name,
+			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "p_export") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
-			"t": "bool",
 			"name": field_name,
+			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "p_static") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
-			"t": "bool",
 			"name": field_name,
+			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "p_const") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
-			"t": "bool",
 			"name": field_name,
+			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "p_public") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
-			"t": "bool",
 			"name": field_name,
+			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "p_private") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
-			"t": "bool",
 			"name": field_name,
+			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "p_protected") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
-			"t": "bool",
 			"name": field_name,
+			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "p_declare") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
-			"t": "bool",
 			"name": field_name,
+			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "p_serializable") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
-			"t": "bool",
 			"name": field_name,
+			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "p_cloneable") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
-			"t": "bool",
 			"name": field_name,
+			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "p_assignable") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
-			"t": "bool",
 			"name": field_name,
+			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "p_memorize") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
-			"t": "bool",
 			"name": field_name,
+			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "p_lambda") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
-			"t": "bool",
 			"name": field_name,
+			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "p_pure") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.OpCodes.OpFlags",
-			"t": "bool",
 			"name": field_name,
+			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
 		return null;
 	},
-	getMethodsList: function(ctx)
+	getMethodsList: function(ctx,f)
 	{
-		var a = [
+		if (f==undefined) f=0;
+		var a = [];
+		if ((f&4)==4) a=[
 		];
 		return use("Runtime.Collection").from(a);
 	},

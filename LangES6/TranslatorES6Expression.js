@@ -9,7 +9,7 @@ var use = require('bayrell').use;
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *
- *      https://www.bayrell.org/licenses/APACHE-LICENSE-2.0.html
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -181,11 +181,25 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Expression,
 	{
 		if (op_code.value == "@")
 		{
-			return use("Runtime.Collection").from([t,"ctx"]);
+			if (t.enable_context == false)
+			{
+				return use("Runtime.Collection").from([t,this.useModuleName(ctx, t, "rtl") + use("Runtime.rtl").toStr(".getContext()")]);
+			}
+			else
+			{
+				return use("Runtime.Collection").from([t,"ctx"]);
+			}
 		}
 		if (op_code.value == "_")
 		{
-			return use("Runtime.Collection").from([t,"ctx.translate"]);
+			if (t.enable_context == false)
+			{
+				return use("Runtime.Collection").from([t,this.useModuleName(ctx, t, "rtl") + use("Runtime.rtl").toStr(".getContext().translate")]);
+			}
+			else
+			{
+				return use("Runtime.Collection").from([t,"ctx.translate"]);
+			}
 		}
 		if (op_code.value == "log")
 		{
@@ -1368,9 +1382,11 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Expression,
 		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 		return null;
 	},
-	getMethodsList: function(ctx)
+	getMethodsList: function(ctx,f)
 	{
-		var a = [
+		if (f==undefined) f=0;
+		var a = [];
+		if ((f&4)==4) a=[
 		];
 		return use("Runtime.Collection").from(a);
 	},

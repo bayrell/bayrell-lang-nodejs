@@ -9,7 +9,7 @@ var use = require('bayrell').use;
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *
- *      https://www.bayrell.org/licenses/APACHE-LICENSE-2.0.html
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,6 +40,7 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode.prototype,
 		this.use_module_name = true;
 		this.enable_async_await = true;
 		this.emulate_async_await = false;
+		this.enable_introspection = false;
 		use("Bayrell.Lang.LangES6.TranslatorES6").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
@@ -54,6 +55,7 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode.prototype,
 			this.use_module_name = o.use_module_name;
 			this.enable_async_await = o.enable_async_await;
 			this.emulate_async_await = o.emulate_async_await;
+			this.enable_introspection = o.enable_introspection;
 		}
 		use("Bayrell.Lang.LangES6.TranslatorES6").prototype.assignObject.call(this,ctx,o);
 	},
@@ -67,6 +69,7 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode.prototype,
 		else if (k == "use_module_name")this.use_module_name = v;
 		else if (k == "enable_async_await")this.enable_async_await = v;
 		else if (k == "emulate_async_await")this.emulate_async_await = v;
+		else if (k == "enable_introspection")this.enable_introspection = v;
 		else use("Bayrell.Lang.LangES6.TranslatorES6").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
@@ -80,6 +83,7 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode.prototype,
 		else if (k == "use_module_name")return this.use_module_name;
 		else if (k == "enable_async_await")return this.enable_async_await;
 		else if (k == "emulate_async_await")return this.emulate_async_await;
+		else if (k == "enable_introspection")return this.enable_introspection;
 		return use("Bayrell.Lang.LangES6.TranslatorES6").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)
@@ -143,7 +147,7 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode,
 	{
 		var a = [];
 		if (f==undefined) f=0;
-		if ((f|3)==3)
+		if ((f&3)==3)
 		{
 			a.push("async_await");
 			a.push("expression");
@@ -153,6 +157,7 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode,
 			a.push("use_module_name");
 			a.push("enable_async_await");
 			a.push("emulate_async_await");
+			a.push("enable_introspection");
 		}
 		return use("Runtime.Collection").from(a);
 	},
@@ -164,72 +169,82 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode,
 		if (field_name == "async_await") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangNode.TranslatorNode",
-			"t": "Bayrell.Lang.LangES6.TranslatorES6AsyncAwait",
 			"name": field_name,
+			"t": "Bayrell.Lang.LangES6.TranslatorES6AsyncAwait",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "expression") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangNode.TranslatorNode",
-			"t": "Bayrell.Lang.LangES6.TranslatorES6Expression",
 			"name": field_name,
+			"t": "Bayrell.Lang.LangES6.TranslatorES6Expression",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "html") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangNode.TranslatorNode",
-			"t": "Bayrell.Lang.LangES6.TranslatorES6Html",
 			"name": field_name,
+			"t": "Bayrell.Lang.LangES6.TranslatorES6Html",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "operator") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangNode.TranslatorNode",
-			"t": "Bayrell.Lang.LangES6.TranslatorES6Operator",
 			"name": field_name,
+			"t": "Bayrell.Lang.LangES6.TranslatorES6Operator",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "program") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangNode.TranslatorNode",
-			"t": "Bayrell.Lang.LangES6.TranslatorES6Program",
 			"name": field_name,
+			"t": "Bayrell.Lang.LangES6.TranslatorES6Program",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "use_module_name") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangNode.TranslatorNode",
-			"t": "bool",
 			"name": field_name,
+			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "enable_async_await") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangNode.TranslatorNode",
-			"t": "bool",
 			"name": field_name,
+			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "emulate_async_await") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Lang.LangNode.TranslatorNode",
-			"t": "bool",
 			"name": field_name,
+			"t": "bool",
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "enable_introspection") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangNode.TranslatorNode",
+			"name": field_name,
+			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
 		return null;
 	},
-	getMethodsList: function(ctx)
+	getMethodsList: function(ctx,f)
 	{
-		var a = [
+		if (f==undefined) f=0;
+		var a = [];
+		if ((f&4)==4) a=[
 		];
 		return use("Runtime.Collection").from(a);
 	},

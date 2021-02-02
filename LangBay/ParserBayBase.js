@@ -9,7 +9,7 @@ var use = require('bayrell').use;
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *
- *      https://www.bayrell.org/licenses/APACHE-LICENSE-2.0.html
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,19 +25,6 @@ Bayrell.Lang.LangBay.ParserBayBase = function(ctx)
 };
 Object.assign(Bayrell.Lang.LangBay.ParserBayBase.prototype,
 {
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.LangBay.ParserBayBase"))
-		{
-		}
-	},
-	assignValue: function(ctx,k,v)
-	{
-	},
-	takeValue: function(ctx,k,d)
-	{
-		if (d == undefined) d = null;
-	},
 	getClassName: function(ctx)
 	{
 		return "Bayrell.Lang.LangBay.ParserBayBase";
@@ -365,25 +352,30 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayBase,
 			var __v3 = use("Bayrell.Lang.OpCodes.OpIdentifier");
 			kind = __v3.KIND_SYS_FUNCTION;
 		}
-		else if (name == "null" || name == "true" || name == "false")
+		else if (name == "window" || name == "document")
 		{
 			var __v4 = use("Bayrell.Lang.OpCodes.OpIdentifier");
-			kind = __v4.KIND_CONSTANT;
+			kind = __v4.KIND_VARIABLE;
+		}
+		else if (name == "null" || name == "true" || name == "false")
+		{
+			var __v5 = use("Bayrell.Lang.OpCodes.OpIdentifier");
+			kind = __v5.KIND_CONSTANT;
 		}
 		else if (name == "fn")
 		{
-			var __v5 = use("Bayrell.Lang.OpCodes.OpIdentifier");
-			kind = __v5.KIND_FUNCTION;
+			var __v6 = use("Bayrell.Lang.OpCodes.OpIdentifier");
+			kind = __v6.KIND_FUNCTION;
 		}
 		else if (name == "@" || name == "_")
 		{
-			var __v6 = use("Bayrell.Lang.OpCodes.OpIdentifier");
-			kind = __v6.KIND_CONTEXT;
+			var __v7 = use("Bayrell.Lang.OpCodes.OpIdentifier");
+			kind = __v7.KIND_CONTEXT;
 		}
 		else if (name == "static" || name == "self" || name == "this" || name == "parent")
 		{
-			var __v7 = use("Bayrell.Lang.OpCodes.OpIdentifier");
-			kind = __v7.KIND_CLASSREF;
+			var __v8 = use("Bayrell.Lang.OpCodes.OpIdentifier");
+			kind = __v8.KIND_CLASSREF;
 		}
 		return kind;
 	},
@@ -2099,9 +2091,11 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayBase,
 		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 		return null;
 	},
-	getMethodsList: function(ctx)
+	getMethodsList: function(ctx,f)
 	{
-		var a = [
+		if (f==undefined) f=0;
+		var a = [];
+		if ((f&4)==4) a=[
 		];
 		return use("Runtime.Collection").from(a);
 	},

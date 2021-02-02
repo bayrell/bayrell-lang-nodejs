@@ -9,7 +9,7 @@ var use = require('bayrell').use;
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *
- *      https://www.bayrell.org/licenses/APACHE-LICENSE-2.0.html
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,19 +25,6 @@ Bayrell.Lang.LangPHP.TranslatorPHPOperator = function(ctx)
 };
 Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPOperator.prototype,
 {
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.LangPHP.TranslatorPHPOperator"))
-		{
-		}
-	},
-	assignValue: function(ctx,k,v)
-	{
-	},
-	takeValue: function(ctx,k,d)
-	{
-		if (d == undefined) d = null;
-	},
 	getClassName: function(ctx)
 	{
 		return "Bayrell.Lang.LangPHP.TranslatorPHPOperator";
@@ -177,29 +164,36 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPOperator,
 				}
 				else
 				{
-					var __v5 = use("Bayrell.Lang.OpCodes.OpAssign");
-					if (op_code.kind == __v5.KIND_DECLARE)
+					if (item.op_code != null && item.op_code.value == "@" && t.enable_context == false)
 					{
-						s = "$" + use("Runtime.rtl").toStr(item.var_name);
+						index_s = "\\Runtime\\rtl::setContext(" + use("Runtime.rtl").toStr(item_expression) + use("Runtime.rtl").toStr(");");
 					}
 					else
 					{
-						var res = t.expression.constructor.OpIdentifier(ctx, t, item.op_code);
-						t = Runtime.rtl.get(ctx, res, 0);
-						s = Runtime.rtl.get(ctx, res, 1);
+						var __v5 = use("Bayrell.Lang.OpCodes.OpAssign");
+						if (op_code.kind == __v5.KIND_DECLARE)
+						{
+							s = "$" + use("Runtime.rtl").toStr(item.var_name);
+						}
+						else
+						{
+							var res = t.expression.constructor.OpIdentifier(ctx, t, item.op_code);
+							t = Runtime.rtl.get(ctx, res, 0);
+							s = Runtime.rtl.get(ctx, res, 1);
+						}
+						if (item_expression != "")
+						{
+							if (op == "~=")
+							{
+								s += use("Runtime.rtl").toStr(" .= " + use("Runtime.rtl").toStr(item_expression));
+							}
+							else
+							{
+								s += use("Runtime.rtl").toStr(" " + use("Runtime.rtl").toStr(op) + use("Runtime.rtl").toStr(" ") + use("Runtime.rtl").toStr(item_expression));
+							}
+							index_s = s + use("Runtime.rtl").toStr(";");
+						}
 					}
-					if (item_expression != "")
-					{
-					}
-					if (op == "~=")
-					{
-						s += use("Runtime.rtl").toStr(" .= " + use("Runtime.rtl").toStr(item_expression));
-					}
-					else
-					{
-						s += use("Runtime.rtl").toStr(" " + use("Runtime.rtl").toStr(op) + use("Runtime.rtl").toStr(" ") + use("Runtime.rtl").toStr(item_expression));
-					}
-					index_s = s + use("Runtime.rtl").toStr(";");
 				}
 				if (item.var_name != "" && t.save_vars.indexOf(ctx, item.var_name) == -1)
 				{
@@ -870,9 +864,11 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPOperator,
 		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 		return null;
 	},
-	getMethodsList: function(ctx)
+	getMethodsList: function(ctx,f)
 	{
-		var a = [
+		if (f==undefined) f=0;
+		var a = [];
+		if ((f&4)==4) a=[
 		];
 		return use("Runtime.Collection").from(a);
 	},
