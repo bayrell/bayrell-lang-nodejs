@@ -233,6 +233,10 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 			s1 += use("Runtime.rtl").toStr(t.s(ctx, "return Dict.from({"));
 			t = t.levelInc(ctx);
 		}
+		if (f.flags.isFlag(ctx, "async"))
+		{
+			s1 += use("Runtime.rtl").toStr(t.s(ctx, "\"async\": true,"));
+		}
 		s1 += use("Runtime.rtl").toStr(t.s(ctx, "\"annotations\": Collection.from(["));
 		t = t.levelInc(ctx);
 		for (var j = 0;j < f.annotations.count(ctx);j++)
@@ -467,10 +471,17 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 				var res = t.expression.constructor.OpTypeIdentifier(ctx, t, annotation.name);
 				t = Runtime.rtl.get(ctx, res, 0);
 				var name = Runtime.rtl.get(ctx, res, 1);
-				var res = t.expression.constructor.OpDict(ctx, t, annotation.params, true);
-				t = Runtime.rtl.get(ctx, res, 0);
-				var params = Runtime.rtl.get(ctx, res, 1);
-				s1 += use("Runtime.rtl").toStr(t.s(ctx, "new " + use("Runtime.rtl").toStr(name) + use("Runtime.rtl").toStr("(ctx, ") + use("Runtime.rtl").toStr(params) + use("Runtime.rtl").toStr("),")));
+				if (annotation.params != null)
+				{
+					var res = t.expression.constructor.OpDict(ctx, t, annotation.params, true);
+					t = Runtime.rtl.get(ctx, res, 0);
+					var params = Runtime.rtl.get(ctx, res, 1);
+					s1 += use("Runtime.rtl").toStr(t.s(ctx, "new " + use("Runtime.rtl").toStr(name) + use("Runtime.rtl").toStr("(ctx, ") + use("Runtime.rtl").toStr(params) + use("Runtime.rtl").toStr("),")));
+				}
+				else
+				{
+					s1 += use("Runtime.rtl").toStr(t.s(ctx, "new " + use("Runtime.rtl").toStr(name) + use("Runtime.rtl").toStr("(ctx),")));
+				}
 			}
 			t = t.levelDec(ctx);
 			s1 += use("Runtime.rtl").toStr(t.s(ctx, "]),"));
@@ -1061,8 +1072,14 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 	 */
 	OpDeclareClass: function(ctx, t, op_code)
 	{
+		if (op_code.is_abstract)
+		{
+			return use("Runtime.Collection").from([t,""]);
+		}
 		if (op_code.is_declare)
 		{
+			var __v0 = use("Bayrell.Lang.Exceptions.DeclaredClass");
+			throw new __v0(ctx)
 			return use("Runtime.Collection").from([t,""]);
 		}
 		var content = "";

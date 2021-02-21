@@ -37,6 +37,8 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay.prototype,
 		this.current_namespace_name = "";
 		this.current_class_name = "";
 		this.current_class_kind = "";
+		this.current_class_abstract = false;
+		this.current_class_declare = false;
 		this.find_identifier = true;
 		this.skip_comments = true;
 		this.pipe_kind = "";
@@ -162,6 +164,8 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 			a.push("current_namespace_name");
 			a.push("current_class_name");
 			a.push("current_class_kind");
+			a.push("current_class_abstract");
+			a.push("current_class_declare");
 			a.push("find_identifier");
 			a.push("skip_comments");
 			a.push("pipe_kind");
@@ -237,6 +241,22 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 			"class_name": "Bayrell.Lang.LangBay.ParserBay",
 			"name": field_name,
 			"t": "string",
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "current_class_abstract") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"name": field_name,
+			"t": "bool",
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "current_class_declare") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.LangBay.ParserBay",
+			"name": field_name,
+			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});

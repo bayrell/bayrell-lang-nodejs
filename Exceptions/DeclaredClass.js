@@ -1,9 +1,9 @@
 "use strict;"
 var use = require('bayrell').use;
 /*!
- *  Bayrell Language
+ *  Bayrell Parser Library.
  *
- *  (c) Copyright 2016-2020 "Ildar Bikmamatov" <support@bayrell.org>
+ *  (c) Copyright 2016-2018 "Ildar Bikmamatov" <support@bayrell.org>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,61 +19,36 @@ var use = require('bayrell').use;
  */
 if (typeof Bayrell == 'undefined') Bayrell = {};
 if (typeof Bayrell.Lang == 'undefined') Bayrell.Lang = {};
-Bayrell.Lang.ModuleDescription = function(ctx)
+if (typeof Bayrell.Lang.Exceptions == 'undefined') Bayrell.Lang.Exceptions = {};
+Bayrell.Lang.Exceptions.DeclaredClass = function(ctx, prev)
 {
+	if (prev == undefined) prev = null;
+	use("Runtime.Exceptions.RuntimeException").call(this, ctx, "Declared class", -1, prev);
 };
-Object.assign(Bayrell.Lang.ModuleDescription.prototype,
+Bayrell.Lang.Exceptions.DeclaredClass.prototype = Object.create(use("Runtime.Exceptions.RuntimeException").prototype);
+Bayrell.Lang.Exceptions.DeclaredClass.prototype.constructor = Bayrell.Lang.Exceptions.DeclaredClass;
+Object.assign(Bayrell.Lang.Exceptions.DeclaredClass.prototype,
 {
 	getClassName: function(ctx)
 	{
-		return "Bayrell.Lang.ModuleDescription";
+		return "Bayrell.Lang.Exceptions.DeclaredClass";
 	},
 });
-Object.assign(Bayrell.Lang.ModuleDescription,
+Object.assign(Bayrell.Lang.Exceptions.DeclaredClass, use("Runtime.Exceptions.RuntimeException"));
+Object.assign(Bayrell.Lang.Exceptions.DeclaredClass,
 {
-	/**
-	 * Returns module name
-	 * @return string
-	 */
-	getModuleName: function(ctx)
-	{
-		return "Bayrell.Lang";
-	},
-	/**
-	 * Returns module name
-	 * @return string
-	 */
-	getModuleVersion: function(ctx)
-	{
-		return "0.10.9";
-	},
-	/**
-	 * Returns required modules
-	 * @return Map<string>
-	 */
-	requiredModules: function(ctx)
-	{
-		return use("Runtime.Dict").from({"Runtime":">=0.2 <1.0"});
-	},
-	/**
-	 * Returns enities
-	 */
-	entities: function(ctx)
-	{
-		return null;
-	},
 	/* ======================= Class Init Functions ======================= */
 	getCurrentNamespace: function()
 	{
-		return "Bayrell.Lang";
+		return "Bayrell.Lang.Exceptions";
 	},
 	getCurrentClassName: function()
 	{
-		return "Bayrell.Lang.ModuleDescription";
+		return "Bayrell.Lang.Exceptions.DeclaredClass";
 	},
 	getParentClassName: function()
 	{
-		return "";
+		return "Runtime.Exceptions.RuntimeException";
 	},
 	getClassInfo: function(ctx)
 	{
@@ -82,8 +57,8 @@ Object.assign(Bayrell.Lang.ModuleDescription,
 		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
-			"class_name": "Bayrell.Lang.ModuleDescription",
-			"name": "Bayrell.Lang.ModuleDescription",
+			"class_name": "Bayrell.Lang.Exceptions.DeclaredClass",
+			"name": "Bayrell.Lang.Exceptions.DeclaredClass",
 			"annotations": Collection.from([
 			]),
 		});
@@ -113,5 +88,5 @@ Object.assign(Bayrell.Lang.ModuleDescription,
 	{
 		return null;
 	},
-});use.add(Bayrell.Lang.ModuleDescription);
-module.exports = Bayrell.Lang.ModuleDescription;
+});use.add(Bayrell.Lang.Exceptions.DeclaredClass);
+module.exports = Bayrell.Lang.Exceptions.DeclaredClass;

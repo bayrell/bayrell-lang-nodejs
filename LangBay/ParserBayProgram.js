@@ -278,6 +278,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayProgram,
 		var token = null;
 		var op_code = null;
 		var template = null;
+		var is_abstract = false;
 		var is_declare = false;
 		var is_static = false;
 		var is_struct = false;
@@ -286,14 +287,14 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayProgram,
 		look = Runtime.rtl.get(ctx, res, 0);
 		token = Runtime.rtl.get(ctx, res, 1);
 		var caret_start = token.caret_start;
-		if (token.content == "static")
+		if (token.content == "abstract")
 		{
 			parser = look;
-			is_static = true;
+			var res = parser.parser_base.constructor.readToken(ctx, parser);
+			look = Runtime.rtl.get(ctx, res, 0);
+			token = Runtime.rtl.get(ctx, res, 1);
+			is_abstract = true;
 		}
-		var res = parser.parser_base.constructor.readToken(ctx, parser);
-		look = Runtime.rtl.get(ctx, res, 0);
-		token = Runtime.rtl.get(ctx, res, 1);
 		if (token.content == "declare")
 		{
 			parser = look;
@@ -301,6 +302,14 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayProgram,
 			look = Runtime.rtl.get(ctx, res, 0);
 			token = Runtime.rtl.get(ctx, res, 1);
 			is_declare = true;
+		}
+		if (token.content == "static")
+		{
+			parser = look;
+			var res = parser.parser_base.constructor.readToken(ctx, parser);
+			look = Runtime.rtl.get(ctx, res, 0);
+			token = Runtime.rtl.get(ctx, res, 1);
+			is_static = true;
 		}
 		if (token.content == "class")
 		{
@@ -332,6 +341,8 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayProgram,
 		op_code = Runtime.rtl.get(ctx, res, 1);
 		var class_name = op_code.value;
 		/* Set class name */
+		parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["current_class_abstract"]), is_abstract);
+		parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["current_class_declare"]), is_declare);
 		parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["current_class_name"]), class_name);
 		parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["current_class_kind"]), class_kind);
 		/* Register module in parser */
@@ -419,7 +430,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayProgram,
 		var res = parser.parser_base.constructor.matchToken(ctx, parser, "}");
 		parser = Runtime.rtl.get(ctx, res, 0);
 		var __v0 = use("Bayrell.Lang.OpCodes.OpDeclareClass");
-		var current_class = new __v0(ctx, use("Runtime.Dict").from({"kind":class_kind,"name":class_name,"is_static":is_static,"is_declare":is_declare,"class_extends":class_extends,"class_implements":(class_implements != null) ? (class_implements.toCollection(ctx)) : (null),"template":(template != null) ? (template.toCollection(ctx)) : (null),"vars":d.item(ctx, "vars"),"functions":d.item(ctx, "functions"),"fn_create":d.item(ctx, "fn_create"),"fn_destroy":d.item(ctx, "fn_destroy"),"items":d.item(ctx, "items"),"caret_start":caret_start,"caret_end":parser.caret}));
+		var current_class = new __v0(ctx, use("Runtime.Dict").from({"kind":class_kind,"name":class_name,"is_abstract":is_abstract,"is_static":is_static,"is_declare":is_declare,"class_extends":class_extends,"class_implements":(class_implements != null) ? (class_implements.toCollection(ctx)) : (null),"template":(template != null) ? (template.toCollection(ctx)) : (null),"vars":d.item(ctx, "vars"),"functions":d.item(ctx, "functions"),"fn_create":d.item(ctx, "fn_create"),"fn_destroy":d.item(ctx, "fn_destroy"),"items":d.item(ctx, "items"),"caret_start":caret_start,"caret_end":parser.caret}));
 		/* Restore uses */
 		parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["uses"]), save_uses);
 		return use("Runtime.Collection").from([parser.copy(ctx, use("Runtime.Dict").from({"current_class":current_class})),current_class]);
@@ -538,7 +549,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayProgram,
 				var res = parser.parser_base.constructor.matchToken(ctx, parser, ";");
 				parser = Runtime.rtl.get(ctx, res, 0);
 			}
-			else if (token.content == "class" || token.content == "struct" || token.content == "static" || token.content == "declare" || token.content == "interface")
+			else if (token.content == "class" || token.content == "struct" || token.content == "static" || token.content == "declare" || token.content == "interface" || token.content == "abstract")
 			{
 				var item = null;
 				var res = this.readClass(ctx, parser);

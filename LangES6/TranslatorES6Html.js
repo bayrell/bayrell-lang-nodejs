@@ -146,7 +146,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 				attr_key = "@eventAsync:" + use("Runtime.rtl").toStr(event_name);
 				attr_value = "[" + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, t.current_class_full_name)) + use("Runtime.rtl").toStr(",") + use("Runtime.rtl").toStr(attr_value) + use("Runtime.rtl").toStr("]");
 			}
-			else if (attr_key == "@ref" || attr_key == "@bind" || attr_key == "@name")
+			else if (attr_key == "@ref" || attr_key == "@bind" || attr_key == "@model" || attr_key == "@name" || attr_key == "@watch")
 			{
 				attr_value = "[" + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, t.current_class_full_name)) + use("Runtime.rtl").toStr(",") + use("Runtime.rtl").toStr(attr_value) + use("Runtime.rtl").toStr("]");
 			}

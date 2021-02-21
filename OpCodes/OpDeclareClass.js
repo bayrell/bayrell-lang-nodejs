@@ -47,6 +47,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpDeclareClass.prototype,
 		this.vars = null;
 		this.functions = null;
 		this.items = null;
+		this.is_abstract = false;
 		this.is_static = false;
 		this.is_declare = false;
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,ctx);
@@ -70,6 +71,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpDeclareClass.prototype,
 			this.vars = o.vars;
 			this.functions = o.functions;
 			this.items = o.items;
+			this.is_abstract = o.is_abstract;
 			this.is_static = o.is_static;
 			this.is_declare = o.is_declare;
 		}
@@ -92,6 +94,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpDeclareClass.prototype,
 		else if (k == "vars")this.vars = v;
 		else if (k == "functions")this.functions = v;
 		else if (k == "items")this.items = v;
+		else if (k == "is_abstract")this.is_abstract = v;
 		else if (k == "is_static")this.is_static = v;
 		else if (k == "is_declare")this.is_declare = v;
 		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
@@ -114,6 +117,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpDeclareClass.prototype,
 		else if (k == "vars")return this.vars;
 		else if (k == "functions")return this.functions;
 		else if (k == "items")return this.items;
+		else if (k == "is_abstract")return this.is_abstract;
 		else if (k == "is_static")return this.is_static;
 		else if (k == "is_declare")return this.is_declare;
 		return use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.takeValue.call(this,ctx,k,d);
@@ -176,6 +180,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpDeclareClass,
 			a.push("vars");
 			a.push("functions");
 			a.push("items");
+			a.push("is_abstract");
 			a.push("is_static");
 			a.push("is_declare");
 		}
@@ -334,6 +339,14 @@ Object.assign(Bayrell.Lang.OpCodes.OpDeclareClass,
 			"name": field_name,
 			"t": "Runtime.Collection",
 			"s": ["Bayrell.Lang.OpCodes.BaseOpCode"],
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "is_abstract") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Bayrell.Lang.OpCodes.OpDeclareClass",
+			"name": field_name,
+			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});

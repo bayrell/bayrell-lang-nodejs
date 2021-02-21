@@ -1114,7 +1114,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 			var res = parser.parser_base.constructor.readToken(ctx, parser);
 			look = Runtime.rtl.get(ctx, res, 0);
 			token = Runtime.rtl.get(ctx, res, 1);
-			if (flags != null && flags.p_declare || parser.current_class_kind == "interface")
+			if (flags != null && flags.p_declare || parser.current_class_abstract || parser.current_class_declare || parser.current_class_kind == "interface")
 			{
 				if (token.content != ";")
 				{
