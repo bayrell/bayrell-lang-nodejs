@@ -30,11 +30,9 @@ Object.assign(Bayrell.Lang.OpCodes.OpCollection.prototype,
 {
 	_init: function(ctx)
 	{
-		var defProp = use('Runtime.rtl').defProp;
-		var a = Object.getOwnPropertyNames(this);
+		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,ctx);
 		this.op = "op_collection";
 		this.values = null;
-		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{

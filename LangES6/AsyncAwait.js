@@ -30,11 +30,9 @@ Object.assign(Bayrell.Lang.LangES6.AsyncAwait.prototype,
 {
 	_init: function(ctx)
 	{
-		var defProp = use('Runtime.rtl').defProp;
-		var a = Object.getOwnPropertyNames(this);
+		use("Runtime.BaseStruct").prototype._init.call(this,ctx);
 		this.start_pos = "";
 		this.end_pos = "";
-		use("Runtime.BaseStruct").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{

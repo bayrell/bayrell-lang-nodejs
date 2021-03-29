@@ -29,10 +29,10 @@ Object.assign(Bayrell.Lang.Caret.prototype,
 {
 	_init: function(ctx)
 	{
+		use("Runtime.BaseStruct").prototype._init.call(this,ctx);
 		this.pos = 0;
 		this.x = 0;
 		this.y = 0;
-		use("Runtime.BaseStruct").prototype._init.call(this,ctx);
 	},
 	getClassName: function(ctx)
 	{

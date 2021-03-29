@@ -30,8 +30,7 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode.prototype,
 {
 	_init: function(ctx)
 	{
-		var defProp = use('Runtime.rtl').defProp;
-		var a = Object.getOwnPropertyNames(this);
+		use("Bayrell.Lang.LangES6.TranslatorES6").prototype._init.call(this,ctx);
 		this.async_await = null;
 		this.expression = null;
 		this.html = null;
@@ -41,7 +40,6 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode.prototype,
 		this.enable_async_await = true;
 		this.emulate_async_await = false;
 		this.enable_introspection = false;
-		use("Bayrell.Lang.LangES6.TranslatorES6").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{

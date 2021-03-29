@@ -29,14 +29,12 @@ Object.assign(Bayrell.Lang.CoreToken.prototype,
 {
 	_init: function(ctx)
 	{
-		var defProp = use('Runtime.rtl').defProp;
-		var a = Object.getOwnPropertyNames(this);
+		use("Runtime.BaseStruct").prototype._init.call(this,ctx);
 		this.kind = "";
 		this.content = "";
 		this.caret_start = null;
 		this.caret_end = null;
 		this.eof = false;
-		use("Runtime.BaseStruct").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{

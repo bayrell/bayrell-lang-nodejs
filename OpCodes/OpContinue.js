@@ -30,10 +30,8 @@ Object.assign(Bayrell.Lang.OpCodes.OpContinue.prototype,
 {
 	_init: function(ctx)
 	{
-		var defProp = use('Runtime.rtl').defProp;
-		var a = Object.getOwnPropertyNames(this);
-		this.op = "op_continue";
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,ctx);
+		this.op = "op_continue";
 	},
 	assignObject: function(ctx,o)
 	{

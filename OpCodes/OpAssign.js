@@ -30,8 +30,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpAssign.prototype,
 {
 	_init: function(ctx)
 	{
-		var defProp = use('Runtime.rtl').defProp;
-		var a = Object.getOwnPropertyNames(this);
+		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,ctx);
 		this.kind = "";
 		this.var_name = "";
 		this.flags = null;
@@ -41,7 +40,6 @@ Object.assign(Bayrell.Lang.OpCodes.OpAssign.prototype,
 		this.values = null;
 		this.names = null;
 		this.expression = null;
-		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{

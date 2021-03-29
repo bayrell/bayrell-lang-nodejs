@@ -36,13 +36,13 @@ Object.assign(Bayrell.Lang.CoreParser.prototype,
 	},
 	_init: function(ctx)
 	{
+		use("Runtime.BaseStruct").prototype._init.call(this,ctx);
 		this.tab_size = 4;
 		this.file_name = "";
 		this.content = null;
 		this.content_sz = 0;
 		this.caret = null;
 		this.find_ident = true;
-		use("Runtime.BaseStruct").prototype._init.call(this,ctx);
 	},
 	getClassName: function(ctx)
 	{

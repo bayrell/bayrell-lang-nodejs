@@ -317,7 +317,9 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Expression,
 			attrs = attrs.reverseIm(ctx);
 			var __v3 = use("Bayrell.Lang.OpCodes.OpCall");
 			var __v4 = use("Bayrell.Lang.OpCodes.OpNew");
-			var __v5 = use("Bayrell.Lang.OpCodes.OpIdentifier");
+			var __v5 = use("Bayrell.Lang.OpCodes.OpCollection");
+			var __v6 = use("Bayrell.Lang.OpCodes.OpDict");
+			var __v7 = use("Bayrell.Lang.OpCodes.OpIdentifier");
 			if (op_code_first instanceof __v3)
 			{
 				prev_kind = "var";
@@ -336,9 +338,25 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Expression,
 			}
 			else if (op_code_first instanceof __v5)
 			{
-				var __v6 = use("Bayrell.Lang.OpCodes.OpIdentifier");
-				var __v7 = use("Bayrell.Lang.OpCodes.OpIdentifier");
-				if (op_code_first.kind == __v6.KIND_CLASSREF)
+				prev_kind = "var";
+				var res = this.OpCollection(ctx, t, op_code_first);
+				t = Runtime.rtl.get(ctx, res, 0);
+				s = Runtime.rtl.get(ctx, res, 1);
+				first_item_complex = true;
+			}
+			else if (op_code_first instanceof __v6)
+			{
+				prev_kind = "var";
+				var res = this.OpDict(ctx, t, op_code_first);
+				t = Runtime.rtl.get(ctx, res, 0);
+				s = Runtime.rtl.get(ctx, res, 1);
+				first_item_complex = true;
+			}
+			else if (op_code_first instanceof __v7)
+			{
+				var __v8 = use("Bayrell.Lang.OpCodes.OpIdentifier");
+				var __v9 = use("Bayrell.Lang.OpCodes.OpIdentifier");
+				if (op_code_first.kind == __v8.KIND_CLASSREF)
 				{
 					if (op_code_first.value == "static")
 					{
@@ -361,7 +379,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Expression,
 						s = "this";
 					}
 				}
-				else if (op_code_first.kind == __v7.KIND_PIPE)
+				else if (op_code_first.kind == __v9.KIND_PIPE)
 				{
 					prev_kind = "var";
 					s = t.pipe_var_name + use("Runtime.rtl").toStr(".val");
@@ -372,8 +390,8 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Expression,
 					t = Runtime.rtl.get(ctx, res, 0);
 					s = Runtime.rtl.get(ctx, res, 1);
 					prev_kind = "var";
-					var __v8 = use("Bayrell.Lang.OpCodes.OpIdentifier");
-					if (t.modules.has(ctx, op_code_first.value) || op_code_first.kind == __v8.KIND_SYS_TYPE)
+					var __v10 = use("Bayrell.Lang.OpCodes.OpIdentifier");
+					if (t.modules.has(ctx, op_code_first.value) || op_code_first.kind == __v10.KIND_SYS_TYPE)
 					{
 						prev_kind = "static";
 					}

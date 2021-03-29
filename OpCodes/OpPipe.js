@@ -30,15 +30,13 @@ Object.assign(Bayrell.Lang.OpCodes.OpPipe.prototype,
 {
 	_init: function(ctx)
 	{
-		var defProp = use('Runtime.rtl').defProp;
-		var a = Object.getOwnPropertyNames(this);
+		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,ctx);
 		this.op = "op_pipe";
 		this.kind = "";
 		this.obj = null;
 		this.value = null;
 		this.is_async = false;
 		this.is_monad = false;
-		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{

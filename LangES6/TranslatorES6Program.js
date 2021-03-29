@@ -843,11 +843,16 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 				/* Clear save op codes */
 				var save_op_codes = t.save_op_codes;
 				var save_op_code_inc = t.save_op_code_inc;
-				var __v1 = use("Bayrell.Lang.OpCodes.OpDeclareClass");
-				if (class_kind == __v1.KIND_STRUCT)
+				/*
+				if (class_kind == OpDeclareClass::KIND_STRUCT)
 				{
-					content += use("Runtime.rtl").toStr(t.s(ctx, "var defProp = use('Runtime.rtl').defProp;"));
-					content += use("Runtime.rtl").toStr(t.s(ctx, "var a = Object.getOwnPropertyNames(this);"));
+					content ~= t.s("var defProp = use('Runtime.rtl').defProp;");
+					content ~= t.s("var a = Object.getOwnPropertyNames(this);");
+				}
+				*/
+				if (t.current_class_extends_name != "")
+				{
+					content += use("Runtime.rtl").toStr(t.s(ctx, t.expression.constructor.useModuleName(ctx, t, t.current_class_extends_name) + use("Runtime.rtl").toStr(".prototype._init.call(this,ctx);")));
 				}
 				var s1 = "";
 				for (var i = 0;i < op_code.vars.count(ctx);i++)
@@ -905,10 +910,6 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 							*/
 						}
 					}
-				}
-				if (t.current_class_extends_name != "")
-				{
-					s1 += use("Runtime.rtl").toStr(t.s(ctx, t.expression.constructor.useModuleName(ctx, t, t.current_class_extends_name) + use("Runtime.rtl").toStr(".prototype._init.call(this,ctx);")));
 				}
 				/* Output save op code */
 				var save = t.constructor.outputSaveOpCode(ctx, t, save_op_codes.count(ctx));

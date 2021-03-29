@@ -29,13 +29,11 @@ Object.assign(Bayrell.Lang.SaveOpCode.prototype,
 {
 	_init: function(ctx)
 	{
-		var defProp = use('Runtime.rtl').defProp;
-		var a = Object.getOwnPropertyNames(this);
+		use("Runtime.BaseStruct").prototype._init.call(this,ctx);
 		this.var_name = "";
 		this.var_content = "";
 		this.content = "";
 		this.op_code = null;
-		use("Runtime.BaseStruct").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{

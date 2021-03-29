@@ -30,6 +30,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay.prototype,
 {
 	_init: function(ctx)
 	{
+		use("Bayrell.Lang.CoreParser").prototype._init.call(this,ctx);
 		this.vars = null;
 		this.uses = null;
 		this.current_namespace = null;
@@ -51,7 +52,6 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay.prototype,
 		this.parser_operator = null;
 		this.parser_preprocessor = null;
 		this.parser_program = null;
-		use("Bayrell.Lang.CoreParser").prototype._init.call(this,ctx);
 	},
 	getClassName: function(ctx)
 	{

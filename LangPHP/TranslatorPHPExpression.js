@@ -334,7 +334,9 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPExpression,
 			attrs = attrs.reverseIm(ctx);
 			var __v3 = use("Bayrell.Lang.OpCodes.OpCall");
 			var __v4 = use("Bayrell.Lang.OpCodes.OpNew");
-			var __v5 = use("Bayrell.Lang.OpCodes.OpIdentifier");
+			var __v5 = use("Bayrell.Lang.OpCodes.OpCollection");
+			var __v6 = use("Bayrell.Lang.OpCodes.OpDict");
+			var __v7 = use("Bayrell.Lang.OpCodes.OpIdentifier");
 			if (op_code_next instanceof __v3)
 			{
 				prev_kind = "var";
@@ -353,9 +355,25 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPExpression,
 			}
 			else if (op_code_next instanceof __v5)
 			{
-				var __v6 = use("Bayrell.Lang.OpCodes.OpIdentifier");
-				var __v7 = use("Bayrell.Lang.OpCodes.OpIdentifier");
-				if (op_code_next.kind == __v6.KIND_CLASSREF)
+				prev_kind = "var";
+				var res = this.OpCollection(ctx, t, op_code_next);
+				t = Runtime.rtl.get(ctx, res, 0);
+				s = "(" + use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1)) + use("Runtime.rtl").toStr(")");
+				first_item_complex = true;
+			}
+			else if (op_code_next instanceof __v6)
+			{
+				prev_kind = "var";
+				var res = this.OpDict(ctx, t, op_code_next);
+				t = Runtime.rtl.get(ctx, res, 0);
+				s = "(" + use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1)) + use("Runtime.rtl").toStr(")");
+				first_item_complex = true;
+			}
+			else if (op_code_next instanceof __v7)
+			{
+				var __v8 = use("Bayrell.Lang.OpCodes.OpIdentifier");
+				var __v9 = use("Bayrell.Lang.OpCodes.OpIdentifier");
+				if (op_code_next.kind == __v8.KIND_CLASSREF)
 				{
 					if (op_code_next.value == "static")
 					{
@@ -378,7 +396,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPExpression,
 						s = "$this";
 					}
 				}
-				else if (op_code_next.kind == __v7.KIND_PIPE)
+				else if (op_code_next.kind == __v9.KIND_PIPE)
 				{
 					prev_kind = "var";
 					var res = t.constructor.addSaveOpCode(ctx, t, use("Runtime.Dict").from({"var_content":t.pipe_var_name + use("Runtime.rtl").toStr("->val")}));
@@ -392,8 +410,8 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPExpression,
 					t = Runtime.rtl.get(ctx, res, 0);
 					s = Runtime.rtl.get(ctx, res, 1);
 					prev_kind = "var";
-					var __v8 = use("Bayrell.Lang.OpCodes.OpIdentifier");
-					if (t.modules.has(ctx, op_code_next.value) || op_code_next.kind == __v8.KIND_SYS_TYPE)
+					var __v10 = use("Bayrell.Lang.OpCodes.OpIdentifier");
+					if (t.modules.has(ctx, op_code_next.value) || op_code_next.kind == __v10.KIND_SYS_TYPE)
 					{
 						prev_kind = "static";
 					}

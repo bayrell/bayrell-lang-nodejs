@@ -30,14 +30,12 @@ Object.assign(Bayrell.Lang.OpCodes.OpIf.prototype,
 {
 	_init: function(ctx)
 	{
-		var defProp = use('Runtime.rtl').defProp;
-		var a = Object.getOwnPropertyNames(this);
+		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,ctx);
 		this.op = "op_if";
 		this.condition = null;
 		this.if_true = null;
 		this.if_false = null;
 		this.if_else = null;
-		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{

@@ -1892,6 +1892,8 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayBase,
 		{
 			var __v0 = use("Bayrell.Lang.OpCodes.OpIdentifier");
 			var __v1 = use("Bayrell.Lang.OpCodes.OpNew");
+			var __v2 = use("Bayrell.Lang.OpCodes.OpCollection");
+			var __v3 = use("Bayrell.Lang.OpCodes.OpDict");
 			if (op_code instanceof __v0)
 			{
 				var __v1 = use("Bayrell.Lang.OpCodes.OpIdentifier");
@@ -1906,13 +1908,13 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayBase,
 					throw new __v7(ctx, "Module or variable '" + use("Runtime.rtl").toStr(op_code.value) + use("Runtime.rtl").toStr("'"), op_code.caret_start, parser.file_name)
 				}
 			}
-			else if (op_code instanceof __v1)
+			else if (op_code instanceof __v1 || op_code instanceof __v2 || op_code instanceof __v3)
 			{
 			}
 			else
 			{
-				var __v2 = use("Bayrell.Lang.Exceptions.ParserExpected");
-				throw new __v2(ctx, "Module or variable", op_code.caret_start, parser.file_name)
+				var __v4 = use("Bayrell.Lang.Exceptions.ParserExpected");
+				throw new __v4(ctx, "Module or variable", op_code.caret_start, parser.file_name)
 			}
 		}
 		/* If is pipe */

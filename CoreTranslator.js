@@ -87,8 +87,7 @@ Object.assign(Bayrell.Lang.CoreTranslator.prototype,
 	},
 	_init: function(ctx)
 	{
-		var defProp = use('Runtime.rtl').defProp;
-		var a = Object.getOwnPropertyNames(this);
+		use("Runtime.BaseStruct").prototype._init.call(this,ctx);
 		this.current_namespace_name = "";
 		this.current_class_name = "";
 		this.current_class_full_name = "";
@@ -108,7 +107,6 @@ Object.assign(Bayrell.Lang.CoreTranslator.prototype,
 		this.crlf = "\n";
 		this.flag_struct_check_types = false;
 		this.preprocessor_flags = null;
-		use("Runtime.BaseStruct").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{

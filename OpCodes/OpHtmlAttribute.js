@@ -30,13 +30,11 @@ Object.assign(Bayrell.Lang.OpCodes.OpHtmlAttribute.prototype,
 {
 	_init: function(ctx)
 	{
-		var defProp = use('Runtime.rtl').defProp;
-		var a = Object.getOwnPropertyNames(this);
+		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,ctx);
 		this.op = "op_html_attr";
 		this.key = "";
 		this.value = "";
 		this.is_spread = false;
-		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{

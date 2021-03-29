@@ -135,12 +135,12 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPHtml,
 		if (op_code.op_code_name)
 		{
 			content += use("Runtime.rtl").toStr(t.s(ctx, var_name + use("Runtime.rtl").toStr("_name = \\Runtime\\rtl::find_class(") + use("Runtime.rtl").toStr(module_name) + use("Runtime.rtl").toStr(");")));
-			content += use("Runtime.rtl").toStr(t.s(ctx, var_name + use("Runtime.rtl").toStr(" = [") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_name::renderComponent($ctx, $layout,") + use("Runtime.rtl").toStr(v_model) + use("Runtime.rtl").toStr(",\\Runtime\\Dict::from(") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_params),") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_content)];")));
+			content += use("Runtime.rtl").toStr(t.s(ctx, var_name + use("Runtime.rtl").toStr(" = [") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_name::render2($ctx, $layout,") + use("Runtime.rtl").toStr(v_model) + use("Runtime.rtl").toStr(",\\Runtime\\Dict::from(") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_params),") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_content)];")));
 		}
 		else
 		{
 			content += use("Runtime.rtl").toStr(t.s(ctx, var_name + use("Runtime.rtl").toStr("_name = \\Runtime\\rtl::find_class(") + use("Runtime.rtl").toStr(module_name) + use("Runtime.rtl").toStr(");")));
-			content += use("Runtime.rtl").toStr(t.s(ctx, var_name + use("Runtime.rtl").toStr(" = [") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_name::renderComponent($ctx, $layout,") + use("Runtime.rtl").toStr(v_model) + use("Runtime.rtl").toStr(",\\Runtime\\Dict::from(") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_params),") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_content)];")));
+			content += use("Runtime.rtl").toStr(t.s(ctx, var_name + use("Runtime.rtl").toStr(" = [") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_name::render2($ctx, $layout,") + use("Runtime.rtl").toStr(v_model) + use("Runtime.rtl").toStr(",\\Runtime\\Dict::from(") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_params),") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr("_content)];")));
 		}
 		var res = t.constructor.addSaveOpCode(ctx, t, use("Runtime.Dict").from({"op_code":op_code,"var_name":var_name,"content":content}));
 		t = Runtime.rtl.get(ctx, res, 0);
