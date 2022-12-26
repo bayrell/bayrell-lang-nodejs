@@ -1,5 +1,5 @@
 "use strict;"
-var use = require('bayrell').use;
+var use = require('bay-lang').use;
 /*!
  *  Bayrell Parser Library.
  *
@@ -30,20 +30,16 @@ Bayrell.Lang.Exceptions.ParserEOF.prototype = Object.create(use("Bayrell.Lang.Ex
 Bayrell.Lang.Exceptions.ParserEOF.prototype.constructor = Bayrell.Lang.Exceptions.ParserEOF;
 Object.assign(Bayrell.Lang.Exceptions.ParserEOF.prototype,
 {
-	getClassName: function(ctx)
-	{
-		return "Bayrell.Lang.Exceptions.ParserEOF";
-	},
 });
 Object.assign(Bayrell.Lang.Exceptions.ParserEOF, use("Bayrell.Lang.Exceptions.ParserUnknownError"));
 Object.assign(Bayrell.Lang.Exceptions.ParserEOF,
 {
 	/* ======================= Class Init Functions ======================= */
-	getCurrentNamespace: function()
+	getNamespace: function()
 	{
 		return "Bayrell.Lang.Exceptions";
 	},
-	getCurrentClassName: function()
+	getClassName: function()
 	{
 		return "Bayrell.Lang.Exceptions.ParserEOF";
 	},
@@ -55,11 +51,7 @@ Object.assign(Bayrell.Lang.Exceptions.ParserEOF,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_CLASS,
-			"class_name": "Bayrell.Lang.Exceptions.ParserEOF",
-			"name": "Bayrell.Lang.Exceptions.ParserEOF",
+		return Dict.from({
 			"annotations": Collection.from([
 			]),
 		});
@@ -74,7 +66,6 @@ Object.assign(Bayrell.Lang.Exceptions.ParserEOF,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 		return null;
 	},
 	getMethodsList: function(ctx,f)

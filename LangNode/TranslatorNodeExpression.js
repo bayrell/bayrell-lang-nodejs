@@ -1,5 +1,5 @@
 "use strict;"
-var use = require('bayrell').use;
+var use = require('bay-lang').use;
 /*!
  *  Bayrell Language
  *
@@ -28,10 +28,6 @@ Bayrell.Lang.LangNode.TranslatorNodeExpression.prototype = Object.create(use("Ba
 Bayrell.Lang.LangNode.TranslatorNodeExpression.prototype.constructor = Bayrell.Lang.LangNode.TranslatorNodeExpression;
 Object.assign(Bayrell.Lang.LangNode.TranslatorNodeExpression.prototype,
 {
-	getClassName: function(ctx)
-	{
-		return "Bayrell.Lang.LangNode.TranslatorNodeExpression";
-	},
 });
 Object.assign(Bayrell.Lang.LangNode.TranslatorNodeExpression, use("Bayrell.Lang.LangES6.TranslatorES6Expression"));
 Object.assign(Bayrell.Lang.LangNode.TranslatorNodeExpression,
@@ -93,11 +89,11 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNodeExpression,
 		return use("Runtime.Collection").from([t,var_name]);
 	},
 	/* ======================= Class Init Functions ======================= */
-	getCurrentNamespace: function()
+	getNamespace: function()
 	{
 		return "Bayrell.Lang.LangNode";
 	},
-	getCurrentClassName: function()
+	getClassName: function()
 	{
 		return "Bayrell.Lang.LangNode.TranslatorNodeExpression";
 	},
@@ -109,11 +105,7 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNodeExpression,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_CLASS,
-			"class_name": "Bayrell.Lang.LangNode.TranslatorNodeExpression",
-			"name": "Bayrell.Lang.LangNode.TranslatorNodeExpression",
+		return Dict.from({
 			"annotations": Collection.from([
 			]),
 		});
@@ -128,7 +120,6 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNodeExpression,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 		return null;
 	},
 	getMethodsList: function(ctx,f)

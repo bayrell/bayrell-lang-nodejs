@@ -1,5 +1,5 @@
 "use strict;"
-var use = require('bayrell').use;
+var use = require('bay-lang').use;
 /*!
  *  Bayrell Language
  *
@@ -43,10 +43,6 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Expression.prototype,
 	{
 		if (d == undefined) d = null;
 		return use("Runtime.BaseStruct").prototype.takeValue.call(this,ctx,k,d);
-	},
-	getClassName: function(ctx)
-	{
-		return "Bayrell.Lang.LangES6.TranslatorES6Expression";
 	},
 });
 Object.assign(Bayrell.Lang.LangES6.TranslatorES6Expression, use("Runtime.BaseStruct"));
@@ -310,7 +306,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Expression,
 			var __v3 = use("Bayrell.Lang.OpCodes.OpAttr");
 			while (op_code_first instanceof __v3)
 			{
-				attrs.push(ctx, op_code_first);
+				attrs.pushValue(ctx, op_code_first);
 				op_code_item = op_code_first;
 				op_code_first = op_code_first.obj;
 			}
@@ -482,7 +478,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Expression,
 						{
 							var res = this.Expression(ctx, t, Runtime.rtl.get(ctx, attr.attrs, j));
 							t = Runtime.rtl.get(ctx, res, 0);
-							items.push(ctx, Runtime.rtl.get(ctx, res, 1));
+							items.pushValue(ctx, Runtime.rtl.get(ctx, res, 1));
 						}
 					}
 					var __v8 = use("Runtime.rs");
@@ -977,7 +973,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Expression,
 		t = Runtime.rtl.get(ctx, res, 0);
 		var if_false = Runtime.rtl.get(ctx, res, 1);
 		content += use("Runtime.rtl").toStr("(" + use("Runtime.rtl").toStr(condition) + use("Runtime.rtl").toStr(") ? (") + use("Runtime.rtl").toStr(if_true) + use("Runtime.rtl").toStr(") : (") + use("Runtime.rtl").toStr(if_false) + use("Runtime.rtl").toStr(")"));
-		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["opcode_level"]), 11);
+		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["opcode_level"]), 0);
 		/* OpTernary */
 		return use("Runtime.Collection").from([t,content]);
 	},
@@ -1008,7 +1004,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Expression,
 		var __v1 = use("Bayrell.Lang.OpCodes.OpPipe");
 		while (op_code_item instanceof __v1)
 		{
-			items.push(ctx, op_code_item);
+			items.pushValue(ctx, op_code_item);
 			op_code_item = op_code_item.obj;
 		}
 		items = items.reverseIm(ctx);
@@ -1362,11 +1358,11 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Expression,
 		return use("Runtime.Collection").from([t,content]);
 	},
 	/* ======================= Class Init Functions ======================= */
-	getCurrentNamespace: function()
+	getNamespace: function()
 	{
 		return "Bayrell.Lang.LangES6";
 	},
-	getCurrentClassName: function()
+	getClassName: function()
 	{
 		return "Bayrell.Lang.LangES6.TranslatorES6Expression";
 	},
@@ -1378,11 +1374,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Expression,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_CLASS,
-			"class_name": "Bayrell.Lang.LangES6.TranslatorES6Expression",
-			"name": "Bayrell.Lang.LangES6.TranslatorES6Expression",
+		return Dict.from({
 			"annotations": Collection.from([
 			]),
 		});
@@ -1397,7 +1389,6 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Expression,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 		return null;
 	},
 	getMethodsList: function(ctx,f)

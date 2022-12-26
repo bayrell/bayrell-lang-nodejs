@@ -1,5 +1,5 @@
 "use strict;"
-var use = require('bayrell').use;
+var use = require('bay-lang').use;
 /*!
  *  Bayrell Language
  *
@@ -52,10 +52,6 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay.prototype,
 		this.parser_operator = null;
 		this.parser_preprocessor = null;
 		this.parser_program = null;
-	},
-	getClassName: function(ctx)
-	{
-		return "Bayrell.Lang.LangBay.ParserBay";
 	},
 });
 Object.assign(Bayrell.Lang.LangBay.ParserBay, use("Bayrell.Lang.CoreParser"));
@@ -126,11 +122,11 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 		return module_name;
 	},
 	/* ======================= Class Init Functions ======================= */
-	getCurrentNamespace: function()
+	getNamespace: function()
 	{
 		return "Bayrell.Lang.LangBay";
 	},
-	getCurrentClassName: function()
+	getClassName: function()
 	{
 		return "Bayrell.Lang.LangBay.ParserBay";
 	},
@@ -142,11 +138,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_CLASS,
-			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"name": "Bayrell.Lang.LangBay.ParserBay",
+		return Dict.from({
 			"annotations": Collection.from([
 			]),
 		});
@@ -185,173 +177,109 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		if (field_name == "vars") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"name": field_name,
+		if (field_name == "vars") return Dict.from({
 			"t": "Runtime.Dict",
 			"s": ["bool"],
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "uses") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"name": field_name,
+		if (field_name == "uses") return Dict.from({
 			"t": "Runtime.Dict",
 			"s": ["string"],
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "current_namespace") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"name": field_name,
+		if (field_name == "current_namespace") return Dict.from({
 			"t": "Bayrell.Lang.OpCodes.OpNamespace",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "current_class") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"name": field_name,
+		if (field_name == "current_class") return Dict.from({
 			"t": "Bayrell.Lang.OpCodes.OpDeclareClass",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "current_namespace_name") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"name": field_name,
+		if (field_name == "current_namespace_name") return Dict.from({
 			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "current_class_name") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"name": field_name,
+		if (field_name == "current_class_name") return Dict.from({
 			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "current_class_kind") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"name": field_name,
+		if (field_name == "current_class_kind") return Dict.from({
 			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "current_class_abstract") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"name": field_name,
+		if (field_name == "current_class_abstract") return Dict.from({
 			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "current_class_declare") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"name": field_name,
+		if (field_name == "current_class_declare") return Dict.from({
 			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "find_identifier") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"name": field_name,
+		if (field_name == "find_identifier") return Dict.from({
 			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "skip_comments") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"name": field_name,
+		if (field_name == "skip_comments") return Dict.from({
 			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "pipe_kind") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"name": field_name,
+		if (field_name == "pipe_kind") return Dict.from({
 			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "is_pipe") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"name": field_name,
+		if (field_name == "is_pipe") return Dict.from({
 			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "is_html") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"name": field_name,
+		if (field_name == "is_html") return Dict.from({
 			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "is_local_css") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"name": field_name,
+		if (field_name == "is_local_css") return Dict.from({
 			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "parser_base") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"name": field_name,
+		if (field_name == "parser_base") return Dict.from({
 			"t": "Bayrell.Lang.LangBay.ParserBayBase",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "parser_expression") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"name": field_name,
+		if (field_name == "parser_expression") return Dict.from({
 			"t": "Bayrell.Lang.LangBay.ParserBayExpression",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "parser_html") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"name": field_name,
+		if (field_name == "parser_html") return Dict.from({
 			"t": "Bayrell.Lang.LangBay.ParserBayHtml",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "parser_operator") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"name": field_name,
+		if (field_name == "parser_operator") return Dict.from({
 			"t": "Bayrell.Lang.LangBay.ParserBayOperator",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "parser_preprocessor") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"name": field_name,
+		if (field_name == "parser_preprocessor") return Dict.from({
 			"t": "Bayrell.Lang.LangBay.ParserBayPreprocessor",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "parser_program") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangBay.ParserBay",
-			"name": field_name,
+		if (field_name == "parser_program") return Dict.from({
 			"t": "Bayrell.Lang.LangBay.ParserBayProgram",
 			"annotations": Collection.from([
 			]),

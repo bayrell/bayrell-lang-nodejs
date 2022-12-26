@@ -1,5 +1,5 @@
 "use strict;"
-var use = require('bayrell').use;
+var use = require('bay-lang').use;
 /*!
  *  Bayrell Language
  *
@@ -25,10 +25,6 @@ Bayrell.Lang.LangPHP.TranslatorPHPOperator = function(ctx)
 };
 Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPOperator.prototype,
 {
-	getClassName: function(ctx)
-	{
-		return "Bayrell.Lang.LangPHP.TranslatorPHPOperator";
-	},
 });
 Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPOperator,
 {
@@ -107,7 +103,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPOperator,
 					var __v5 = use("Bayrell.Lang.OpCodes.OpAttr");
 					while (op_code_next instanceof __v5)
 					{
-						items.push(ctx, op_code_next);
+						items.pushValue(ctx, op_code_next);
 						op_code_next = op_code_next.obj;
 					}
 					items = items.reverseIm(ctx);
@@ -123,14 +119,14 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPOperator,
 						if (item.kind == __v5.KIND_ATTR)
 						{
 							obj_s += use("Runtime.rtl").toStr("->" + use("Runtime.rtl").toStr(item.value.value));
-							items2.push(ctx, t.expression.constructor.toString(ctx, item.value.value));
+							items2.pushValue(ctx, t.expression.constructor.toString(ctx, item.value.value));
 						}
 						else if (item.kind == __v6.KIND_DYNAMIC)
 						{
 							var res = t.expression.constructor.Expression(ctx, t, item.value);
 							t = Runtime.rtl.get(ctx, res, 0);
 							obj_s += use("Runtime.rtl").toStr("[" + use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1)) + use("Runtime.rtl").toStr("]"));
-							items2.push(ctx, Runtime.rtl.get(ctx, res, 1));
+							items2.pushValue(ctx, Runtime.rtl.get(ctx, res, 1));
 						}
 						else if (item.kind == __v7.KIND_DYNAMIC_ATTRS)
 						{
@@ -141,7 +137,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPOperator,
 									var res = t.expression.constructor.Expression(ctx, t, Runtime.rtl.get(ctx, item.attrs, j));
 									t = Runtime.rtl.get(ctx, res, 0);
 									obj_s += use("Runtime.rtl").toStr("[" + use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1)) + use("Runtime.rtl").toStr("]"));
-									items2.push(ctx, Runtime.rtl.get(ctx, res, 1));
+									items2.pushValue(ctx, Runtime.rtl.get(ctx, res, 1));
 								}
 							}
 						}
@@ -726,7 +722,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPOperator,
 			/* Output content */
 			if (Runtime.rtl.get(ctx, res, 1) != "")
 			{
-				content += use("Runtime.rtl").toStr(t.s(ctx, "static::p(" + use("Runtime.rtl").toStr(save_html_var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1)) + use("Runtime.rtl").toStr(");")));
+				content += use("Runtime.rtl").toStr(t.s(ctx, "\\Runtime\\Web\\RenderDriver::p(" + use("Runtime.rtl").toStr(save_html_var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1)) + use("Runtime.rtl").toStr(");")));
 			}
 			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["save_op_codes"]), save_op_codes);
 			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["save_op_code_inc"]), save_op_code_inc);
@@ -826,11 +822,11 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPOperator,
 		return use("Runtime.Collection").from([save_t,content]);
 	},
 	/* ======================= Class Init Functions ======================= */
-	getCurrentNamespace: function()
+	getNamespace: function()
 	{
 		return "Bayrell.Lang.LangPHP";
 	},
-	getCurrentClassName: function()
+	getClassName: function()
 	{
 		return "Bayrell.Lang.LangPHP.TranslatorPHPOperator";
 	},
@@ -842,11 +838,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPOperator,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_CLASS,
-			"class_name": "Bayrell.Lang.LangPHP.TranslatorPHPOperator",
-			"name": "Bayrell.Lang.LangPHP.TranslatorPHPOperator",
+		return Dict.from({
 			"annotations": Collection.from([
 			]),
 		});
@@ -861,7 +853,6 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPOperator,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 		return null;
 	},
 	getMethodsList: function(ctx,f)

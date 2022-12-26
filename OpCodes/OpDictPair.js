@@ -1,5 +1,5 @@
 "use strict;"
-var use = require('bayrell').use;
+var use = require('bay-lang').use;
 /*!
  *  Bayrell Language
  *
@@ -60,20 +60,16 @@ Object.assign(Bayrell.Lang.OpCodes.OpDictPair.prototype,
 		else if (k == "condition")return this.condition;
 		return use("Runtime.BaseStruct").prototype.takeValue.call(this,ctx,k,d);
 	},
-	getClassName: function(ctx)
-	{
-		return "Bayrell.Lang.OpCodes.OpDictPair";
-	},
 });
 Object.assign(Bayrell.Lang.OpCodes.OpDictPair, use("Runtime.BaseStruct"));
 Object.assign(Bayrell.Lang.OpCodes.OpDictPair,
 {
 	/* ======================= Class Init Functions ======================= */
-	getCurrentNamespace: function()
+	getNamespace: function()
 	{
 		return "Bayrell.Lang.OpCodes";
 	},
-	getCurrentClassName: function()
+	getClassName: function()
 	{
 		return "Bayrell.Lang.OpCodes.OpDictPair";
 	},
@@ -85,11 +81,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpDictPair,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_CLASS,
-			"class_name": "Bayrell.Lang.OpCodes.OpDictPair",
-			"name": "Bayrell.Lang.OpCodes.OpDictPair",
+		return Dict.from({
 			"annotations": Collection.from([
 			]),
 		});
@@ -110,27 +102,17 @@ Object.assign(Bayrell.Lang.OpCodes.OpDictPair,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		if (field_name == "key") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.OpCodes.OpDictPair",
-			"name": field_name,
+		if (field_name == "key") return Dict.from({
 			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "value") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.OpCodes.OpDictPair",
-			"name": field_name,
+		if (field_name == "value") return Dict.from({
 			"t": "Bayrell.Lang.OpCodes.BaseOpCode",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "condition") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.OpCodes.OpDictPair",
-			"name": field_name,
+		if (field_name == "condition") return Dict.from({
 			"t": "Bayrell.Lang.OpCodes.BaseOpCode",
 			"annotations": Collection.from([
 			]),

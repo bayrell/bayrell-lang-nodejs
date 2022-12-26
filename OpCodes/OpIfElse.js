@@ -1,5 +1,5 @@
 "use strict;"
-var use = require('bayrell').use;
+var use = require('bay-lang').use;
 /*!
  *  Bayrell Language
  *
@@ -56,20 +56,16 @@ Object.assign(Bayrell.Lang.OpCodes.OpIfElse.prototype,
 		else if (k == "if_true")return this.if_true;
 		return use("Runtime.BaseStruct").prototype.takeValue.call(this,ctx,k,d);
 	},
-	getClassName: function(ctx)
-	{
-		return "Bayrell.Lang.OpCodes.OpIfElse";
-	},
 });
 Object.assign(Bayrell.Lang.OpCodes.OpIfElse, use("Runtime.BaseStruct"));
 Object.assign(Bayrell.Lang.OpCodes.OpIfElse,
 {
 	/* ======================= Class Init Functions ======================= */
-	getCurrentNamespace: function()
+	getNamespace: function()
 	{
 		return "Bayrell.Lang.OpCodes";
 	},
-	getCurrentClassName: function()
+	getClassName: function()
 	{
 		return "Bayrell.Lang.OpCodes.OpIfElse";
 	},
@@ -81,11 +77,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpIfElse,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_CLASS,
-			"class_name": "Bayrell.Lang.OpCodes.OpIfElse",
-			"name": "Bayrell.Lang.OpCodes.OpIfElse",
+		return Dict.from({
 			"annotations": Collection.from([
 			]),
 		});
@@ -105,19 +97,12 @@ Object.assign(Bayrell.Lang.OpCodes.OpIfElse,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		if (field_name == "condition") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.OpCodes.OpIfElse",
-			"name": field_name,
+		if (field_name == "condition") return Dict.from({
 			"t": "Bayrell.Lang.OpCodes.BaseOpCode",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "if_true") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.OpCodes.OpIfElse",
-			"name": field_name,
+		if (field_name == "if_true") return Dict.from({
 			"t": "Bayrell.Lang.OpCodes.BaseOpCode",
 			"annotations": Collection.from([
 			]),

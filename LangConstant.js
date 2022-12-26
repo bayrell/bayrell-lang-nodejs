@@ -1,5 +1,5 @@
 "use strict;"
-var use = require('bayrell').use;
+var use = require('bay-lang').use;
 /*!
  *  Bayrell Parser Library.  
  *
@@ -24,10 +24,6 @@ Bayrell.Lang.LangConstant = function(ctx)
 };
 Object.assign(Bayrell.Lang.LangConstant.prototype,
 {
-	getClassName: function(ctx)
-	{
-		return "Bayrell.Lang.LangConstant";
-	},
 });
 Object.assign(Bayrell.Lang.LangConstant,
 {
@@ -35,11 +31,11 @@ Object.assign(Bayrell.Lang.LangConstant,
 	ERROR_PARSER_EOF: -1001,
 	ERROR_PARSER_EXPECTED: -1002,
 	/* ======================= Class Init Functions ======================= */
-	getCurrentNamespace: function()
+	getNamespace: function()
 	{
 		return "Bayrell.Lang";
 	},
-	getCurrentClassName: function()
+	getClassName: function()
 	{
 		return "Bayrell.Lang.LangConstant";
 	},
@@ -51,11 +47,7 @@ Object.assign(Bayrell.Lang.LangConstant,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_CLASS,
-			"class_name": "Bayrell.Lang.LangConstant",
-			"name": "Bayrell.Lang.LangConstant",
+		return Dict.from({
 			"annotations": Collection.from([
 			]),
 		});
@@ -70,27 +62,17 @@ Object.assign(Bayrell.Lang.LangConstant,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		if (field_name == "ERROR_PARSER") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangConstant",
-			"name": field_name,
+		if (field_name == "ERROR_PARSER") return Dict.from({
 			"t": "int",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "ERROR_PARSER_EOF") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangConstant",
-			"name": field_name,
+		if (field_name == "ERROR_PARSER_EOF") return Dict.from({
 			"t": "int",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "ERROR_PARSER_EXPECTED") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangConstant",
-			"name": field_name,
+		if (field_name == "ERROR_PARSER_EXPECTED") return Dict.from({
 			"t": "int",
 			"annotations": Collection.from([
 			]),

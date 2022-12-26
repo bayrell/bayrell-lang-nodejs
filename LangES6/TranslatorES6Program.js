@@ -1,5 +1,5 @@
 "use strict;"
-var use = require('bayrell').use;
+var use = require('bay-lang').use;
 /*!
  *  Bayrell Language
  *
@@ -43,10 +43,6 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program.prototype,
 	{
 		if (d == undefined) d = null;
 		return use("Runtime.BaseStruct").prototype.takeValue.call(this,ctx,k,d);
-	},
-	getClassName: function(ctx)
-	{
-		return "Bayrell.Lang.LangES6.TranslatorES6Program";
 	},
 });
 Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program, use("Runtime.BaseStruct"));
@@ -421,14 +417,14 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 			}
 			content += use("Runtime.rtl").toStr(t.s(ctx, "/* ======================= Class Init Functions ======================= */"));
 			/* Get current namespace function */
-			content += use("Runtime.rtl").toStr(t.s(ctx, "getCurrentNamespace: function()"));
+			content += use("Runtime.rtl").toStr(t.s(ctx, "getNamespace: function()"));
 			content += use("Runtime.rtl").toStr(t.s(ctx, "{"));
 			t = t.levelInc(ctx);
 			content += use("Runtime.rtl").toStr(t.s(ctx, "return " + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, t.current_namespace_name)) + use("Runtime.rtl").toStr(";")));
 			t = t.levelDec(ctx);
 			content += use("Runtime.rtl").toStr(t.s(ctx, "},"));
 			/* Get current class name function */
-			content += use("Runtime.rtl").toStr(t.s(ctx, "getCurrentClassName: function()"));
+			content += use("Runtime.rtl").toStr(t.s(ctx, "getClassName: function()"));
 			content += use("Runtime.rtl").toStr(t.s(ctx, "{"));
 			t = t.levelInc(ctx);
 			content += use("Runtime.rtl").toStr(t.s(ctx, "return " + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, t.current_class_full_name)) + use("Runtime.rtl").toStr(";")));
@@ -550,13 +546,13 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 						if (!vars.has(ctx, flag))
 						{
 							var __v2 = use("Runtime.Vector");
-							vars.set(ctx, flag, new __v2(ctx));
+							vars.setValue(ctx, flag, new __v2(ctx));
 						}
 						var v = vars.item(ctx, flag);
 						for (var j = 0;j < variable.values.count(ctx);j++)
 						{
 							var value = variable.values.item(ctx, j);
-							v.push(ctx, value.var_name);
+							v.pushValue(ctx, value.var_name);
 						}
 					}
 				}
@@ -750,14 +746,14 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 		else
 		{
 			/* Get current namespace function */
-			content += use("Runtime.rtl").toStr(t.s(ctx, "getCurrentNamespace: function()"));
+			content += use("Runtime.rtl").toStr(t.s(ctx, "getNamespace: function()"));
 			content += use("Runtime.rtl").toStr(t.s(ctx, "{"));
 			t = t.levelInc(ctx);
 			content += use("Runtime.rtl").toStr(t.s(ctx, "return " + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, t.current_namespace_name)) + use("Runtime.rtl").toStr(";")));
 			t = t.levelDec(ctx);
 			content += use("Runtime.rtl").toStr(t.s(ctx, "},"));
 			/* Get current class name function */
-			content += use("Runtime.rtl").toStr(t.s(ctx, "getCurrentClassName: function()"));
+			content += use("Runtime.rtl").toStr(t.s(ctx, "getClassName: function()"));
 			content += use("Runtime.rtl").toStr(t.s(ctx, "{"));
 			t = t.levelInc(ctx);
 			content += use("Runtime.rtl").toStr(t.s(ctx, "return " + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, t.current_class_full_name)) + use("Runtime.rtl").toStr(";")));
@@ -927,7 +923,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 			}
 			/* Struct */
 			var __v1 = use("Bayrell.Lang.OpCodes.OpDeclareClass");
-			if (class_kind == __v1.KIND_STRUCT && (t.flag_struct_check_types || t.enable_introspection))
+			if (class_kind == __v1.KIND_STRUCT)
 			{
 				var __v2 = use("Bayrell.Lang.OpCodes.OpDeclareClass");
 				var is_struct = class_kind == __v2.KIND_STRUCT;
@@ -1042,13 +1038,6 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 				content += use("Runtime.rtl").toStr(t.s(ctx, "},"));
 			}
 		}
-		/* Get class name function */
-		content += use("Runtime.rtl").toStr(t.s(ctx, "getClassName: function(ctx)"));
-		content += use("Runtime.rtl").toStr(t.s(ctx, "{"));
-		t = t.levelInc(ctx);
-		content += use("Runtime.rtl").toStr(t.s(ctx, "return " + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, t.current_class_full_name)) + use("Runtime.rtl").toStr(";")));
-		t = t.levelDec(ctx);
-		content += use("Runtime.rtl").toStr(t.s(ctx, "},"));
 		t = t.levelDec(ctx);
 		content += use("Runtime.rtl").toStr(t.s(ctx, "});"));
 		return use("Runtime.Collection").from([t,content]);
@@ -1235,11 +1224,11 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 		return use("Runtime.Collection").from([t,content]);
 	},
 	/* ======================= Class Init Functions ======================= */
-	getCurrentNamespace: function()
+	getNamespace: function()
 	{
 		return "Bayrell.Lang.LangES6";
 	},
-	getCurrentClassName: function()
+	getClassName: function()
 	{
 		return "Bayrell.Lang.LangES6.TranslatorES6Program";
 	},
@@ -1251,11 +1240,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_CLASS,
-			"class_name": "Bayrell.Lang.LangES6.TranslatorES6Program",
-			"name": "Bayrell.Lang.LangES6.TranslatorES6Program",
+		return Dict.from({
 			"annotations": Collection.from([
 			]),
 		});
@@ -1270,7 +1255,6 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 		return null;
 	},
 	getMethodsList: function(ctx,f)

@@ -1,5 +1,5 @@
 "use strict;"
-var use = require('bayrell').use;
+var use = require('bay-lang').use;
 /*!
  *  Bayrell Language
  *
@@ -24,10 +24,6 @@ Bayrell.Lang.ModuleDescription = function(ctx)
 };
 Object.assign(Bayrell.Lang.ModuleDescription.prototype,
 {
-	getClassName: function(ctx)
-	{
-		return "Bayrell.Lang.ModuleDescription";
-	},
 });
 Object.assign(Bayrell.Lang.ModuleDescription,
 {
@@ -45,7 +41,7 @@ Object.assign(Bayrell.Lang.ModuleDescription,
 	 */
 	getModuleVersion: function(ctx)
 	{
-		return "0.10.10-alpha1";
+		return "0.11.0";
 	},
 	/**
 	 * Returns required modules
@@ -63,11 +59,11 @@ Object.assign(Bayrell.Lang.ModuleDescription,
 		return null;
 	},
 	/* ======================= Class Init Functions ======================= */
-	getCurrentNamespace: function()
+	getNamespace: function()
 	{
 		return "Bayrell.Lang";
 	},
-	getCurrentClassName: function()
+	getClassName: function()
 	{
 		return "Bayrell.Lang.ModuleDescription";
 	},
@@ -79,11 +75,7 @@ Object.assign(Bayrell.Lang.ModuleDescription,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_CLASS,
-			"class_name": "Bayrell.Lang.ModuleDescription",
-			"name": "Bayrell.Lang.ModuleDescription",
+		return Dict.from({
 			"annotations": Collection.from([
 			]),
 		});
@@ -98,7 +90,6 @@ Object.assign(Bayrell.Lang.ModuleDescription,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 		return null;
 	},
 	getMethodsList: function(ctx,f)

@@ -1,5 +1,5 @@
 "use strict;"
-var use = require('bayrell').use;
+var use = require('bay-lang').use;
 /*!
  *  Bayrell Language
  *
@@ -43,10 +43,6 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Operator.prototype,
 	{
 		if (d == undefined) d = null;
 		return use("Runtime.BaseStruct").prototype.takeValue.call(this,ctx,k,d);
-	},
-	getClassName: function(ctx)
-	{
-		return "Bayrell.Lang.LangES6.TranslatorES6Operator";
 	},
 });
 Object.assign(Bayrell.Lang.LangES6.TranslatorES6Operator, use("Runtime.BaseStruct"));
@@ -323,7 +319,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Operator,
 					var __v5 = use("Bayrell.Lang.OpCodes.OpAttr");
 					while (op_code_next instanceof __v5)
 					{
-						items.push(ctx, op_code_next);
+						items.pushValue(ctx, op_code_next);
 						op_code_next = op_code_next.obj;
 					}
 					items = items.reverseIm(ctx);
@@ -339,14 +335,14 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Operator,
 						if (item_attr.kind == __v5.KIND_ATTR)
 						{
 							obj_s += use("Runtime.rtl").toStr("." + use("Runtime.rtl").toStr(item_attr.value.value));
-							items2.push(ctx, t.expression.constructor.toString(ctx, item_attr.value.value));
+							items2.pushValue(ctx, t.expression.constructor.toString(ctx, item_attr.value.value));
 						}
 						else if (item_attr.kind == __v6.KIND_DYNAMIC)
 						{
 							var res = t.expression.constructor.Expression(ctx, t, item_attr.value);
 							t = Runtime.rtl.get(ctx, res, 0);
 							obj_s += use("Runtime.rtl").toStr("[" + use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1)) + use("Runtime.rtl").toStr("]"));
-							items2.push(ctx, Runtime.rtl.get(ctx, res, 1));
+							items2.pushValue(ctx, Runtime.rtl.get(ctx, res, 1));
 						}
 						else if (item_attr.kind == __v7.KIND_DYNAMIC_ATTRS)
 						{
@@ -357,7 +353,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Operator,
 									var res = t.expression.constructor.Expression(ctx, t, Runtime.rtl.get(ctx, item_attr.attrs, j));
 									t = Runtime.rtl.get(ctx, res, 0);
 									obj_s += use("Runtime.rtl").toStr("[" + use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1)) + use("Runtime.rtl").toStr("]"));
-									items2.push(ctx, Runtime.rtl.get(ctx, res, 1));
+									items2.pushValue(ctx, Runtime.rtl.get(ctx, res, 1));
 								}
 							}
 						}
@@ -392,6 +388,10 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Operator,
 							if (t.current_function.isFlag(ctx, "async") && t.isEmulateAsyncAwait(ctx))
 							{
 								s = item.var_name;
+							}
+							else if (t.is_html)
+							{
+								s = "let " + use("Runtime.rtl").toStr(item.var_name);
 							}
 							else
 							{
@@ -1120,11 +1120,11 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Operator,
 		return use("Runtime.Collection").from([save_t,content]);
 	},
 	/* ======================= Class Init Functions ======================= */
-	getCurrentNamespace: function()
+	getNamespace: function()
 	{
 		return "Bayrell.Lang.LangES6";
 	},
-	getCurrentClassName: function()
+	getClassName: function()
 	{
 		return "Bayrell.Lang.LangES6.TranslatorES6Operator";
 	},
@@ -1136,11 +1136,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Operator,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_CLASS,
-			"class_name": "Bayrell.Lang.LangES6.TranslatorES6Operator",
-			"name": "Bayrell.Lang.LangES6.TranslatorES6Operator",
+		return Dict.from({
 			"annotations": Collection.from([
 			]),
 		});
@@ -1155,7 +1151,6 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Operator,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 		return null;
 	},
 	getMethodsList: function(ctx,f)

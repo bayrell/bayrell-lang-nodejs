@@ -1,5 +1,5 @@
 "use strict;"
-var use = require('bayrell').use;
+var use = require('bay-lang').use;
 /*!
  *  Bayrell Language
  *
@@ -25,10 +25,6 @@ Bayrell.Lang.LangBay.ParserBayPreprocessor = function(ctx)
 };
 Object.assign(Bayrell.Lang.LangBay.ParserBayPreprocessor.prototype,
 {
-	getClassName: function(ctx)
-	{
-		return "Bayrell.Lang.LangBay.ParserBayPreprocessor";
-	},
 });
 Object.assign(Bayrell.Lang.LangBay.ParserBayPreprocessor,
 {
@@ -107,7 +103,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayPreprocessor,
 			token = Runtime.rtl.get(ctx, res, 1);
 			var __v1 = use("Bayrell.Lang.OpCodes.OpPreprocessorIfCode");
 			var ifcode = new __v1(ctx, use("Runtime.Dict").from({"condition":condition,"content":content,"caret_start":caret_content,"caret_end":parser.caret}));
-			items.push(ctx, ifcode);
+			items.pushValue(ctx, ifcode);
 		}
 		/* Restore vars */
 		parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["vars"]), save_vars);
@@ -218,11 +214,11 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayPreprocessor,
 		return use("Runtime.Collection").from([parser,new __v0(ctx, use("Runtime.Dict").from({"items":items,"condition":condition,"caret_start":caret_start,"caret_end":parser.caret}))]);
 	},
 	/* ======================= Class Init Functions ======================= */
-	getCurrentNamespace: function()
+	getNamespace: function()
 	{
 		return "Bayrell.Lang.LangBay";
 	},
-	getCurrentClassName: function()
+	getClassName: function()
 	{
 		return "Bayrell.Lang.LangBay.ParserBayPreprocessor";
 	},
@@ -234,11 +230,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayPreprocessor,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_CLASS,
-			"class_name": "Bayrell.Lang.LangBay.ParserBayPreprocessor",
-			"name": "Bayrell.Lang.LangBay.ParserBayPreprocessor",
+		return Dict.from({
 			"annotations": Collection.from([
 			]),
 		});
@@ -253,7 +245,6 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayPreprocessor,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 		return null;
 	},
 	getMethodsList: function(ctx,f)

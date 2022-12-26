@@ -1,5 +1,5 @@
 "use strict;"
-var use = require('bayrell').use;
+var use = require('bay-lang').use;
 /*!
  *  Bayrell Language
  *
@@ -25,10 +25,6 @@ Bayrell.Lang.LangPHP.TranslatorPHPProgram = function(ctx)
 };
 Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram.prototype,
 {
-	getClassName: function(ctx)
-	{
-		return "Bayrell.Lang.LangPHP.TranslatorPHPProgram";
-	},
 });
 Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 {
@@ -499,22 +495,15 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 		var __v0 = use("Bayrell.Lang.OpCodes.OpDeclareClass");
 		if (class_kind != __v0.KIND_INTERFACE)
 		{
-			/* Get class name function */
-			content += use("Runtime.rtl").toStr(t.s(ctx, "function getClassName()"));
-			content += use("Runtime.rtl").toStr(t.s(ctx, "{"));
-			t = t.levelInc(ctx);
-			content += use("Runtime.rtl").toStr(t.s(ctx, "return " + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, t.current_class_full_name)) + use("Runtime.rtl").toStr(";")));
-			t = t.levelDec(ctx);
-			content += use("Runtime.rtl").toStr(t.s(ctx, "}"));
 			/* Get current namespace function */
-			content += use("Runtime.rtl").toStr(t.s(ctx, "static function getCurrentNamespace()"));
+			content += use("Runtime.rtl").toStr(t.s(ctx, "static function getNamespace()"));
 			content += use("Runtime.rtl").toStr(t.s(ctx, "{"));
 			t = t.levelInc(ctx);
 			content += use("Runtime.rtl").toStr(t.s(ctx, "return " + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, t.current_namespace_name)) + use("Runtime.rtl").toStr(";")));
 			t = t.levelDec(ctx);
 			content += use("Runtime.rtl").toStr(t.s(ctx, "}"));
 			/* Get current class name function */
-			content += use("Runtime.rtl").toStr(t.s(ctx, "static function getCurrentClassName()"));
+			content += use("Runtime.rtl").toStr(t.s(ctx, "static function getClassName()"));
 			content += use("Runtime.rtl").toStr(t.s(ctx, "{"));
 			t = t.levelInc(ctx);
 			content += use("Runtime.rtl").toStr(t.s(ctx, "return " + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, t.current_class_full_name)) + use("Runtime.rtl").toStr(";")));
@@ -630,7 +619,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 						for (var j = 0;j < variable.values.count(ctx);j++)
 						{
 							var value = variable.values.item(ctx, j);
-							v.push(ctx, value.var_name);
+							v.pushValue(ctx, value.var_name);
 						}
 					}
 				}
@@ -969,11 +958,11 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 		return use("Runtime.Collection").from([t,content]);
 	},
 	/* ======================= Class Init Functions ======================= */
-	getCurrentNamespace: function()
+	getNamespace: function()
 	{
 		return "Bayrell.Lang.LangPHP";
 	},
-	getCurrentClassName: function()
+	getClassName: function()
 	{
 		return "Bayrell.Lang.LangPHP.TranslatorPHPProgram";
 	},
@@ -985,11 +974,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_CLASS,
-			"class_name": "Bayrell.Lang.LangPHP.TranslatorPHPProgram",
-			"name": "Bayrell.Lang.LangPHP.TranslatorPHPProgram",
+		return Dict.from({
 			"annotations": Collection.from([
 			]),
 		});
@@ -1004,7 +989,6 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 		return null;
 	},
 	getMethodsList: function(ctx,f)

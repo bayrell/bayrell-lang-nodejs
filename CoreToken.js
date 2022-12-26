@@ -1,5 +1,5 @@
 "use strict;"
-var use = require('bayrell').use;
+var use = require('bay-lang').use;
 /*!
  *  Bayrell Language
  *
@@ -67,20 +67,16 @@ Object.assign(Bayrell.Lang.CoreToken.prototype,
 		else if (k == "eof")return this.eof;
 		return use("Runtime.BaseStruct").prototype.takeValue.call(this,ctx,k,d);
 	},
-	getClassName: function(ctx)
-	{
-		return "Bayrell.Lang.CoreToken";
-	},
 });
 Object.assign(Bayrell.Lang.CoreToken, use("Runtime.BaseStruct"));
 Object.assign(Bayrell.Lang.CoreToken,
 {
 	/* ======================= Class Init Functions ======================= */
-	getCurrentNamespace: function()
+	getNamespace: function()
 	{
 		return "Bayrell.Lang";
 	},
-	getCurrentClassName: function()
+	getClassName: function()
 	{
 		return "Bayrell.Lang.CoreToken";
 	},
@@ -92,11 +88,7 @@ Object.assign(Bayrell.Lang.CoreToken,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_CLASS,
-			"class_name": "Bayrell.Lang.CoreToken",
-			"name": "Bayrell.Lang.CoreToken",
+		return Dict.from({
 			"annotations": Collection.from([
 			]),
 		});
@@ -119,43 +111,27 @@ Object.assign(Bayrell.Lang.CoreToken,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		if (field_name == "kind") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.CoreToken",
-			"name": field_name,
+		if (field_name == "kind") return Dict.from({
 			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "content") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.CoreToken",
-			"name": field_name,
+		if (field_name == "content") return Dict.from({
 			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "caret_start") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.CoreToken",
-			"name": field_name,
+		if (field_name == "caret_start") return Dict.from({
 			"t": "Bayrell.Lang.Caret",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "caret_end") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.CoreToken",
-			"name": field_name,
+		if (field_name == "caret_end") return Dict.from({
 			"t": "Bayrell.Lang.Caret",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "eof") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.CoreToken",
-			"name": field_name,
+		if (field_name == "eof") return Dict.from({
 			"t": "bool",
 			"annotations": Collection.from([
 			]),

@@ -1,5 +1,5 @@
 "use strict;"
-var use = require('bayrell').use;
+var use = require('bay-lang').use;
 /*!
  *  Bayrell Language
  *
@@ -100,10 +100,6 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP.prototype,
 		else if (k == "enable_introspection")return this.enable_introspection;
 		return use("Bayrell.Lang.CoreTranslator").prototype.takeValue.call(this,ctx,k,d);
 	},
-	getClassName: function(ctx)
-	{
-		return "Bayrell.Lang.LangPHP.TranslatorPHP";
-	},
 });
 Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP, use("Bayrell.Lang.CoreTranslator"));
 Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP,
@@ -157,11 +153,11 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP,
 		return content;
 	},
 	/* ======================= Class Init Functions ======================= */
-	getCurrentNamespace: function()
+	getNamespace: function()
 	{
 		return "Bayrell.Lang.LangPHP";
 	},
-	getCurrentClassName: function()
+	getClassName: function()
 	{
 		return "Bayrell.Lang.LangPHP.TranslatorPHP";
 	},
@@ -173,11 +169,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_CLASS,
-			"class_name": "Bayrell.Lang.LangPHP.TranslatorPHP",
-			"name": "Bayrell.Lang.LangPHP.TranslatorPHP",
+		return Dict.from({
 			"annotations": Collection.from([
 			]),
 		});
@@ -208,107 +200,67 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		if (field_name == "is_pipe") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangPHP.TranslatorPHP",
-			"name": field_name,
+		if (field_name == "is_pipe") return Dict.from({
 			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "pipe_var_name") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangPHP.TranslatorPHP",
-			"name": field_name,
+		if (field_name == "pipe_var_name") return Dict.from({
 			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "html_var_name") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangPHP.TranslatorPHP",
-			"name": field_name,
+		if (field_name == "html_var_name") return Dict.from({
 			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "is_html") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangPHP.TranslatorPHP",
-			"name": field_name,
+		if (field_name == "is_html") return Dict.from({
 			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "expression") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangPHP.TranslatorPHP",
-			"name": field_name,
+		if (field_name == "expression") return Dict.from({
 			"t": "Bayrell.Lang.LangPHP.TranslatorPHPExpression",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "html") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangPHP.TranslatorPHP",
-			"name": field_name,
+		if (field_name == "html") return Dict.from({
 			"t": "Bayrell.Lang.LangPHP.TranslatorPHPHtml",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "operator") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangPHP.TranslatorPHP",
-			"name": field_name,
+		if (field_name == "operator") return Dict.from({
 			"t": "Bayrell.Lang.LangPHP.TranslatorPHPOperator",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "program") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangPHP.TranslatorPHP",
-			"name": field_name,
+		if (field_name == "program") return Dict.from({
 			"t": "Bayrell.Lang.LangPHP.TranslatorPHPProgram",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "frontend") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangPHP.TranslatorPHP",
-			"name": field_name,
+		if (field_name == "frontend") return Dict.from({
 			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "backend") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangPHP.TranslatorPHP",
-			"name": field_name,
+		if (field_name == "backend") return Dict.from({
 			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "enable_context") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangPHP.TranslatorPHP",
-			"name": field_name,
+		if (field_name == "enable_context") return Dict.from({
 			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "enable_check_types") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangPHP.TranslatorPHP",
-			"name": field_name,
+		if (field_name == "enable_check_types") return Dict.from({
 			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "enable_introspection") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangPHP.TranslatorPHP",
-			"name": field_name,
+		if (field_name == "enable_introspection") return Dict.from({
 			"t": "bool",
 			"annotations": Collection.from([
 			]),

@@ -1,5 +1,5 @@
 "use strict;"
-var use = require('bayrell').use;
+var use = require('bay-lang').use;
 /*!
  *  Bayrell Language
  *
@@ -84,10 +84,6 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode.prototype,
 		else if (k == "enable_introspection")return this.enable_introspection;
 		return use("Bayrell.Lang.LangES6.TranslatorES6").prototype.takeValue.call(this,ctx,k,d);
 	},
-	getClassName: function(ctx)
-	{
-		return "Bayrell.Lang.LangNode.TranslatorNode";
-	},
 });
 Object.assign(Bayrell.Lang.LangNode.TranslatorNode, use("Bayrell.Lang.LangES6.TranslatorES6"));
 Object.assign(Bayrell.Lang.LangNode.TranslatorNode,
@@ -97,15 +93,13 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode,
 	 */
 	reset: function(ctx, t)
 	{
-		var __v0 = use("Runtime.Dict");
-		var __v1 = use("Bayrell.Lang.LangES6.TranslatorES6AsyncAwait");
-		var __v2 = use("Bayrell.Lang.LangNode.TranslatorNodeExpression");
-		var __v3 = use("Bayrell.Lang.LangES6.TranslatorES6Html");
-		var __v4 = use("Bayrell.Lang.LangES6.TranslatorES6Operator");
-		var __v5 = use("Bayrell.Lang.LangNode.TranslatorNodeProgram");
-		var __v6 = use("Runtime.Collection");
-		var __v7 = use("Runtime.Collection");
-		return t.copy(ctx, use("Runtime.Dict").from({"value":"","current_namespace_name":"","modules":new __v0(ctx),"async_await":new __v1(ctx),"expression":new __v2(ctx),"html":new __v3(ctx),"operator":new __v4(ctx),"program":new __v5(ctx),"save_vars":new __v6(ctx),"save_op_codes":new __v7(ctx),"save_op_code_inc":0,"preprocessor_flags":use("Runtime.Dict").from({"BACKEND":true,"NODEJS":true,"JAVASCRIPT":true})}));
+		t = use("Bayrell.Lang.LangES6.TranslatorES6").reset.bind(this)(ctx, t);
+		var __v0 = use("Bayrell.Lang.LangNode.TranslatorNodeExpression");
+		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["expression"]), new __v0(ctx));
+		var __v1 = use("Bayrell.Lang.LangNode.TranslatorNodeProgram");
+		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["program"]), new __v1(ctx));
+		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["preprocessor_flags"]), t.preprocessor_flags.copy(ctx, use("Runtime.Dict").from({"BACKEND":true,"NODEJS":true,"ES6":false})));
+		return t;
 	},
 	/**
 	 * Translate BaseOpCode
@@ -116,11 +110,11 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode,
 		return t.program.constructor.translateProgram(ctx, t, op_code);
 	},
 	/* ======================= Class Init Functions ======================= */
-	getCurrentNamespace: function()
+	getNamespace: function()
 	{
 		return "Bayrell.Lang.LangNode";
 	},
-	getCurrentClassName: function()
+	getClassName: function()
 	{
 		return "Bayrell.Lang.LangNode.TranslatorNode";
 	},
@@ -132,11 +126,7 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_CLASS,
-			"class_name": "Bayrell.Lang.LangNode.TranslatorNode",
-			"name": "Bayrell.Lang.LangNode.TranslatorNode",
+		return Dict.from({
 			"annotations": Collection.from([
 			]),
 		});
@@ -163,75 +153,47 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		if (field_name == "async_await") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangNode.TranslatorNode",
-			"name": field_name,
+		if (field_name == "async_await") return Dict.from({
 			"t": "Bayrell.Lang.LangES6.TranslatorES6AsyncAwait",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "expression") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangNode.TranslatorNode",
-			"name": field_name,
+		if (field_name == "expression") return Dict.from({
 			"t": "Bayrell.Lang.LangES6.TranslatorES6Expression",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "html") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangNode.TranslatorNode",
-			"name": field_name,
+		if (field_name == "html") return Dict.from({
 			"t": "Bayrell.Lang.LangES6.TranslatorES6Html",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "operator") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangNode.TranslatorNode",
-			"name": field_name,
+		if (field_name == "operator") return Dict.from({
 			"t": "Bayrell.Lang.LangES6.TranslatorES6Operator",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "program") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangNode.TranslatorNode",
-			"name": field_name,
+		if (field_name == "program") return Dict.from({
 			"t": "Bayrell.Lang.LangES6.TranslatorES6Program",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "use_module_name") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangNode.TranslatorNode",
-			"name": field_name,
+		if (field_name == "use_module_name") return Dict.from({
 			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "enable_async_await") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangNode.TranslatorNode",
-			"name": field_name,
+		if (field_name == "enable_async_await") return Dict.from({
 			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "emulate_async_await") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangNode.TranslatorNode",
-			"name": field_name,
+		if (field_name == "emulate_async_await") return Dict.from({
 			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "enable_introspection") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangNode.TranslatorNode",
-			"name": field_name,
+		if (field_name == "enable_introspection") return Dict.from({
 			"t": "bool",
 			"annotations": Collection.from([
 			]),

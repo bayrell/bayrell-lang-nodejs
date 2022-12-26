@@ -1,5 +1,5 @@
 "use strict;"
-var use = require('bayrell').use;
+var use = require('bay-lang').use;
 /*!
  *  Bayrell Language
  *
@@ -25,10 +25,6 @@ Bayrell.Lang.LangPHP.TranslatorPHPExpression = function(ctx)
 };
 Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPExpression.prototype,
 {
-	getClassName: function(ctx)
-	{
-		return "Bayrell.Lang.LangPHP.TranslatorPHPExpression";
-	},
 });
 Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPExpression,
 {
@@ -327,7 +323,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPExpression,
 			var __v3 = use("Bayrell.Lang.OpCodes.OpAttr");
 			while (op_code_next instanceof __v3)
 			{
-				attrs.push(ctx, op_code_next);
+				attrs.pushValue(ctx, op_code_next);
 				op_code_item = op_code_next;
 				op_code_next = op_code_next.obj;
 			}
@@ -506,7 +502,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPExpression,
 						{
 							var res = this.Expression(ctx, t, Runtime.rtl.get(ctx, attr.attrs, j));
 							t = Runtime.rtl.get(ctx, res, 0);
-							items.push(ctx, Runtime.rtl.get(ctx, res, 1));
+							items.pushValue(ctx, Runtime.rtl.get(ctx, res, 1));
 						}
 					}
 					var __v8 = use("Runtime.rs");
@@ -849,7 +845,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPExpression,
 			var __v1 = use("Bayrell.Lang.OpCodes.OpIdentifier");
 			if (arg instanceof __v1)
 			{
-				args_use.push(ctx, "$" + use("Runtime.rtl").toStr(arg.value));
+				args_use.pushValue(ctx, "$" + use("Runtime.rtl").toStr(arg.value));
 			}
 		}
 		var args_sz = args.count(ctx);
@@ -863,11 +859,11 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPExpression,
 			for (var j = 0;j < i;j++)
 			{
 				var arg_use = args.item(ctx, j);
-				arr_use.push(ctx, "$__varg" + use("Runtime.rtl").toStr(arg_use.pos));
+				arr_use.pushValue(ctx, "$__varg" + use("Runtime.rtl").toStr(arg_use.pos));
 			}
 			if (use_obj_item != "")
 			{
-				arr_use.push(ctx, use_obj_item);
+				arr_use.pushValue(ctx, use_obj_item);
 			}
 			if (arr_use.count(ctx) > 0)
 			{
@@ -1002,7 +998,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPExpression,
 		t = Runtime.rtl.get(ctx, res, 0);
 		var if_false = Runtime.rtl.get(ctx, res, 1);
 		content += use("Runtime.rtl").toStr("(" + use("Runtime.rtl").toStr(condition) + use("Runtime.rtl").toStr(") ? (") + use("Runtime.rtl").toStr(if_true) + use("Runtime.rtl").toStr(") : (") + use("Runtime.rtl").toStr(if_false) + use("Runtime.rtl").toStr(")"));
-		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["opcode_level"]), 11);
+		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["opcode_level"]), 0);
 		/* OpTernary */
 		return use("Runtime.Collection").from([t,content]);
 	},
@@ -1025,7 +1021,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPExpression,
 		var __v1 = use("Bayrell.Lang.OpCodes.OpPipe");
 		while (op_code_item instanceof __v1)
 		{
-			items.push(ctx, op_code_item);
+			items.pushValue(ctx, op_code_item);
 			op_code_item = op_code_item.obj;
 		}
 		items = items.reverseIm(ctx);
@@ -1211,7 +1207,9 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPExpression,
 	Expression: function(ctx, t, op_code)
 	{
 		var content = "";
+		var save_is_pipe = t.is_pipe;
 		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["opcode_level"]), 100);
+		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["is_pipe"]), false);
 		var __v0 = use("Bayrell.Lang.OpCodes.OpIdentifier");
 		var __v1 = use("Bayrell.Lang.OpCodes.OpTypeIdentifier");
 		var __v2 = use("Bayrell.Lang.OpCodes.OpNumber");
@@ -1354,14 +1352,15 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPExpression,
 			t = Runtime.rtl.get(ctx, res, 0);
 			content = Runtime.rtl.get(ctx, res, 1);
 		}
+		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["is_pipe"]), save_is_pipe);
 		return use("Runtime.Collection").from([t,content]);
 	},
 	/* ======================= Class Init Functions ======================= */
-	getCurrentNamespace: function()
+	getNamespace: function()
 	{
 		return "Bayrell.Lang.LangPHP";
 	},
-	getCurrentClassName: function()
+	getClassName: function()
 	{
 		return "Bayrell.Lang.LangPHP.TranslatorPHPExpression";
 	},
@@ -1373,11 +1372,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPExpression,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_CLASS,
-			"class_name": "Bayrell.Lang.LangPHP.TranslatorPHPExpression",
-			"name": "Bayrell.Lang.LangPHP.TranslatorPHPExpression",
+		return Dict.from({
 			"annotations": Collection.from([
 			]),
 		});
@@ -1392,7 +1387,6 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPExpression,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 		return null;
 	},
 	getMethodsList: function(ctx,f)

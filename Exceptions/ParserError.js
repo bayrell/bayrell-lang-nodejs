@@ -1,5 +1,5 @@
 "use strict;"
-var use = require('bayrell').use;
+var use = require('bay-lang').use;
 /*!
  *  Bayrell Parser Library.
  *
@@ -50,20 +50,16 @@ Object.assign(Bayrell.Lang.Exceptions.ParserError.prototype,
 		}
 		return error_str;
 	},
-	getClassName: function(ctx)
-	{
-		return "Bayrell.Lang.Exceptions.ParserError";
-	},
 });
 Object.assign(Bayrell.Lang.Exceptions.ParserError, use("Bayrell.Lang.Exceptions.ParserUnknownError"));
 Object.assign(Bayrell.Lang.Exceptions.ParserError,
 {
 	/* ======================= Class Init Functions ======================= */
-	getCurrentNamespace: function()
+	getNamespace: function()
 	{
 		return "Bayrell.Lang.Exceptions";
 	},
-	getCurrentClassName: function()
+	getClassName: function()
 	{
 		return "Bayrell.Lang.Exceptions.ParserError";
 	},
@@ -75,11 +71,7 @@ Object.assign(Bayrell.Lang.Exceptions.ParserError,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_CLASS,
-			"class_name": "Bayrell.Lang.Exceptions.ParserError",
-			"name": "Bayrell.Lang.Exceptions.ParserError",
+		return Dict.from({
 			"annotations": Collection.from([
 			]),
 		});
@@ -94,7 +86,6 @@ Object.assign(Bayrell.Lang.Exceptions.ParserError,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 		return null;
 	},
 	getMethodsList: function(ctx,f)

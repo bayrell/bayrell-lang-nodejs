@@ -1,5 +1,5 @@
 "use strict;"
-var use = require('bayrell').use;
+var use = require('bay-lang').use;
 /*!
  *  Bayrell Language
  *
@@ -64,10 +64,6 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6AsyncAwait.prototype,
 		else if (k == "async_t")return this.async_t;
 		else if (k == "async_var")return this.async_var;
 		return use("Runtime.BaseStruct").prototype.takeValue.call(this,ctx,k,d);
-	},
-	getClassName: function(ctx)
-	{
-		return "Bayrell.Lang.LangES6.TranslatorES6AsyncAwait";
 	},
 });
 Object.assign(Bayrell.Lang.LangES6.TranslatorES6AsyncAwait, use("Runtime.BaseStruct"));
@@ -725,11 +721,11 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6AsyncAwait,
 		return use("Runtime.Collection").from([save_t,content]);
 	},
 	/* ======================= Class Init Functions ======================= */
-	getCurrentNamespace: function()
+	getNamespace: function()
 	{
 		return "Bayrell.Lang.LangES6";
 	},
-	getCurrentClassName: function()
+	getClassName: function()
 	{
 		return "Bayrell.Lang.LangES6.TranslatorES6AsyncAwait";
 	},
@@ -741,11 +737,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6AsyncAwait,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_CLASS,
-			"class_name": "Bayrell.Lang.LangES6.TranslatorES6AsyncAwait",
-			"name": "Bayrell.Lang.LangES6.TranslatorES6AsyncAwait",
+		return Dict.from({
 			"annotations": Collection.from([
 			]),
 		});
@@ -767,37 +759,24 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6AsyncAwait,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		if (field_name == "async_stack") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangES6.TranslatorES6AsyncAwait",
-			"name": field_name,
+		if (field_name == "async_stack") return Dict.from({
 			"t": "Runtime.Collection",
 			"s": ["Bayrell.Lang.LangES6.AsyncAwait"],
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "pos") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangES6.TranslatorES6AsyncAwait",
-			"name": field_name,
+		if (field_name == "pos") return Dict.from({
 			"t": "Runtime.Collection",
 			"s": ["int"],
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "async_t") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangES6.TranslatorES6AsyncAwait",
-			"name": field_name,
+		if (field_name == "async_t") return Dict.from({
 			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "async_var") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangES6.TranslatorES6AsyncAwait",
-			"name": field_name,
+		if (field_name == "async_var") return Dict.from({
 			"t": "string",
 			"annotations": Collection.from([
 			]),

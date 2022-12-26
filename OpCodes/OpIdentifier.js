@@ -1,5 +1,5 @@
 "use strict;"
-var use = require('bayrell').use;
+var use = require('bay-lang').use;
 /*!
  *  Bayrell Language
  *
@@ -60,10 +60,6 @@ Object.assign(Bayrell.Lang.OpCodes.OpIdentifier.prototype,
 		else if (k == "kind")return this.kind;
 		return use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.takeValue.call(this,ctx,k,d);
 	},
-	getClassName: function(ctx)
-	{
-		return "Bayrell.Lang.OpCodes.OpIdentifier";
-	},
 });
 Object.assign(Bayrell.Lang.OpCodes.OpIdentifier, use("Bayrell.Lang.OpCodes.BaseOpCode"));
 Object.assign(Bayrell.Lang.OpCodes.OpIdentifier,
@@ -74,15 +70,15 @@ Object.assign(Bayrell.Lang.OpCodes.OpIdentifier,
 	KIND_SYS_FUNCTION: "sys_fn",
 	KIND_FUNCTION: "fn",
 	KIND_CONTEXT: "ctx",
-	KIND_MODULE: "module",
 	KIND_CONSTANT: "const",
+	KIND_CLASS: "class",
 	KIND_CLASSREF: "classref",
 	/* ======================= Class Init Functions ======================= */
-	getCurrentNamespace: function()
+	getNamespace: function()
 	{
 		return "Bayrell.Lang.OpCodes";
 	},
-	getCurrentClassName: function()
+	getClassName: function()
 	{
 		return "Bayrell.Lang.OpCodes.OpIdentifier";
 	},
@@ -94,11 +90,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpIdentifier,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_CLASS,
-			"class_name": "Bayrell.Lang.OpCodes.OpIdentifier",
-			"name": "Bayrell.Lang.OpCodes.OpIdentifier",
+		return Dict.from({
 			"annotations": Collection.from([
 			]),
 		});
@@ -119,99 +111,62 @@ Object.assign(Bayrell.Lang.OpCodes.OpIdentifier,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		if (field_name == "KIND_PIPE") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.OpCodes.OpIdentifier",
-			"name": field_name,
+		if (field_name == "KIND_PIPE") return Dict.from({
 			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "KIND_VARIABLE") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.OpCodes.OpIdentifier",
-			"name": field_name,
+		if (field_name == "KIND_VARIABLE") return Dict.from({
 			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "KIND_SYS_TYPE") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.OpCodes.OpIdentifier",
-			"name": field_name,
+		if (field_name == "KIND_SYS_TYPE") return Dict.from({
 			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "KIND_SYS_FUNCTION") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.OpCodes.OpIdentifier",
-			"name": field_name,
+		if (field_name == "KIND_SYS_FUNCTION") return Dict.from({
 			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "KIND_FUNCTION") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.OpCodes.OpIdentifier",
-			"name": field_name,
+		if (field_name == "KIND_FUNCTION") return Dict.from({
 			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "KIND_CONTEXT") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.OpCodes.OpIdentifier",
-			"name": field_name,
+		if (field_name == "KIND_CONTEXT") return Dict.from({
 			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "KIND_MODULE") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.OpCodes.OpIdentifier",
-			"name": field_name,
+		if (field_name == "KIND_CONSTANT") return Dict.from({
 			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "KIND_CONSTANT") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.OpCodes.OpIdentifier",
-			"name": field_name,
+		if (field_name == "KIND_CLASS") return Dict.from({
 			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "KIND_CLASSREF") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.OpCodes.OpIdentifier",
-			"name": field_name,
+		if (field_name == "KIND_CLASSREF") return Dict.from({
 			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "op") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.OpCodes.OpIdentifier",
-			"name": field_name,
+		if (field_name == "op") return Dict.from({
 			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "value") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.OpCodes.OpIdentifier",
-			"name": field_name,
+		if (field_name == "value") return Dict.from({
 			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "kind") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.OpCodes.OpIdentifier",
-			"name": field_name,
+		if (field_name == "kind") return Dict.from({
 			"t": "string",
 			"annotations": Collection.from([
 			]),

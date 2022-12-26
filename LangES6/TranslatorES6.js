@@ -1,5 +1,5 @@
 "use strict;"
-var use = require('bayrell').use;
+var use = require('bay-lang').use;
 /*!
  *  Bayrell Language
  *
@@ -46,6 +46,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6.prototype,
 	{
 		use("Bayrell.Lang.CoreTranslator").prototype._init.call(this,ctx);
 		this.is_pipe = false;
+		this.is_call = false;
 		this.pipe_var_name = "";
 		this.html_var_name = "";
 		this.is_html = false;
@@ -69,6 +70,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6.prototype,
 		if (o instanceof use("Bayrell.Lang.LangES6.TranslatorES6"))
 		{
 			this.is_pipe = o.is_pipe;
+			this.is_call = o.is_call;
 			this.pipe_var_name = o.pipe_var_name;
 			this.html_var_name = o.html_var_name;
 			this.is_html = o.is_html;
@@ -92,6 +94,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6.prototype,
 	assignValue: function(ctx,k,v)
 	{
 		if (k == "is_pipe")this.is_pipe = v;
+		else if (k == "is_call")this.is_call = v;
 		else if (k == "pipe_var_name")this.pipe_var_name = v;
 		else if (k == "html_var_name")this.html_var_name = v;
 		else if (k == "is_html")this.is_html = v;
@@ -115,6 +118,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6.prototype,
 	{
 		if (d == undefined) d = null;
 		if (k == "is_pipe")return this.is_pipe;
+		else if (k == "is_call")return this.is_call;
 		else if (k == "pipe_var_name")return this.pipe_var_name;
 		else if (k == "html_var_name")return this.html_var_name;
 		else if (k == "is_html")return this.is_html;
@@ -133,10 +137,6 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6.prototype,
 		else if (k == "enable_check_types")return this.enable_check_types;
 		else if (k == "enable_introspection")return this.enable_introspection;
 		return use("Bayrell.Lang.CoreTranslator").prototype.takeValue.call(this,ctx,k,d);
-	},
-	getClassName: function(ctx)
-	{
-		return "Bayrell.Lang.LangES6.TranslatorES6";
 	},
 });
 Object.assign(Bayrell.Lang.LangES6.TranslatorES6, use("Bayrell.Lang.CoreTranslator"));
@@ -166,11 +166,11 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6,
 		return t.program.constructor.translateProgram(ctx, t, op_code);
 	},
 	/* ======================= Class Init Functions ======================= */
-	getCurrentNamespace: function()
+	getNamespace: function()
 	{
 		return "Bayrell.Lang.LangES6";
 	},
-	getCurrentClassName: function()
+	getClassName: function()
 	{
 		return "Bayrell.Lang.LangES6.TranslatorES6";
 	},
@@ -182,11 +182,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_CLASS,
-			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
-			"name": "Bayrell.Lang.LangES6.TranslatorES6",
+		return Dict.from({
 			"annotations": Collection.from([
 			]),
 		});
@@ -198,6 +194,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6,
 		if ((f&3)==3)
 		{
 			a.push("is_pipe");
+			a.push("is_call");
 			a.push("pipe_var_name");
 			a.push("html_var_name");
 			a.push("is_html");
@@ -222,147 +219,97 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		if (field_name == "is_pipe") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
-			"name": field_name,
+		if (field_name == "is_pipe") return Dict.from({
 			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "pipe_var_name") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
-			"name": field_name,
-			"t": "string",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "html_var_name") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
-			"name": field_name,
-			"t": "string",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "is_html") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
-			"name": field_name,
+		if (field_name == "is_call") return Dict.from({
 			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "async_await") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
-			"name": field_name,
+		if (field_name == "pipe_var_name") return Dict.from({
+			"t": "string",
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "html_var_name") return Dict.from({
+			"t": "string",
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "is_html") return Dict.from({
+			"t": "bool",
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "async_await") return Dict.from({
 			"t": "Bayrell.Lang.LangES6.TranslatorES6AsyncAwait",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "expression") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
-			"name": field_name,
+		if (field_name == "expression") return Dict.from({
 			"t": "Bayrell.Lang.LangES6.TranslatorES6Expression",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "html") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
-			"name": field_name,
+		if (field_name == "html") return Dict.from({
 			"t": "Bayrell.Lang.LangES6.TranslatorES6Html",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "operator") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
-			"name": field_name,
+		if (field_name == "operator") return Dict.from({
 			"t": "Bayrell.Lang.LangES6.TranslatorES6Operator",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "program") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
-			"name": field_name,
+		if (field_name == "program") return Dict.from({
 			"t": "Bayrell.Lang.LangES6.TranslatorES6Program",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "frontend") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
-			"name": field_name,
+		if (field_name == "frontend") return Dict.from({
 			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "backend") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
-			"name": field_name,
+		if (field_name == "backend") return Dict.from({
 			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "use_module_name") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
-			"name": field_name,
+		if (field_name == "use_module_name") return Dict.from({
 			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "use_strict") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
-			"name": field_name,
+		if (field_name == "use_strict") return Dict.from({
 			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "enable_async_await") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
-			"name": field_name,
+		if (field_name == "enable_async_await") return Dict.from({
 			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "emulate_async_await") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
-			"name": field_name,
+		if (field_name == "emulate_async_await") return Dict.from({
 			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "enable_context") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
-			"name": field_name,
+		if (field_name == "enable_context") return Dict.from({
 			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "enable_check_types") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
-			"name": field_name,
+		if (field_name == "enable_check_types") return Dict.from({
 			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "enable_introspection") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangES6.TranslatorES6",
-			"name": field_name,
+		if (field_name == "enable_introspection") return Dict.from({
 			"t": "bool",
 			"annotations": Collection.from([
 			]),

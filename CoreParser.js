@@ -1,5 +1,5 @@
 "use strict;"
-var use = require('bayrell').use;
+var use = require('bay-lang').use;
 /*!
  *  Bayrell Language
  *
@@ -44,10 +44,6 @@ Object.assign(Bayrell.Lang.CoreParser.prototype,
 		this.caret = null;
 		this.find_ident = true;
 	},
-	getClassName: function(ctx)
-	{
-		return "Bayrell.Lang.CoreParser";
-	},
 });
 Object.assign(Bayrell.Lang.CoreParser, use("Runtime.BaseStruct"));
 Object.assign(Bayrell.Lang.CoreParser,
@@ -83,11 +79,11 @@ Object.assign(Bayrell.Lang.CoreParser,
 		return parser;
 	},
 	/* ======================= Class Init Functions ======================= */
-	getCurrentNamespace: function()
+	getNamespace: function()
 	{
 		return "Bayrell.Lang";
 	},
-	getCurrentClassName: function()
+	getClassName: function()
 	{
 		return "Bayrell.Lang.CoreParser";
 	},
@@ -99,11 +95,7 @@ Object.assign(Bayrell.Lang.CoreParser,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_CLASS,
-			"class_name": "Bayrell.Lang.CoreParser",
-			"name": "Bayrell.Lang.CoreParser",
+		return Dict.from({
 			"annotations": Collection.from([
 			]),
 		});
@@ -127,51 +119,32 @@ Object.assign(Bayrell.Lang.CoreParser,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		if (field_name == "tab_size") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.CoreParser",
-			"name": field_name,
+		if (field_name == "tab_size") return Dict.from({
 			"t": "int",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "file_name") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.CoreParser",
-			"name": field_name,
+		if (field_name == "file_name") return Dict.from({
 			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "content") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.CoreParser",
-			"name": field_name,
+		if (field_name == "content") return Dict.from({
 			"t": "Runtime.Reference",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "content_sz") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.CoreParser",
-			"name": field_name,
+		if (field_name == "content_sz") return Dict.from({
 			"t": "int",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "caret") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.CoreParser",
-			"name": field_name,
+		if (field_name == "caret") return Dict.from({
 			"t": "Bayrell.Lang.Caret",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "find_ident") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.CoreParser",
-			"name": field_name,
+		if (field_name == "find_ident") return Dict.from({
 			"t": "bool",
 			"annotations": Collection.from([
 			]),

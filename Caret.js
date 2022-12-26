@@ -1,5 +1,5 @@
 "use strict;"
-var use = require('bayrell').use;
+var use = require('bay-lang').use;
 /*!
  *  Bayrell Language
  *
@@ -34,20 +34,16 @@ Object.assign(Bayrell.Lang.Caret.prototype,
 		this.x = 0;
 		this.y = 0;
 	},
-	getClassName: function(ctx)
-	{
-		return "Bayrell.Lang.Caret";
-	},
 });
 Object.assign(Bayrell.Lang.Caret, use("Runtime.BaseStruct"));
 Object.assign(Bayrell.Lang.Caret,
 {
 	/* ======================= Class Init Functions ======================= */
-	getCurrentNamespace: function()
+	getNamespace: function()
 	{
 		return "Bayrell.Lang";
 	},
-	getCurrentClassName: function()
+	getClassName: function()
 	{
 		return "Bayrell.Lang.Caret";
 	},
@@ -59,11 +55,7 @@ Object.assign(Bayrell.Lang.Caret,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_CLASS,
-			"class_name": "Bayrell.Lang.Caret",
-			"name": "Bayrell.Lang.Caret",
+		return Dict.from({
 			"annotations": Collection.from([
 			]),
 		});
@@ -84,27 +76,17 @@ Object.assign(Bayrell.Lang.Caret,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		if (field_name == "pos") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.Caret",
-			"name": field_name,
+		if (field_name == "pos") return Dict.from({
 			"t": "int",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "x") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.Caret",
-			"name": field_name,
+		if (field_name == "x") return Dict.from({
 			"t": "int",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "y") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.Caret",
-			"name": field_name,
+		if (field_name == "y") return Dict.from({
 			"t": "int",
 			"annotations": Collection.from([
 			]),

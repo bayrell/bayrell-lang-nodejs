@@ -1,5 +1,5 @@
 "use strict;"
-var use = require('bayrell').use;
+var use = require('bay-lang').use;
 /*!
  *  Bayrell Language
  *
@@ -56,20 +56,16 @@ Object.assign(Bayrell.Lang.LangES6.AsyncAwait.prototype,
 		else if (k == "end_pos")return this.end_pos;
 		return use("Runtime.BaseStruct").prototype.takeValue.call(this,ctx,k,d);
 	},
-	getClassName: function(ctx)
-	{
-		return "Bayrell.Lang.LangES6.AsyncAwait";
-	},
 });
 Object.assign(Bayrell.Lang.LangES6.AsyncAwait, use("Runtime.BaseStruct"));
 Object.assign(Bayrell.Lang.LangES6.AsyncAwait,
 {
 	/* ======================= Class Init Functions ======================= */
-	getCurrentNamespace: function()
+	getNamespace: function()
 	{
 		return "Bayrell.Lang.LangES6";
 	},
-	getCurrentClassName: function()
+	getClassName: function()
 	{
 		return "Bayrell.Lang.LangES6.AsyncAwait";
 	},
@@ -81,11 +77,7 @@ Object.assign(Bayrell.Lang.LangES6.AsyncAwait,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_CLASS,
-			"class_name": "Bayrell.Lang.LangES6.AsyncAwait",
-			"name": "Bayrell.Lang.LangES6.AsyncAwait",
+		return Dict.from({
 			"annotations": Collection.from([
 			]),
 		});
@@ -105,19 +97,12 @@ Object.assign(Bayrell.Lang.LangES6.AsyncAwait,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		if (field_name == "start_pos") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangES6.AsyncAwait",
-			"name": field_name,
+		if (field_name == "start_pos") return Dict.from({
 			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "end_pos") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.LangES6.AsyncAwait",
-			"name": field_name,
+		if (field_name == "end_pos") return Dict.from({
 			"t": "string",
 			"annotations": Collection.from([
 			]),

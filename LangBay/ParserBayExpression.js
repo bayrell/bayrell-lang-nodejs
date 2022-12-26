@@ -1,5 +1,5 @@
 "use strict;"
-var use = require('bayrell').use;
+var use = require('bay-lang').use;
 /*!
  *  Bayrell Language
  *
@@ -25,10 +25,6 @@ Bayrell.Lang.LangBay.ParserBayExpression = function(ctx)
 };
 Object.assign(Bayrell.Lang.LangBay.ParserBayExpression.prototype,
 {
-	getClassName: function(ctx)
-	{
-		return "Bayrell.Lang.LangBay.ParserBayExpression";
-	},
 });
 Object.assign(Bayrell.Lang.LangBay.ParserBayExpression,
 {
@@ -638,11 +634,11 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayExpression,
 		return this.ExpressionPipe(ctx, parser);
 	},
 	/* ======================= Class Init Functions ======================= */
-	getCurrentNamespace: function()
+	getNamespace: function()
 	{
 		return "Bayrell.Lang.LangBay";
 	},
-	getCurrentClassName: function()
+	getClassName: function()
 	{
 		return "Bayrell.Lang.LangBay.ParserBayExpression";
 	},
@@ -654,11 +650,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayExpression,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_CLASS,
-			"class_name": "Bayrell.Lang.LangBay.ParserBayExpression",
-			"name": "Bayrell.Lang.LangBay.ParserBayExpression",
+		return Dict.from({
 			"annotations": Collection.from([
 			]),
 		});
@@ -673,7 +665,6 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayExpression,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 		return null;
 	},
 	getMethodsList: function(ctx,f)

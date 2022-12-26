@@ -1,5 +1,5 @@
 "use strict;"
-var use = require('bayrell').use;
+var use = require('bay-lang').use;
 /*!
  *  Bayrell Language
  *
@@ -25,10 +25,6 @@ Bayrell.Lang.LangES6.TranslatorES6Html = function(ctx)
 };
 Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html.prototype,
 {
-	getClassName: function(ctx)
-	{
-		return "Bayrell.Lang.LangES6.TranslatorES6Html";
-	},
 });
 Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 {
@@ -75,7 +71,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 				var res = t.expression.constructor.Expression(ctx, t, op_code.value);
 				t = Runtime.rtl.get(ctx, res, 0);
 				var value = Runtime.rtl.get(ctx, res, 1);
-				value = "this.json_encode(ctx, " + use("Runtime.rtl").toStr(value) + use("Runtime.rtl").toStr(")");
+				value = "Runtime.rtl.json_encode(ctx, " + use("Runtime.rtl").toStr(value) + use("Runtime.rtl").toStr(")");
 				return use("Runtime.Collection").from([t,value]);
 			}
 		}
@@ -96,31 +92,38 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 		var attr_key_value = "";
 		var attr_elem_name = "";
 		var has_attr_key = false;
-		var res_attrs = attrs.map(ctx, (ctx, attr) => 
+		var __v1 = use("Runtime.Vector");
+		var res_attrs = new __v1(ctx);
+		for (var attrs_i = 0;attrs_i < attrs.count(ctx);attrs_i++)
 		{
+			var attr = Runtime.rtl.get(ctx, attrs, attrs_i);
 			if (attr.is_spread)
 			{
-				return "";
+				continue;
 			}
 			var res = this.OpHtmlAttr(ctx, t, attr);
 			t = Runtime.rtl.get(ctx, res, 0);
 			var attr_value = Runtime.rtl.get(ctx, res, 1);
 			var attr_key = attr.key;
-			var __v1 = use("Runtime.rs");
-			var ch = __v1.substr(ctx, attr_key, 0, 1);
 			var __v2 = use("Runtime.rs");
+			var ch = __v2.substr(ctx, attr_key, 0, 1);
+			var __v3 = use("Runtime.rs");
+			var is_event = __v3.substr(ctx, attr_key, 0, 7) == "@event:";
 			var __v4 = use("Runtime.rs");
+			var is_event_async = __v4.substr(ctx, attr_key, 0, 12) == "@eventAsync:";
+			var __v5 = use("Runtime.rs");
+			var is_signal = __v5.substr(ctx, attr_key, 0, 8) == "@signal:";
 			if (attr_key == "class")
 			{
-				attr_class.push(ctx, attr_value);
-				var __v2 = use("Bayrell.Lang.OpCodes.OpString");
-				if (attr_elem_name == "" && attr.value instanceof __v2)
+				attr_class.pushValue(ctx, attr_value);
+				var __v6 = use("Bayrell.Lang.OpCodes.OpString");
+				if (attr_elem_name == "" && attr.value instanceof __v6)
 				{
-					var __v3 = use("Runtime.rs");
-					var arr = __v3.split(ctx, " ", attr.value.value);
+					var __v7 = use("Runtime.rs");
+					var arr = __v7.split(ctx, " ", attr.value.value);
 					attr_elem_name = t.expression.constructor.toString(ctx, Runtime.rtl.get(ctx, arr, 0));
 				}
-				return "";
+				continue;
 			}
 			else if (attr_key == "@key")
 			{
@@ -128,53 +131,75 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 				t = Runtime.rtl.get(ctx, res, 0);
 				attr_value = Runtime.rtl.get(ctx, res, 1);
 				attr_key_value = attr_value;
-				return "";
+				continue;
 			}
-			else if (__v2.substr(ctx, attr_key, 0, 7) == "@event:")
+			else if (is_event || is_event_async || is_signal)
 			{
-				var __v3 = use("Runtime.rs");
-				var event_name = __v3.substr(ctx, attr_key, 7);
+				var event_name = "";
+				if (is_event)
+				{
+					var __v6 = use("Runtime.rs");
+					event_name = __v6.substr(ctx, attr_key, 7);
+				}
+				else if (is_event_async)
+				{
+					var __v7 = use("Runtime.rs");
+					event_name = __v7.substr(ctx, attr_key, 12);
+				}
+				else if (is_signal)
+				{
+					var __v8 = use("Runtime.rs");
+					event_name = __v8.substr(ctx, attr_key, 8);
+				}
 				event_name = t.expression.constructor.findModuleName(ctx, t, event_name);
-				attr_key = "@event:" + use("Runtime.rtl").toStr(event_name);
-				attr_value = "[this.getCurrentClassName()," + use("Runtime.rtl").toStr(attr_value) + use("Runtime.rtl").toStr("]");
-			}
-			else if (__v4.substr(ctx, attr_key, 0, 12) == "@eventAsync:")
-			{
-				var __v5 = use("Runtime.rs");
-				var event_name = __v5.substr(ctx, attr_key, 12);
-				event_name = t.expression.constructor.findModuleName(ctx, t, event_name);
-				attr_key = "@eventAsync:" + use("Runtime.rtl").toStr(event_name);
+				if (is_event)
+				{
+					attr_key = "@event:" + use("Runtime.rtl").toStr(event_name);
+				}
+				else if (is_event_async)
+				{
+					attr_key = "@eventAsync:" + use("Runtime.rtl").toStr(event_name);
+				}
+				else if (is_signal)
+				{
+					attr_key = "@signal:" + use("Runtime.rtl").toStr(event_name);
+				}
 				attr_value = "[this.getCurrentClassName()," + use("Runtime.rtl").toStr(attr_value) + use("Runtime.rtl").toStr("]");
 			}
 			else if (attr_key == "@ref" || attr_key == "@bind" || attr_key == "@model" || attr_key == "@name" || attr_key == "@watch")
 			{
+				/*res_attrs.push
+				(
+					t.expression::toString("@model_path") ~ ": this.concatAttr(ctx, params, \"@model_path\", " ~
+						attr_value ~ ")"
+				);*/
 				attr_value = "[this.getCurrentClassName()," + use("Runtime.rtl").toStr(attr_value) + use("Runtime.rtl").toStr("]");
 			}
-			return t.expression.constructor.toString(ctx, attr_key) + use("Runtime.rtl").toStr(":") + use("Runtime.rtl").toStr(attr_value);
-		});
+			res_attrs.pushValue(ctx, t.expression.constructor.toString(ctx, attr_key) + use("Runtime.rtl").toStr(":") + use("Runtime.rtl").toStr(attr_value));
+		}
 		res_attrs = res_attrs.filter(ctx, (ctx, s) => 
 		{
 			return s != "";
 		});
 		if (attr_class.count(ctx) > 0)
 		{
-			attr_class.push(ctx, "this.getCssHash(ctx)");
+			attr_class.pushValue(ctx, "this.getCssHash(ctx)");
 			/*attr_class.push( t.expression::toString("h-" ~ ParserBayHtml::getCssHash(t.current_class_full_name)) );*/
-			var __v1 = use("Runtime.rs");
-			res_attrs = res_attrs.pushIm(ctx, "\"class\":" + use("Runtime.rtl").toStr("[") + use("Runtime.rtl").toStr(__v1.join(ctx, ", ", attr_class)) + use("Runtime.rtl").toStr("].join(\" \")"));
+			var __v2 = use("Runtime.rs");
+			res_attrs.pushValue(ctx, "\"class\":" + use("Runtime.rtl").toStr("[") + use("Runtime.rtl").toStr(__v2.join(ctx, ", ", attr_class)) + use("Runtime.rtl").toStr("].join(\" \")"));
 		}
 		if (attr_key_value != "")
 		{
-			res_attrs = res_attrs.pushIm(ctx, "\"@key\":" + use("Runtime.rtl").toStr(attr_key_value));
+			res_attrs.pushValue(ctx, "\"@key\":" + use("Runtime.rtl").toStr(attr_key_value));
 		}
 		if (attr_elem_name != "")
 		{
-			res_attrs = res_attrs.pushIm(ctx, "\"@elem_name\":" + use("Runtime.rtl").toStr(attr_elem_name));
+			res_attrs.pushValue(ctx, "\"@elem_name\":" + use("Runtime.rtl").toStr(attr_elem_name));
 		}
 		if (res_attrs.count(ctx) > 0)
 		{
-			var __v1 = use("Runtime.rs");
-			attr_s = "{" + use("Runtime.rtl").toStr(__v1.join(ctx, ",", res_attrs)) + use("Runtime.rtl").toStr("}");
+			var __v2 = use("Runtime.rs");
+			attr_s = "{" + use("Runtime.rtl").toStr(__v2.join(ctx, ",", res_attrs)) + use("Runtime.rtl").toStr("}");
 		}
 		else
 		{
@@ -188,7 +213,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 			{
 				continue;
 			}
-			attr_s = "this.mergeAttrs(ctx, " + use("Runtime.rtl").toStr(attr_s) + use("Runtime.rtl").toStr(",") + use("Runtime.rtl").toStr(attr.value.value) + use("Runtime.rtl").toStr(")");
+			attr_s = "Runtime.Web.RenderDriver.mergeAttrs(ctx, " + use("Runtime.rtl").toStr(attr_s) + use("Runtime.rtl").toStr(",") + use("Runtime.rtl").toStr(attr.value.value) + use("Runtime.rtl").toStr(")");
 		}
 		return use("Runtime.Collection").from([t,attr_s]);
 	},
@@ -210,7 +235,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 					var __v1 = use("Bayrell.Lang.OpCodes.OpString");
 					if (attr.value instanceof __v1)
 					{
-						class_names.push(ctx, attr.value.value);
+						class_names.pushValue(ctx, attr.value.value);
 					}
 				}
 			}
@@ -272,7 +297,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 			else if (op_code.kind == __v4.KIND_JSON)
 			{
 				content += use("Runtime.rtl").toStr(t.s(ctx, "/* Text */"));
-				item_value = "this.json_encode(ctx, " + use("Runtime.rtl").toStr(item_value) + use("Runtime.rtl").toStr(")");
+				item_value = "Runtime.rtl.json_encode(ctx, " + use("Runtime.rtl").toStr(item_value) + use("Runtime.rtl").toStr(")");
 				content += use("Runtime.rtl").toStr(t.s(ctx, "var " + use("Runtime.rtl").toStr(new_var_name) + use("Runtime.rtl").toStr(" = ") + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr(".e(ctx, \"t\", \"\", null, ") + use("Runtime.rtl").toStr(item_value) + use("Runtime.rtl").toStr(");")));
 			}
 		}
@@ -521,11 +546,11 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 		return use("Runtime.Collection").from([t,content]);
 	},
 	/* ======================= Class Init Functions ======================= */
-	getCurrentNamespace: function()
+	getNamespace: function()
 	{
 		return "Bayrell.Lang.LangES6";
 	},
-	getCurrentClassName: function()
+	getClassName: function()
 	{
 		return "Bayrell.Lang.LangES6.TranslatorES6Html";
 	},
@@ -537,11 +562,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_CLASS,
-			"class_name": "Bayrell.Lang.LangES6.TranslatorES6Html",
-			"name": "Bayrell.Lang.LangES6.TranslatorES6Html",
+		return Dict.from({
 			"annotations": Collection.from([
 			]),
 		});
@@ -556,7 +577,6 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 		return null;
 	},
 	getMethodsList: function(ctx,f)

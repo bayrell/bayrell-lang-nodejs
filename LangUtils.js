@@ -1,5 +1,5 @@
 "use strict;"
-var use = require('bayrell').use;
+var use = require('bay-lang').use;
 /*!
  *  Bayrell Language
  *
@@ -24,10 +24,6 @@ Bayrell.Lang.LangUtils = function(ctx)
 };
 Object.assign(Bayrell.Lang.LangUtils.prototype,
 {
-	getClassName: function(ctx)
-	{
-		return "Bayrell.Lang.LangUtils";
-	},
 });
 Object.assign(Bayrell.Lang.LangUtils,
 {
@@ -48,11 +44,11 @@ Object.assign(Bayrell.Lang.LangUtils,
 		return Runtime.rtl.get(ctx, res, 1);
 	},
 	/* ======================= Class Init Functions ======================= */
-	getCurrentNamespace: function()
+	getNamespace: function()
 	{
 		return "Bayrell.Lang";
 	},
-	getCurrentClassName: function()
+	getClassName: function()
 	{
 		return "Bayrell.Lang.LangUtils";
 	},
@@ -64,11 +60,7 @@ Object.assign(Bayrell.Lang.LangUtils,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_CLASS,
-			"class_name": "Bayrell.Lang.LangUtils",
-			"name": "Bayrell.Lang.LangUtils",
+		return Dict.from({
 			"annotations": Collection.from([
 			]),
 		});
@@ -83,7 +75,6 @@ Object.assign(Bayrell.Lang.LangUtils,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 		return null;
 	},
 	getMethodsList: function(ctx,f)

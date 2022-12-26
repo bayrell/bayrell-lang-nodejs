@@ -1,5 +1,5 @@
 "use strict;"
-var use = require('bayrell').use;
+var use = require('bay-lang').use;
 /*!
  *  Bayrell Common Languages Transcompiler
  *
@@ -56,20 +56,16 @@ Object.assign(Bayrell.Lang.OpCodes.OpPreprocessorSwitch.prototype,
 		else if (k == "items")return this.items;
 		return use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.takeValue.call(this,ctx,k,d);
 	},
-	getClassName: function(ctx)
-	{
-		return "Bayrell.Lang.OpCodes.OpPreprocessorSwitch";
-	},
 });
 Object.assign(Bayrell.Lang.OpCodes.OpPreprocessorSwitch, use("Bayrell.Lang.OpCodes.BaseOpCode"));
 Object.assign(Bayrell.Lang.OpCodes.OpPreprocessorSwitch,
 {
 	/* ======================= Class Init Functions ======================= */
-	getCurrentNamespace: function()
+	getNamespace: function()
 	{
 		return "Bayrell.Lang.OpCodes";
 	},
-	getCurrentClassName: function()
+	getClassName: function()
 	{
 		return "Bayrell.Lang.OpCodes.OpPreprocessorSwitch";
 	},
@@ -81,11 +77,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpPreprocessorSwitch,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_CLASS,
-			"class_name": "Bayrell.Lang.OpCodes.OpPreprocessorSwitch",
-			"name": "Bayrell.Lang.OpCodes.OpPreprocessorSwitch",
+		return Dict.from({
 			"annotations": Collection.from([
 			]),
 		});
@@ -105,19 +97,12 @@ Object.assign(Bayrell.Lang.OpCodes.OpPreprocessorSwitch,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-		if (field_name == "op") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.OpCodes.OpPreprocessorSwitch",
-			"name": field_name,
+		if (field_name == "op") return Dict.from({
 			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "items") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Lang.OpCodes.OpPreprocessorSwitch",
-			"name": field_name,
+		if (field_name == "items") return Dict.from({
 			"t": "Runtime.Collection",
 			"s": ["Bayrell.Lang.OpCodes.OpPreprocessorIfCode"],
 			"annotations": Collection.from([
