@@ -8,12 +8,13 @@
     }
   ],
   "files": [
-	"Exceptions/*.js",
-	"LangBay/*.js",
-	"LangES6/*.js",
-	"LangNode/*.js",
-	"LangPHP/*.js",
-	"OpCodes/*.js",
+    "Compiler/*.js",
+    "Exceptions/*.js",
+    "LangBay/*.js",
+    "LangES6/*.js",
+    "LangNode/*.js",
+    "LangPHP/*.js",
+    "OpCodes/*.js",
     "*.js"
   ],
   "main": "index.js",
