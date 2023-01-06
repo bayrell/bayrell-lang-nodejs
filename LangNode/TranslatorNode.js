@@ -3,7 +3,7 @@ var use = require('bay-lang').use;
 /*!
  *  Bayrell Language
  *
- *  (c) Copyright 2016-2020 "Ildar Bikmamatov" <support@bayrell.org>
+ *  (c) Copyright 2016-2023 "Ildar Bikmamatov" <support@bayrell.org>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -40,6 +40,7 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode.prototype,
 		this.enable_async_await = true;
 		this.emulate_async_await = false;
 		this.enable_introspection = false;
+		this.enable_context = true;
 	},
 	assignObject: function(ctx,o)
 	{
@@ -54,6 +55,7 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode.prototype,
 			this.enable_async_await = o.enable_async_await;
 			this.emulate_async_await = o.emulate_async_await;
 			this.enable_introspection = o.enable_introspection;
+			this.enable_context = o.enable_context;
 		}
 		use("Bayrell.Lang.LangES6.TranslatorES6").prototype.assignObject.call(this,ctx,o);
 	},
@@ -68,6 +70,7 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode.prototype,
 		else if (k == "enable_async_await")this.enable_async_await = v;
 		else if (k == "emulate_async_await")this.emulate_async_await = v;
 		else if (k == "enable_introspection")this.enable_introspection = v;
+		else if (k == "enable_context")this.enable_context = v;
 		else use("Bayrell.Lang.LangES6.TranslatorES6").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
@@ -82,6 +85,7 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode.prototype,
 		else if (k == "enable_async_await")return this.enable_async_await;
 		else if (k == "emulate_async_await")return this.emulate_async_await;
 		else if (k == "enable_introspection")return this.enable_introspection;
+		else if (k == "enable_context")return this.enable_context;
 		return use("Bayrell.Lang.LangES6.TranslatorES6").prototype.takeValue.call(this,ctx,k,d);
 	},
 });
@@ -146,6 +150,7 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode,
 			a.push("enable_async_await");
 			a.push("emulate_async_await");
 			a.push("enable_introspection");
+			a.push("enable_context");
 		}
 		return use("Runtime.Collection").from(a);
 	},
@@ -194,6 +199,11 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode,
 			]),
 		});
 		if (field_name == "enable_introspection") return Dict.from({
+			"t": "bool",
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "enable_context") return Dict.from({
 			"t": "bool",
 			"annotations": Collection.from([
 			]),

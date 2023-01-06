@@ -3,7 +3,7 @@ var use = require('bay-lang').use;
 /*!
  *  Bayrell Language
  *
- *  (c) Copyright 2016-2020 "Ildar Bikmamatov" <support@bayrell.org>
+ *  (c) Copyright 2016-2023 "Ildar Bikmamatov" <support@bayrell.org>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ Object.assign(Bayrell.Lang.ModuleDescription,
 	 */
 	getModuleVersion: function(ctx)
 	{
-		return "0.11.0";
+		return "0.11.1";
 	},
 	/**
 	 * Returns required modules
@@ -49,7 +49,7 @@ Object.assign(Bayrell.Lang.ModuleDescription,
 	 */
 	requiredModules: function(ctx)
 	{
-		return use("Runtime.Dict").from({"Runtime":">=0.2 <1.0"});
+		return use("Runtime.Dict").from({"Runtime":">=0.11 <1.0"});
 	},
 	/**
 	 * Returns enities

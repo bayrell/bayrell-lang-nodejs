@@ -3,7 +3,7 @@ var use = require('bay-lang').use;
 /*!
  *  Bayrell Language
  *
- *  (c) Copyright 2016-2020 "Ildar Bikmamatov" <support@bayrell.org>
+ *  (c) Copyright 2016-2023 "Ildar Bikmamatov" <support@bayrell.org>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -613,7 +613,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 						if (!vars.has(ctx, flag))
 						{
 							var __v2 = use("Runtime.Vector");
-							vars.set(ctx, flag, new __v2(ctx));
+							vars.setValue(ctx, flag, new __v2(ctx));
 						}
 						var v = vars.item(ctx, flag);
 						for (var j = 0;j < variable.values.count(ctx);j++)

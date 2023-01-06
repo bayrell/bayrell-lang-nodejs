@@ -17,7 +17,7 @@
  */
 
 var exports = {
-	VERSION: '0.11.0',
+	VERSION: '0.11.1',
 	MODULE_NAME: 'Bayrell.Lang',
 }
 
@@ -44,6 +44,9 @@ add("Bayrell.Lang.LangConstant");
 add("Bayrell.Lang.LangUtils");
 add("Bayrell.Lang.ModuleDescription");
 add("Bayrell.Lang.SaveOpCode");
+add("Bayrell.Lang.Compiler.CLI");
+add("Bayrell.Lang.Compiler.Module");
+add("Bayrell.Lang.Compiler.SettingsProvider");
 add("Bayrell.Lang.Exceptions.ParserEOF");
 add("Bayrell.Lang.Exceptions.ParserError");
 add("Bayrell.Lang.Exceptions.ParserExpected");

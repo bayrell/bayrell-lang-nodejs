@@ -3,7 +3,7 @@ var use = require('bay-lang').use;
 /*!
  *  Bayrell Language
  *
- *  (c) Copyright 2016-2020 "Ildar Bikmamatov" <support@bayrell.org>
+ *  (c) Copyright 2016-2023 "Ildar Bikmamatov" <support@bayrell.org>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -87,25 +87,25 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPHtml,
 		{
 			var res = t.expression.constructor.Expression(ctx, t, attr_name.value);
 			t = Runtime.rtl.get(ctx, res, 0);
-			v_model = "\\Runtime\\Web\\RenderDriver::concatArr($ctx, $model_path, " + use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1)) + use("Runtime.rtl").toStr(")");
+			v_model = "static::_concatArr($ctx, $model_path, " + use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1)) + use("Runtime.rtl").toStr(")");
 		}
 		else if (attr_bind)
 		{
 			var res = t.expression.constructor.Expression(ctx, t, attr_bind.value);
 			t = Runtime.rtl.get(ctx, res, 0);
-			v_model = "\\Runtime\\Web\\RenderDriver::concatArr($ctx, $model_path, " + use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1)) + use("Runtime.rtl").toStr(")");
+			v_model = "static::_concatArr($ctx, $model_path, " + use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1)) + use("Runtime.rtl").toStr(")");
 		}
 		else if (attr_model)
 		{
 			var res = t.expression.constructor.Expression(ctx, t, attr_model.value);
 			t = Runtime.rtl.get(ctx, res, 0);
-			v_model = "\\Runtime\\Web\\RenderDriver::concatArr($ctx, $model_path, " + use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1)) + use("Runtime.rtl").toStr(")");
+			v_model = "static::_concatArr($ctx, $model_path, " + use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1)) + use("Runtime.rtl").toStr(")");
 		}
 		else if (attr_model_path)
 		{
 			var res = t.expression.constructor.Expression(ctx, t, attr_model_path.value);
 			t = Runtime.rtl.get(ctx, res, 0);
-			v_model = "\\Runtime\\Web\\RenderDriver::concatArr($ctx, [], " + use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1)) + use("Runtime.rtl").toStr(")");
+			v_model = "static::_concatArr($ctx, [], " + use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1)) + use("Runtime.rtl").toStr(")");
 		}
 		for (var i = 0;i < op_code.attrs.count(ctx);i++)
 		{
@@ -144,7 +144,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPHtml,
 		}
 		content += use("Runtime.rtl").toStr(t.s(ctx, var_name + use("Runtime.rtl").toStr("_content = [];")));
 		var __v4 = use("Runtime.rtl");
-		var f = __v4.method(ctx, this.getCurrentClassName(ctx), "OpHtmlItems");
+		var f = __v4.method(ctx, this.getClassName(ctx), "OpHtmlItems");
 		var res = t.constructor.saveOpCodeCall(ctx, t, f, use("Runtime.Collection").from([op_code.items,var_name + use("Runtime.rtl").toStr("_content")]));
 		t = Runtime.rtl.get(ctx, res, 0);
 		content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
@@ -220,7 +220,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPHtml,
 				if (attr_key == "@class")
 				{
 					list res = static::OpHtmlAttr(t, attr); t = res[0]; attr_value = res[1];
-					attr_class.pushValue( "\\Runtime\\Web\\RenderDriver::getCssName($ctx, " ~
+					attr_class.pushValue( "static::_getCssName($ctx, " ~
 						attr_value ~ ")" );
 					
 					if (not has_attr_key and attr.value instanceof OpString)
@@ -278,7 +278,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPHtml,
 				t = Runtime.rtl.get(ctx, res, 0);
 				attr_value = Runtime.rtl.get(ctx, res, 1);
 			}
-			return attr_key + use("Runtime.rtl").toStr("=\"'.\\Runtime\\Web\\RenderDriver::escapeAttr($ctx, ") + use("Runtime.rtl").toStr(attr_value) + use("Runtime.rtl").toStr(").'\"");
+			return attr_key + use("Runtime.rtl").toStr("=\"'.static::_escapeAttr($ctx, ") + use("Runtime.rtl").toStr(attr_value) + use("Runtime.rtl").toStr(").'\"");
 		});
 		res_attrs = res_attrs.filter(ctx, (ctx, s) => 
 		{
@@ -305,7 +305,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPHtml,
 			{
 				continue;
 			}
-			attr_s += use("Runtime.rtl").toStr(" ' . \\Runtime\\Web\\RenderDriver::joinAttrs($ctx, $" + use("Runtime.rtl").toStr(attr.value.value) + use("Runtime.rtl").toStr(") . '"));
+			attr_s += use("Runtime.rtl").toStr(" ' . static::_joinAttrs($ctx, $" + use("Runtime.rtl").toStr(attr.value.value) + use("Runtime.rtl").toStr(") . '"));
 		}
 		return use("Runtime.Collection").from([t,attr_s]);
 	},
@@ -348,14 +348,14 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPHtml,
 			if (!flag_value)
 			{
 				var __v0 = use("Runtime.rtl");
-				var f = __v0.method(ctx, this.getCurrentClassName(ctx), "OpHtmlItems");
+				var f = __v0.method(ctx, this.getClassName(ctx), "OpHtmlItems");
 				var res = t.constructor.saveOpCodeCall(ctx, t, f, use("Runtime.Collection").from([op_code.items,var_name]));
 				t = Runtime.rtl.get(ctx, res, 0);
 				content += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
 			}
 			if (op_code.tag_name != "")
 			{
-				content += use("Runtime.rtl").toStr(t.s(ctx, "\\Runtime\\Web\\RenderDriver::p(" + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr(", '</") + use("Runtime.rtl").toStr(op_code.tag_name) + use("Runtime.rtl").toStr(">');")));
+				content += use("Runtime.rtl").toStr(t.s(ctx, "static::_p(" + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr(", '</") + use("Runtime.rtl").toStr(op_code.tag_name) + use("Runtime.rtl").toStr(">');")));
 			}
 		}
 		var res = t.constructor.addSaveOpCode(ctx, t, use("Runtime.Dict").from({"op_code":op_code,"var_name":var_name,"content":content}));
@@ -425,7 +425,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPHtml,
 					var res = t.expression.constructor.Expression(ctx, t, item.value);
 					t = Runtime.rtl.get(ctx, res, 0);
 					item_value = Runtime.rtl.get(ctx, res, 1);
-					item_value = "\\Runtime\\Web\\RenderDriver::toHtml($ctx, " + use("Runtime.rtl").toStr(item_value) + use("Runtime.rtl").toStr(")");
+					item_value = "static::_toHtml($ctx, " + use("Runtime.rtl").toStr(item_value) + use("Runtime.rtl").toStr(")");
 				}
 				else if (item.kind == __v5.KIND_JSON)
 				{
@@ -470,7 +470,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPHtml,
 				var res = t.expression.constructor.Expression(ctx, t, item);
 				t = Runtime.rtl.get(ctx, res, 0);
 				item_value = Runtime.rtl.get(ctx, res, 1);
-				item_value = "\\Runtime\\Web\\RenderDriver::escapeHtml($ctx, " + use("Runtime.rtl").toStr(item_value) + use("Runtime.rtl").toStr(")");
+				item_value = "static::_escapeHtml($ctx, " + use("Runtime.rtl").toStr(item_value) + use("Runtime.rtl").toStr(")");
 			}
 			/* Output save op code */
 			var save = t.constructor.outputSaveOpCode(ctx, t, save_op_codes.count(ctx));
@@ -487,7 +487,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPHtml,
 			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["save_op_code_inc"]), save_op_code_inc);
 			if (item_value != "")
 			{
-				content += use("Runtime.rtl").toStr(t.s(ctx, "\\Runtime\\Web\\RenderDriver::p(" + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(item_value) + use("Runtime.rtl").toStr(");")));
+				content += use("Runtime.rtl").toStr(t.s(ctx, "static::_p(" + use("Runtime.rtl").toStr(var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(item_value) + use("Runtime.rtl").toStr(");")));
 			}
 		}
 		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["html_var_name"]), save_html_var_name);

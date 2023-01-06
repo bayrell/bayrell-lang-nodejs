@@ -3,7 +3,7 @@ var use = require('bay-lang').use;
 /*!
  *  Bayrell Language
  *
- *  (c) Copyright 2016-2020 "Ildar Bikmamatov" <support@bayrell.org>
+ *  (c) Copyright 2016-2023 "Ildar Bikmamatov" <support@bayrell.org>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -41,8 +41,8 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP.prototype,
 		this.program = null;
 		this.frontend = false;
 		this.backend = true;
-		this.enable_context = true;
-		this.enable_check_types = true;
+		this.enable_context = false;
+		this.enable_check_types = false;
 		this.enable_introspection = false;
 	},
 	assignObject: function(ctx,o)

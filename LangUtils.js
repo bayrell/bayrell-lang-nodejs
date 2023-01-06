@@ -3,7 +3,7 @@ var use = require('bay-lang').use;
 /*!
  *  Bayrell Language
  *
- *  (c) Copyright 2016-2020 "Ildar Bikmamatov" <support@bayrell.org>
+ *  (c) Copyright 2016-2023 "Ildar Bikmamatov" <support@bayrell.org>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -42,6 +42,30 @@ Object.assign(Bayrell.Lang.LangUtils,
 	{
 		var res = translator.constructor.translate(ctx, translator, op_code);
 		return Runtime.rtl.get(ctx, res, 1);
+	},
+	/**
+	 * Create translator
+	 */
+	createTranslator: function(ctx, lang)
+	{
+		if (lang == undefined) lang = "";
+		var t = null;
+		if (lang == "php")
+		{
+			var __v0 = use("Bayrell.Lang.LangPHP.TranslatorPHP");
+			t = new __v0(ctx);
+		}
+		if (lang == "es6")
+		{
+			var __v0 = use("Bayrell.Lang.LangES6.TranslatorES6");
+			t = new __v0(ctx);
+		}
+		if (lang == "nodejs")
+		{
+			var __v0 = use("Bayrell.Lang.LangNode.TranslatorNode");
+			t = new __v0(ctx);
+		}
+		return t;
 	},
 	/* ======================= Class Init Functions ======================= */
 	getNamespace: function()

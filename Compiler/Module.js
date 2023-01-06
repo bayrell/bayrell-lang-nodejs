@@ -1,0 +1,179 @@
+"use strict;"
+var use = require('bay-lang').use;
+/*!
+ *  Bayrell Language
+ *
+ *  (c) Copyright 2016-2023 "Ildar Bikmamatov" <support@bayrell.org>
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+if (typeof Bayrell == 'undefined') Bayrell = {};
+if (typeof Bayrell.Lang == 'undefined') Bayrell.Lang = {};
+if (typeof Bayrell.Lang.Compiler == 'undefined') Bayrell.Lang.Compiler = {};
+Bayrell.Lang.Compiler.Module = function(ctx)
+{
+	use("Runtime.BaseStruct").apply(this, arguments);
+};
+Bayrell.Lang.Compiler.Module.prototype = Object.create(use("Runtime.BaseStruct").prototype);
+Bayrell.Lang.Compiler.Module.prototype.constructor = Bayrell.Lang.Compiler.Module;
+Object.assign(Bayrell.Lang.Compiler.Module.prototype,
+{
+	/**
+	 * Returns source path
+	 */
+	getSourcePath: function(ctx)
+	{
+		var __v0 = use("Runtime.Monad");
+		var __v1 = new __v0(ctx, Runtime.rtl.get(ctx, this.config, "src"));
+		var __v2 = use("Runtime.rtl");
+		__v1 = __v1.monad(ctx, __v2.m_to(ctx, "string", ""));
+		var module_src = __v1.value(ctx);
+		var __v3 = use("Runtime.fs");
+		var module_src_path = __v3.join(ctx, use("Runtime.Collection").from([this.path,module_src]));
+		return module_src_path;
+	},
+	/**
+	 * Resolve source file.
+	 * Returns file_path
+	 */
+	resolveSourceFile: function(ctx, file_name)
+	{
+		var __v0 = use("Runtime.fs");
+		return __v0.join(ctx, use("Runtime.Collection").from([this.path,file_name]));
+	},
+	/**
+	 * Resolve destination file
+	 */
+	resolveDestFile: function(ctx, project_path, relative_file_name, lang)
+	{
+		var __v0 = use("Runtime.Monad");
+		var __v1 = new __v0(ctx, Runtime.rtl.attr(ctx, this.config, ["dest", lang]));
+		var __v2 = use("Runtime.rtl");
+		__v1 = __v1.monad(ctx, __v2.m_to(ctx, "string", ""));
+		var dest = __v1.value(ctx);
+		var dest_path = "";
+		var __v3 = use("Runtime.rs");
+		var is_local = __v3.substr(ctx, dest, 0, 2) == "./";
+		if (is_local)
+		{
+			var __v4 = use("Runtime.fs");
+			dest_path = __v4.join(ctx, use("Runtime.Collection").from([this.path,dest,relative_file_name]));
+		}
+		else
+		{
+			var __v5 = use("Runtime.fs");
+			dest_path = __v5.join(ctx, use("Runtime.Collection").from([project_path,dest,relative_file_name]));
+		}
+		if (lang == "php")
+		{
+			var __v4 = use("Runtime.re");
+			dest_path = __v4.replace(ctx, "\\.bay$", ".php", dest_path);
+			var __v5 = use("Runtime.re");
+			dest_path = __v5.replace(ctx, "\\.ui$", ".php", dest_path);
+		}
+		else if (lang == "es6")
+		{
+			var __v6 = use("Runtime.re");
+			dest_path = __v6.replace(ctx, "\\.bay$", ".js", dest_path);
+			var __v7 = use("Runtime.re");
+			dest_path = __v7.replace(ctx, "\\.ui$", ".js", dest_path);
+		}
+		else if (lang == "nodejs")
+		{
+			var __v8 = use("Runtime.re");
+			dest_path = __v8.replace(ctx, "\\.bay$", ".js", dest_path);
+			var __v9 = use("Runtime.re");
+			dest_path = __v9.replace(ctx, "\\.ui$", ".js", dest_path);
+		}
+		return dest_path;
+	},
+	_init: function(ctx)
+	{
+		use("Runtime.BaseStruct").prototype._init.call(this,ctx);
+		this.name = "";
+		this.path = "";
+		this.config = use("Runtime.Dict").from({});
+	},
+});
+Object.assign(Bayrell.Lang.Compiler.Module, use("Runtime.BaseStruct"));
+Object.assign(Bayrell.Lang.Compiler.Module,
+{
+	/* ======================= Class Init Functions ======================= */
+	getNamespace: function()
+	{
+		return "Bayrell.Lang.Compiler";
+	},
+	getClassName: function()
+	{
+		return "Bayrell.Lang.Compiler.Module";
+	},
+	getParentClassName: function()
+	{
+		return "Runtime.BaseStruct";
+	},
+	getClassInfo: function(ctx)
+	{
+		var Collection = use("Runtime.Collection");
+		var Dict = use("Runtime.Dict");
+		return Dict.from({
+			"annotations": Collection.from([
+			]),
+		});
+	},
+	getFieldsList: function(ctx, f)
+	{
+		var a = [];
+		if (f==undefined) f=0;
+		if ((f&2)==2)
+		{
+			a.push("name");
+			a.push("path");
+			a.push("config");
+		}
+		return use("Runtime.Collection").from(a);
+	},
+	getFieldInfoByName: function(ctx,field_name)
+	{
+		var Collection = use("Runtime.Collection");
+		var Dict = use("Runtime.Dict");
+		if (field_name == "name") return Dict.from({
+			"t": "string",
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "path") return Dict.from({
+			"t": "string",
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "config") return Dict.from({
+			"t": "Runtime.Dict",
+			"annotations": Collection.from([
+			]),
+		});
+		return null;
+	},
+	getMethodsList: function(ctx,f)
+	{
+		if (f==undefined) f=0;
+		var a = [];
+		if ((f&4)==4) a=[
+		];
+		return use("Runtime.Collection").from(a);
+	},
+	getMethodInfoByName: function(ctx,field_name)
+	{
+		return null;
+	},
+});use.add(Bayrell.Lang.Compiler.Module);
+module.exports = Bayrell.Lang.Compiler.Module;
