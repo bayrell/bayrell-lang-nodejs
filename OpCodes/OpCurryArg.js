@@ -34,21 +34,6 @@ Object.assign(Bayrell.Lang.OpCodes.OpCurryArg.prototype,
 		this.op = "op_curry";
 		this.pos = 0;
 	},
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.OpCodes.OpCurryArg"))
-		{
-			this.op = o.op;
-			this.pos = o.pos;
-		}
-		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		if (k == "op")this.op = v;
-		else if (k == "pos")this.pos = v;
-		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
-	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;

@@ -37,27 +37,6 @@ Object.assign(Bayrell.Lang.OpCodes.OpIf.prototype,
 		this.if_false = null;
 		this.if_else = null;
 	},
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.OpCodes.OpIf"))
-		{
-			this.op = o.op;
-			this.condition = o.condition;
-			this.if_true = o.if_true;
-			this.if_false = o.if_false;
-			this.if_else = o.if_else;
-		}
-		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		if (k == "op")this.op = v;
-		else if (k == "condition")this.condition = v;
-		else if (k == "if_true")this.if_true = v;
-		else if (k == "if_false")this.if_false = v;
-		else if (k == "if_else")this.if_else = v;
-		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
-	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;

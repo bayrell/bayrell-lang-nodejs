@@ -35,23 +35,6 @@ Object.assign(Bayrell.Lang.OpCodes.OpNew.prototype,
 		this.args = null;
 		this.value = null;
 	},
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.OpCodes.OpNew"))
-		{
-			this.op = o.op;
-			this.args = o.args;
-			this.value = o.value;
-		}
-		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		if (k == "op")this.op = v;
-		else if (k == "args")this.args = v;
-		else if (k == "value")this.value = v;
-		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
-	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;

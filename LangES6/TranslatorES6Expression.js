@@ -28,17 +28,6 @@ Bayrell.Lang.LangES6.TranslatorES6Expression.prototype = Object.create(use("Runt
 Bayrell.Lang.LangES6.TranslatorES6Expression.prototype.constructor = Bayrell.Lang.LangES6.TranslatorES6Expression;
 Object.assign(Bayrell.Lang.LangES6.TranslatorES6Expression.prototype,
 {
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.LangES6.TranslatorES6Expression"))
-		{
-		}
-		use("Runtime.BaseStruct").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		use("Runtime.BaseStruct").prototype.assignValue.call(this,ctx,k,v);
-	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
@@ -885,13 +874,9 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Expression,
 	/**
 	 * OpCall
 	 */
-	OpCall: function(ctx, t, op_code, is_expression)
+	OpCall: function(ctx, t, op_code, is_html)
 	{
-		if (is_expression == undefined) is_expression = true;
-		if (t.current_function.isFlag(ctx, "async") && op_code.is_await && t.isEmulateAsyncAwait(ctx))
-		{
-			return t.async_await.constructor.OpCall(ctx, t, op_code, is_expression);
-		}
+		if (is_html == undefined) is_html = false;
 		var s = "";
 		var flag = false;
 		var res = t.expression.constructor.Dynamic(ctx, t, op_code.obj, true);
@@ -928,6 +913,11 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Expression,
 		else if (t.current_function.is_context && op_code.is_context)
 		{
 			content += use("Runtime.rtl").toStr(((flag) ? (", ") : ("")) + use("Runtime.rtl").toStr("ctx"));
+			flag = true;
+		}
+		if (is_html)
+		{
+			content += use("Runtime.rtl").toStr(((flag) ? (", ") : ("")) + use("Runtime.rtl").toStr("component, model_path, render_params, render_content"));
 			flag = true;
 		}
 		for (var i = 0;i < op_code.args.count(ctx);i++)

@@ -33,19 +33,6 @@ Object.assign(Bayrell.Lang.OpCodes.OpContinue.prototype,
 		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,ctx);
 		this.op = "op_continue";
 	},
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.OpCodes.OpContinue"))
-		{
-			this.op = o.op;
-		}
-		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		if (k == "op")this.op = v;
-		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
-	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;

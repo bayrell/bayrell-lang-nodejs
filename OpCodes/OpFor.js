@@ -37,27 +37,6 @@ Object.assign(Bayrell.Lang.OpCodes.OpFor.prototype,
 		this.expr3 = null;
 		this.value = null;
 	},
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.OpCodes.OpFor"))
-		{
-			this.op = o.op;
-			this.expr1 = o.expr1;
-			this.expr2 = o.expr2;
-			this.expr3 = o.expr3;
-			this.value = o.value;
-		}
-		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		if (k == "op")this.op = v;
-		else if (k == "expr1")this.expr1 = v;
-		else if (k == "expr2")this.expr2 = v;
-		else if (k == "expr3")this.expr3 = v;
-		else if (k == "value")this.value = v;
-		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
-	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;

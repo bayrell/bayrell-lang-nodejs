@@ -63,56 +63,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6.prototype,
 		this.emulate_async_await = false;
 		this.enable_context = false;
 		this.enable_check_types = false;
-		this.enable_introspection = false;
-	},
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.LangES6.TranslatorES6"))
-		{
-			this.is_pipe = o.is_pipe;
-			this.is_call = o.is_call;
-			this.pipe_var_name = o.pipe_var_name;
-			this.html_var_name = o.html_var_name;
-			this.is_html = o.is_html;
-			this.async_await = o.async_await;
-			this.expression = o.expression;
-			this.html = o.html;
-			this.operator = o.operator;
-			this.program = o.program;
-			this.frontend = o.frontend;
-			this.backend = o.backend;
-			this.use_module_name = o.use_module_name;
-			this.use_strict = o.use_strict;
-			this.enable_async_await = o.enable_async_await;
-			this.emulate_async_await = o.emulate_async_await;
-			this.enable_context = o.enable_context;
-			this.enable_check_types = o.enable_check_types;
-			this.enable_introspection = o.enable_introspection;
-		}
-		use("Bayrell.Lang.CoreTranslator").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		if (k == "is_pipe")this.is_pipe = v;
-		else if (k == "is_call")this.is_call = v;
-		else if (k == "pipe_var_name")this.pipe_var_name = v;
-		else if (k == "html_var_name")this.html_var_name = v;
-		else if (k == "is_html")this.is_html = v;
-		else if (k == "async_await")this.async_await = v;
-		else if (k == "expression")this.expression = v;
-		else if (k == "html")this.html = v;
-		else if (k == "operator")this.operator = v;
-		else if (k == "program")this.program = v;
-		else if (k == "frontend")this.frontend = v;
-		else if (k == "backend")this.backend = v;
-		else if (k == "use_module_name")this.use_module_name = v;
-		else if (k == "use_strict")this.use_strict = v;
-		else if (k == "enable_async_await")this.enable_async_await = v;
-		else if (k == "emulate_async_await")this.emulate_async_await = v;
-		else if (k == "enable_context")this.enable_context = v;
-		else if (k == "enable_check_types")this.enable_check_types = v;
-		else if (k == "enable_introspection")this.enable_introspection = v;
-		else use("Bayrell.Lang.CoreTranslator").prototype.assignValue.call(this,ctx,k,v);
+		this.enable_introspection = true;
 	},
 	takeValue: function(ctx,k,d)
 	{
@@ -164,6 +115,33 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6,
 	{
 		t = this.reset(ctx, t);
 		return t.program.constructor.translateProgram(ctx, t, op_code);
+	},
+	/**
+	 * Output save op code content
+	 */
+	outputSaveOpCode: function(ctx, t, save_op_code_value)
+	{
+		if (save_op_code_value == undefined) save_op_code_value = 0;
+		var content = "";
+		for (var i = 0;i < t.save_op_codes.count(ctx);i++)
+		{
+			if (i < save_op_code_value)
+			{
+				continue;
+			}
+			var save = t.save_op_codes.item(ctx, i);
+			var s = "";
+			if (t.is_html)
+			{
+				s = (save.content == "") ? (t.s(ctx, "let " + use("Runtime.rtl").toStr(save.var_name) + use("Runtime.rtl").toStr(" = ") + use("Runtime.rtl").toStr(save.var_content) + use("Runtime.rtl").toStr(";"))) : (save.content);
+			}
+			else
+			{
+				s = (save.content == "") ? (t.s(ctx, "var " + use("Runtime.rtl").toStr(save.var_name) + use("Runtime.rtl").toStr(" = ") + use("Runtime.rtl").toStr(save.var_content) + use("Runtime.rtl").toStr(";"))) : (save.content);
+			}
+			content += use("Runtime.rtl").toStr(s);
+		}
+		return content;
 	},
 	/* ======================= Class Init Functions ======================= */
 	getNamespace: function()

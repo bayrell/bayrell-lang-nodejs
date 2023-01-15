@@ -41,35 +41,6 @@ Object.assign(Bayrell.Lang.OpCodes.OpAssign.prototype,
 		this.names = null;
 		this.expression = null;
 	},
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.OpCodes.OpAssign"))
-		{
-			this.kind = o.kind;
-			this.var_name = o.var_name;
-			this.flags = o.flags;
-			this.pattern = o.pattern;
-			this.annotations = o.annotations;
-			this.comments = o.comments;
-			this.values = o.values;
-			this.names = o.names;
-			this.expression = o.expression;
-		}
-		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		if (k == "kind")this.kind = v;
-		else if (k == "var_name")this.var_name = v;
-		else if (k == "flags")this.flags = v;
-		else if (k == "pattern")this.pattern = v;
-		else if (k == "annotations")this.annotations = v;
-		else if (k == "comments")this.comments = v;
-		else if (k == "values")this.values = v;
-		else if (k == "names")this.names = v;
-		else if (k == "expression")this.expression = v;
-		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
-	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;

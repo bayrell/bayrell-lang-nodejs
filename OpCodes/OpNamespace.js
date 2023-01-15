@@ -34,21 +34,6 @@ Object.assign(Bayrell.Lang.OpCodes.OpNamespace.prototype,
 		this.op = "op_namespace";
 		this.name = "";
 	},
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.OpCodes.OpNamespace"))
-		{
-			this.op = o.op;
-			this.name = o.name;
-		}
-		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		if (k == "op")this.op = v;
-		else if (k == "name")this.name = v;
-		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
-	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;

@@ -42,37 +42,6 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode.prototype,
 		this.enable_introspection = false;
 		this.enable_context = true;
 	},
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.LangNode.TranslatorNode"))
-		{
-			this.async_await = o.async_await;
-			this.expression = o.expression;
-			this.html = o.html;
-			this.operator = o.operator;
-			this.program = o.program;
-			this.use_module_name = o.use_module_name;
-			this.enable_async_await = o.enable_async_await;
-			this.emulate_async_await = o.emulate_async_await;
-			this.enable_introspection = o.enable_introspection;
-			this.enable_context = o.enable_context;
-		}
-		use("Bayrell.Lang.LangES6.TranslatorES6").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		if (k == "async_await")this.async_await = v;
-		else if (k == "expression")this.expression = v;
-		else if (k == "html")this.html = v;
-		else if (k == "operator")this.operator = v;
-		else if (k == "program")this.program = v;
-		else if (k == "use_module_name")this.use_module_name = v;
-		else if (k == "enable_async_await")this.enable_async_await = v;
-		else if (k == "emulate_async_await")this.emulate_async_await = v;
-		else if (k == "enable_introspection")this.enable_introspection = v;
-		else if (k == "enable_context")this.enable_context = v;
-		else use("Bayrell.Lang.LangES6.TranslatorES6").prototype.assignValue.call(this,ctx,k,v);
-	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;

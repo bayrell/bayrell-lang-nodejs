@@ -36,25 +36,6 @@ Object.assign(Bayrell.Lang.OpCodes.OpTryCatchItem.prototype,
 		this.pattern = null;
 		this.value = null;
 	},
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.OpCodes.OpTryCatchItem"))
-		{
-			this.op = o.op;
-			this.name = o.name;
-			this.pattern = o.pattern;
-			this.value = o.value;
-		}
-		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		if (k == "op")this.op = v;
-		else if (k == "name")this.name = v;
-		else if (k == "pattern")this.pattern = v;
-		else if (k == "value")this.value = v;
-		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
-	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;

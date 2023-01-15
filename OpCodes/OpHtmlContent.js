@@ -34,21 +34,6 @@ Object.assign(Bayrell.Lang.OpCodes.OpHtmlContent.prototype,
 		this.op = "op_html_content";
 		this.value = "";
 	},
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.OpCodes.OpHtmlContent"))
-		{
-			this.op = o.op;
-			this.value = o.value;
-		}
-		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		if (k == "op")this.op = v;
-		else if (k == "value")this.value = v;
-		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
-	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;

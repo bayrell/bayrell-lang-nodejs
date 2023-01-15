@@ -38,29 +38,6 @@ Object.assign(Bayrell.Lang.OpCodes.OpPipe.prototype,
 		this.is_async = false;
 		this.is_monad = false;
 	},
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.OpCodes.OpPipe"))
-		{
-			this.op = o.op;
-			this.kind = o.kind;
-			this.obj = o.obj;
-			this.value = o.value;
-			this.is_async = o.is_async;
-			this.is_monad = o.is_monad;
-		}
-		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		if (k == "op")this.op = v;
-		else if (k == "kind")this.kind = v;
-		else if (k == "obj")this.obj = v;
-		else if (k == "value")this.value = v;
-		else if (k == "is_async")this.is_async = v;
-		else if (k == "is_monad")this.is_monad = v;
-		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
-	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;

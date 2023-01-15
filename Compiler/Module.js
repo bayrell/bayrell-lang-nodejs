@@ -48,8 +48,16 @@ Object.assign(Bayrell.Lang.Compiler.Module.prototype,
 	 */
 	resolveSourceFile: function(ctx, file_name)
 	{
+		var first_char = Runtime.rtl.get(ctx, file_name, 0);
+		if (first_char == "@")
+		{
+			var __v0 = use("Runtime.fs");
+			var __v1 = use("Runtime.rs");
+			return __v0.join(ctx, use("Runtime.Collection").from([this.path,__v1.substr(ctx, file_name, 1)]));
+		}
+		var path = this.getSourcePath(ctx);
 		var __v0 = use("Runtime.fs");
-		return __v0.join(ctx, use("Runtime.Collection").from([this.path,file_name]));
+		return __v0.join(ctx, use("Runtime.Collection").from([path,file_name]));
 	},
 	/**
 	 * Resolve destination file

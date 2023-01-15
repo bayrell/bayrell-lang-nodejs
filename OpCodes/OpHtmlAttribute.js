@@ -36,25 +36,6 @@ Object.assign(Bayrell.Lang.OpCodes.OpHtmlAttribute.prototype,
 		this.value = "";
 		this.is_spread = false;
 	},
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.OpCodes.OpHtmlAttribute"))
-		{
-			this.op = o.op;
-			this.key = o.key;
-			this.value = o.value;
-			this.is_spread = o.is_spread;
-		}
-		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		if (k == "op")this.op = v;
-		else if (k == "key")this.key = v;
-		else if (k == "value")this.value = v;
-		else if (k == "is_spread")this.is_spread = v;
-		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
-	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;

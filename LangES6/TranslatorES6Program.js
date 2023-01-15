@@ -28,17 +28,6 @@ Bayrell.Lang.LangES6.TranslatorES6Program.prototype = Object.create(use("Runtime
 Bayrell.Lang.LangES6.TranslatorES6Program.prototype.constructor = Bayrell.Lang.LangES6.TranslatorES6Program;
 Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program.prototype,
 {
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.LangES6.TranslatorES6Program"))
-		{
-		}
-		use("Runtime.BaseStruct").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		use("Runtime.BaseStruct").prototype.assignValue.call(this,ctx,k,v);
-	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
@@ -216,19 +205,8 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 		t = t.levelInc(ctx);
 		s1 += use("Runtime.rtl").toStr(t.s(ctx, "var Collection = " + use("Runtime.rtl").toStr(t.expression.constructor.useModuleName(ctx, t, "Runtime.Collection")) + use("Runtime.rtl").toStr(";")));
 		s1 += use("Runtime.rtl").toStr(t.s(ctx, "var Dict = " + use("Runtime.rtl").toStr(t.expression.constructor.useModuleName(ctx, t, "Runtime.Dict")) + use("Runtime.rtl").toStr(";")));
-		if (t.enable_introspection)
-		{
-			s1 += use("Runtime.rtl").toStr(t.s(ctx, "var IntrospectionInfo = " + use("Runtime.rtl").toStr(t.expression.constructor.useModuleName(ctx, t, "Runtime.IntrospectionInfo")) + use("Runtime.rtl").toStr(";")));
-			s1 += use("Runtime.rtl").toStr(t.s(ctx, "return new IntrospectionInfo(ctx, {"));
-			s1 += use("Runtime.rtl").toStr(t.s(ctx, "\"kind\": IntrospectionInfo.ITEM_METHOD,"));
-			s1 += use("Runtime.rtl").toStr(t.s(ctx, "\"class_name\": " + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, t.current_class_full_name)) + use("Runtime.rtl").toStr(",")));
-			s1 += use("Runtime.rtl").toStr(t.s(ctx, "\"name\": " + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, f.name)) + use("Runtime.rtl").toStr(",")));
-		}
-		else
-		{
-			s1 += use("Runtime.rtl").toStr(t.s(ctx, "return Dict.from({"));
-			t = t.levelInc(ctx);
-		}
+		s1 += use("Runtime.rtl").toStr(t.s(ctx, "return Dict.from({"));
+		t = t.levelInc(ctx);
 		if (f.flags.isFlag(ctx, "async"))
 		{
 			s1 += use("Runtime.rtl").toStr(t.s(ctx, "\"async\": true,"));
@@ -445,20 +423,8 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 			var s1 = "";
 			s1 += use("Runtime.rtl").toStr(t.s(ctx, "var Collection = " + use("Runtime.rtl").toStr(t.expression.constructor.useModuleName(ctx, t, "Runtime.Collection")) + use("Runtime.rtl").toStr(";")));
 			s1 += use("Runtime.rtl").toStr(t.s(ctx, "var Dict = " + use("Runtime.rtl").toStr(t.expression.constructor.useModuleName(ctx, t, "Runtime.Dict")) + use("Runtime.rtl").toStr(";")));
-			if (t.enable_introspection)
-			{
-				s1 += use("Runtime.rtl").toStr(t.s(ctx, "var IntrospectionInfo = " + use("Runtime.rtl").toStr(t.expression.constructor.useModuleName(ctx, t, "Runtime.IntrospectionInfo")) + use("Runtime.rtl").toStr(";")));
-				s1 += use("Runtime.rtl").toStr(t.s(ctx, "return new IntrospectionInfo(ctx, {"));
-				t = t.levelInc(ctx);
-				s1 += use("Runtime.rtl").toStr(t.s(ctx, "\"kind\": IntrospectionInfo.ITEM_CLASS,"));
-				s1 += use("Runtime.rtl").toStr(t.s(ctx, "\"class_name\": " + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, t.current_class_full_name)) + use("Runtime.rtl").toStr(",")));
-				s1 += use("Runtime.rtl").toStr(t.s(ctx, "\"name\": " + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, t.current_class_full_name)) + use("Runtime.rtl").toStr(",")));
-			}
-			else
-			{
-				s1 += use("Runtime.rtl").toStr(t.s(ctx, "return Dict.from({"));
-				t = t.levelInc(ctx);
-			}
+			s1 += use("Runtime.rtl").toStr(t.s(ctx, "return Dict.from({"));
+			t = t.levelInc(ctx);
 			s1 += use("Runtime.rtl").toStr(t.s(ctx, "\"annotations\": Collection.from(["));
 			t = t.levelInc(ctx);
 			for (var j = 0;j < op_code.annotations.count(ctx);j++)
@@ -580,10 +546,6 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 			{
 				content += use("Runtime.rtl").toStr(t.s(ctx, "var Collection = " + use("Runtime.rtl").toStr(t.expression.constructor.useModuleName(ctx, t, "Runtime.Collection")) + use("Runtime.rtl").toStr(";")));
 				content += use("Runtime.rtl").toStr(t.s(ctx, "var Dict = " + use("Runtime.rtl").toStr(t.expression.constructor.useModuleName(ctx, t, "Runtime.Dict")) + use("Runtime.rtl").toStr(";")));
-				if (t.enable_introspection)
-				{
-					content += use("Runtime.rtl").toStr(t.s(ctx, "var IntrospectionInfo = " + use("Runtime.rtl").toStr(t.expression.constructor.useModuleName(ctx, t, "Runtime.IntrospectionInfo")) + use("Runtime.rtl").toStr(";")));
-				}
 				for (var i = 0;i < op_code.vars.count(ctx);i++)
 				{
 					var variable = op_code.vars.item(ctx, i);
@@ -605,26 +567,14 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 					var_sub_types = var_sub_types.map(ctx, t.expression.constructor.toString);
 					t = t.constructor.clearSaveOpCode(ctx, t);
 					var s1 = "";
-					if (t.enable_introspection)
-					{
-						var __v2 = use("Runtime.rs");
-						s1 += use("Runtime.rtl").toStr(t.s(ctx, "if (" + use("Runtime.rtl").toStr(__v2.join(ctx, " or ", v)) + use("Runtime.rtl").toStr(") return new IntrospectionInfo(ctx, {")));
-						t = t.levelInc(ctx);
-						s1 += use("Runtime.rtl").toStr(t.s(ctx, "\"kind\": IntrospectionInfo.ITEM_FIELD,"));
-						s1 += use("Runtime.rtl").toStr(t.s(ctx, "\"class_name\": " + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, t.current_class_full_name)) + use("Runtime.rtl").toStr(",")));
-						s1 += use("Runtime.rtl").toStr(t.s(ctx, "\"name\": field_name,"));
-					}
-					else
-					{
-						var __v3 = use("Runtime.rs");
-						s1 += use("Runtime.rtl").toStr(t.s(ctx, "if (" + use("Runtime.rtl").toStr(__v3.join(ctx, " or ", v)) + use("Runtime.rtl").toStr(") return Dict.from({")));
-						t = t.levelInc(ctx);
-					}
+					var __v2 = use("Runtime.rs");
+					s1 += use("Runtime.rtl").toStr(t.s(ctx, "if (" + use("Runtime.rtl").toStr(__v2.join(ctx, " or ", v)) + use("Runtime.rtl").toStr(") return Dict.from({")));
+					t = t.levelInc(ctx);
 					s1 += use("Runtime.rtl").toStr(t.s(ctx, "\"t\": " + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, var_type)) + use("Runtime.rtl").toStr(",")));
 					if (var_sub_types.count(ctx) > 0)
 					{
-						var __v2 = use("Runtime.rs");
-						s1 += use("Runtime.rtl").toStr(t.s(ctx, "\"s\": [" + use("Runtime.rtl").toStr(__v2.join(ctx, ", ", var_sub_types)) + use("Runtime.rtl").toStr("],")));
+						var __v3 = use("Runtime.rs");
+						s1 += use("Runtime.rtl").toStr(t.s(ctx, "\"s\": [" + use("Runtime.rtl").toStr(__v3.join(ctx, ", ", var_sub_types)) + use("Runtime.rtl").toStr("],")));
 					}
 					s1 += use("Runtime.rtl").toStr(t.s(ctx, "\"annotations\": Collection.from(["));
 					t = t.levelInc(ctx);
@@ -923,86 +873,88 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 			}
 			/* Struct */
 			var __v1 = use("Bayrell.Lang.OpCodes.OpDeclareClass");
-			if (class_kind == __v1.KIND_STRUCT)
+			if (class_kind == __v1.KIND_STRUCT || t.enable_introspection)
 			{
 				var __v2 = use("Bayrell.Lang.OpCodes.OpDeclareClass");
 				var is_struct = class_kind == __v2.KIND_STRUCT;
-				/* string var_prefix = is_struct ? "__" : ""; */
 				var var_prefix = "";
-				/* Assign Object */
-				content += use("Runtime.rtl").toStr(t.s(ctx, "assignObject: function(ctx,o)"));
-				content += use("Runtime.rtl").toStr(t.s(ctx, "{"));
-				t = t.levelInc(ctx);
-				content += use("Runtime.rtl").toStr(t.s(ctx, "if (o instanceof " + use("Runtime.rtl").toStr(t.expression.constructor.useModuleName(ctx, t, t.current_class_full_name)) + use("Runtime.rtl").toStr(")")));
-				content += use("Runtime.rtl").toStr(t.s(ctx, "{"));
-				t = t.levelInc(ctx);
-				for (var i = 0;i < op_code.vars.count(ctx);i++)
+				if (!is_struct)
 				{
-					var variable = op_code.vars.item(ctx, i);
-					var __v3 = use("Bayrell.Lang.OpCodes.OpAssign");
-					if (variable.kind != __v3.KIND_DECLARE)
+					/* Assign Object */
+					content += use("Runtime.rtl").toStr(t.s(ctx, "assignObject: function(ctx,o)"));
+					content += use("Runtime.rtl").toStr(t.s(ctx, "{"));
+					t = t.levelInc(ctx);
+					content += use("Runtime.rtl").toStr(t.s(ctx, "if (o instanceof " + use("Runtime.rtl").toStr(t.expression.constructor.useModuleName(ctx, t, t.current_class_full_name)) + use("Runtime.rtl").toStr(")")));
+					content += use("Runtime.rtl").toStr(t.s(ctx, "{"));
+					t = t.levelInc(ctx);
+					for (var i = 0;i < op_code.vars.count(ctx);i++)
 					{
-						continue;
-					}
-					var is_const = variable.flags.isFlag(ctx, "const");
-					var is_static = variable.flags.isFlag(ctx, "static");
-					if (is_const || is_static)
-					{
-						continue;
-					}
-					for (var j = 0;j < variable.values.count(ctx);j++)
-					{
-						var value = variable.values.item(ctx, j);
-						content += use("Runtime.rtl").toStr(t.s(ctx, "this." + use("Runtime.rtl").toStr(var_prefix) + use("Runtime.rtl").toStr(value.var_name) + use("Runtime.rtl").toStr(" = o.") + use("Runtime.rtl").toStr(var_prefix) + use("Runtime.rtl").toStr(value.var_name) + use("Runtime.rtl").toStr(";")));
-					}
-				}
-				t = t.levelDec(ctx);
-				content += use("Runtime.rtl").toStr(t.s(ctx, "}"));
-				if (t.current_class_extends_name != "")
-				{
-					content += use("Runtime.rtl").toStr(t.s(ctx, t.expression.constructor.useModuleName(ctx, t, t.current_class_extends_name) + use("Runtime.rtl").toStr(".prototype.assignObject.call(this,ctx,o);")));
-				}
-				t = t.levelDec(ctx);
-				content += use("Runtime.rtl").toStr(t.s(ctx, "},"));
-				/* Assign Value */
-				content += use("Runtime.rtl").toStr(t.s(ctx, "assignValue: function(ctx,k,v)"));
-				content += use("Runtime.rtl").toStr(t.s(ctx, "{"));
-				t = t.levelInc(ctx);
-				var flag = false;
-				for (var i = 0;i < op_code.vars.count(ctx);i++)
-				{
-					var variable = op_code.vars.item(ctx, i);
-					var __v3 = use("Bayrell.Lang.OpCodes.OpAssign");
-					if (variable.kind != __v3.KIND_DECLARE)
-					{
-						continue;
-					}
-					var is_const = variable.flags.isFlag(ctx, "const");
-					var is_static = variable.flags.isFlag(ctx, "static");
-					if (is_const || is_static)
-					{
-						continue;
-					}
-					for (var j = 0;j < variable.values.count(ctx);j++)
-					{
-						var value = variable.values.item(ctx, j);
-						if (t.flag_struct_check_types)
+						var variable = op_code.vars.item(ctx, i);
+						var __v3 = use("Bayrell.Lang.OpCodes.OpAssign");
+						if (variable.kind != __v3.KIND_DECLARE)
 						{
-							content += use("Runtime.rtl").toStr(t.s(ctx, ((flag) ? ("else ") : ("")) + use("Runtime.rtl").toStr("if (k == ") + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, value.var_name)) + use("Runtime.rtl").toStr(")") + use("Runtime.rtl").toStr("this.") + use("Runtime.rtl").toStr(var_prefix) + use("Runtime.rtl").toStr(value.var_name) + use("Runtime.rtl").toStr(" = Runtime.rtl.to(v, null, ") + use("Runtime.rtl").toStr(this.toPattern(ctx, t, variable.pattern)) + use("Runtime.rtl").toStr(");")));
+							continue;
 						}
-						else
+						var is_const = variable.flags.isFlag(ctx, "const");
+						var is_static = variable.flags.isFlag(ctx, "static");
+						if (is_const || is_static)
 						{
-							content += use("Runtime.rtl").toStr(t.s(ctx, ((flag) ? ("else ") : ("")) + use("Runtime.rtl").toStr("if (k == ") + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, value.var_name)) + use("Runtime.rtl").toStr(")") + use("Runtime.rtl").toStr("this.") + use("Runtime.rtl").toStr(var_prefix) + use("Runtime.rtl").toStr(value.var_name) + use("Runtime.rtl").toStr(" = v;")));
+							continue;
 						}
-						flag = true;
+						for (var j = 0;j < variable.values.count(ctx);j++)
+						{
+							var value = variable.values.item(ctx, j);
+							content += use("Runtime.rtl").toStr(t.s(ctx, "this." + use("Runtime.rtl").toStr(var_prefix) + use("Runtime.rtl").toStr(value.var_name) + use("Runtime.rtl").toStr(" = o.") + use("Runtime.rtl").toStr(var_prefix) + use("Runtime.rtl").toStr(value.var_name) + use("Runtime.rtl").toStr(";")));
+						}
 					}
+					t = t.levelDec(ctx);
+					content += use("Runtime.rtl").toStr(t.s(ctx, "}"));
+					if (t.current_class_extends_name != "")
+					{
+						content += use("Runtime.rtl").toStr(t.s(ctx, t.expression.constructor.useModuleName(ctx, t, t.current_class_extends_name) + use("Runtime.rtl").toStr(".prototype.assignObject.call(this,ctx,o);")));
+					}
+					t = t.levelDec(ctx);
+					content += use("Runtime.rtl").toStr(t.s(ctx, "},"));
+					/* Assign Value */
+					content += use("Runtime.rtl").toStr(t.s(ctx, "assignValue: function(ctx,k,v)"));
+					content += use("Runtime.rtl").toStr(t.s(ctx, "{"));
+					t = t.levelInc(ctx);
+					var flag = false;
+					for (var i = 0;i < op_code.vars.count(ctx);i++)
+					{
+						var variable = op_code.vars.item(ctx, i);
+						var __v3 = use("Bayrell.Lang.OpCodes.OpAssign");
+						if (variable.kind != __v3.KIND_DECLARE)
+						{
+							continue;
+						}
+						var is_const = variable.flags.isFlag(ctx, "const");
+						var is_static = variable.flags.isFlag(ctx, "static");
+						if (is_const || is_static)
+						{
+							continue;
+						}
+						for (var j = 0;j < variable.values.count(ctx);j++)
+						{
+							var value = variable.values.item(ctx, j);
+							if (t.flag_struct_check_types)
+							{
+								content += use("Runtime.rtl").toStr(t.s(ctx, ((flag) ? ("else ") : ("")) + use("Runtime.rtl").toStr("if (k == ") + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, value.var_name)) + use("Runtime.rtl").toStr(")") + use("Runtime.rtl").toStr("this.") + use("Runtime.rtl").toStr(var_prefix) + use("Runtime.rtl").toStr(value.var_name) + use("Runtime.rtl").toStr(" = Runtime.rtl.to(v, null, ") + use("Runtime.rtl").toStr(this.toPattern(ctx, t, variable.pattern)) + use("Runtime.rtl").toStr(");")));
+							}
+							else
+							{
+								content += use("Runtime.rtl").toStr(t.s(ctx, ((flag) ? ("else ") : ("")) + use("Runtime.rtl").toStr("if (k == ") + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, value.var_name)) + use("Runtime.rtl").toStr(")") + use("Runtime.rtl").toStr("this.") + use("Runtime.rtl").toStr(var_prefix) + use("Runtime.rtl").toStr(value.var_name) + use("Runtime.rtl").toStr(" = v;")));
+							}
+							flag = true;
+						}
+					}
+					if (t.current_class_extends_name != "")
+					{
+						content += use("Runtime.rtl").toStr(t.s(ctx, ((flag) ? ("else ") : ("")) + use("Runtime.rtl").toStr(t.expression.constructor.useModuleName(ctx, t, t.current_class_extends_name)) + use("Runtime.rtl").toStr(".prototype.assignValue.call(this,ctx,k,v);")));
+					}
+					t = t.levelDec(ctx);
+					content += use("Runtime.rtl").toStr(t.s(ctx, "},"));
 				}
-				if (t.current_class_extends_name != "")
-				{
-					content += use("Runtime.rtl").toStr(t.s(ctx, ((flag) ? ("else ") : ("")) + use("Runtime.rtl").toStr(t.expression.constructor.useModuleName(ctx, t, t.current_class_extends_name)) + use("Runtime.rtl").toStr(".prototype.assignValue.call(this,ctx,k,v);")));
-				}
-				t = t.levelDec(ctx);
-				content += use("Runtime.rtl").toStr(t.s(ctx, "},"));
 				/* Take Value */
 				content += use("Runtime.rtl").toStr(t.s(ctx, "takeValue: function(ctx,k,d)"));
 				content += use("Runtime.rtl").toStr(t.s(ctx, "{"));
@@ -1209,17 +1161,17 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 		if (t.enable_context == false)
 		{
 			var __v1 = use("Runtime.rs");
-			content = __v1.replace(ctx, "\\(ctx\\)", "()", content);
+			content = __v1.replace(ctx, "\\(" + use("Runtime.rtl").toStr("ctx\\)"), "()", content);
 			var __v2 = use("Runtime.rs");
-			content = __v2.replace(ctx, "\\(ctx, ", "(", content);
+			content = __v2.replace(ctx, "\\(" + use("Runtime.rtl").toStr("ctx, "), "(", content);
 			var __v3 = use("Runtime.rs");
-			content = __v3.replace(ctx, "\\(ctx,", "(", content);
+			content = __v3.replace(ctx, "\\(" + use("Runtime.rtl").toStr("ctx,"), "(", content);
 			var __v4 = use("Runtime.rs");
-			content = __v4.replace(ctx, ",ctx,", ",", content);
+			content = __v4.replace(ctx, "," + use("Runtime.rtl").toStr("ctx,"), ",", content);
 			var __v5 = use("Runtime.rs");
-			content = __v5.replace(ctx, "this,ctx", "this", content);
+			content = __v5.replace(ctx, "this," + use("Runtime.rtl").toStr("ctx"), "this", content);
 			var __v6 = use("Runtime.rs");
-			content = __v6.replace(ctx, "this, ctx", "this", content);
+			content = __v6.replace(ctx, "this," + use("Runtime.rtl").toStr(" ctx"), "this", content);
 		}
 		return use("Runtime.Collection").from([t,content]);
 	},

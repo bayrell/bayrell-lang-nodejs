@@ -108,55 +108,6 @@ Object.assign(Bayrell.Lang.CoreTranslator.prototype,
 		this.flag_struct_check_types = false;
 		this.preprocessor_flags = null;
 	},
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.CoreTranslator"))
-		{
-			this.current_namespace_name = o.current_namespace_name;
-			this.current_class_name = o.current_class_name;
-			this.current_class_full_name = o.current_class_full_name;
-			this.current_class_extends_name = o.current_class_extends_name;
-			this.current_class = o.current_class;
-			this.current_function = o.current_function;
-			this.modules = o.modules;
-			this.vars = o.vars;
-			this.save_vars = o.save_vars;
-			this.save_op_codes = o.save_op_codes;
-			this.save_op_code_inc = o.save_op_code_inc;
-			this.is_static_function = o.is_static_function;
-			this.is_operation = o.is_operation;
-			this.opcode_level = o.opcode_level;
-			this.indent_level = o.indent_level;
-			this.indent = o.indent;
-			this.crlf = o.crlf;
-			this.flag_struct_check_types = o.flag_struct_check_types;
-			this.preprocessor_flags = o.preprocessor_flags;
-		}
-		use("Runtime.BaseStruct").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		if (k == "current_namespace_name")this.current_namespace_name = v;
-		else if (k == "current_class_name")this.current_class_name = v;
-		else if (k == "current_class_full_name")this.current_class_full_name = v;
-		else if (k == "current_class_extends_name")this.current_class_extends_name = v;
-		else if (k == "current_class")this.current_class = v;
-		else if (k == "current_function")this.current_function = v;
-		else if (k == "modules")this.modules = v;
-		else if (k == "vars")this.vars = v;
-		else if (k == "save_vars")this.save_vars = v;
-		else if (k == "save_op_codes")this.save_op_codes = v;
-		else if (k == "save_op_code_inc")this.save_op_code_inc = v;
-		else if (k == "is_static_function")this.is_static_function = v;
-		else if (k == "is_operation")this.is_operation = v;
-		else if (k == "opcode_level")this.opcode_level = v;
-		else if (k == "indent_level")this.indent_level = v;
-		else if (k == "indent")this.indent = v;
-		else if (k == "crlf")this.crlf = v;
-		else if (k == "flag_struct_check_types")this.flag_struct_check_types = v;
-		else if (k == "preprocessor_flags")this.preprocessor_flags = v;
-		else use("Runtime.BaseStruct").prototype.assignValue.call(this,ctx,k,v);
-	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
@@ -245,18 +196,7 @@ Object.assign(Bayrell.Lang.CoreTranslator,
 	outputSaveOpCode: function(ctx, t, save_op_code_value)
 	{
 		if (save_op_code_value == undefined) save_op_code_value = 0;
-		var content = "";
-		for (var i = 0;i < t.save_op_codes.count(ctx);i++)
-		{
-			if (i < save_op_code_value)
-			{
-				continue;
-			}
-			var save = t.save_op_codes.item(ctx, i);
-			var s = (save.content == "") ? (t.s(ctx, "var " + use("Runtime.rtl").toStr(save.var_name) + use("Runtime.rtl").toStr(" = ") + use("Runtime.rtl").toStr(save.var_content) + use("Runtime.rtl").toStr(";"))) : (save.content);
-			content += use("Runtime.rtl").toStr(s);
-		}
-		return content;
+		return "";
 	},
 	/**
 	 * Call f and return result with save op codes

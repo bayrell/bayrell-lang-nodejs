@@ -34,21 +34,6 @@ Object.assign(Bayrell.Lang.OpCodes.OpModule.prototype,
 		this.uses = null;
 		this.items = null;
 	},
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.OpCodes.OpModule"))
-		{
-			this.uses = o.uses;
-			this.items = o.items;
-		}
-		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		if (k == "uses")this.uses = v;
-		else if (k == "items")this.items = v;
-		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
-	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;

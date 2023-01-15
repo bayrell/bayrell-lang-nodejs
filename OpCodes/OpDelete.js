@@ -34,21 +34,6 @@ Object.assign(Bayrell.Lang.OpCodes.OpDelete.prototype,
 		this.op = "op_delete";
 		this.op_code = null;
 	},
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.OpCodes.OpDelete"))
-		{
-			this.op = o.op;
-			this.op_code = o.op_code;
-		}
-		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		if (k == "op")this.op = v;
-		else if (k == "op_code")this.op_code = v;
-		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
-	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;

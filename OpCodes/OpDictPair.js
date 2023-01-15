@@ -35,23 +35,6 @@ Object.assign(Bayrell.Lang.OpCodes.OpDictPair.prototype,
 		this.value = null;
 		this.condition = null;
 	},
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.OpCodes.OpDictPair"))
-		{
-			this.key = o.key;
-			this.value = o.value;
-			this.condition = o.condition;
-		}
-		use("Runtime.BaseStruct").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		if (k == "key")this.key = v;
-		else if (k == "value")this.value = v;
-		else if (k == "condition")this.condition = v;
-		else use("Runtime.BaseStruct").prototype.assignValue.call(this,ctx,k,v);
-	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;

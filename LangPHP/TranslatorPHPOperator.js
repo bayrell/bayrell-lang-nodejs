@@ -750,6 +750,11 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPOperator,
 				content += use("Runtime.rtl").toStr("$ctx");
 				flag = true;
 			}
+			if (f.is_html)
+			{
+				flag = true;
+				content += use("Runtime.rtl").toStr(((flag) ? (", ") : ("")) + use("Runtime.rtl").toStr("$layout, $model_path, $render_params, $render_content"));
+			}
 			for (var i = 0;i < f.args.count(ctx, i);i++)
 			{
 				var arg = f.args.item(ctx, i);
@@ -777,6 +782,10 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPOperator,
 		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["is_html"]), false);
 		var content = "";
 		t = t.levelInc(ctx);
+		if (f.is_html)
+		{
+			content += use("Runtime.rtl").toStr(t.s(ctx, "$model = \\Runtime\\rtl::attr($layout, $model_path);"));
+		}
 		if (f.items)
 		{
 			var res = t.operator.constructor.Operators(ctx, t, f.items);

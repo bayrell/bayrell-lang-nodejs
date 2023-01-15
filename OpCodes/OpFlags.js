@@ -58,45 +58,6 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags.prototype,
 		this.p_lambda = false;
 		this.p_pure = false;
 	},
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.OpCodes.OpFlags"))
-		{
-			this.p_async = o.p_async;
-			this.p_export = o.p_export;
-			this.p_static = o.p_static;
-			this.p_const = o.p_const;
-			this.p_public = o.p_public;
-			this.p_private = o.p_private;
-			this.p_protected = o.p_protected;
-			this.p_declare = o.p_declare;
-			this.p_serializable = o.p_serializable;
-			this.p_cloneable = o.p_cloneable;
-			this.p_assignable = o.p_assignable;
-			this.p_memorize = o.p_memorize;
-			this.p_lambda = o.p_lambda;
-			this.p_pure = o.p_pure;
-		}
-		use("Runtime.BaseStruct").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		if (k == "p_async")this.p_async = v;
-		else if (k == "p_export")this.p_export = v;
-		else if (k == "p_static")this.p_static = v;
-		else if (k == "p_const")this.p_const = v;
-		else if (k == "p_public")this.p_public = v;
-		else if (k == "p_private")this.p_private = v;
-		else if (k == "p_protected")this.p_protected = v;
-		else if (k == "p_declare")this.p_declare = v;
-		else if (k == "p_serializable")this.p_serializable = v;
-		else if (k == "p_cloneable")this.p_cloneable = v;
-		else if (k == "p_assignable")this.p_assignable = v;
-		else if (k == "p_memorize")this.p_memorize = v;
-		else if (k == "p_lambda")this.p_lambda = v;
-		else if (k == "p_pure")this.p_pure = v;
-		else use("Runtime.BaseStruct").prototype.assignValue.call(this,ctx,k,v);
-	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;

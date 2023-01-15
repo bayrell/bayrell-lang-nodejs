@@ -34,21 +34,6 @@ Object.assign(Bayrell.Lang.OpCodes.BaseOpCode.prototype,
 		this.caret_start = null;
 		this.caret_end = null;
 	},
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.OpCodes.BaseOpCode"))
-		{
-			this.caret_start = o.caret_start;
-			this.caret_end = o.caret_end;
-		}
-		use("Runtime.BaseStruct").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		if (k == "caret_start")this.caret_start = v;
-		else if (k == "caret_end")this.caret_end = v;
-		else use("Runtime.BaseStruct").prototype.assignValue.call(this,ctx,k,v);
-	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;

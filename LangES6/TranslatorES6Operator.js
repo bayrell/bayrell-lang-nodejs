@@ -28,17 +28,6 @@ Bayrell.Lang.LangES6.TranslatorES6Operator.prototype = Object.create(use("Runtim
 Bayrell.Lang.LangES6.TranslatorES6Operator.prototype.constructor = Bayrell.Lang.LangES6.TranslatorES6Operator;
 Object.assign(Bayrell.Lang.LangES6.TranslatorES6Operator.prototype,
 {
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.LangES6.TranslatorES6Operator"))
-		{
-		}
-		use("Runtime.BaseStruct").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		use("Runtime.BaseStruct").prototype.assignValue.call(this,ctx,k,v);
-	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
@@ -846,7 +835,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Operator,
 		}
 		else if (op_code instanceof __v3)
 		{
-			var res = t.expression.constructor.OpCall(ctx, t, op_code, false);
+			var res = t.expression.constructor.OpCall(ctx, t, op_code);
 			t = Runtime.rtl.get(ctx, res, 0);
 			if (Runtime.rtl.get(ctx, res, 1) != "")
 			{
@@ -1030,6 +1019,11 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Operator,
 			{
 				content += use("Runtime.rtl").toStr("ctx");
 				flag = true;
+			}
+			if (f.is_html)
+			{
+				flag = true;
+				content += use("Runtime.rtl").toStr(((flag) ? (", ") : ("")) + use("Runtime.rtl").toStr("component, render_params, render_content"));
 			}
 			for (var i = 0;i < f.args.count(ctx, i);i++)
 			{

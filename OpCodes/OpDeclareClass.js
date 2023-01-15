@@ -50,53 +50,6 @@ Object.assign(Bayrell.Lang.OpCodes.OpDeclareClass.prototype,
 		this.is_static = false;
 		this.is_declare = false;
 	},
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.OpCodes.OpDeclareClass"))
-		{
-			this.op = o.op;
-			this.kind = o.kind;
-			this.name = o.name;
-			this.extend_name = o.extend_name;
-			this.annotations = o.annotations;
-			this.comments = o.comments;
-			this.template = o.template;
-			this.flags = o.flags;
-			this.fn_create = o.fn_create;
-			this.fn_destroy = o.fn_destroy;
-			this.class_extends = o.class_extends;
-			this.class_implements = o.class_implements;
-			this.vars = o.vars;
-			this.functions = o.functions;
-			this.items = o.items;
-			this.is_abstract = o.is_abstract;
-			this.is_static = o.is_static;
-			this.is_declare = o.is_declare;
-		}
-		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		if (k == "op")this.op = v;
-		else if (k == "kind")this.kind = v;
-		else if (k == "name")this.name = v;
-		else if (k == "extend_name")this.extend_name = v;
-		else if (k == "annotations")this.annotations = v;
-		else if (k == "comments")this.comments = v;
-		else if (k == "template")this.template = v;
-		else if (k == "flags")this.flags = v;
-		else if (k == "fn_create")this.fn_create = v;
-		else if (k == "fn_destroy")this.fn_destroy = v;
-		else if (k == "class_extends")this.class_extends = v;
-		else if (k == "class_implements")this.class_implements = v;
-		else if (k == "vars")this.vars = v;
-		else if (k == "functions")this.functions = v;
-		else if (k == "items")this.items = v;
-		else if (k == "is_abstract")this.is_abstract = v;
-		else if (k == "is_static")this.is_static = v;
-		else if (k == "is_declare")this.is_declare = v;
-		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
-	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;

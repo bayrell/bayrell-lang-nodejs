@@ -37,27 +37,6 @@ Object.assign(Bayrell.Lang.OpCodes.OpCall.prototype,
 		this.is_await = false;
 		this.is_context = true;
 	},
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.OpCodes.OpCall"))
-		{
-			this.op = o.op;
-			this.obj = o.obj;
-			this.args = o.args;
-			this.is_await = o.is_await;
-			this.is_context = o.is_context;
-		}
-		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		if (k == "op")this.op = v;
-		else if (k == "obj")this.obj = v;
-		else if (k == "args")this.args = v;
-		else if (k == "is_await")this.is_await = v;
-		else if (k == "is_context")this.is_context = v;
-		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
-	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;

@@ -34,21 +34,6 @@ Object.assign(Bayrell.Lang.LangES6.AsyncAwait.prototype,
 		this.start_pos = "";
 		this.end_pos = "";
 	},
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.LangES6.AsyncAwait"))
-		{
-			this.start_pos = o.start_pos;
-			this.end_pos = o.end_pos;
-		}
-		use("Runtime.BaseStruct").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		if (k == "start_pos")this.start_pos = v;
-		else if (k == "end_pos")this.end_pos = v;
-		else use("Runtime.BaseStruct").prototype.assignValue.call(this,ctx,k,v);
-	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;

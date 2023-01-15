@@ -35,23 +35,6 @@ Object.assign(Bayrell.Lang.OpCodes.OpAnnotation.prototype,
 		this.name = null;
 		this.params = null;
 	},
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.OpCodes.OpAnnotation"))
-		{
-			this.op = o.op;
-			this.name = o.name;
-			this.params = o.params;
-		}
-		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		if (k == "op")this.op = v;
-		else if (k == "name")this.name = v;
-		else if (k == "params")this.params = v;
-		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
-	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;

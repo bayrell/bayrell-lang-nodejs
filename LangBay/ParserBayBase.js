@@ -1025,6 +1025,10 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayBase,
 				{
 					value_str += use("Runtime.rtl").toStr("\"");
 				}
+				else
+				{
+					value_str += use("Runtime.rtl").toStr(ch + use("Runtime.rtl").toStr(ch2));
+				}
 				x = this.nextX(ctx, parser, ch2, x);
 				y = this.nextY(ctx, parser, ch2, y);
 				pos = pos + 1;

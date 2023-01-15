@@ -176,6 +176,8 @@ Object.assign(Bayrell.Lang.Compiler.SettingsProvider.prototype,
 	 */
 	findModuleByFileName: function(ctx, file_name)
 	{
+		var res = null;
+		var module_path_sz = -1;
 		var module_names = this.modules.keys(ctx);
 		for (var i = 0;i < module_names.count(ctx);i++)
 		{
@@ -184,10 +186,16 @@ Object.assign(Bayrell.Lang.Compiler.SettingsProvider.prototype,
 			var __v0 = use("Runtime.rs");
 			if (__v0.indexOf(ctx, file_name, module.path) == 0)
 			{
-				return module;
+				var __v1 = use("Runtime.rs");
+				var sz = __v1.strlen(ctx, module.path);
+				if (module_path_sz < sz)
+				{
+					module_path_sz = sz;
+					res = module;
+				}
 			}
 		}
-		return null;
+		return res;
 	},
 	/**
 	 * Resolve source file.

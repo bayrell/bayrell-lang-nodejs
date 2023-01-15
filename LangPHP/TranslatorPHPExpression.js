@@ -927,8 +927,9 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPExpression,
 	/**
 	 * OpCall
 	 */
-	OpCall: function(ctx, t, op_code)
+	OpCall: function(ctx, t, op_code, is_html)
 	{
+		if (is_html == undefined) is_html = false;
 		var s = "";
 		var flag = false;
 		var res = this.Dynamic(ctx, t, op_code.obj, op_code);
@@ -957,6 +958,11 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPExpression,
 		else if ((t.current_function == null || t.current_function.is_context) && op_code.is_context)
 		{
 			content += use("Runtime.rtl").toStr(((flag) ? (", ") : ("")) + use("Runtime.rtl").toStr("$ctx"));
+			flag = true;
+		}
+		if (is_html)
+		{
+			content += use("Runtime.rtl").toStr(((flag) ? (", ") : ("")) + use("Runtime.rtl").toStr("$layout, $model_path, $render_params, $render_content"));
 			flag = true;
 		}
 		for (var i = 0;i < op_code.args.count(ctx);i++)

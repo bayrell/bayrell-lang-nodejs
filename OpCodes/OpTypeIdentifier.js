@@ -35,23 +35,6 @@ Object.assign(Bayrell.Lang.OpCodes.OpTypeIdentifier.prototype,
 		this.entity_name = null;
 		this.template = null;
 	},
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.OpCodes.OpTypeIdentifier"))
-		{
-			this.op = o.op;
-			this.entity_name = o.entity_name;
-			this.template = o.template;
-		}
-		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		if (k == "op")this.op = v;
-		else if (k == "entity_name")this.entity_name = v;
-		else if (k == "template")this.template = v;
-		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
-	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;

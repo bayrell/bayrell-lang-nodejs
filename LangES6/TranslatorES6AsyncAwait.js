@@ -37,25 +37,6 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6AsyncAwait.prototype,
 		this.async_t = "__async_t";
 		this.async_var = "__async_var";
 	},
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.LangES6.TranslatorES6AsyncAwait"))
-		{
-			this.async_stack = o.async_stack;
-			this.pos = o.pos;
-			this.async_t = o.async_t;
-			this.async_var = o.async_var;
-		}
-		use("Runtime.BaseStruct").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		if (k == "async_stack")this.async_stack = v;
-		else if (k == "pos")this.pos = v;
-		else if (k == "async_t")this.async_t = v;
-		else if (k == "async_var")this.async_var = v;
-		else use("Runtime.BaseStruct").prototype.assignValue.call(this,ctx,k,v);
-	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;

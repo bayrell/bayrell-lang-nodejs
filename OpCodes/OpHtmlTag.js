@@ -38,29 +38,6 @@ Object.assign(Bayrell.Lang.OpCodes.OpHtmlTag.prototype,
 		this.spreads = null;
 		this.items = null;
 	},
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.OpCodes.OpHtmlTag"))
-		{
-			this.op = o.op;
-			this.tag_name = o.tag_name;
-			this.op_code_name = o.op_code_name;
-			this.attrs = o.attrs;
-			this.spreads = o.spreads;
-			this.items = o.items;
-		}
-		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		if (k == "op")this.op = v;
-		else if (k == "tag_name")this.tag_name = v;
-		else if (k == "op_code_name")this.op_code_name = v;
-		else if (k == "attrs")this.attrs = v;
-		else if (k == "spreads")this.spreads = v;
-		else if (k == "items")this.items = v;
-		else use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.assignValue.call(this,ctx,k,v);
-	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;

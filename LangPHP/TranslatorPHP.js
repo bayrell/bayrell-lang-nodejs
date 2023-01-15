@@ -43,44 +43,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP.prototype,
 		this.backend = true;
 		this.enable_context = false;
 		this.enable_check_types = false;
-		this.enable_introspection = false;
-	},
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.LangPHP.TranslatorPHP"))
-		{
-			this.is_pipe = o.is_pipe;
-			this.pipe_var_name = o.pipe_var_name;
-			this.html_var_name = o.html_var_name;
-			this.is_html = o.is_html;
-			this.expression = o.expression;
-			this.html = o.html;
-			this.operator = o.operator;
-			this.program = o.program;
-			this.frontend = o.frontend;
-			this.backend = o.backend;
-			this.enable_context = o.enable_context;
-			this.enable_check_types = o.enable_check_types;
-			this.enable_introspection = o.enable_introspection;
-		}
-		use("Bayrell.Lang.CoreTranslator").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		if (k == "is_pipe")this.is_pipe = v;
-		else if (k == "pipe_var_name")this.pipe_var_name = v;
-		else if (k == "html_var_name")this.html_var_name = v;
-		else if (k == "is_html")this.is_html = v;
-		else if (k == "expression")this.expression = v;
-		else if (k == "html")this.html = v;
-		else if (k == "operator")this.operator = v;
-		else if (k == "program")this.program = v;
-		else if (k == "frontend")this.frontend = v;
-		else if (k == "backend")this.backend = v;
-		else if (k == "enable_context")this.enable_context = v;
-		else if (k == "enable_check_types")this.enable_check_types = v;
-		else if (k == "enable_introspection")this.enable_introspection = v;
-		else use("Bayrell.Lang.CoreTranslator").prototype.assignValue.call(this,ctx,k,v);
+		this.enable_introspection = true;
 	},
 	takeValue: function(ctx,k,d)
 	{

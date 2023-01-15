@@ -35,25 +35,6 @@ Object.assign(Bayrell.Lang.SaveOpCode.prototype,
 		this.content = "";
 		this.op_code = null;
 	},
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Lang.SaveOpCode"))
-		{
-			this.var_name = o.var_name;
-			this.var_content = o.var_content;
-			this.content = o.content;
-			this.op_code = o.op_code;
-		}
-		use("Runtime.BaseStruct").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		if (k == "var_name")this.var_name = v;
-		else if (k == "var_content")this.var_content = v;
-		else if (k == "content")this.content = v;
-		else if (k == "op_code")this.op_code = v;
-		else use("Runtime.BaseStruct").prototype.assignValue.call(this,ctx,k,v);
-	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
