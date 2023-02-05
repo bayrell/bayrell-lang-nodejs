@@ -93,6 +93,8 @@ Object.assign(Bayrell.Lang.Exceptions.ParserError,
 		if (f==undefined) f=0;
 		var a = [];
 		if ((f&4)==4) a=[
+			"constructor",
+			"buildMessage",
 		];
 		return use("Runtime.Collection").from(a);
 	},

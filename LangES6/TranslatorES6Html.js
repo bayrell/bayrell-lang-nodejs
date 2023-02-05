@@ -621,6 +621,14 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 		if (f==undefined) f=0;
 		var a = [];
 		if ((f&4)==4) a=[
+			"isComponent",
+			"OpHtmlAttr",
+			"OpHtmlAttrs",
+			"getOpHtmlAttrsClassName",
+			"OpHtmlTag",
+			"OpHtmlChilds",
+			"OpHtmlItems",
+			"OpHtml",
 		];
 		return use("Runtime.Collection").from(a);
 	},

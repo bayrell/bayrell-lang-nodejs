@@ -378,6 +378,19 @@ Object.assign(Bayrell.Lang.CoreTranslator,
 		if (f==undefined) f=0;
 		var a = [];
 		if ((f&4)==4) a=[
+			"findSaveOpCode",
+			"levelInc",
+			"levelDec",
+			"s",
+			"s2",
+			"o",
+			"translate",
+			"nextSaveOpCode",
+			"incSaveOpCode",
+			"addSaveOpCode",
+			"clearSaveOpCode",
+			"outputSaveOpCode",
+			"saveOpCodeCall",
 		];
 		return use("Runtime.Collection").from(a);
 	},

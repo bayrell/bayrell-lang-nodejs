@@ -225,6 +225,9 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags,
 		if (f==undefined) f=0;
 		var a = [];
 		if ((f&4)==4) a=[
+			"isFlag",
+			"getFlags",
+			"hasFlag",
 		];
 		return use("Runtime.Collection").from(a);
 	},

@@ -176,6 +176,9 @@ Object.assign(Bayrell.Lang.Compiler.Module,
 		if (f==undefined) f=0;
 		var a = [];
 		if ((f&4)==4) a=[
+			"getSourcePath",
+			"resolveSourceFile",
+			"resolveDestFile",
 		];
 		return use("Runtime.Collection").from(a);
 	},

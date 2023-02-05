@@ -869,6 +869,24 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPOperator,
 		if (f==undefined) f=0;
 		var a = [];
 		if ((f&4)==4) a=[
+			"OpAssignStruct",
+			"OpAssign",
+			"OpDelete",
+			"OpFor",
+			"OpIf",
+			"OpReturn",
+			"OpThrow",
+			"OpTryCatch",
+			"OpWhile",
+			"OpPreprocessorIfCode",
+			"OpPreprocessorIfDef",
+			"OpComment",
+			"OpComments",
+			"AddComments",
+			"Operator",
+			"Operators",
+			"OpDeclareFunctionArgs",
+			"OpDeclareFunctionBody",
 		];
 		return use("Runtime.Collection").from(a);
 	},

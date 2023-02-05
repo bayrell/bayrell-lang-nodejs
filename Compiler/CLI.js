@@ -575,6 +575,16 @@ Object.assign(Bayrell.Lang.Compiler.CLI,
 		if (f==undefined) f=0;
 		var a = [];
 		if ((f&4)==4) a=[
+			"getModules",
+			"compileFile",
+			"compileModule",
+			"makeBundle",
+			"makeAssets",
+			"showModules",
+			"modules",
+			"init",
+			"start",
+			"main",
 		];
 		return use("Runtime.Collection").from(a);
 	},

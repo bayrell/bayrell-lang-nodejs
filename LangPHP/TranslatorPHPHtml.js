@@ -542,6 +542,13 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPHtml,
 		if (f==undefined) f=0;
 		var a = [];
 		if ((f&4)==4) a=[
+			"isComponent",
+			"isSingleTag",
+			"OpHtmlComponent",
+			"OpHtmlAttr",
+			"OpHtmlAttrs",
+			"OpHtmlTag",
+			"OpHtmlItems",
 		];
 		return use("Runtime.Collection").from(a);
 	},

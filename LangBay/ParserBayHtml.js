@@ -1652,7 +1652,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayHtml,
 		var __v9 = use("Bayrell.Lang.OpCodes.OpNamespace");
 		var __v10 = use("Bayrell.Lang.OpCodes.OpDeclareClass");
 		var __v11 = use("Bayrell.Lang.OpCodes.OpDeclareClass");
-		return use("Runtime.Collection").from([parser,use("Runtime.Collection").from([new __v9(ctx, use("Runtime.Dict").from({"name":namespace_name})),new __v10(ctx, use("Runtime.Dict").from({"kind":__v11.KIND_CLASS,"name":class_name_last,"is_static":true,"is_declare":false,"class_extends":class_extend_op_code,"class_implements":null,"annotations":use("Runtime.Collection").from([]),"template":null,"vars":class_body.item(ctx, "vars"),"annotations":class_annotations.toCollection(ctx),"functions":class_body.item(ctx, "functions"),"fn_create":class_body.item(ctx, "fn_create"),"fn_destroy":class_body.item(ctx, "fn_destroy"),"items":class_body.item(ctx, "items"),"caret_start":class_caret_start,"caret_end":parser.caret}))])]);
+		return use("Runtime.Collection").from([parser,use("Runtime.Collection").from([new __v9(ctx, use("Runtime.Dict").from({"name":namespace_name})),new __v10(ctx, use("Runtime.Dict").from({"kind":__v11.KIND_CLASS,"name":class_name_last,"is_static":true,"is_declare":false,"class_extends":class_extend_op_code,"class_implements":null,"annotations":use("Runtime.Collection").from([]),"template":null,"vars":class_body.item(ctx, "vars"),"annotations":class_annotations.toCollection(ctx),"functions":class_body.item(ctx, "functions"),"fn_create":class_body.item(ctx, "fn_create"),"fn_destroy":class_body.item(ctx, "fn_destroy"),"items":items,"caret_start":class_caret_start,"caret_end":parser.caret}))])]);
 	},
 	/**
 	 * Read UI
@@ -1736,6 +1736,24 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayHtml,
 		if (f==undefined) f=0;
 		var a = [];
 		if ((f&4)==4) a=[
+			"getCssHash",
+			"readCssSelector",
+			"readCssBody",
+			"readCss",
+			"readStyle",
+			"readHTMLComment",
+			"readHTMLValue",
+			"readHTMLAttrKey",
+			"readHTMLAttrValue",
+			"readHTMLAttrs",
+			"readHTMLContent",
+			"readHTMLTag",
+			"readHTMLOperator",
+			"readHTML",
+			"readHTMLTemplate",
+			"readAttrs",
+			"readUIClass",
+			"readUI",
 		];
 		return use("Runtime.Collection").from(a);
 	},

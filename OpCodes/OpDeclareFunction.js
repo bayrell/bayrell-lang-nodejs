@@ -205,6 +205,8 @@ Object.assign(Bayrell.Lang.OpCodes.OpDeclareFunction,
 		if (f==undefined) f=0;
 		var a = [];
 		if ((f&4)==4) a=[
+			"isStatic",
+			"isFlag",
 		];
 		return use("Runtime.Collection").from(a);
 	},

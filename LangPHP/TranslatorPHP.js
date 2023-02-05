@@ -235,6 +235,10 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP,
 		if (f==undefined) f=0;
 		var a = [];
 		if ((f&4)==4) a=[
+			"reset",
+			"translate",
+			"nextSaveOpCode",
+			"outputSaveOpCode",
 		];
 		return use("Runtime.Collection").from(a);
 	},

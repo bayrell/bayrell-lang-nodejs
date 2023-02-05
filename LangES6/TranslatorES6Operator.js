@@ -1152,6 +1152,25 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Operator,
 		if (f==undefined) f=0;
 		var a = [];
 		if ((f&4)==4) a=[
+			"isAwait",
+			"OpAssignStruct",
+			"OpAssign",
+			"OpDelete",
+			"OpFor",
+			"OpIf",
+			"OpReturn",
+			"OpThrow",
+			"OpTryCatch",
+			"OpWhile",
+			"OpPreprocessorIfCode",
+			"OpPreprocessorIfDef",
+			"OpComment",
+			"OpComments",
+			"AddComments",
+			"Operator",
+			"Operators",
+			"OpDeclareFunctionArgs",
+			"OpDeclareFunctionBody",
 		];
 		return use("Runtime.Collection").from(a);
 	},

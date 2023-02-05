@@ -1210,6 +1210,28 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 		if (f==undefined) f=0;
 		var a = [];
 		if ((f&4)==4) a=[
+			"readReturn",
+			"readDelete",
+			"readThrow",
+			"readTry",
+			"readThen",
+			"readDo",
+			"readIf",
+			"readFor",
+			"readWhile",
+			"readSafe",
+			"readAssign",
+			"readInc",
+			"readCallFunction",
+			"readOperator",
+			"readOpItems",
+			"readOperators",
+			"readFlags",
+			"readDeclareFunctionArgs",
+			"readDeclareFunctionUse",
+			"readDeclareFunction",
+			"tryReadFunction",
+			"readAnnotation",
 		];
 		return use("Runtime.Collection").from(a);
 	},

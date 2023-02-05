@@ -191,8 +191,8 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayPreprocessor,
 			items = Runtime.rtl.get(ctx, res, 1);
 			var res = parser.parser_base.constructor.matchToken(ctx, parser, "#endif");
 			parser = Runtime.rtl.get(ctx, res, 0);
-			var d = parser.parser_program.constructor.classBodyAnalyze(ctx, parser, items);
-			items = d.item(ctx, "functions");
+			/* list d = parser.parser_program::classBodyAnalyze(parser, items);
+			items = d.item("functions"); */
 		}
 		else if (kind == __v2.KIND_OPERATOR)
 		{
@@ -252,6 +252,10 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayPreprocessor,
 		if (f==undefined) f=0;
 		var a = [];
 		if ((f&4)==4) a=[
+			"readPreprocessor",
+			"readPreprocessorSwitch",
+			"readPreprocessorIfCode",
+			"readPreprocessorIfDef",
 		];
 		return use("Runtime.Collection").from(a);
 	},

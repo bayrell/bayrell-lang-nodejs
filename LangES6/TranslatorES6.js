@@ -299,6 +299,11 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6,
 		if (f==undefined) f=0;
 		var a = [];
 		if ((f&4)==4) a=[
+			"isEmulateAsyncAwait",
+			"isAsyncAwait",
+			"reset",
+			"translate",
+			"outputSaveOpCode",
 		];
 		return use("Runtime.Collection").from(a);
 	},

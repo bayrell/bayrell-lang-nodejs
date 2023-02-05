@@ -672,6 +672,21 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayExpression,
 		if (f==undefined) f=0;
 		var a = [];
 		if ((f&4)==4) a=[
+			"readBitNot",
+			"readBitShift",
+			"readBitAnd",
+			"readBitOr",
+			"readFactor",
+			"readArithmetic",
+			"readConcat",
+			"readCompare",
+			"readNot",
+			"readAnd",
+			"readOr",
+			"readElement",
+			"readTernary",
+			"ExpressionPipe",
+			"readExpression",
 		];
 		return use("Runtime.Collection").from(a);
 	},

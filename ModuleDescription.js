@@ -41,7 +41,7 @@ Object.assign(Bayrell.Lang.ModuleDescription,
 	 */
 	getModuleVersion: function(ctx)
 	{
-		return "0.11.2";
+		return "0.11.3";
 	},
 	/**
 	 * Returns required modules
@@ -97,6 +97,10 @@ Object.assign(Bayrell.Lang.ModuleDescription,
 		if (f==undefined) f=0;
 		var a = [];
 		if ((f&4)==4) a=[
+			"getModuleName",
+			"getModuleVersion",
+			"requiredModules",
+			"entities",
 		];
 		return use("Runtime.Collection").from(a);
 	},

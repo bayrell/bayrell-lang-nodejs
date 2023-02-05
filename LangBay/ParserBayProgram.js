@@ -207,6 +207,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayProgram,
 			var __v7 = use("Bayrell.Lang.OpCodes.OpComment");
 			var __v8 = use("Bayrell.Lang.OpCodes.OpAssign");
 			var __v9 = use("Bayrell.Lang.OpCodes.OpDeclareFunction");
+			var __v10 = use("Bayrell.Lang.OpCodes.OpPreprocessorIfDef");
 			if (item instanceof __v6)
 			{
 				annotations.pushValue(ctx, item);
@@ -256,6 +257,17 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayProgram,
 				}
 				annotations.clear(ctx);
 				comments.clear(ctx);
+			}
+			else if (item instanceof __v10)
+			{
+				var d = this.classBodyAnalyze(ctx, parser, item.items);
+				var d_vars = Runtime.rtl.get(ctx, d, "vars");
+				d_vars = d_vars.map(ctx, (ctx, v) => 
+				{
+					v = Runtime.rtl.setAttr(ctx, v, Runtime.Collection.from(["condition"]), item.condition);
+					return v;
+				});
+				vars.appendVector(ctx, d_vars);
 			}
 			else
 			{
@@ -426,7 +438,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayProgram,
 		var res = parser.parser_base.constructor.matchToken(ctx, parser, "}");
 		parser = Runtime.rtl.get(ctx, res, 0);
 		var __v0 = use("Bayrell.Lang.OpCodes.OpDeclareClass");
-		var current_class = new __v0(ctx, use("Runtime.Dict").from({"kind":class_kind,"name":class_name,"is_abstract":is_abstract,"is_static":is_static,"is_declare":is_declare,"class_extends":class_extends,"class_implements":(class_implements != null) ? (class_implements.toCollection(ctx)) : (null),"template":(template != null) ? (template.toCollection(ctx)) : (null),"vars":d.item(ctx, "vars"),"functions":d.item(ctx, "functions"),"fn_create":d.item(ctx, "fn_create"),"fn_destroy":d.item(ctx, "fn_destroy"),"items":d.item(ctx, "items"),"caret_start":caret_start,"caret_end":parser.caret}));
+		var current_class = new __v0(ctx, use("Runtime.Dict").from({"kind":class_kind,"name":class_name,"is_abstract":is_abstract,"is_static":is_static,"is_declare":is_declare,"class_extends":class_extends,"class_implements":(class_implements != null) ? (class_implements.toCollection(ctx)) : (null),"template":(template != null) ? (template.toCollection(ctx)) : (null),"vars":d.item(ctx, "vars"),"functions":d.item(ctx, "functions"),"fn_create":d.item(ctx, "fn_create"),"fn_destroy":d.item(ctx, "fn_destroy"),"items":arr,"caret_start":caret_start,"caret_end":parser.caret}));
 		/* Restore uses */
 		parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["uses"]), save_uses);
 		return use("Runtime.Collection").from([parser.copy(ctx, use("Runtime.Dict").from({"current_class":current_class})),current_class]);
@@ -609,6 +621,12 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayProgram,
 		if (f==undefined) f=0;
 		var a = [];
 		if ((f&4)==4) a=[
+			"readNamespace",
+			"readUse",
+			"readClassBody",
+			"classBodyAnalyze",
+			"readClass",
+			"readProgram",
 		];
 		return use("Runtime.Collection").from(a);
 	},

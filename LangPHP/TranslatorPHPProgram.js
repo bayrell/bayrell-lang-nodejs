@@ -91,6 +91,10 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 		{
 			return use("Runtime.Collection").from([t,content]);
 		}
+		if (!f.annotations)
+		{
+			return use("Runtime.Collection").from([t,content]);
+		}
 		if (f.annotations.count(ctx) == 0)
 		{
 			return use("Runtime.Collection").from([t,content]);
@@ -244,6 +248,10 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 				{
 					continue;
 				}
+				if (variable.condition && Runtime.rtl.get(ctx, t.preprocessor_flags, variable.condition.value) != true)
+				{
+					continue;
+				}
 				var is_static = variable.flags.isFlag(ctx, "static");
 				var is_const = variable.flags.isFlag(ctx, "const");
 				for (var j = 0;j < variable.values.count(ctx);j++)
@@ -356,6 +364,10 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 					{
 						continue;
 					}
+					if (variable.condition && Runtime.rtl.get(ctx, t.preprocessor_flags, variable.condition.value) != true)
+					{
+						continue;
+					}
 					var prefix = "";
 					var __v1 = use("Bayrell.Lang.OpCodes.OpDeclareClass");
 					var __v2 = use("Bayrell.Lang.OpCodes.OpDeclareClass");
@@ -403,6 +415,10 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 						{
 							continue;
 						}
+						if (variable.condition && Runtime.rtl.get(ctx, t.preprocessor_flags, variable.condition.value) != true)
+						{
+							continue;
+						}
 						var is_const = variable.flags.isFlag(ctx, "const");
 						var is_static = variable.flags.isFlag(ctx, "static");
 						if (is_const || is_static)
@@ -430,6 +446,10 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 						var variable = op_code.vars.item(ctx, i);
 						var __v4 = use("Bayrell.Lang.OpCodes.OpAssign");
 						if (variable.kind != __v4.KIND_DECLARE)
+						{
+							continue;
+						}
+						if (variable.condition && Runtime.rtl.get(ctx, t.preprocessor_flags, variable.condition.value) != true)
 						{
 							continue;
 						}
@@ -467,6 +487,10 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 					var variable = op_code.vars.item(ctx, i);
 					var __v3 = use("Bayrell.Lang.OpCodes.OpAssign");
 					if (variable.kind != __v3.KIND_DECLARE)
+					{
+						continue;
+					}
+					if (variable.condition && Runtime.rtl.get(ctx, t.preprocessor_flags, variable.condition.value) != true)
 					{
 						continue;
 					}
@@ -570,6 +594,10 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 					{
 						continue;
 					}
+					if (variable.condition && Runtime.rtl.get(ctx, t.preprocessor_flags, variable.condition.value) != true)
+					{
+						continue;
+					}
 					var __v2 = use("Bayrell.Lang.OpCodes.OpDeclareClass");
 					if (class_kind == __v2.KIND_STRUCT)
 					{
@@ -633,6 +661,10 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 				for (var i = 0;i < op_code.vars.count(ctx);i++)
 				{
 					var variable = op_code.vars.item(ctx, i);
+					if (variable.condition && Runtime.rtl.get(ctx, t.preprocessor_flags, variable.condition.value) != true)
+					{
+						continue;
+					}
 					var v = variable.values.map(ctx, (ctx, value) => 
 					{
 						return value.var_name;
@@ -969,6 +1001,18 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 		if (f==undefined) f=0;
 		var a = [];
 		if ((f&4)==4) a=[
+			"OpNamespace",
+			"OpDeclareFunction",
+			"OpFunctionAnnotations",
+			"OpClassBodyItemMethodsList",
+			"OpClassBodyItemAnnotations",
+			"OpDeclareClassConstructor",
+			"OpDeclareClassBody",
+			"OpDeclareClassFooter",
+			"OpDeclareClass",
+			"translateItem",
+			"translateProgramHeader",
+			"translateProgram",
 		];
 		return use("Runtime.Collection").from(a);
 	},

@@ -291,6 +291,9 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 		if (f==undefined) f=0;
 		var a = [];
 		if ((f&4)==4) a=[
+			"reset",
+			"parse",
+			"findModuleName",
 		];
 		return use("Runtime.Collection").from(a);
 	},

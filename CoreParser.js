@@ -156,6 +156,10 @@ Object.assign(Bayrell.Lang.CoreParser,
 		if (f==undefined) f=0;
 		var a = [];
 		if ((f&4)==4) a=[
+			"isEof",
+			"reset",
+			"setContent",
+			"parse",
 		];
 		return use("Runtime.Collection").from(a);
 	},

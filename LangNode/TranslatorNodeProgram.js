@@ -104,6 +104,8 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNodeProgram,
 		if (f==undefined) f=0;
 		var a = [];
 		if ((f&4)==4) a=[
+			"translateProgramHeader",
+			"OpDeclareClassFooter",
 		];
 		return use("Runtime.Collection").from(a);
 	},

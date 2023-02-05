@@ -127,6 +127,8 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNodeExpression,
 		if (f==undefined) f=0;
 		var a = [];
 		if ((f&4)==4) a=[
+			"OpIdentifier",
+			"OpTypeIdentifier",
 		];
 		return use("Runtime.Collection").from(a);
 	},

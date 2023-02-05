@@ -769,6 +769,20 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6AsyncAwait,
 		if (f==undefined) f=0;
 		var a = [];
 		if ((f&4)==4) a=[
+			"currentPos",
+			"nextPos",
+			"pushPos",
+			"levelIncPos",
+			"popPos",
+			"OpCall",
+			"OpPipe",
+			"OpFor",
+			"OpIfBlock",
+			"OpIf",
+			"OpReturn",
+			"OpTryCatch",
+			"OpWhile",
+			"OpDeclareFunctionBody",
 		];
 		return use("Runtime.Collection").from(a);
 	},

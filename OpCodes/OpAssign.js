@@ -40,6 +40,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpAssign.prototype,
 		this.values = null;
 		this.names = null;
 		this.expression = null;
+		this.condition = null;
 	},
 	takeValue: function(ctx,k,d)
 	{
@@ -53,6 +54,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpAssign.prototype,
 		else if (k == "values")return this.values;
 		else if (k == "names")return this.names;
 		else if (k == "expression")return this.expression;
+		else if (k == "condition")return this.condition;
 		return use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.takeValue.call(this,ctx,k,d);
 	},
 });
@@ -99,6 +101,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpAssign,
 			a.push("values");
 			a.push("names");
 			a.push("expression");
+			a.push("condition");
 		}
 		return use("Runtime.Collection").from(a);
 	},
@@ -166,6 +169,11 @@ Object.assign(Bayrell.Lang.OpCodes.OpAssign,
 			]),
 		});
 		if (field_name == "expression") return Dict.from({
+			"t": "Bayrell.Lang.OpCodes.BaseOpCode",
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "condition") return Dict.from({
 			"t": "Bayrell.Lang.OpCodes.BaseOpCode",
 			"annotations": Collection.from([
 			]),
