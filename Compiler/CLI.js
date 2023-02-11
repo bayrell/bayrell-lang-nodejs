@@ -201,6 +201,10 @@ Object.assign(Bayrell.Lang.Compiler.CLI.prototype,
 			var file_name = Runtime.rtl.get(ctx, files, i);
 			var __v1 = use("Runtime.fs");
 			var file_path = __v1.join(ctx, use("Runtime.Collection").from([module_src_path,file_name]));
+			if (module.checkExclude(ctx, file_name))
+			{
+				continue;
+			}
 			var __v2 = use("Runtime.fs");
 			if (!await __v2.isFile(ctx, file_path))
 			{

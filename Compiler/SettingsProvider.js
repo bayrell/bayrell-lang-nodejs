@@ -227,43 +227,7 @@ Object.assign(Bayrell.Lang.Compiler.SettingsProvider.prototype,
 		var __v3 = use("Runtime.rs");
 		var module_ext_name = __v3.extname(ctx, module_file_name);
 		var d = use("Runtime.Dict").from({"file_name":module_file_name,"ext_name":module_ext_name,"module":module,"success":false});
-		/* log(module_file_name); */
-		/* Check allow list */
-		var module_allowlist = Runtime.rtl.attr(ctx, module, ["config", "allow"]);
-		var __v4 = use("Runtime.Collection");
-		if (module_allowlist && module_allowlist instanceof __v4)
-		{
-			for (var i = 0;i < module_allowlist.count(ctx);i++)
-			{
-				var __v5 = use("Runtime.Monad");
-				var __v6 = new __v5(ctx, Runtime.rtl.get(ctx, module_allowlist, i));
-				var __v7 = use("Runtime.rtl");
-				__v6 = __v6.monad(ctx, __v7.m_to(ctx, "string", ""));
-				var file_match = __v6.value(ctx);
-				if (file_match == "")
-				{
-					continue;
-				}
-				var __v8 = use("Runtime.re");
-				var res = __v8.match(ctx, file_match, module_file_name);
-				/* Ignore */
-				var __v9 = use("Runtime.rs");
-				if (__v9.charAt(ctx, file_match, 0) == "!")
-				{
-					if (res)
-					{
-						d = Runtime.rtl.setAttr(ctx, d, Runtime.Collection.from(["success"]), false);
-					}
-				}
-				else
-				{
-					if (res)
-					{
-						d = Runtime.rtl.setAttr(ctx, d, Runtime.Collection.from(["success"]), true);
-					}
-				}
-			}
-		}
+		d = Runtime.rtl.setAttr(ctx, d, Runtime.Collection.from(["success"]), module.checkAllow(ctx, module_file_name));
 		return Promise.resolve(d);
 	},
 	_init: function(ctx)

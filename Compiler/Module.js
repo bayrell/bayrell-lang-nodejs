@@ -105,6 +105,79 @@ Object.assign(Bayrell.Lang.Compiler.Module.prototype,
 		}
 		return dest_path;
 	},
+	/**
+	 * Check exclude
+	 */
+	checkExclude: function(ctx, file_name)
+	{
+		var module_excludelist = Runtime.rtl.get(ctx, this.config, "exclude");
+		var __v0 = use("Runtime.Collection");
+		if (module_excludelist && module_excludelist instanceof __v0)
+		{
+			for (var i = 0;i < module_excludelist.count(ctx);i++)
+			{
+				var __v1 = use("Runtime.Monad");
+				var __v2 = new __v1(ctx, Runtime.rtl.get(ctx, module_excludelist, i));
+				var __v3 = use("Runtime.rtl");
+				__v2 = __v2.monad(ctx, __v3.m_to(ctx, "string", ""));
+				var file_match = __v2.value(ctx);
+				if (file_match == "")
+				{
+					continue;
+				}
+				var __v4 = use("Runtime.re");
+				var res = __v4.match(ctx, file_match, file_name);
+				if (res)
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	},
+	/**
+	 * Check allow list
+	 */
+	checkAllow: function(ctx, file_name)
+	{
+		var success = false;
+		var module_allowlist = Runtime.rtl.get(ctx, this.config, "allow");
+		var __v0 = use("Runtime.Collection");
+		if (module_allowlist && module_allowlist instanceof __v0)
+		{
+			for (var i = 0;i < module_allowlist.count(ctx);i++)
+			{
+				var __v1 = use("Runtime.Monad");
+				var __v2 = new __v1(ctx, Runtime.rtl.get(ctx, module_allowlist, i));
+				var __v3 = use("Runtime.rtl");
+				__v2 = __v2.monad(ctx, __v3.m_to(ctx, "string", ""));
+				var file_match = __v2.value(ctx);
+				if (file_match == "")
+				{
+					continue;
+				}
+				var __v4 = use("Runtime.re");
+				var res = __v4.match(ctx, file_match, file_name);
+				/* Ignore */
+				var __v5 = use("Runtime.rs");
+				if (__v5.charAt(ctx, file_match, 0) == "!")
+				{
+					if (res)
+					{
+						success = false;
+					}
+				}
+				else
+				{
+					if (res)
+					{
+						success = true;
+					}
+				}
+			}
+		}
+		return success;
+	},
 	_init: function(ctx)
 	{
 		use("Runtime.BaseStruct").prototype._init.call(this,ctx);
@@ -174,6 +247,8 @@ Object.assign(Bayrell.Lang.Compiler.Module,
 			"getSourcePath",
 			"resolveSourceFile",
 			"resolveDestFile",
+			"checkExclude",
+			"checkAllow",
 		];
 		return use("Runtime.Collection").from(a);
 	},
