@@ -143,34 +143,31 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 			]),
 		});
 	},
-	getFieldsList: function(ctx, f)
+	getFieldsList: function(ctx)
 	{
 		var a = [];
 		if (f==undefined) f=0;
-		if ((f&2)==2)
-		{
-			a.push("vars");
-			a.push("uses");
-			a.push("current_namespace");
-			a.push("current_class");
-			a.push("current_namespace_name");
-			a.push("current_class_name");
-			a.push("current_class_kind");
-			a.push("current_class_abstract");
-			a.push("current_class_declare");
-			a.push("find_identifier");
-			a.push("skip_comments");
-			a.push("pipe_kind");
-			a.push("is_pipe");
-			a.push("is_html");
-			a.push("is_local_css");
-			a.push("parser_base");
-			a.push("parser_expression");
-			a.push("parser_html");
-			a.push("parser_operator");
-			a.push("parser_preprocessor");
-			a.push("parser_program");
-		}
+		a.push("vars");
+		a.push("uses");
+		a.push("current_namespace");
+		a.push("current_class");
+		a.push("current_namespace_name");
+		a.push("current_class_name");
+		a.push("current_class_kind");
+		a.push("current_class_abstract");
+		a.push("current_class_declare");
+		a.push("find_identifier");
+		a.push("skip_comments");
+		a.push("pipe_kind");
+		a.push("is_pipe");
+		a.push("is_html");
+		a.push("is_local_css");
+		a.push("parser_base");
+		a.push("parser_expression");
+		a.push("parser_html");
+		a.push("parser_operator");
+		a.push("parser_preprocessor");
+		a.push("parser_program");
 		return use("Runtime.Collection").from(a);
 	},
 	getFieldInfoByName: function(ctx,field_name)
@@ -286,11 +283,9 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 		});
 		return null;
 	},
-	getMethodsList: function(ctx,f)
+	getMethodsList: function(ctx)
 	{
-		if (f==undefined) f=0;
-		var a = [];
-		if ((f&4)==4) a=[
+		var a=[
 			"reset",
 			"parse",
 			"findModuleName",

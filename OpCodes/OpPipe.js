@@ -78,40 +78,22 @@ Object.assign(Bayrell.Lang.OpCodes.OpPipe,
 			]),
 		});
 	},
-	getFieldsList: function(ctx, f)
+	getFieldsList: function(ctx)
 	{
 		var a = [];
 		if (f==undefined) f=0;
-		if ((f&3)==3)
-		{
-			a.push("op");
-			a.push("kind");
-			a.push("obj");
-			a.push("value");
-			a.push("is_async");
-			a.push("is_monad");
-		}
+		a.push("op");
+		a.push("kind");
+		a.push("obj");
+		a.push("value");
+		a.push("is_async");
+		a.push("is_monad");
 		return use("Runtime.Collection").from(a);
 	},
 	getFieldInfoByName: function(ctx,field_name)
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		if (field_name == "KIND_ATTR") return Dict.from({
-			"t": "string",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "KIND_CALL") return Dict.from({
-			"t": "string",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "KIND_METHOD") return Dict.from({
-			"t": "string",
-			"annotations": Collection.from([
-			]),
-		});
 		if (field_name == "op") return Dict.from({
 			"t": "string",
 			"annotations": Collection.from([
@@ -144,11 +126,9 @@ Object.assign(Bayrell.Lang.OpCodes.OpPipe,
 		});
 		return null;
 	},
-	getMethodsList: function(ctx,f)
+	getMethodsList: function(ctx)
 	{
-		if (f==undefined) f=0;
-		var a = [];
-		if ((f&4)==4) a=[
+		var a=[
 		];
 		return use("Runtime.Collection").from(a);
 	},

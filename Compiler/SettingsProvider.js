@@ -227,65 +227,43 @@ Object.assign(Bayrell.Lang.Compiler.SettingsProvider.prototype,
 		var __v3 = use("Runtime.rs");
 		var module_ext_name = __v3.extname(ctx, module_file_name);
 		var d = use("Runtime.Dict").from({"file_name":module_file_name,"ext_name":module_ext_name,"module":module,"success":false});
-		/* Check whitelist */
-		var module_whitelist = Runtime.rtl.attr(ctx, module, ["config", "whitelist"]);
+		/* log(module_file_name); */
+		/* Check allow list */
+		var module_allowlist = Runtime.rtl.attr(ctx, module, ["config", "allow"]);
 		var __v4 = use("Runtime.Collection");
-		if (module_whitelist && module_whitelist instanceof __v4)
+		if (module_allowlist && module_allowlist instanceof __v4)
 		{
-			var whitelist_res = false;
-			for (var i = 0;i < module_whitelist.count(ctx);i++)
+			for (var i = 0;i < module_allowlist.count(ctx);i++)
 			{
 				var __v5 = use("Runtime.Monad");
-				var __v6 = new __v5(ctx, Runtime.rtl.get(ctx, module_whitelist, i));
+				var __v6 = new __v5(ctx, Runtime.rtl.get(ctx, module_allowlist, i));
 				var __v7 = use("Runtime.rtl");
 				__v6 = __v6.monad(ctx, __v7.m_to(ctx, "string", ""));
-				var whitelist = __v6.value(ctx);
-				if (whitelist != "")
+				var file_match = __v6.value(ctx);
+				if (file_match == "")
 				{
-					var __v8 = use("Runtime.re");
-					var res = __v8.match(ctx, whitelist, module_file_name);
-					whitelist_res = whitelist_res || res;
+					continue;
+				}
+				var __v8 = use("Runtime.re");
+				var res = __v8.match(ctx, file_match, module_file_name);
+				/* Ignore */
+				var __v9 = use("Runtime.rs");
+				if (__v9.charAt(ctx, file_match, 0) == "!")
+				{
 					if (res)
 					{
-						break;
+						d = Runtime.rtl.setAttr(ctx, d, Runtime.Collection.from(["success"]), false);
+					}
+				}
+				else
+				{
+					if (res)
+					{
+						d = Runtime.rtl.setAttr(ctx, d, Runtime.Collection.from(["success"]), true);
 					}
 				}
 			}
-			if (!whitelist_res)
-			{
-				return Promise.resolve(d);
-			}
 		}
-		/* Check blacklist */
-		var module_blacklist = Runtime.rtl.attr(ctx, module, ["config", "blacklist"]);
-		var __v4 = use("Runtime.Collection");
-		if (module_blacklist && module_blacklist instanceof __v4)
-		{
-			var blacklist_res = false;
-			for (var i = 0;i < module_blacklist.count(ctx);i++)
-			{
-				var __v5 = use("Runtime.Monad");
-				var __v6 = new __v5(ctx, Runtime.rtl.get(ctx, module_blacklist, i));
-				var __v7 = use("Runtime.rtl");
-				__v6 = __v6.monad(ctx, __v7.m_to(ctx, "string", ""));
-				var blacklist = __v6.value(ctx);
-				if (blacklist != "")
-				{
-					var __v8 = use("Runtime.re");
-					var res = __v8.match(ctx, blacklist, module_file_name);
-					blacklist_res = blacklist_res && res;
-					if (res)
-					{
-						break;
-					}
-				}
-			}
-			if (blacklist_res)
-			{
-				return Promise.resolve(d);
-			}
-		}
-		d = Runtime.rtl.setAttr(ctx, d, Runtime.Collection.from(["success"]), true);
 		return Promise.resolve(d);
 	},
 	_init: function(ctx)
@@ -321,16 +299,13 @@ Object.assign(Bayrell.Lang.Compiler.SettingsProvider,
 			]),
 		});
 	},
-	getFieldsList: function(ctx, f)
+	getFieldsList: function(ctx)
 	{
 		var a = [];
 		if (f==undefined) f=0;
-		if ((f&2)==2)
-		{
-			a.push("project_path");
-			a.push("config");
-			a.push("modules");
-		}
+		a.push("project_path");
+		a.push("config");
+		a.push("modules");
 		return use("Runtime.Collection").from(a);
 	},
 	getFieldInfoByName: function(ctx,field_name)
@@ -355,11 +330,9 @@ Object.assign(Bayrell.Lang.Compiler.SettingsProvider,
 		});
 		return null;
 	},
-	getMethodsList: function(ctx,f)
+	getMethodsList: function(ctx)
 	{
-		if (f==undefined) f=0;
-		var a = [];
-		if ((f&4)==4) a=[
+		var a=[
 			"start",
 			"readSettingsFromFile",
 			"readModules",

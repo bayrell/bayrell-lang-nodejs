@@ -103,26 +103,23 @@ Object.assign(Bayrell.Lang.OpCodes.OpDeclareFunction,
 			]),
 		});
 	},
-	getFieldsList: function(ctx, f)
+	getFieldsList: function(ctx)
 	{
 		var a = [];
 		if (f==undefined) f=0;
-		if ((f&3)==3)
-		{
-			a.push("op");
-			a.push("name");
-			a.push("annotations");
-			a.push("comments");
-			a.push("args");
-			a.push("vars");
-			a.push("result_type");
-			a.push("expression");
-			a.push("items");
-			a.push("flags");
-			a.push("is_context");
-			a.push("is_html");
-			a.push("is_html_default_args");
-		}
+		a.push("op");
+		a.push("name");
+		a.push("annotations");
+		a.push("comments");
+		a.push("args");
+		a.push("vars");
+		a.push("result_type");
+		a.push("expression");
+		a.push("items");
+		a.push("flags");
+		a.push("is_context");
+		a.push("is_html");
+		a.push("is_html_default_args");
 		return use("Runtime.Collection").from(a);
 	},
 	getFieldInfoByName: function(ctx,field_name)
@@ -200,11 +197,9 @@ Object.assign(Bayrell.Lang.OpCodes.OpDeclareFunction,
 		});
 		return null;
 	},
-	getMethodsList: function(ctx,f)
+	getMethodsList: function(ctx)
 	{
-		if (f==undefined) f=0;
-		var a = [];
-		if ((f&4)==4) a=[
+		var a=[
 			"isStatic",
 			"isFlag",
 		];

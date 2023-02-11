@@ -52,7 +52,7 @@ Object.assign(Bayrell.Lang.LangConstant,
 			]),
 		});
 	},
-	getFieldsList: function(ctx, f)
+	getFieldsList: function(ctx)
 	{
 		var a = [];
 		if (f==undefined) f=0;
@@ -62,28 +62,11 @@ Object.assign(Bayrell.Lang.LangConstant,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		if (field_name == "ERROR_PARSER") return Dict.from({
-			"t": "int",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "ERROR_PARSER_EOF") return Dict.from({
-			"t": "int",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "ERROR_PARSER_EXPECTED") return Dict.from({
-			"t": "int",
-			"annotations": Collection.from([
-			]),
-		});
 		return null;
 	},
-	getMethodsList: function(ctx,f)
+	getMethodsList: function(ctx)
 	{
-		if (f==undefined) f=0;
-		var a = [];
-		if ((f&4)==4) a=[
+		var a=[
 		];
 		return use("Runtime.Collection").from(a);
 	},

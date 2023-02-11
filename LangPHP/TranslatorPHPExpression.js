@@ -1383,7 +1383,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPExpression,
 			]),
 		});
 	},
-	getFieldsList: function(ctx, f)
+	getFieldsList: function(ctx)
 	{
 		var a = [];
 		if (f==undefined) f=0;
@@ -1395,11 +1395,9 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPExpression,
 		var Dict = use("Runtime.Dict");
 		return null;
 	},
-	getMethodsList: function(ctx,f)
+	getMethodsList: function(ctx)
 	{
-		if (f==undefined) f=0;
-		var a = [];
-		if ((f&4)==4) a=[
+		var a=[
 			"toString",
 			"toPattern",
 			"rtlToStr",

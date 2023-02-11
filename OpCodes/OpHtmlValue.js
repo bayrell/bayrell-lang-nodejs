@@ -72,37 +72,19 @@ Object.assign(Bayrell.Lang.OpCodes.OpHtmlValue,
 			]),
 		});
 	},
-	getFieldsList: function(ctx, f)
+	getFieldsList: function(ctx)
 	{
 		var a = [];
 		if (f==undefined) f=0;
-		if ((f&3)==3)
-		{
-			a.push("op");
-			a.push("kind");
-			a.push("value");
-		}
+		a.push("op");
+		a.push("kind");
+		a.push("value");
 		return use("Runtime.Collection").from(a);
 	},
 	getFieldInfoByName: function(ctx,field_name)
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		if (field_name == "KIND_RAW") return Dict.from({
-			"t": "string",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "KIND_JSON") return Dict.from({
-			"t": "string",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "KIND_HTML") return Dict.from({
-			"t": "string",
-			"annotations": Collection.from([
-			]),
-		});
 		if (field_name == "op") return Dict.from({
 			"t": "string",
 			"annotations": Collection.from([
@@ -120,11 +102,9 @@ Object.assign(Bayrell.Lang.OpCodes.OpHtmlValue,
 		});
 		return null;
 	},
-	getMethodsList: function(ctx,f)
+	getMethodsList: function(ctx)
 	{
-		if (f==undefined) f=0;
-		var a = [];
-		if ((f&4)==4) a=[
+		var a=[
 		];
 		return use("Runtime.Collection").from(a);
 	},

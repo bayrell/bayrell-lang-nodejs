@@ -917,7 +917,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Expression,
 		}
 		if (is_html)
 		{
-			content += use("Runtime.rtl").toStr(((flag) ? (", ") : ("")) + use("Runtime.rtl").toStr("component, model_path, render_params, render_content"));
+			content += use("Runtime.rtl").toStr(((flag) ? (", ") : ("")) + use("Runtime.rtl").toStr("component, render_params, render_content"));
 			flag = true;
 		}
 		for (var i = 0;i < op_code.args.count(ctx);i++)
@@ -1369,7 +1369,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Expression,
 			]),
 		});
 	},
-	getFieldsList: function(ctx, f)
+	getFieldsList: function(ctx)
 	{
 		var a = [];
 		if (f==undefined) f=0;
@@ -1381,11 +1381,9 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Expression,
 		var Dict = use("Runtime.Dict");
 		return null;
 	},
-	getMethodsList: function(ctx,f)
+	getMethodsList: function(ctx)
 	{
-		if (f==undefined) f=0;
-		var a = [];
-		if ((f&4)==4) a=[
+		var a=[
 			"toString",
 			"toPattern",
 			"rtlToStr",

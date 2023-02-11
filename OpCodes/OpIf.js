@@ -73,18 +73,15 @@ Object.assign(Bayrell.Lang.OpCodes.OpIf,
 			]),
 		});
 	},
-	getFieldsList: function(ctx, f)
+	getFieldsList: function(ctx)
 	{
 		var a = [];
 		if (f==undefined) f=0;
-		if ((f&3)==3)
-		{
-			a.push("op");
-			a.push("condition");
-			a.push("if_true");
-			a.push("if_false");
-			a.push("if_else");
-		}
+		a.push("op");
+		a.push("condition");
+		a.push("if_true");
+		a.push("if_false");
+		a.push("if_else");
 		return use("Runtime.Collection").from(a);
 	},
 	getFieldInfoByName: function(ctx,field_name)
@@ -119,11 +116,9 @@ Object.assign(Bayrell.Lang.OpCodes.OpIf,
 		});
 		return null;
 	},
-	getMethodsList: function(ctx,f)
+	getMethodsList: function(ctx)
 	{
-		if (f==undefined) f=0;
-		var a = [];
-		if ((f&4)==4) a=[
+		var a=[
 		];
 		return use("Runtime.Collection").from(a);
 	},

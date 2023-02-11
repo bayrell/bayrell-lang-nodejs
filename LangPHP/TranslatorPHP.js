@@ -137,26 +137,23 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP,
 			]),
 		});
 	},
-	getFieldsList: function(ctx, f)
+	getFieldsList: function(ctx)
 	{
 		var a = [];
 		if (f==undefined) f=0;
-		if ((f&3)==3)
-		{
-			a.push("is_pipe");
-			a.push("pipe_var_name");
-			a.push("html_var_name");
-			a.push("is_html");
-			a.push("expression");
-			a.push("html");
-			a.push("operator");
-			a.push("program");
-			a.push("frontend");
-			a.push("backend");
-			a.push("enable_context");
-			a.push("enable_check_types");
-			a.push("enable_introspection");
-		}
+		a.push("is_pipe");
+		a.push("pipe_var_name");
+		a.push("html_var_name");
+		a.push("is_html");
+		a.push("expression");
+		a.push("html");
+		a.push("operator");
+		a.push("program");
+		a.push("frontend");
+		a.push("backend");
+		a.push("enable_context");
+		a.push("enable_check_types");
+		a.push("enable_introspection");
 		return use("Runtime.Collection").from(a);
 	},
 	getFieldInfoByName: function(ctx,field_name)
@@ -230,11 +227,9 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP,
 		});
 		return null;
 	},
-	getMethodsList: function(ctx,f)
+	getMethodsList: function(ctx)
 	{
-		if (f==undefined) f=0;
-		var a = [];
-		if ((f&4)==4) a=[
+		var a=[
 			"reset",
 			"translate",
 			"nextSaveOpCode",

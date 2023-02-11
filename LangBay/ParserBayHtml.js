@@ -1719,7 +1719,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayHtml,
 			]),
 		});
 	},
-	getFieldsList: function(ctx, f)
+	getFieldsList: function(ctx)
 	{
 		var a = [];
 		if (f==undefined) f=0;
@@ -1731,11 +1731,9 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayHtml,
 		var Dict = use("Runtime.Dict");
 		return null;
 	},
-	getMethodsList: function(ctx,f)
+	getMethodsList: function(ctx)
 	{
-		if (f==undefined) f=0;
-		var a = [];
-		if ((f&4)==4) a=[
+		var a=[
 			"getCssHash",
 			"readCssSelector",
 			"readCssBody",

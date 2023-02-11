@@ -102,52 +102,34 @@ Object.assign(Bayrell.Lang.OpCodes.OpDeclareClass,
 			]),
 		});
 	},
-	getFieldsList: function(ctx, f)
+	getFieldsList: function(ctx)
 	{
 		var a = [];
 		if (f==undefined) f=0;
-		if ((f&3)==3)
-		{
-			a.push("op");
-			a.push("kind");
-			a.push("name");
-			a.push("extend_name");
-			a.push("annotations");
-			a.push("comments");
-			a.push("template");
-			a.push("flags");
-			a.push("fn_create");
-			a.push("fn_destroy");
-			a.push("class_extends");
-			a.push("class_implements");
-			a.push("vars");
-			a.push("functions");
-			a.push("items");
-			a.push("is_abstract");
-			a.push("is_static");
-			a.push("is_declare");
-		}
+		a.push("op");
+		a.push("kind");
+		a.push("name");
+		a.push("extend_name");
+		a.push("annotations");
+		a.push("comments");
+		a.push("template");
+		a.push("flags");
+		a.push("fn_create");
+		a.push("fn_destroy");
+		a.push("class_extends");
+		a.push("class_implements");
+		a.push("vars");
+		a.push("functions");
+		a.push("items");
+		a.push("is_abstract");
+		a.push("is_static");
+		a.push("is_declare");
 		return use("Runtime.Collection").from(a);
 	},
 	getFieldInfoByName: function(ctx,field_name)
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		if (field_name == "KIND_CLASS") return Dict.from({
-			"t": "string",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "KIND_STRUCT") return Dict.from({
-			"t": "string",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "KIND_INTERFACE") return Dict.from({
-			"t": "string",
-			"annotations": Collection.from([
-			]),
-		});
 		if (field_name == "op") return Dict.from({
 			"t": "string",
 			"annotations": Collection.from([
@@ -247,11 +229,9 @@ Object.assign(Bayrell.Lang.OpCodes.OpDeclareClass,
 		});
 		return null;
 	},
-	getMethodsList: function(ctx,f)
+	getMethodsList: function(ctx)
 	{
-		if (f==undefined) f=0;
-		var a = [];
-		if ((f&4)==4) a=[
+		var a=[
 		];
 		return use("Runtime.Collection").from(a);
 	},

@@ -100,19 +100,16 @@ Object.assign(Bayrell.Lang.CoreParser,
 			]),
 		});
 	},
-	getFieldsList: function(ctx, f)
+	getFieldsList: function(ctx)
 	{
 		var a = [];
 		if (f==undefined) f=0;
-		if ((f&2)==2)
-		{
-			a.push("tab_size");
-			a.push("file_name");
-			a.push("content");
-			a.push("content_sz");
-			a.push("caret");
-			a.push("find_ident");
-		}
+		a.push("tab_size");
+		a.push("file_name");
+		a.push("content");
+		a.push("content_sz");
+		a.push("caret");
+		a.push("find_ident");
 		return use("Runtime.Collection").from(a);
 	},
 	getFieldInfoByName: function(ctx,field_name)
@@ -151,11 +148,9 @@ Object.assign(Bayrell.Lang.CoreParser,
 		});
 		return null;
 	},
-	getMethodsList: function(ctx,f)
+	getMethodsList: function(ctx)
 	{
-		if (f==undefined) f=0;
-		var a = [];
-		if ((f&4)==4) a=[
+		var a=[
 			"isEof",
 			"reset",
 			"setContent",

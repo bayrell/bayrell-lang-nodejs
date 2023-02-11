@@ -723,17 +723,14 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6AsyncAwait,
 			]),
 		});
 	},
-	getFieldsList: function(ctx, f)
+	getFieldsList: function(ctx)
 	{
 		var a = [];
 		if (f==undefined) f=0;
-		if ((f&3)==3)
-		{
-			a.push("async_stack");
-			a.push("pos");
-			a.push("async_t");
-			a.push("async_var");
-		}
+		a.push("async_stack");
+		a.push("pos");
+		a.push("async_t");
+		a.push("async_var");
 		return use("Runtime.Collection").from(a);
 	},
 	getFieldInfoByName: function(ctx,field_name)
@@ -764,11 +761,9 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6AsyncAwait,
 		});
 		return null;
 	},
-	getMethodsList: function(ctx,f)
+	getMethodsList: function(ctx)
 	{
-		if (f==undefined) f=0;
-		var a = [];
-		if ((f&4)==4) a=[
+		var a=[
 			"currentPos",
 			"nextPos",
 			"pushPos",

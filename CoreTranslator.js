@@ -239,32 +239,29 @@ Object.assign(Bayrell.Lang.CoreTranslator,
 			]),
 		});
 	},
-	getFieldsList: function(ctx, f)
+	getFieldsList: function(ctx)
 	{
 		var a = [];
 		if (f==undefined) f=0;
-		if ((f&3)==3)
-		{
-			a.push("current_namespace_name");
-			a.push("current_class_name");
-			a.push("current_class_full_name");
-			a.push("current_class_extends_name");
-			a.push("current_class");
-			a.push("current_function");
-			a.push("modules");
-			a.push("vars");
-			a.push("save_vars");
-			a.push("save_op_codes");
-			a.push("save_op_code_inc");
-			a.push("is_static_function");
-			a.push("is_operation");
-			a.push("opcode_level");
-			a.push("indent_level");
-			a.push("indent");
-			a.push("crlf");
-			a.push("flag_struct_check_types");
-			a.push("preprocessor_flags");
-		}
+		a.push("current_namespace_name");
+		a.push("current_class_name");
+		a.push("current_class_full_name");
+		a.push("current_class_extends_name");
+		a.push("current_class");
+		a.push("current_function");
+		a.push("modules");
+		a.push("vars");
+		a.push("save_vars");
+		a.push("save_op_codes");
+		a.push("save_op_code_inc");
+		a.push("is_static_function");
+		a.push("is_operation");
+		a.push("opcode_level");
+		a.push("indent_level");
+		a.push("indent");
+		a.push("crlf");
+		a.push("flag_struct_check_types");
+		a.push("preprocessor_flags");
 		return use("Runtime.Collection").from(a);
 	},
 	getFieldInfoByName: function(ctx,field_name)
@@ -373,11 +370,9 @@ Object.assign(Bayrell.Lang.CoreTranslator,
 		});
 		return null;
 	},
-	getMethodsList: function(ctx,f)
+	getMethodsList: function(ctx)
 	{
-		if (f==undefined) f=0;
-		var a = [];
-		if ((f&4)==4) a=[
+		var a=[
 			"findSaveOpCode",
 			"levelInc",
 			"levelDec",

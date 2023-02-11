@@ -86,44 +86,26 @@ Object.assign(Bayrell.Lang.OpCodes.OpAssign,
 			]),
 		});
 	},
-	getFieldsList: function(ctx, f)
+	getFieldsList: function(ctx)
 	{
 		var a = [];
 		if (f==undefined) f=0;
-		if ((f&3)==3)
-		{
-			a.push("kind");
-			a.push("var_name");
-			a.push("flags");
-			a.push("pattern");
-			a.push("annotations");
-			a.push("comments");
-			a.push("values");
-			a.push("names");
-			a.push("expression");
-			a.push("condition");
-		}
+		a.push("kind");
+		a.push("var_name");
+		a.push("flags");
+		a.push("pattern");
+		a.push("annotations");
+		a.push("comments");
+		a.push("values");
+		a.push("names");
+		a.push("expression");
+		a.push("condition");
 		return use("Runtime.Collection").from(a);
 	},
 	getFieldInfoByName: function(ctx,field_name)
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		if (field_name == "KIND_ASSIGN") return Dict.from({
-			"t": "string",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "KIND_DECLARE") return Dict.from({
-			"t": "string",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "KIND_STRUCT") return Dict.from({
-			"t": "string",
-			"annotations": Collection.from([
-			]),
-		});
 		if (field_name == "kind") return Dict.from({
 			"t": "string",
 			"annotations": Collection.from([
@@ -180,11 +162,9 @@ Object.assign(Bayrell.Lang.OpCodes.OpAssign,
 		});
 		return null;
 	},
-	getMethodsList: function(ctx,f)
+	getMethodsList: function(ctx)
 	{
-		if (f==undefined) f=0;
-		var a = [];
-		if ((f&4)==4) a=[
+		var a=[
 		];
 		return use("Runtime.Collection").from(a);
 	},

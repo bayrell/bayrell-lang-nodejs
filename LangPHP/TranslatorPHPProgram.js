@@ -150,7 +150,10 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 		}
 		else if (item instanceof __v1)
 		{
-			content += use("Runtime.rtl").toStr(t.s(ctx, t.expression.constructor.toString(ctx, item.name) + use("Runtime.rtl").toStr(",")));
+			if (!item.flags.isFlag(ctx, "declare") && !item.flags.isFlag(ctx, "protected") && !item.flags.isFlag(ctx, "private"))
+			{
+				content += use("Runtime.rtl").toStr(t.s(ctx, t.expression.constructor.toString(ctx, item.name) + use("Runtime.rtl").toStr(",")));
+			}
 		}
 		return use("Runtime.Collection").from([t,content]);
 	},
@@ -421,7 +424,13 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 						}
 						var is_const = variable.flags.isFlag(ctx, "const");
 						var is_static = variable.flags.isFlag(ctx, "static");
+						var is_protected = variable.flags.isFlag(ctx, "protected");
+						var is_private = variable.flags.isFlag(ctx, "private");
 						if (is_const || is_static)
+						{
+							continue;
+						}
+						if (is_protected || is_private)
 						{
 							continue;
 						}
@@ -433,7 +442,10 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 					}
 					t = t.levelDec(ctx);
 					content += use("Runtime.rtl").toStr(t.s(ctx, "}"));
-					content += use("Runtime.rtl").toStr(t.s(ctx, "parent::assignObject($ctx,$o);"));
+					if (t.current_class.extend_name)
+					{
+						content += use("Runtime.rtl").toStr(t.s(ctx, "parent::assignObject($ctx,$o);"));
+					}
 					t = t.levelDec(ctx);
 					content += use("Runtime.rtl").toStr(t.s(ctx, "}"));
 					/* Assign Value */
@@ -455,7 +467,13 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 						}
 						var is_const = variable.flags.isFlag(ctx, "const");
 						var is_static = variable.flags.isFlag(ctx, "static");
+						var is_protected = variable.flags.isFlag(ctx, "protected");
+						var is_private = variable.flags.isFlag(ctx, "private");
 						if (is_const || is_static)
+						{
+							continue;
+						}
+						if (is_protected || is_private)
 						{
 							continue;
 						}
@@ -473,7 +491,10 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 							flag = true;
 						}
 					}
-					content += use("Runtime.rtl").toStr(t.s(ctx, ((flag) ? ("else ") : ("")) + use("Runtime.rtl").toStr("parent::assignValue($ctx,$k,$v);")));
+					if (t.current_class.extend_name)
+					{
+						content += use("Runtime.rtl").toStr(t.s(ctx, ((flag) ? ("else ") : ("")) + use("Runtime.rtl").toStr("parent::assignValue($ctx,$k,$v);")));
+					}
 					t = t.levelDec(ctx);
 					content += use("Runtime.rtl").toStr(t.s(ctx, "}"));
 				}
@@ -496,7 +517,13 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 					}
 					var is_const = variable.flags.isFlag(ctx, "const");
 					var is_static = variable.flags.isFlag(ctx, "static");
+					var is_protected = variable.flags.isFlag(ctx, "protected");
+					var is_private = variable.flags.isFlag(ctx, "private");
 					if (is_const || is_static)
+					{
+						continue;
+					}
+					if (is_protected || is_private)
 					{
 						continue;
 					}
@@ -507,7 +534,10 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 						flag = true;
 					}
 				}
-				content += use("Runtime.rtl").toStr(t.s(ctx, "return parent::takeValue($ctx,$k,$d);"));
+				if (t.current_class.extend_name)
+				{
+					content += use("Runtime.rtl").toStr(t.s(ctx, "return parent::takeValue($ctx,$k,$d);"));
+				}
 				t = t.levelDec(ctx);
 				content += use("Runtime.rtl").toStr(t.s(ctx, "}"));
 			}
@@ -570,7 +600,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 			t = t.levelDec(ctx);
 			content += use("Runtime.rtl").toStr(t.s(ctx, "}"));
 			/* Get fields list of the function */
-			content += use("Runtime.rtl").toStr(t.s(ctx, "static function getFieldsList($ctx,$f)"));
+			content += use("Runtime.rtl").toStr(t.s(ctx, "static function getFieldsList($ctx)"));
 			content += use("Runtime.rtl").toStr(t.s(ctx, "{"));
 			t = t.levelInc(ctx);
 			content += use("Runtime.rtl").toStr(t.s(ctx, "$a = [];"));
@@ -581,11 +611,16 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 				for (var i = 0;i < op_code.vars.count(ctx);i++)
 				{
 					var variable = op_code.vars.item(ctx, i);
+					var is_const = variable.flags.isFlag(ctx, "const");
 					var is_static = variable.flags.isFlag(ctx, "static");
-					var is_serializable = variable.flags.isFlag(ctx, "serializable");
-					var is_assignable = variable.flags.isFlag(ctx, "assignable");
+					var is_protected = variable.flags.isFlag(ctx, "protected");
+					var is_private = variable.flags.isFlag(ctx, "private");
 					var has_annotation = variable.annotations != null && variable.annotations.count(ctx) > 0;
-					if (is_static)
+					if (is_const || is_static)
+					{
+						continue;
+					}
+					if (is_protected || is_private)
 					{
 						continue;
 					}
@@ -598,56 +633,12 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 					{
 						continue;
 					}
-					var __v2 = use("Bayrell.Lang.OpCodes.OpDeclareClass");
-					if (class_kind == __v2.KIND_STRUCT)
+					for (var j = 0;j < variable.values.count(ctx);j++)
 					{
-						is_serializable = true;
-						is_assignable = true;
-					}
-					if (is_serializable)
-					{
-						is_assignable = true;
-					}
-					var flag = 0;
-					if (is_serializable)
-					{
-						flag = flag | 1;
-					}
-					if (is_assignable)
-					{
-						flag = flag | 2;
-					}
-					if (has_annotation)
-					{
-						flag = flag | 4;
-					}
-					if (flag != 0)
-					{
-						if (!vars.has(ctx, flag))
-						{
-							var __v2 = use("Runtime.Vector");
-							vars.setValue(ctx, flag, new __v2(ctx));
-						}
-						var v = vars.item(ctx, flag);
-						for (var j = 0;j < variable.values.count(ctx);j++)
-						{
-							var value = variable.values.item(ctx, j);
-							v.pushValue(ctx, value.var_name);
-						}
+						var value = variable.values.item(ctx, j);
+						content += use("Runtime.rtl").toStr(t.s(ctx, "$a[]=" + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, value.var_name)) + use("Runtime.rtl").toStr(";")));
 					}
 				}
-				vars.each(ctx, (ctx, v, flag) => 
-				{
-					content += use("Runtime.rtl").toStr(t.s(ctx, "if (($f&" + use("Runtime.rtl").toStr(flag) + use("Runtime.rtl").toStr(")==") + use("Runtime.rtl").toStr(flag) + use("Runtime.rtl").toStr(")")));
-					content += use("Runtime.rtl").toStr(t.s(ctx, "{"));
-					t = t.levelInc(ctx);
-					v.each(ctx, (ctx, varname) => 
-					{
-						content += use("Runtime.rtl").toStr(t.s(ctx, "$a[]=" + use("Runtime.rtl").toStr(t.expression.constructor.toString(ctx, varname)) + use("Runtime.rtl").toStr(";")));
-					});
-					t = t.levelDec(ctx);
-					content += use("Runtime.rtl").toStr(t.s(ctx, "}"));
-				});
 			}
 			content += use("Runtime.rtl").toStr(t.s(ctx, "return " + use("Runtime.rtl").toStr(t.expression.constructor.getModuleName(ctx, t, "Runtime.Collection")) + use("Runtime.rtl").toStr("::from($a);")));
 			t = t.levelDec(ctx);
@@ -661,7 +652,24 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 				for (var i = 0;i < op_code.vars.count(ctx);i++)
 				{
 					var variable = op_code.vars.item(ctx, i);
+					var __v1 = use("Bayrell.Lang.OpCodes.OpAssign");
+					if (variable.kind != __v1.KIND_DECLARE)
+					{
+						continue;
+					}
 					if (variable.condition && Runtime.rtl.get(ctx, t.preprocessor_flags, variable.condition.value) != true)
+					{
+						continue;
+					}
+					var is_const = variable.flags.isFlag(ctx, "const");
+					var is_static = variable.flags.isFlag(ctx, "static");
+					var is_protected = variable.flags.isFlag(ctx, "protected");
+					var is_private = variable.flags.isFlag(ctx, "private");
+					if (is_const || is_static)
+					{
+						continue;
+					}
+					if (is_protected || is_private)
 					{
 						continue;
 					}
@@ -714,18 +722,25 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 			t = t.levelDec(ctx);
 			content += use("Runtime.rtl").toStr(t.s(ctx, "}"));
 			/* Get methods list of the function */
-			content += use("Runtime.rtl").toStr(t.s(ctx, "static function getMethodsList($ctx,$f=0)"));
+			content += use("Runtime.rtl").toStr(t.s(ctx, "static function getMethodsList($ctx)"));
 			content += use("Runtime.rtl").toStr(t.s(ctx, "{"));
 			t = t.levelInc(ctx);
-			content += use("Runtime.rtl").toStr(t.s(ctx, "$a = [];"));
-			content += use("Runtime.rtl").toStr(t.s(ctx, "if (($f&4)==4) $a=["));
+			content += use("Runtime.rtl").toStr(t.s(ctx, "$a=["));
 			t = t.levelInc(ctx);
-			if (op_code.functions != null)
+			if (op_code.functions != null && false)
 			{
 				for (var i = 0;i < op_code.functions.count(ctx);i++)
 				{
 					var f = op_code.functions.item(ctx, i);
 					if (f.flags.isFlag(ctx, "declare"))
+					{
+						continue;
+					}
+					if (f.flags.isFlag(ctx, "protected"))
+					{
+						continue;
+					}
+					if (f.flags.isFlag(ctx, "private"))
 					{
 						continue;
 					}
@@ -984,7 +999,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 			]),
 		});
 	},
-	getFieldsList: function(ctx, f)
+	getFieldsList: function(ctx)
 	{
 		var a = [];
 		if (f==undefined) f=0;
@@ -996,11 +1011,9 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 		var Dict = use("Runtime.Dict");
 		return null;
 	},
-	getMethodsList: function(ctx,f)
+	getMethodsList: function(ctx)
 	{
-		if (f==undefined) f=0;
-		var a = [];
-		if ((f&4)==4) a=[
+		var a=[
 			"OpNamespace",
 			"OpDeclareFunction",
 			"OpFunctionAnnotations",

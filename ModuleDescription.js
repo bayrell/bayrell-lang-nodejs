@@ -41,7 +41,7 @@ Object.assign(Bayrell.Lang.ModuleDescription,
 	 */
 	getModuleVersion: function(ctx)
 	{
-		return "0.11.3";
+		return "0.11.4";
 	},
 	/**
 	 * Returns required modules
@@ -80,7 +80,7 @@ Object.assign(Bayrell.Lang.ModuleDescription,
 			]),
 		});
 	},
-	getFieldsList: function(ctx, f)
+	getFieldsList: function(ctx)
 	{
 		var a = [];
 		if (f==undefined) f=0;
@@ -92,11 +92,9 @@ Object.assign(Bayrell.Lang.ModuleDescription,
 		var Dict = use("Runtime.Dict");
 		return null;
 	},
-	getMethodsList: function(ctx,f)
+	getMethodsList: function(ctx)
 	{
-		if (f==undefined) f=0;
-		var a = [];
-		if ((f&4)==4) a=[
+		var a=[
 			"getModuleName",
 			"getModuleVersion",
 			"requiredModules",

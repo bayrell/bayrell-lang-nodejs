@@ -165,32 +165,29 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6,
 			]),
 		});
 	},
-	getFieldsList: function(ctx, f)
+	getFieldsList: function(ctx)
 	{
 		var a = [];
 		if (f==undefined) f=0;
-		if ((f&3)==3)
-		{
-			a.push("is_pipe");
-			a.push("is_call");
-			a.push("pipe_var_name");
-			a.push("html_var_name");
-			a.push("is_html");
-			a.push("async_await");
-			a.push("expression");
-			a.push("html");
-			a.push("operator");
-			a.push("program");
-			a.push("frontend");
-			a.push("backend");
-			a.push("use_module_name");
-			a.push("use_strict");
-			a.push("enable_async_await");
-			a.push("emulate_async_await");
-			a.push("enable_context");
-			a.push("enable_check_types");
-			a.push("enable_introspection");
-		}
+		a.push("is_pipe");
+		a.push("is_call");
+		a.push("pipe_var_name");
+		a.push("html_var_name");
+		a.push("is_html");
+		a.push("async_await");
+		a.push("expression");
+		a.push("html");
+		a.push("operator");
+		a.push("program");
+		a.push("frontend");
+		a.push("backend");
+		a.push("use_module_name");
+		a.push("use_strict");
+		a.push("enable_async_await");
+		a.push("emulate_async_await");
+		a.push("enable_context");
+		a.push("enable_check_types");
+		a.push("enable_introspection");
 		return use("Runtime.Collection").from(a);
 	},
 	getFieldInfoByName: function(ctx,field_name)
@@ -294,11 +291,9 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6,
 		});
 		return null;
 	},
-	getMethodsList: function(ctx,f)
+	getMethodsList: function(ctx)
 	{
-		if (f==undefined) f=0;
-		var a = [];
-		if ((f&4)==4) a=[
+		var a=[
 			"isEmulateAsyncAwait",
 			"isAsyncAwait",
 			"reset",

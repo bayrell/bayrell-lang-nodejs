@@ -104,23 +104,20 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode,
 			]),
 		});
 	},
-	getFieldsList: function(ctx, f)
+	getFieldsList: function(ctx)
 	{
 		var a = [];
 		if (f==undefined) f=0;
-		if ((f&3)==3)
-		{
-			a.push("async_await");
-			a.push("expression");
-			a.push("html");
-			a.push("operator");
-			a.push("program");
-			a.push("use_module_name");
-			a.push("enable_async_await");
-			a.push("emulate_async_await");
-			a.push("enable_introspection");
-			a.push("enable_context");
-		}
+		a.push("async_await");
+		a.push("expression");
+		a.push("html");
+		a.push("operator");
+		a.push("program");
+		a.push("use_module_name");
+		a.push("enable_async_await");
+		a.push("emulate_async_await");
+		a.push("enable_introspection");
+		a.push("enable_context");
 		return use("Runtime.Collection").from(a);
 	},
 	getFieldInfoByName: function(ctx,field_name)
@@ -179,11 +176,9 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode,
 		});
 		return null;
 	},
-	getMethodsList: function(ctx,f)
+	getMethodsList: function(ctx)
 	{
-		if (f==undefined) f=0;
-		var a = [];
-		if ((f&4)==4) a=[
+		var a=[
 			"reset",
 			"translate",
 		];

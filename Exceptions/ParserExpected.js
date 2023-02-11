@@ -57,7 +57,7 @@ Object.assign(Bayrell.Lang.Exceptions.ParserExpected,
 			]),
 		});
 	},
-	getFieldsList: function(ctx, f)
+	getFieldsList: function(ctx)
 	{
 		var a = [];
 		if (f==undefined) f=0;
@@ -69,11 +69,9 @@ Object.assign(Bayrell.Lang.Exceptions.ParserExpected,
 		var Dict = use("Runtime.Dict");
 		return null;
 	},
-	getMethodsList: function(ctx,f)
+	getMethodsList: function(ctx)
 	{
-		if (f==undefined) f=0;
-		var a = [];
-		if ((f&4)==4) a=[
+		var a=[
 			"constructor",
 		];
 		return use("Runtime.Collection").from(a);
