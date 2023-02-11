@@ -726,7 +726,6 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6AsyncAwait,
 	getFieldsList: function(ctx)
 	{
 		var a = [];
-		if (f==undefined) f=0;
 		a.push("async_stack");
 		a.push("pos");
 		a.push("async_t");

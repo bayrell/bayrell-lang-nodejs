@@ -70,7 +70,6 @@ Object.assign(Bayrell.Lang.OpCodes.OpModule,
 	getFieldsList: function(ctx)
 	{
 		var a = [];
-		if (f==undefined) f=0;
 		a.push("uses");
 		a.push("items");
 		return use("Runtime.Collection").from(a);

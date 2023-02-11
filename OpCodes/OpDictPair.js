@@ -72,7 +72,6 @@ Object.assign(Bayrell.Lang.OpCodes.OpDictPair,
 	getFieldsList: function(ctx)
 	{
 		var a = [];
-		if (f==undefined) f=0;
 		a.push("key");
 		a.push("value");
 		a.push("condition");

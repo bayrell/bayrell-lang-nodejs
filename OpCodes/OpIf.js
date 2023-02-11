@@ -76,7 +76,6 @@ Object.assign(Bayrell.Lang.OpCodes.OpIf,
 	getFieldsList: function(ctx)
 	{
 		var a = [];
-		if (f==undefined) f=0;
 		a.push("op");
 		a.push("condition");
 		a.push("if_true");

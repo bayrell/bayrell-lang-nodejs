@@ -140,7 +140,6 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP,
 	getFieldsList: function(ctx)
 	{
 		var a = [];
-		if (f==undefined) f=0;
 		a.push("is_pipe");
 		a.push("pipe_var_name");
 		a.push("html_var_name");

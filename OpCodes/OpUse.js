@@ -72,7 +72,6 @@ Object.assign(Bayrell.Lang.OpCodes.OpUse,
 	getFieldsList: function(ctx)
 	{
 		var a = [];
-		if (f==undefined) f=0;
 		a.push("op");
 		a.push("alias");
 		a.push("name");

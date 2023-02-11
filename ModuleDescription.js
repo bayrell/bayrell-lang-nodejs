@@ -41,7 +41,7 @@ Object.assign(Bayrell.Lang.ModuleDescription,
 	 */
 	getModuleVersion: function(ctx)
 	{
-		return "0.11.4";
+		return "0.11.4-2";
 	},
 	/**
 	 * Returns required modules
@@ -83,7 +83,6 @@ Object.assign(Bayrell.Lang.ModuleDescription,
 	getFieldsList: function(ctx)
 	{
 		var a = [];
-		if (f==undefined) f=0;
 		return use("Runtime.Collection").from(a);
 	},
 	getFieldInfoByName: function(ctx,field_name)

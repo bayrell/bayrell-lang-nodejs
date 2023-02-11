@@ -78,7 +78,6 @@ Object.assign(Bayrell.Lang.OpCodes.OpHtmlTag,
 	getFieldsList: function(ctx)
 	{
 		var a = [];
-		if (f==undefined) f=0;
 		a.push("op");
 		a.push("tag_name");
 		a.push("op_code_name");

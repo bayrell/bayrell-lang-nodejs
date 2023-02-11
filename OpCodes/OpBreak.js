@@ -68,7 +68,6 @@ Object.assign(Bayrell.Lang.OpCodes.OpBreak,
 	getFieldsList: function(ctx)
 	{
 		var a = [];
-		if (f==undefined) f=0;
 		a.push("op");
 		return use("Runtime.Collection").from(a);
 	},

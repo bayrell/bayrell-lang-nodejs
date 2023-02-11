@@ -70,7 +70,6 @@ Object.assign(Bayrell.Lang.OpCodes.OpDelete,
 	getFieldsList: function(ctx)
 	{
 		var a = [];
-		if (f==undefined) f=0;
 		a.push("op");
 		a.push("op_code");
 		return use("Runtime.Collection").from(a);

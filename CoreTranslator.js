@@ -242,7 +242,6 @@ Object.assign(Bayrell.Lang.CoreTranslator,
 	getFieldsList: function(ctx)
 	{
 		var a = [];
-		if (f==undefined) f=0;
 		a.push("current_namespace_name");
 		a.push("current_class_name");
 		a.push("current_class_full_name");

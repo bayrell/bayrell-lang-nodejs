@@ -124,7 +124,6 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags,
 	getFieldsList: function(ctx)
 	{
 		var a = [];
-		if (f==undefined) f=0;
 		a.push("p_async");
 		a.push("p_export");
 		a.push("p_static");

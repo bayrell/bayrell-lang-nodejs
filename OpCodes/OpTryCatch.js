@@ -72,7 +72,6 @@ Object.assign(Bayrell.Lang.OpCodes.OpTryCatch,
 	getFieldsList: function(ctx)
 	{
 		var a = [];
-		if (f==undefined) f=0;
 		a.push("op");
 		a.push("op_try");
 		a.push("items");

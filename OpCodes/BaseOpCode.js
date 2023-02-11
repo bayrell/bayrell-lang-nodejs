@@ -71,7 +71,6 @@ Object.assign(Bayrell.Lang.OpCodes.BaseOpCode,
 	getFieldsList: function(ctx)
 	{
 		var a = [];
-		if (f==undefined) f=0;
 		a.push("caret_start");
 		a.push("caret_end");
 		return use("Runtime.Collection").from(a);

@@ -474,7 +474,6 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 			content += use("Runtime.rtl").toStr(t.s(ctx, "{"));
 			t = t.levelInc(ctx);
 			content += use("Runtime.rtl").toStr(t.s(ctx, "var a = [];"));
-			content += use("Runtime.rtl").toStr(t.s(ctx, "if (f==undefined) f=0;"));
 			if (op_code.vars != null)
 			{
 				var __v1 = use("Runtime.Map");
@@ -1210,7 +1209,6 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 	getFieldsList: function(ctx)
 	{
 		var a = [];
-		if (f==undefined) f=0;
 		return use("Runtime.Collection").from(a);
 	},
 	getFieldInfoByName: function(ctx,field_name)

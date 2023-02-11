@@ -75,7 +75,6 @@ Object.assign(Bayrell.Lang.CoreToken,
 	getFieldsList: function(ctx)
 	{
 		var a = [];
-		if (f==undefined) f=0;
 		a.push("kind");
 		a.push("content");
 		a.push("caret_start");

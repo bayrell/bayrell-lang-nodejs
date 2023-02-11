@@ -70,7 +70,6 @@ Object.assign(Bayrell.Lang.LangES6.AsyncAwait,
 	getFieldsList: function(ctx)
 	{
 		var a = [];
-		if (f==undefined) f=0;
 		a.push("start_pos");
 		a.push("end_pos");
 		return use("Runtime.Collection").from(a);

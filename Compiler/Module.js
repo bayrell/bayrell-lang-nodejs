@@ -214,7 +214,6 @@ Object.assign(Bayrell.Lang.Compiler.Module,
 	getFieldsList: function(ctx)
 	{
 		var a = [];
-		if (f==undefined) f=0;
 		a.push("name");
 		a.push("path");
 		a.push("config");

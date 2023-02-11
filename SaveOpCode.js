@@ -73,7 +73,6 @@ Object.assign(Bayrell.Lang.SaveOpCode,
 	getFieldsList: function(ctx)
 	{
 		var a = [];
-		if (f==undefined) f=0;
 		a.push("var_name");
 		a.push("var_content");
 		a.push("content");

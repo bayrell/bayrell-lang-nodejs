@@ -105,7 +105,6 @@ Object.assign(Bayrell.Lang.OpCodes.OpDeclareClass,
 	getFieldsList: function(ctx)
 	{
 		var a = [];
-		if (f==undefined) f=0;
 		a.push("op");
 		a.push("kind");
 		a.push("name");

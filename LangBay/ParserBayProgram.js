@@ -607,7 +607,6 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayProgram,
 	getFieldsList: function(ctx)
 	{
 		var a = [];
-		if (f==undefined) f=0;
 		return use("Runtime.Collection").from(a);
 	},
 	getFieldInfoByName: function(ctx,field_name)

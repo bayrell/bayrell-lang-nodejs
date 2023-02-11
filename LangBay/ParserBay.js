@@ -146,7 +146,6 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 	getFieldsList: function(ctx)
 	{
 		var a = [];
-		if (f==undefined) f=0;
 		a.push("vars");
 		a.push("uses");
 		a.push("current_namespace");

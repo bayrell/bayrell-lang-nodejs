@@ -266,7 +266,6 @@ Object.assign(Bayrell.Lang.Compiler.SettingsProvider,
 	getFieldsList: function(ctx)
 	{
 		var a = [];
-		if (f==undefined) f=0;
 		a.push("project_path");
 		a.push("config");
 		a.push("modules");

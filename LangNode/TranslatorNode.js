@@ -107,7 +107,6 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode,
 	getFieldsList: function(ctx)
 	{
 		var a = [];
-		if (f==undefined) f=0;
 		a.push("async_await");
 		a.push("expression");
 		a.push("html");

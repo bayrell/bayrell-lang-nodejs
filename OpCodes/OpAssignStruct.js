@@ -76,7 +76,6 @@ Object.assign(Bayrell.Lang.OpCodes.OpAssignStruct,
 	getFieldsList: function(ctx)
 	{
 		var a = [];
-		if (f==undefined) f=0;
 		a.push("var_name");
 		a.push("annotations");
 		a.push("comments");

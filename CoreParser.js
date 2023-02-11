@@ -103,7 +103,6 @@ Object.assign(Bayrell.Lang.CoreParser,
 	getFieldsList: function(ctx)
 	{
 		var a = [];
-		if (f==undefined) f=0;
 		a.push("tab_size");
 		a.push("file_name");
 		a.push("content");

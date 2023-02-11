@@ -556,7 +556,6 @@ Object.assign(Bayrell.Lang.Compiler.CLI,
 	getFieldsList: function(ctx)
 	{
 		var a = [];
-		if (f==undefined) f=0;
 		a.push("settings");
 		return use("Runtime.Collection").from(a);
 	},

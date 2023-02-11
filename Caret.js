@@ -63,7 +63,6 @@ Object.assign(Bayrell.Lang.Caret,
 	getFieldsList: function(ctx)
 	{
 		var a = [];
-		if (f==undefined) f=0;
 		a.push("pos");
 		a.push("x");
 		a.push("y");

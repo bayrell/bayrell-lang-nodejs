@@ -168,7 +168,6 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6,
 	getFieldsList: function(ctx)
 	{
 		var a = [];
-		if (f==undefined) f=0;
 		a.push("is_pipe");
 		a.push("is_call");
 		a.push("pipe_var_name");

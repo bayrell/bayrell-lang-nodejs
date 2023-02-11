@@ -81,7 +81,6 @@ Object.assign(Bayrell.Lang.OpCodes.OpIdentifier,
 	getFieldsList: function(ctx)
 	{
 		var a = [];
-		if (f==undefined) f=0;
 		a.push("op");
 		a.push("value");
 		a.push("kind");
