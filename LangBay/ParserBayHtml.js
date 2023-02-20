@@ -1253,9 +1253,14 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayHtml,
 			var op_code = null;
 			var res = parser.parser_base.constructor.matchToken(ctx, parser, "%render");
 			parser = Runtime.rtl.get(ctx, res, 0);
-			var res = parser.parser_expression.constructor.readExpression(ctx, parser);
+			var res = parser.parser_base.constructor.readDynamic(ctx, parser);
 			parser = Runtime.rtl.get(ctx, res, 0);
 			op_code = Runtime.rtl.get(ctx, res, 1);
+			var __v0 = use("Bayrell.Lang.OpCodes.OpCall");
+			if (op_code instanceof __v0)
+			{
+				op_code = Runtime.rtl.setAttr(ctx, op_code, Runtime.Collection.from(["is_html"]), true);
+			}
 			var res = parser.parser_base.constructor.matchToken(ctx, parser, ";");
 			parser = Runtime.rtl.get(ctx, res, 0);
 			return use("Runtime.Collection").from([parser,op_code]);

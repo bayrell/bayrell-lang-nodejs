@@ -418,7 +418,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 			var __v3 = use("Bayrell.Lang.OpCodes.OpCall");
 			if (op_code instanceof __v3)
 			{
-				var res = t.expression.constructor.OpCall(ctx, t, op_code, true);
+				var res = t.expression.constructor.OpCall(ctx, t, op_code);
 				t = Runtime.rtl.get(ctx, res, 0);
 				item_value += use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1));
 			}

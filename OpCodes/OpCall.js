@@ -36,6 +36,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpCall.prototype,
 		this.args = null;
 		this.is_await = false;
 		this.is_context = true;
+		this.is_html = false;
 	},
 	takeValue: function(ctx,k,d)
 	{
@@ -45,6 +46,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpCall.prototype,
 		else if (k == "args")return this.args;
 		else if (k == "is_await")return this.is_await;
 		else if (k == "is_context")return this.is_context;
+		else if (k == "is_html")return this.is_html;
 		return use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.takeValue.call(this,ctx,k,d);
 	},
 });
@@ -81,6 +83,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpCall,
 		a.push("args");
 		a.push("is_await");
 		a.push("is_context");
+		a.push("is_html");
 		return use("Runtime.Collection").from(a);
 	},
 	getFieldInfoByName: function(ctx,field_name)
@@ -109,6 +112,11 @@ Object.assign(Bayrell.Lang.OpCodes.OpCall,
 			]),
 		});
 		if (field_name == "is_context") return Dict.from({
+			"t": "bool",
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "is_html") return Dict.from({
 			"t": "bool",
 			"annotations": Collection.from([
 			]),

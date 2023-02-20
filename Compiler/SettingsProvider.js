@@ -227,6 +227,10 @@ Object.assign(Bayrell.Lang.Compiler.SettingsProvider.prototype,
 		var __v3 = use("Runtime.rs");
 		var module_ext_name = __v3.extname(ctx, module_file_name);
 		var d = use("Runtime.Dict").from({"file_name":module_file_name,"ext_name":module_ext_name,"module":module,"success":false});
+		if (module.checkExclude(ctx, module_file_name))
+		{
+			return Promise.resolve(d);
+		}
 		d = Runtime.rtl.setAttr(ctx, d, Runtime.Collection.from(["success"]), module.checkAllow(ctx, module_file_name));
 		return Promise.resolve(d);
 	},

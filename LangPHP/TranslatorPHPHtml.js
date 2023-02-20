@@ -468,7 +468,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPHtml,
 			}
 			else if (item instanceof __v8)
 			{
-				var res = t.expression.constructor.OpCall(ctx, t, item, true);
+				var res = t.expression.constructor.OpCall(ctx, t, item);
 				t = Runtime.rtl.get(ctx, res, 0);
 				item_value = Runtime.rtl.get(ctx, res, 1);
 				item_value = "static::_escape_html($ctx, " + use("Runtime.rtl").toStr(item_value) + use("Runtime.rtl").toStr(")");

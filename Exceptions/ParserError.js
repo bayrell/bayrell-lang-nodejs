@@ -28,7 +28,6 @@ Bayrell.Lang.Exceptions.ParserError = function(ctx, s, caret, file, code, contex
 	this.error_line = caret.y + 1;
 	this.error_pos = caret.x + 1;
 	this.error_file = file;
-	this.updateError(ctx);
 };
 Bayrell.Lang.Exceptions.ParserError.prototype = Object.create(use("Bayrell.Lang.Exceptions.ParserUnknownError").prototype);
 Bayrell.Lang.Exceptions.ParserError.prototype.constructor = Bayrell.Lang.Exceptions.ParserError;
