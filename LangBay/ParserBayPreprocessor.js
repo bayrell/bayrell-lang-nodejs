@@ -191,8 +191,8 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayPreprocessor,
 			items = Runtime.rtl.get(ctx, res, 1);
 			var res = parser.parser_base.constructor.matchToken(ctx, parser, "#endif");
 			parser = Runtime.rtl.get(ctx, res, 0);
-			/* list d = parser.parser_program::classBodyAnalyze(parser, items);
-			items = d.item("functions"); */
+			var d = parser.parser_program.constructor.classBodyAnalyze(ctx, parser, items);
+			items = d.item(ctx, "functions");
 		}
 		else if (kind == __v2.KIND_OPERATOR)
 		{
