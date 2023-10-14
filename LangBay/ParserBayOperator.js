@@ -980,6 +980,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 		var __v0 = use("Runtime.Dict");
 		parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["vars"]), new __v0(ctx));
 		parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["is_html"]), false);
+		var is_html = false;
 		var res = parser.parser_base.constructor.readToken(ctx, parser);
 		look = Runtime.rtl.get(ctx, res, 0);
 		token = Runtime.rtl.get(ctx, res, 1);
@@ -997,6 +998,16 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 		var expression = null;
 		var is_context = true;
 		var name = "";
+		var __v1 = use("Bayrell.Lang.OpCodes.OpTypeIdentifier");
+		var __v2 = use("Bayrell.Lang.OpCodes.OpEntityName");
+		if (result_type && result_type instanceof __v1 && result_type.entity_name instanceof __v2)
+		{
+			if (result_type.entity_name.names.get(ctx, 0) == "html")
+			{
+				parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["is_html"]), true);
+				is_html = true;
+			}
+		}
 		var res = parser.parser_base.constructor.readToken(ctx, parser);
 		look = Runtime.rtl.get(ctx, res, 0);
 		token = Runtime.rtl.get(ctx, res, 1);
@@ -1047,6 +1058,11 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 			var res = this.readOperators(ctx, save);
 			parser = Runtime.rtl.get(ctx, res, 0);
 			op_code = Runtime.rtl.get(ctx, res, 1);
+			if (is_html)
+			{
+				expression = op_code;
+				op_code = null;
+			}
 		}
 		else if (token.content == ";")
 		{
@@ -1059,7 +1075,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayOperator,
 		parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["vars"]), save_vars);
 		parser = Runtime.rtl.setAttr(ctx, parser, Runtime.Collection.from(["is_html"]), save_is_html);
 		var __v1 = use("Bayrell.Lang.OpCodes.OpDeclareFunction");
-		return use("Runtime.Collection").from([parser,new __v1(ctx, use("Runtime.Dict").from({"args":args,"vars":vars,"flags":flags,"name":name,"is_context":is_context,"result_type":result_type,"expression":expression,"items":op_code,"caret_start":caret_start,"caret_end":parser.caret}))]);
+		return use("Runtime.Collection").from([parser,new __v1(ctx, use("Runtime.Dict").from({"args":args,"vars":vars,"flags":flags,"name":name,"is_html":is_html,"is_context":is_context,"result_type":result_type,"expression":expression,"items":op_code,"caret_start":caret_start,"caret_end":parser.caret}))]);
 	},
 	/**
 	 * Returns true if next is function

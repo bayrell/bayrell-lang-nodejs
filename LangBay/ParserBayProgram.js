@@ -155,8 +155,21 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayProgram,
 					item = Runtime.rtl.get(ctx, res, 1);
 					if (item.expression != null)
 					{
-						var res = parser.parser_base.constructor.matchToken(ctx, parser, ";");
-						parser = Runtime.rtl.get(ctx, res, 0);
+						if (!item.is_html)
+						{
+							var res = parser.parser_base.constructor.matchToken(ctx, parser, ";");
+							parser = Runtime.rtl.get(ctx, res, 0);
+						}
+						else
+						{
+							var res = parser.parser_base.constructor.readToken(ctx, parser);
+							look = Runtime.rtl.get(ctx, res, 0);
+							token = Runtime.rtl.get(ctx, res, 1);
+							if (token.content == ";")
+							{
+								parser = look;
+							}
+						}
 					}
 				}
 				else
