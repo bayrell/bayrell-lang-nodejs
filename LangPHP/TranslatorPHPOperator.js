@@ -722,7 +722,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPOperator,
 			/* Output content */
 			if (Runtime.rtl.get(ctx, res, 1) != "")
 			{
-				content += use("Runtime.rtl").toStr(t.s(ctx, "static::_p(" + use("Runtime.rtl").toStr(save_html_var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1)) + use("Runtime.rtl").toStr(");")));
+				content += use("Runtime.rtl").toStr(t.s(ctx, "\\Runtime\\rs::_p(" + use("Runtime.rtl").toStr(save_html_var_name) + use("Runtime.rtl").toStr(", ") + use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1)) + use("Runtime.rtl").toStr(");")));
 			}
 			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["save_op_codes"]), save_op_codes);
 			t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["save_op_code_inc"]), save_op_code_inc);

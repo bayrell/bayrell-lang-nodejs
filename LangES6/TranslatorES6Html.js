@@ -168,7 +168,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 				/*res_attrs.push
 				(
 					t.expression::toString("@model_path") ~
-						": this._concat_attrs(ctx, params, \"@model_path\", " ~
+						": Runtime.rs._concat_attrs(ctx, params, \"@model_path\", " ~
 						attr_value ~ ")"
 				);*/
 				attr_value = "[component," + use("Runtime.rtl").toStr(attr_value) + use("Runtime.rtl").toStr("]");
@@ -181,7 +181,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 		});
 		if (attr_class.count(ctx) > 0)
 		{
-			attr_class.pushValue(ctx, "this.getCssHash(ctx)");
+			attr_class.pushValue(ctx, "Runtime.rs.getCssHash(ctx, this.getClassName())");
 			/*attr_class.push( t.expression::toString("h-" ~ ParserBayHtml::getCssHash(t.current_class_full_name)) );*/
 			var __v2 = use("Runtime.rs");
 			res_attrs.pushValue(ctx, "\"class\":" + use("Runtime.rtl").toStr("[") + use("Runtime.rtl").toStr(__v2.join(ctx, ", ", attr_class)) + use("Runtime.rtl").toStr("].join(\" \")"));
@@ -211,7 +211,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 			{
 				continue;
 			}
-			attr_s = "this._merge_attrs(ctx, " + use("Runtime.rtl").toStr(attr_s) + use("Runtime.rtl").toStr(",") + use("Runtime.rtl").toStr(attr.value.value) + use("Runtime.rtl").toStr(")");
+			attr_s = "Runtime.rs._merge_attrs(ctx, " + use("Runtime.rtl").toStr(attr_s) + use("Runtime.rtl").toStr(",") + use("Runtime.rtl").toStr(attr.value.value) + use("Runtime.rtl").toStr(")");
 		}
 		return use("Runtime.Collection").from([t,attr_s]);
 	},
