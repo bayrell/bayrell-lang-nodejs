@@ -82,7 +82,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPHtml,
 		var __v2 = use("Runtime.lib");
 		var attr_model = op_code.attrs.findItem(ctx, __v2.equalAttr(ctx, "key", "@model"));
 		var __v3 = use("Runtime.lib");
-		var attr_model_path = op_code.attrs.findItem(ctx, __v3.equalAttr(ctx, "key", "@model_path"));
+		var attr_global = op_code.attrs.findItem(ctx, __v3.equalAttr(ctx, "key", "@global"));
 		if (attr_name)
 		{
 			var res = t.expression.constructor.Expression(ctx, t, attr_name.value);
@@ -101,9 +101,9 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPHtml,
 			t = Runtime.rtl.get(ctx, res, 0);
 			v_model = "\\Runtime\\rs::_concat_attrs($ctx, $model_path, " + use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1)) + use("Runtime.rtl").toStr(")");
 		}
-		else if (attr_model_path)
+		else if (attr_global)
 		{
-			var res = t.expression.constructor.Expression(ctx, t, attr_model_path.value);
+			var res = t.expression.constructor.Expression(ctx, t, attr_global.value);
 			t = Runtime.rtl.get(ctx, res, 0);
 			v_model = "\\Runtime\\rs::_concat_attrs($ctx, [], " + use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, res, 1)) + use("Runtime.rtl").toStr(")");
 		}
@@ -119,6 +119,10 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPHtml,
 				continue;
 			}
 			if (attr.key == "@model")
+			{
+				continue;
+			}
+			if (attr.key == "@global")
 			{
 				continue;
 			}

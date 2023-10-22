@@ -165,13 +165,12 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 			}
 			else if (attr_key == "@ref" || attr_key == "@bind" || attr_key == "@model" || attr_key == "@name" || attr_key == "@watch")
 			{
-				/*res_attrs.push
-				(
-					t.expression::toString("@model_path") ~
-						": Runtime.rs._concat_attrs(ctx, params, \"@model_path\", " ~
-						attr_value ~ ")"
-				);*/
 				attr_value = "[component," + use("Runtime.rtl").toStr(attr_value) + use("Runtime.rtl").toStr("]");
+			}
+			else if (attr_key == "@global")
+			{
+				attr_key = "@model";
+				attr_value = "[null," + use("Runtime.rtl").toStr(attr_value) + use("Runtime.rtl").toStr("]");
 			}
 			res_attrs.pushValue(ctx, t.expression.constructor.toString(ctx, attr_key) + use("Runtime.rtl").toStr(":") + use("Runtime.rtl").toStr(attr_value));
 		}
