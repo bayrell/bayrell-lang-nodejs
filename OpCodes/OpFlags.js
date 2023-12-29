@@ -55,8 +55,10 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags.prototype,
 		this.p_cloneable = false;
 		this.p_assignable = false;
 		this.p_memorize = false;
+		this.p_multiblock = false;
 		this.p_lambda = false;
 		this.p_pure = false;
+		this.p_props = false;
 	},
 	takeValue: function(ctx,k,d)
 	{
@@ -73,8 +75,10 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags.prototype,
 		else if (k == "p_cloneable")return this.p_cloneable;
 		else if (k == "p_assignable")return this.p_assignable;
 		else if (k == "p_memorize")return this.p_memorize;
+		else if (k == "p_multiblock")return this.p_multiblock;
 		else if (k == "p_lambda")return this.p_lambda;
 		else if (k == "p_pure")return this.p_pure;
+		else if (k == "p_props")return this.p_props;
 		return use("Runtime.BaseStruct").prototype.takeValue.call(this,ctx,k,d);
 	},
 });
@@ -86,14 +90,14 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags,
 	 */
 	getFlags: function(ctx)
 	{
-		return use("Runtime.Collection").from(["async","export","static","const","public","private","declare","protected","serializable","cloneable","assignable","memorize","pure"]);
+		return use("Runtime.Vector").from(["async","export","static","const","public","private","declare","protected","serializable","cloneable","assignable","memorize","multiblock","pure","props"]);
 	},
 	/**
 	 * Get flags
 	 */
 	hasFlag: function(ctx, flag_name)
 	{
-		if (flag_name == "async" || flag_name == "export" || flag_name == "static" || flag_name == "const" || flag_name == "public" || flag_name == "private" || flag_name == "declare" || flag_name == "protected" || flag_name == "serializable" || flag_name == "cloneable" || flag_name == "assignable" || flag_name == "memorize" || flag_name == "lambda" || flag_name == "pure")
+		if (flag_name == "async" || flag_name == "export" || flag_name == "static" || flag_name == "const" || flag_name == "public" || flag_name == "private" || flag_name == "declare" || flag_name == "protected" || flag_name == "serializable" || flag_name == "cloneable" || flag_name == "assignable" || flag_name == "memorize" || flag_name == "multiblock" || flag_name == "lambda" || flag_name == "pure" || flag_name == "props")
 		{
 			return true;
 		}
@@ -114,10 +118,10 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags,
 	},
 	getClassInfo: function(ctx)
 	{
-		var Collection = use("Runtime.Collection");
-		var Dict = use("Runtime.Dict");
-		return Dict.from({
-			"annotations": Collection.from([
+		var Vector = use("Runtime.Vector");
+		var Map = use("Runtime.Map");
+		return Map.from({
+			"annotations": Vector.from([
 			]),
 		});
 	},
@@ -136,94 +140,23 @@ Object.assign(Bayrell.Lang.OpCodes.OpFlags,
 		a.push("p_cloneable");
 		a.push("p_assignable");
 		a.push("p_memorize");
+		a.push("p_multiblock");
 		a.push("p_lambda");
 		a.push("p_pure");
-		return use("Runtime.Collection").from(a);
+		a.push("p_props");
+		return use("Runtime.Vector").from(a);
 	},
 	getFieldInfoByName: function(ctx,field_name)
 	{
-		var Collection = use("Runtime.Collection");
-		var Dict = use("Runtime.Dict");
-		if (field_name == "p_async") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "p_export") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "p_static") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "p_const") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "p_public") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "p_private") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "p_protected") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "p_declare") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "p_serializable") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "p_cloneable") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "p_assignable") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "p_memorize") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "p_lambda") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "p_pure") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
+		var Vector = use("Runtime.Vector");
+		var Map = use("Runtime.Map");
 		return null;
 	},
 	getMethodsList: function(ctx)
 	{
 		var a=[
-			"isFlag",
-			"getFlags",
-			"hasFlag",
 		];
-		return use("Runtime.Collection").from(a);
+		return use("Runtime.Vector").from(a);
 	},
 	getMethodInfoByName: function(ctx,field_name)
 	{

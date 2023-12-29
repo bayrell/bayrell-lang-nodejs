@@ -71,7 +71,7 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode,
 		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["expression"]), new __v0(ctx));
 		var __v1 = use("Bayrell.Lang.LangNode.TranslatorNodeProgram");
 		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["program"]), new __v1(ctx));
-		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["preprocessor_flags"]), t.preprocessor_flags.copy(ctx, use("Runtime.Dict").from({"BACKEND":true,"NODEJS":true,"ES6":false})));
+		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["preprocessor_flags"]), t.preprocessor_flags.copy(ctx, use("Runtime.Map").from({"BACKEND":true,"NODEJS":true,"ES6":false})));
 		return t;
 	},
 	/**
@@ -97,10 +97,10 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode,
 	},
 	getClassInfo: function(ctx)
 	{
-		var Collection = use("Runtime.Collection");
-		var Dict = use("Runtime.Dict");
-		return Dict.from({
-			"annotations": Collection.from([
+		var Vector = use("Runtime.Vector");
+		var Map = use("Runtime.Map");
+		return Map.from({
+			"annotations": Vector.from([
 			]),
 		});
 	},
@@ -117,71 +117,19 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNode,
 		a.push("emulate_async_await");
 		a.push("enable_introspection");
 		a.push("enable_context");
-		return use("Runtime.Collection").from(a);
+		return use("Runtime.Vector").from(a);
 	},
 	getFieldInfoByName: function(ctx,field_name)
 	{
-		var Collection = use("Runtime.Collection");
-		var Dict = use("Runtime.Dict");
-		if (field_name == "async_await") return Dict.from({
-			"t": "Bayrell.Lang.LangES6.TranslatorES6AsyncAwait",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "expression") return Dict.from({
-			"t": "Bayrell.Lang.LangES6.TranslatorES6Expression",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "html") return Dict.from({
-			"t": "Bayrell.Lang.LangES6.TranslatorES6Html",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "operator") return Dict.from({
-			"t": "Bayrell.Lang.LangES6.TranslatorES6Operator",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "program") return Dict.from({
-			"t": "Bayrell.Lang.LangES6.TranslatorES6Program",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "use_module_name") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "enable_async_await") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "emulate_async_await") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "enable_introspection") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "enable_context") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
+		var Vector = use("Runtime.Vector");
+		var Map = use("Runtime.Map");
 		return null;
 	},
 	getMethodsList: function(ctx)
 	{
 		var a=[
-			"reset",
-			"translate",
 		];
-		return use("Runtime.Collection").from(a);
+		return use("Runtime.Vector").from(a);
 	},
 	getMethodInfoByName: function(ctx,field_name)
 	{

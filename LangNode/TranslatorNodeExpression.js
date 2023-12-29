@@ -39,15 +39,15 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNodeExpression,
 	{
 		if (op_code.value == "@")
 		{
-			return use("Runtime.Collection").from([t,"ctx"]);
+			return use("Runtime.Vector").from([t,"ctx"]);
 		}
 		if (op_code.value == "_")
 		{
-			return use("Runtime.Collection").from([t,"ctx.constructor.translate"]);
+			return use("Runtime.Vector").from([t,"ctx.constructor.translate"]);
 		}
 		if (op_code.value == "log")
 		{
-			return use("Runtime.Collection").from([t,"console.log"]);
+			return use("Runtime.Vector").from([t,"console.log"]);
 		}
 		var __v0 = use("Bayrell.Lang.OpCodes.OpIdentifier");
 		if (t.modules.has(ctx, op_code.value) || op_code.kind == __v0.KIND_SYS_TYPE)
@@ -56,13 +56,13 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNodeExpression,
 			var new_module_name = this.findModuleName(ctx, t, module_name);
 			if (module_name != new_module_name)
 			{
-				var res = t.constructor.addSaveOpCode(ctx, t, use("Runtime.Dict").from({"op_code":op_code,"var_content":this.useModuleName(ctx, t, module_name)}));
-				t = Runtime.rtl.get(ctx, res, 0);
-				var var_name = Runtime.rtl.get(ctx, res, 1);
-				return use("Runtime.Collection").from([t,var_name]);
+				var res = t.constructor.addSaveOpCode(ctx, t, use("Runtime.Map").from({"op_code":op_code,"var_content":this.useModuleName(ctx, t, module_name)}));
+				t = Runtime.rtl.attr(ctx, res, 0);
+				var var_name = Runtime.rtl.attr(ctx, res, 1);
+				return use("Runtime.Vector").from([t,var_name]);
 			}
 		}
-		return use("Runtime.Collection").from([t,op_code.value]);
+		return use("Runtime.Vector").from([t,op_code.value]);
 	},
 	/**
 	 * OpTypeIdentifier
@@ -76,9 +76,9 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNodeExpression,
 			var new_module_name = this.findModuleName(ctx, t, module_name);
 			if (module_name != new_module_name)
 			{
-				var res = t.constructor.addSaveOpCode(ctx, t, use("Runtime.Dict").from({"var_content":this.useModuleName(ctx, t, module_name)}));
-				t = Runtime.rtl.get(ctx, res, 0);
-				var_name = Runtime.rtl.get(ctx, res, 1);
+				var res = t.constructor.addSaveOpCode(ctx, t, use("Runtime.Map").from({"var_content":this.useModuleName(ctx, t, module_name)}));
+				t = Runtime.rtl.attr(ctx, res, 0);
+				var_name = Runtime.rtl.attr(ctx, res, 1);
 			}
 		}
 		if (var_name == "")
@@ -86,7 +86,7 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNodeExpression,
 			var __v0 = use("Runtime.rs");
 			var_name = __v0.join(ctx, ".", op_code.entity_name.names);
 		}
-		return use("Runtime.Collection").from([t,var_name]);
+		return use("Runtime.Vector").from([t,var_name]);
 	},
 	/* ======================= Class Init Functions ======================= */
 	getNamespace: function()
@@ -103,31 +103,29 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNodeExpression,
 	},
 	getClassInfo: function(ctx)
 	{
-		var Collection = use("Runtime.Collection");
-		var Dict = use("Runtime.Dict");
-		return Dict.from({
-			"annotations": Collection.from([
+		var Vector = use("Runtime.Vector");
+		var Map = use("Runtime.Map");
+		return Map.from({
+			"annotations": Vector.from([
 			]),
 		});
 	},
 	getFieldsList: function(ctx)
 	{
 		var a = [];
-		return use("Runtime.Collection").from(a);
+		return use("Runtime.Vector").from(a);
 	},
 	getFieldInfoByName: function(ctx,field_name)
 	{
-		var Collection = use("Runtime.Collection");
-		var Dict = use("Runtime.Dict");
+		var Vector = use("Runtime.Vector");
+		var Map = use("Runtime.Map");
 		return null;
 	},
 	getMethodsList: function(ctx)
 	{
 		var a=[
-			"OpIdentifier",
-			"OpTypeIdentifier",
 		];
-		return use("Runtime.Collection").from(a);
+		return use("Runtime.Vector").from(a);
 	},
 	getMethodInfoByName: function(ctx,field_name)
 	{

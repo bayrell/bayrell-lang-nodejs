@@ -40,14 +40,14 @@ Object.assign(Bayrell.Lang.CoreTranslator.prototype,
 	 */
 	levelInc: function(ctx)
 	{
-		return this.copy(ctx, use("Runtime.Dict").from({"indent_level":this.indent_level + 1}));
+		return this.copy(ctx, use("Runtime.Map").from({"indent_level":this.indent_level + 1}));
 	},
 	/**
 	 * Decrease indent level
 	 */
 	levelDec: function(ctx)
 	{
-		return this.copy(ctx, use("Runtime.Dict").from({"indent_level":this.indent_level - 1}));
+		return this.copy(ctx, use("Runtime.Map").from({"indent_level":this.indent_level - 1}));
 	},
 	/**
 	 * Output content with indent
@@ -157,8 +157,8 @@ Object.assign(Bayrell.Lang.CoreTranslator,
 	{
 		var var_name = this.nextSaveOpCode(ctx, t);
 		var save_op_code_inc = t.save_op_code_inc + 1;
-		t = t.copy(ctx, use("Runtime.Dict").from({"save_op_code_inc":save_op_code_inc}));
-		return use("Runtime.Collection").from([t,var_name]);
+		t = t.copy(ctx, use("Runtime.Map").from({"save_op_code_inc":save_op_code_inc}));
+		return use("Runtime.Vector").from([t,var_name]);
 	},
 	/**
 	 * Add save op code
@@ -177,8 +177,8 @@ Object.assign(Bayrell.Lang.CoreTranslator,
 		}
 		var __v0 = use("Bayrell.Lang.SaveOpCode");
 		var s = new __v0(ctx, data);
-		t = t.copy(ctx, use("Runtime.Dict").from({"save_op_codes":t.save_op_codes.pushIm(ctx, s),"save_op_code_inc":save_op_code_inc}));
-		return use("Runtime.Collection").from([t,var_name]);
+		t = t.copy(ctx, use("Runtime.Map").from({"save_op_codes":t.save_op_codes.pushIm(ctx, s),"save_op_code_inc":save_op_code_inc}));
+		return use("Runtime.Vector").from([t,var_name]);
 	},
 	/**
 	 * Clear save op code
@@ -208,14 +208,14 @@ Object.assign(Bayrell.Lang.CoreTranslator,
 		var save_op_code_inc = t.save_op_code_inc;
 		var __v0 = use("Runtime.rtl");
 		var res = __v0.apply(ctx, f, args.unshiftIm(ctx, t));
-		t = Runtime.rtl.get(ctx, res, 0);
-		var value = Runtime.rtl.get(ctx, res, 1);
+		t = Runtime.rtl.attr(ctx, res, 0);
+		var value = Runtime.rtl.attr(ctx, res, 1);
 		/* Output save op code */
 		var save = t.constructor.outputSaveOpCode(ctx, t, save_op_codes.count(ctx));
 		/* Restore save op codes */
 		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["save_op_codes"]), save_op_codes);
 		t = Runtime.rtl.setAttr(ctx, t, Runtime.Collection.from(["save_op_code_inc"]), save_op_code_inc);
-		return use("Runtime.Collection").from([t,save,value]);
+		return use("Runtime.Vector").from([t,save,value]);
 	},
 	/* ======================= Class Init Functions ======================= */
 	getNamespace: function()
@@ -232,10 +232,10 @@ Object.assign(Bayrell.Lang.CoreTranslator,
 	},
 	getClassInfo: function(ctx)
 	{
-		var Collection = use("Runtime.Collection");
-		var Dict = use("Runtime.Dict");
-		return Dict.from({
-			"annotations": Collection.from([
+		var Vector = use("Runtime.Vector");
+		var Map = use("Runtime.Map");
+		return Map.from({
+			"annotations": Vector.from([
 			]),
 		});
 	},
@@ -261,132 +261,19 @@ Object.assign(Bayrell.Lang.CoreTranslator,
 		a.push("crlf");
 		a.push("flag_struct_check_types");
 		a.push("preprocessor_flags");
-		return use("Runtime.Collection").from(a);
+		return use("Runtime.Vector").from(a);
 	},
 	getFieldInfoByName: function(ctx,field_name)
 	{
-		var Collection = use("Runtime.Collection");
-		var Dict = use("Runtime.Dict");
-		if (field_name == "current_namespace_name") return Dict.from({
-			"t": "string",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "current_class_name") return Dict.from({
-			"t": "string",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "current_class_full_name") return Dict.from({
-			"t": "string",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "current_class_extends_name") return Dict.from({
-			"t": "string",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "current_class") return Dict.from({
-			"t": "Bayrell.Lang.OpCodes.OpDeclareClass",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "current_function") return Dict.from({
-			"t": "Bayrell.Lang.OpCodes.OpDeclareFunction",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "modules") return Dict.from({
-			"t": "Runtime.Dict",
-			"s": ["string"],
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "vars") return Dict.from({
-			"t": "Runtime.Dict",
-			"s": ["bool"],
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "save_vars") return Dict.from({
-			"t": "Runtime.Collection",
-			"s": ["string"],
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "save_op_codes") return Dict.from({
-			"t": "Runtime.Collection",
-			"s": ["Bayrell.Lang.SaveOpCode"],
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "save_op_code_inc") return Dict.from({
-			"t": "int",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "is_static_function") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "is_operation") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "opcode_level") return Dict.from({
-			"t": "int",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "indent_level") return Dict.from({
-			"t": "int",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "indent") return Dict.from({
-			"t": "string",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "crlf") return Dict.from({
-			"t": "string",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "flag_struct_check_types") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "preprocessor_flags") return Dict.from({
-			"t": "Runtime.Dict",
-			"s": ["bool"],
-			"annotations": Collection.from([
-			]),
-		});
+		var Vector = use("Runtime.Vector");
+		var Map = use("Runtime.Map");
 		return null;
 	},
 	getMethodsList: function(ctx)
 	{
 		var a=[
-			"findSaveOpCode",
-			"levelInc",
-			"levelDec",
-			"s",
-			"s2",
-			"o",
-			"translate",
-			"nextSaveOpCode",
-			"incSaveOpCode",
-			"addSaveOpCode",
-			"clearSaveOpCode",
-			"outputSaveOpCode",
-			"saveOpCodeCall",
 		];
-		return use("Runtime.Collection").from(a);
+		return use("Runtime.Vector").from(a);
 	},
 	getMethodInfoByName: function(ctx,field_name)
 	{

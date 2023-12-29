@@ -39,7 +39,7 @@ Object.assign(Bayrell.Lang.Compiler.CLI.prototype,
 	{
 		if (log_level == undefined) log_level = 0;
 		var file_info = await this.settings.resolveSourceFile(ctx, file_path);
-		if (!Runtime.rtl.get(ctx, file_info, "success"))
+		if (!Runtime.rtl.attr(ctx, file_info, "success"))
 		{
 			return Promise.resolve(file_info);
 		}
@@ -51,10 +51,10 @@ Object.assign(Bayrell.Lang.Compiler.CLI.prototype,
 		else if ((log_level & 1) == 1)
 		{
 			var __v1 = use("Runtime.io");
-			__v1.print(ctx, Runtime.rtl.get(ctx, file_info, "file_name"));
+			__v1.print(ctx, Runtime.rtl.attr(ctx, file_info, "file_name"));
 		}
-		var ext_name = Runtime.rtl.get(ctx, file_info, "ext_name");
-		var container = use("Runtime.Dict").from({"op_code":null,"success":false,"content":"","result":"","lang":""});
+		var ext_name = Runtime.rtl.attr(ctx, file_info, "ext_name");
+		var container = use("Runtime.Map").from({"op_code":null,"success":false,"content":"","result":"","lang":""});
 		var __v0 = use("Runtime.fs");
 		container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["content"]), await __v0.readFile(ctx, file_path));
 		if (ext_name == "bay")
@@ -62,7 +62,7 @@ Object.assign(Bayrell.Lang.Compiler.CLI.prototype,
 			var __v1 = use("Bayrell.Lang.LangBay.ParserBay");
 			var parser = new __v1(ctx);
 			var __v2 = use("Bayrell.Lang.LangUtils");
-			var op_code = __v2.parse(ctx, parser, Runtime.rtl.get(ctx, container, "content"));
+			var op_code = __v2.parse(ctx, parser, Runtime.rtl.attr(ctx, container, "content"));
 			container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["op_code"]), op_code);
 		}
 		var is_lang = (ctx, ext_name, lang) => 
@@ -98,9 +98,9 @@ Object.assign(Bayrell.Lang.Compiler.CLI.prototype,
 		};
 		var save_file = async (ctx, file_info, container) => 
 		{
-			var file_name = Runtime.rtl.get(ctx, file_info, "file_name");
-			var module = Runtime.rtl.get(ctx, file_info, "module");
-			var dest_path = module.resolveDestFile(ctx, this.settings.project_path, file_name, Runtime.rtl.get(ctx, container, "lang"));
+			var file_name = Runtime.rtl.attr(ctx, file_info, "file_name");
+			var module = Runtime.rtl.attr(ctx, file_info, "module");
+			var dest_path = module.resolveDestFile(ctx, this.settings.project_path, file_name, Runtime.rtl.attr(ctx, container, "lang"));
 			if (dest_path == "")
 			{
 				return Promise.resolve(false);
@@ -116,7 +116,7 @@ Object.assign(Bayrell.Lang.Compiler.CLI.prototype,
 			}
 			/* Save file */
 			var __v2 = use("Runtime.fs");
-			await __v2.saveFile(ctx, dest_path, Runtime.rtl.get(ctx, container, "result"));
+			await __v2.saveFile(ctx, dest_path, Runtime.rtl.attr(ctx, container, "result"));
 			if ((log_level & 2) == 2)
 			{
 				var __v3 = use("Runtime.io");
@@ -124,27 +124,27 @@ Object.assign(Bayrell.Lang.Compiler.CLI.prototype,
 			}
 			return Promise.resolve(true);
 		};
-		var languages = use("Runtime.Collection").from([]);
+		var languages = use("Runtime.Vector").from([]);
 		if (lang == "")
 		{
 			var __v1 = use("Runtime.Monad");
-			var __v2 = new __v1(ctx, Runtime.rtl.get(ctx, this.settings.config, "languages"));
+			var __v2 = new __v1(ctx, Runtime.rtl.attr(ctx, this.settings.config, "languages"));
 			var __v3 = use("Runtime.rtl");
-			__v2 = __v2.monad(ctx, __v3.m_to(ctx, "Runtime.Collection", use("Runtime.Collection").from([])));
+			__v2 = __v2.monad(ctx, __v3.m_to(ctx, "Runtime.Collection", use("Runtime.Vector").from([])));
 			languages = __v2.value(ctx);
 		}
 		else
 		{
-			languages = use("Runtime.Collection").from([lang]);
+			languages = use("Runtime.Vector").from([lang]);
 		}
-		for (var i = 0;i < languages.count(ctx);i++)
+		for (var i = 0; i < languages.count(ctx); i++)
 		{
 			var __v1 = use("Runtime.Monad");
-			var __v2 = new __v1(ctx, Runtime.rtl.get(ctx, languages, i));
+			var __v2 = new __v1(ctx, Runtime.rtl.attr(ctx, languages, i));
 			var __v3 = use("Runtime.rtl");
 			__v2 = __v2.monad(ctx, __v3.m_to(ctx, "string", ""));
 			var lang_name = __v2.value(ctx);
-			var op_code = Runtime.rtl.get(ctx, container, "op_code");
+			var op_code = Runtime.rtl.attr(ctx, container, "op_code");
 			container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["success"]), false);
 			container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["lang"]), lang_name);
 			container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["result"]), "");
@@ -164,10 +164,10 @@ Object.assign(Bayrell.Lang.Compiler.CLI.prototype,
 			}
 			else if (is_lang(ctx, ext_name, lang_name))
 			{
-				container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["result"]), Runtime.rtl.get(ctx, container, "content"));
+				container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["result"]), Runtime.rtl.attr(ctx, container, "content"));
 				container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["success"]), true);
 			}
-			if (Runtime.rtl.get(ctx, container, "success"))
+			if (Runtime.rtl.attr(ctx, container, "success"))
 			{
 				await save_file(ctx, file_info, container, lang_name);
 			}
@@ -191,16 +191,16 @@ Object.assign(Bayrell.Lang.Compiler.CLI.prototype,
 			__v0.print_error(ctx, "Module " + module_name + " not found");
 			return Promise.resolve(-1);
 		}
-		var module = Runtime.rtl.get(ctx, this.settings.modules, module_name);
+		var module = Runtime.rtl.attr(ctx, this.settings.modules, module_name);
 		var module_src_path = module.getSourcePath(ctx);
 		var is_success = true;
 		var __v0 = use("Runtime.fs");
 		var files = await __v0.listDirRecursive(ctx, module_src_path);
-		for (var i = 0;i < files.count(ctx);i++)
+		for (var i = 0; i < files.count(ctx); i++)
 		{
-			var file_name = Runtime.rtl.get(ctx, files, i);
+			var file_name = Runtime.rtl.attr(ctx, files, i);
 			var __v1 = use("Runtime.fs");
-			var file_path = __v1.join(ctx, use("Runtime.Collection").from([module_src_path,file_name]));
+			var file_path = __v1.join(ctx, use("Runtime.Vector").from([module_src_path,file_name]));
 			if (module.checkExclude(ctx, file_name))
 			{
 				continue;
@@ -222,7 +222,7 @@ Object.assign(Bayrell.Lang.Compiler.CLI.prototype,
 					var e = _ex;
 					
 					var __v3 = use("Runtime.io");
-					__v3.print_error(ctx, e.getErrorMessage(ctx));
+					__v3.print_error(ctx, e.toString(ctx));
 					is_success = false;
 				}
 				else if (true)
@@ -250,12 +250,12 @@ Object.assign(Bayrell.Lang.Compiler.CLI.prototype,
 	makeBundle: async function(ctx, assets)
 	{
 		var __v0 = use("Runtime.Monad");
-		var __v1 = new __v0(ctx, Runtime.rtl.get(ctx, assets, "modules"));
+		var __v1 = new __v0(ctx, Runtime.rtl.attr(ctx, assets, "modules"));
 		var __v2 = use("Runtime.rtl");
-		__v1 = __v1.monad(ctx, __v2.m_to(ctx, "Runtime.Collection", use("Runtime.Collection").from([])));
+		__v1 = __v1.monad(ctx, __v2.m_to(ctx, "Runtime.Collection", use("Runtime.Vector").from([])));
 		var modules = __v1.value(ctx);
 		var __v3 = use("Runtime.Monad");
-		var __v4 = new __v3(ctx, Runtime.rtl.get(ctx, assets, "dest"));
+		var __v4 = new __v3(ctx, Runtime.rtl.attr(ctx, assets, "dest"));
 		var __v5 = use("Runtime.rtl");
 		__v4 = __v4.monad(ctx, __v5.m_to(ctx, "string", ""));
 		var assets_path_relative = __v4.value(ctx);
@@ -264,24 +264,24 @@ Object.assign(Bayrell.Lang.Compiler.CLI.prototype,
 			return Promise.resolve();
 		}
 		var __v6 = use("Runtime.fs");
-		var assets_path = __v6.join(ctx, use("Runtime.Collection").from([this.settings.project_path,assets_path_relative]));
+		var assets_path = __v6.join(ctx, use("Runtime.Vector").from([this.settings.project_path,assets_path_relative]));
 		var assets_content = "";
-		for (var i = 0;i < modules.count(ctx);i++)
+		for (var i = 0; i < modules.count(ctx); i++)
 		{
-			var module_name = Runtime.rtl.get(ctx, modules, i);
-			var module = Runtime.rtl.get(ctx, this.settings.modules, module_name);
+			var module_name = Runtime.rtl.attr(ctx, modules, i);
+			var module = Runtime.rtl.attr(ctx, this.settings.modules, module_name);
 			if (!module)
 			{
 				continue;
 			}
 			var __v7 = use("Runtime.Monad");
-			var __v8 = new __v7(ctx, Runtime.rtl.get(ctx, module.config, "assets"));
+			var __v8 = new __v7(ctx, Runtime.rtl.attr(ctx, module.config, "assets"));
 			var __v9 = use("Runtime.rtl");
-			__v8 = __v8.monad(ctx, __v9.m_to(ctx, "Runtime.Collection", use("Runtime.Collection").from([])));
+			__v8 = __v8.monad(ctx, __v9.m_to(ctx, "Runtime.Collection", use("Runtime.Vector").from([])));
 			var files = __v8.value(ctx);
-			for (var j = 0;j < files.count(ctx);j++)
+			for (var j = 0; j < files.count(ctx); j++)
 			{
-				var file_name = Runtime.rtl.get(ctx, files, j);
+				var file_name = Runtime.rtl.attr(ctx, files, j);
 				var file_source_path = module.resolveSourceFile(ctx, file_name);
 				var file_dest_path = module.resolveDestFile(ctx, this.settings.project_path, file_name, "es6");
 				var __v10 = use("Runtime.fs");
@@ -321,9 +321,9 @@ Object.assign(Bayrell.Lang.Compiler.CLI.prototype,
 	makeAssets: async function(ctx, module_name)
 	{
 		var __v0 = use("Runtime.Monad");
-		var __v1 = new __v0(ctx, Runtime.rtl.get(ctx, this.settings.config, "languages"));
+		var __v1 = new __v0(ctx, Runtime.rtl.attr(ctx, this.settings.config, "languages"));
 		var __v2 = use("Runtime.rtl");
-		__v1 = __v1.monad(ctx, __v2.m_to(ctx, "Runtime.Collection", use("Runtime.Collection").from([])));
+		__v1 = __v1.monad(ctx, __v2.m_to(ctx, "Runtime.Collection", use("Runtime.Vector").from([])));
 		var languages = __v1.value(ctx);
 		if (languages.indexOf(ctx, "es6") == -1)
 		{
@@ -335,19 +335,19 @@ Object.assign(Bayrell.Lang.Compiler.CLI.prototype,
 			__v3.print_error(ctx, "Module " + module_name + " not found");
 			return Promise.resolve(-1);
 		}
-		var module = Runtime.rtl.get(ctx, this.settings.modules, module_name);
+		var module = Runtime.rtl.attr(ctx, this.settings.modules, module_name);
 		var __v3 = use("Runtime.Monad");
-		var __v4 = new __v3(ctx, Runtime.rtl.get(ctx, this.settings.config, "assets"));
+		var __v4 = new __v3(ctx, Runtime.rtl.attr(ctx, this.settings.config, "assets"));
 		var __v5 = use("Runtime.rtl");
-		__v4 = __v4.monad(ctx, __v5.m_to(ctx, "Runtime.Collection", use("Runtime.Collection").from([])));
+		__v4 = __v4.monad(ctx, __v5.m_to(ctx, "Runtime.Collection", use("Runtime.Vector").from([])));
 		var assets = __v4.value(ctx);
-		for (var i = 0;i < assets.count(ctx);i++)
+		for (var i = 0; i < assets.count(ctx); i++)
 		{
-			var a = Runtime.rtl.get(ctx, assets, i);
+			var a = Runtime.rtl.attr(ctx, assets, i);
 			var __v6 = use("Runtime.Monad");
-			var __v7 = new __v6(ctx, Runtime.rtl.get(ctx, a, "modules"));
+			var __v7 = new __v6(ctx, Runtime.rtl.attr(ctx, a, "modules"));
 			var __v8 = use("Runtime.rtl");
-			__v7 = __v7.monad(ctx, __v8.m_to(ctx, "Runtime.Collection", use("Runtime.Collection").from([])));
+			__v7 = __v7.monad(ctx, __v8.m_to(ctx, "Runtime.Collection", use("Runtime.Vector").from([])));
 			var modules = __v7.value(ctx);
 			if (modules.indexOf(ctx, module_name) >= 0)
 			{
@@ -363,10 +363,10 @@ Object.assign(Bayrell.Lang.Compiler.CLI.prototype,
 	{
 		var modules = this.getModules(ctx);
 		var modules_names = modules.keys(ctx).sort(ctx);
-		for (var i = 0;i < modules_names.count(ctx);i++)
+		for (var i = 0; i < modules_names.count(ctx); i++)
 		{
-			var module_name = Runtime.rtl.get(ctx, modules_names, i);
-			var module = Runtime.rtl.get(ctx, modules, module_name);
+			var module_name = Runtime.rtl.attr(ctx, modules_names, i);
+			var module = Runtime.rtl.attr(ctx, modules, module_name);
 			if (verbose)
 			{
 				var __v0 = use("Runtime.io");
@@ -402,7 +402,7 @@ Object.assign(Bayrell.Lang.Compiler.CLI.prototype,
 	 */
 	main: async function(ctx)
 	{
-		var cmd = Runtime.rtl.get(ctx, ctx.cli_args, 1);
+		var cmd = Runtime.rtl.attr(ctx, ctx.cli_args, 1);
 		var __v0 = use("Runtime.rtl");
 		if (__v0.isEmpty(ctx, cmd))
 		{
@@ -439,8 +439,8 @@ Object.assign(Bayrell.Lang.Compiler.CLI.prototype,
 		}
 		else if (cmd == "make")
 		{
-			var module_name = Runtime.rtl.get(ctx, ctx.cli_args, 2);
-			var lang = Runtime.rtl.get(ctx, ctx.cli_args, 3);
+			var module_name = Runtime.rtl.attr(ctx, ctx.cli_args, 2);
+			var lang = Runtime.rtl.attr(ctx, ctx.cli_args, 3);
 			var __v11 = use("Runtime.rtl");
 			if (__v11.isEmpty(ctx, module_name))
 			{
@@ -451,8 +451,8 @@ Object.assign(Bayrell.Lang.Compiler.CLI.prototype,
 		}
 		else if (cmd == "assets")
 		{
-			var module_name = Runtime.rtl.get(ctx, ctx.cli_args, 2);
-			var lang = Runtime.rtl.get(ctx, ctx.cli_args, 3);
+			var module_name = Runtime.rtl.attr(ctx, ctx.cli_args, 2);
+			var lang = Runtime.rtl.attr(ctx, ctx.cli_args, 3);
 			var __v11 = use("Runtime.rtl");
 			if (__v11.isEmpty(ctx, module_name))
 			{
@@ -486,7 +486,7 @@ Object.assign(Bayrell.Lang.Compiler.CLI.prototype,
 					let ParserUnknownError = use("Bayrell.Lang.Exceptions.ParserUnknownError");
 					if (e instanceof ParserUnknownError)
 					{
-						io.print_error(ctx, "Error: " + e.getErrorMessage());
+						io.print_error(ctx, "Error: " + e.toString());
 					}
 					else
 					{
@@ -529,7 +529,7 @@ Object.assign(Bayrell.Lang.Compiler.CLI,
 	 */
 	modules: function(ctx)
 	{
-		return use("Runtime.Collection").from(["Bayrell.Lang"]);
+		return use("Runtime.Vector").from(["Bayrell.Lang"]);
 	},
 	/* ======================= Class Init Functions ======================= */
 	getNamespace: function()
@@ -546,45 +546,29 @@ Object.assign(Bayrell.Lang.Compiler.CLI,
 	},
 	getClassInfo: function(ctx)
 	{
-		var Collection = use("Runtime.Collection");
-		var Dict = use("Runtime.Dict");
-		return Dict.from({
-			"annotations": Collection.from([
+		var Vector = use("Runtime.Vector");
+		var Map = use("Runtime.Map");
+		return Map.from({
+			"annotations": Vector.from([
 			]),
 		});
 	},
 	getFieldsList: function(ctx)
 	{
 		var a = [];
-		a.push("settings");
-		return use("Runtime.Collection").from(a);
+		return use("Runtime.Vector").from(a);
 	},
 	getFieldInfoByName: function(ctx,field_name)
 	{
-		var Collection = use("Runtime.Collection");
-		var Dict = use("Runtime.Dict");
-		if (field_name == "settings") return Dict.from({
-			"t": "Bayrell.Lang.Compiler.SettingsProvider",
-			"annotations": Collection.from([
-			]),
-		});
+		var Vector = use("Runtime.Vector");
+		var Map = use("Runtime.Map");
 		return null;
 	},
 	getMethodsList: function(ctx)
 	{
 		var a=[
-			"getModules",
-			"compileFile",
-			"compileModule",
-			"makeBundle",
-			"makeAssets",
-			"showModules",
-			"modules",
-			"init",
-			"start",
-			"main",
 		];
-		return use("Runtime.Collection").from(a);
+		return use("Runtime.Vector").from(a);
 	},
 	getMethodInfoByName: function(ctx,field_name)
 	{

@@ -70,10 +70,10 @@ Object.assign(Bayrell.Lang.OpCodes.OpAttr,
 	},
 	getClassInfo: function(ctx)
 	{
-		var Collection = use("Runtime.Collection");
-		var Dict = use("Runtime.Dict");
-		return Dict.from({
-			"annotations": Collection.from([
+		var Vector = use("Runtime.Vector");
+		var Map = use("Runtime.Map");
+		return Map.from({
+			"annotations": Vector.from([
 			]),
 		});
 	},
@@ -85,45 +85,19 @@ Object.assign(Bayrell.Lang.OpCodes.OpAttr,
 		a.push("obj");
 		a.push("value");
 		a.push("attrs");
-		return use("Runtime.Collection").from(a);
+		return use("Runtime.Vector").from(a);
 	},
 	getFieldInfoByName: function(ctx,field_name)
 	{
-		var Collection = use("Runtime.Collection");
-		var Dict = use("Runtime.Dict");
-		if (field_name == "op") return Dict.from({
-			"t": "string",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "kind") return Dict.from({
-			"t": "string",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "obj") return Dict.from({
-			"t": "Bayrell.Lang.OpCodes.BaseOpCode",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "value") return Dict.from({
-			"t": "Bayrell.Lang.OpCodes.BaseOpCode",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "attrs") return Dict.from({
-			"t": "Runtime.Collection",
-			"s": ["Bayrell.Lang.OpCodes.BaseOpCode"],
-			"annotations": Collection.from([
-			]),
-		});
+		var Vector = use("Runtime.Vector");
+		var Map = use("Runtime.Map");
 		return null;
 	},
 	getMethodsList: function(ctx)
 	{
 		var a=[
 		];
-		return use("Runtime.Collection").from(a);
+		return use("Runtime.Vector").from(a);
 	},
 	getMethodInfoByName: function(ctx,field_name)
 	{

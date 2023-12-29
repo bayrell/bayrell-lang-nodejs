@@ -68,10 +68,10 @@ Object.assign(Bayrell.Lang.OpCodes.OpHtmlTag,
 	},
 	getClassInfo: function(ctx)
 	{
-		var Collection = use("Runtime.Collection");
-		var Dict = use("Runtime.Dict");
-		return Dict.from({
-			"annotations": Collection.from([
+		var Vector = use("Runtime.Vector");
+		var Map = use("Runtime.Map");
+		return Map.from({
+			"annotations": Vector.from([
 			]),
 		});
 	},
@@ -84,51 +84,19 @@ Object.assign(Bayrell.Lang.OpCodes.OpHtmlTag,
 		a.push("attrs");
 		a.push("spreads");
 		a.push("items");
-		return use("Runtime.Collection").from(a);
+		return use("Runtime.Vector").from(a);
 	},
 	getFieldInfoByName: function(ctx,field_name)
 	{
-		var Collection = use("Runtime.Collection");
-		var Dict = use("Runtime.Dict");
-		if (field_name == "op") return Dict.from({
-			"t": "string",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "tag_name") return Dict.from({
-			"t": "string",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "op_code_name") return Dict.from({
-			"t": "Bayrell.Lang.OpCodes.BaseOpCode",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "attrs") return Dict.from({
-			"t": "Runtime.Collection",
-			"s": ["Bayrell.Lang.OpCodes.OpHtmlAttribute"],
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "spreads") return Dict.from({
-			"t": "Runtime.Collection",
-			"s": ["primitive"],
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "items") return Dict.from({
-			"t": "Bayrell.Lang.OpCodes.OpHtmlItems",
-			"annotations": Collection.from([
-			]),
-		});
+		var Vector = use("Runtime.Vector");
+		var Map = use("Runtime.Map");
 		return null;
 	},
 	getMethodsList: function(ctx)
 	{
 		var a=[
 		];
-		return use("Runtime.Collection").from(a);
+		return use("Runtime.Vector").from(a);
 	},
 	getMethodInfoByName: function(ctx,field_name)
 	{

@@ -49,6 +49,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpDeclareClass.prototype,
 		this.is_abstract = false;
 		this.is_static = false;
 		this.is_declare = false;
+		this.is_component = false;
 	},
 	takeValue: function(ctx,k,d)
 	{
@@ -71,6 +72,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpDeclareClass.prototype,
 		else if (k == "is_abstract")return this.is_abstract;
 		else if (k == "is_static")return this.is_static;
 		else if (k == "is_declare")return this.is_declare;
+		else if (k == "is_component")return this.is_component;
 		return use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.takeValue.call(this,ctx,k,d);
 	},
 });
@@ -95,10 +97,10 @@ Object.assign(Bayrell.Lang.OpCodes.OpDeclareClass,
 	},
 	getClassInfo: function(ctx)
 	{
-		var Collection = use("Runtime.Collection");
-		var Dict = use("Runtime.Dict");
-		return Dict.from({
-			"annotations": Collection.from([
+		var Vector = use("Runtime.Vector");
+		var Map = use("Runtime.Map");
+		return Map.from({
+			"annotations": Vector.from([
 			]),
 		});
 	},
@@ -123,116 +125,20 @@ Object.assign(Bayrell.Lang.OpCodes.OpDeclareClass,
 		a.push("is_abstract");
 		a.push("is_static");
 		a.push("is_declare");
-		return use("Runtime.Collection").from(a);
+		a.push("is_component");
+		return use("Runtime.Vector").from(a);
 	},
 	getFieldInfoByName: function(ctx,field_name)
 	{
-		var Collection = use("Runtime.Collection");
-		var Dict = use("Runtime.Dict");
-		if (field_name == "op") return Dict.from({
-			"t": "string",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "kind") return Dict.from({
-			"t": "string",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "name") return Dict.from({
-			"t": "string",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "extend_name") return Dict.from({
-			"t": "string",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "annotations") return Dict.from({
-			"t": "Runtime.Collection",
-			"s": ["Bayrell.Lang.OpCodes.OpAnnotation"],
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "comments") return Dict.from({
-			"t": "Runtime.Collection",
-			"s": ["Bayrell.Lang.OpCodes.OpComment"],
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "template") return Dict.from({
-			"t": "Runtime.Collection",
-			"s": ["Bayrell.Lang.OpCodes.OpTypeIdentifier"],
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "flags") return Dict.from({
-			"t": "Bayrell.Lang.OpCodes.OpFlags",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "fn_create") return Dict.from({
-			"t": "Bayrell.Lang.OpCodes.OpDeclareFunction",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "fn_destroy") return Dict.from({
-			"t": "Bayrell.Lang.OpCodes.OpDeclareFunction",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "class_extends") return Dict.from({
-			"t": "Bayrell.Lang.OpCodes.OpTypeIdentifier",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "class_implements") return Dict.from({
-			"t": "Runtime.Collection",
-			"s": ["Bayrell.Lang.OpCodes.OpTypeIdentifier"],
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "vars") return Dict.from({
-			"t": "Runtime.Collection",
-			"s": ["Bayrell.Lang.OpCodes.OpAssign"],
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "functions") return Dict.from({
-			"t": "Runtime.Collection",
-			"s": ["Bayrell.Lang.OpCodes.OpDeclareFunction"],
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "items") return Dict.from({
-			"t": "Runtime.Collection",
-			"s": ["Bayrell.Lang.OpCodes.BaseOpCode"],
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "is_abstract") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "is_static") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "is_declare") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
+		var Vector = use("Runtime.Vector");
+		var Map = use("Runtime.Map");
 		return null;
 	},
 	getMethodsList: function(ctx)
 	{
 		var a=[
 		];
-		return use("Runtime.Collection").from(a);
+		return use("Runtime.Vector").from(a);
 	},
 	getMethodInfoByName: function(ctx,field_name)
 	{

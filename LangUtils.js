@@ -33,7 +33,7 @@ Object.assign(Bayrell.Lang.LangUtils,
 	parse: function(ctx, parser, text)
 	{
 		var res = parser.constructor.parse(ctx, parser, text);
-		return Runtime.rtl.get(ctx, res, 1);
+		return Runtime.rtl.attr(ctx, res, 1);
 	},
 	/**
 	 * Translate BaseOpCode to string
@@ -41,7 +41,7 @@ Object.assign(Bayrell.Lang.LangUtils,
 	translate: function(ctx, translator, op_code)
 	{
 		var res = translator.constructor.translate(ctx, translator, op_code);
-		return Runtime.rtl.get(ctx, res, 1);
+		return Runtime.rtl.attr(ctx, res, 1);
 	},
 	/**
 	 * Create translator
@@ -82,32 +82,29 @@ Object.assign(Bayrell.Lang.LangUtils,
 	},
 	getClassInfo: function(ctx)
 	{
-		var Collection = use("Runtime.Collection");
-		var Dict = use("Runtime.Dict");
-		return Dict.from({
-			"annotations": Collection.from([
+		var Vector = use("Runtime.Vector");
+		var Map = use("Runtime.Map");
+		return Map.from({
+			"annotations": Vector.from([
 			]),
 		});
 	},
 	getFieldsList: function(ctx)
 	{
 		var a = [];
-		return use("Runtime.Collection").from(a);
+		return use("Runtime.Vector").from(a);
 	},
 	getFieldInfoByName: function(ctx,field_name)
 	{
-		var Collection = use("Runtime.Collection");
-		var Dict = use("Runtime.Dict");
+		var Vector = use("Runtime.Vector");
+		var Map = use("Runtime.Map");
 		return null;
 	},
 	getMethodsList: function(ctx)
 	{
 		var a=[
-			"parse",
-			"translate",
-			"createTranslator",
 		];
-		return use("Runtime.Collection").from(a);
+		return use("Runtime.Vector").from(a);
 	},
 	getMethodInfoByName: function(ctx,field_name)
 	{

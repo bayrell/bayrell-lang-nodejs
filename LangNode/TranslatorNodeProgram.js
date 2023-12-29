@@ -39,7 +39,7 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNodeProgram,
 	{
 		var content = "\"use strict;\"";
 		content += use("Runtime.rtl").toStr(t.s(ctx, "var use = require('bay-lang').use;"));
-		return use("Runtime.Collection").from([t,content]);
+		return use("Runtime.Vector").from([t,content]);
 	},
 	/**
 	 * OpDeclareClassFooter
@@ -51,7 +51,7 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNodeProgram,
 		content += use("Runtime.rtl").toStr("use.add(" + use("Runtime.rtl").toStr(t.current_class_full_name) + use("Runtime.rtl").toStr(");"));
 		/*
 		content ~= t.s("if (module.exports == undefined) module.exports = {};");
-		Collection<string> arr = rs::split("\\.", t.current_namespace_name);
+		Collection<string> arr = rs::split(".", t.current_namespace_name);
 		for (int i=0; i<arr.count(); i++)
 		{
 			name = name ~ ((i == 0) ? "" : ".") ~ arr.item(i);
@@ -63,7 +63,7 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNodeProgram,
 			t.current_class_full_name ~ " = " ~ t.current_class_full_name ~ ";");
 		*/
 		content += use("Runtime.rtl").toStr(t.s(ctx, "module.exports = " + use("Runtime.rtl").toStr(t.current_class_full_name) + use("Runtime.rtl").toStr(";")));
-		return use("Runtime.Collection").from([t,content]);
+		return use("Runtime.Vector").from([t,content]);
 	},
 	/* ======================= Class Init Functions ======================= */
 	getNamespace: function()
@@ -80,31 +80,29 @@ Object.assign(Bayrell.Lang.LangNode.TranslatorNodeProgram,
 	},
 	getClassInfo: function(ctx)
 	{
-		var Collection = use("Runtime.Collection");
-		var Dict = use("Runtime.Dict");
-		return Dict.from({
-			"annotations": Collection.from([
+		var Vector = use("Runtime.Vector");
+		var Map = use("Runtime.Map");
+		return Map.from({
+			"annotations": Vector.from([
 			]),
 		});
 	},
 	getFieldsList: function(ctx)
 	{
 		var a = [];
-		return use("Runtime.Collection").from(a);
+		return use("Runtime.Vector").from(a);
 	},
 	getFieldInfoByName: function(ctx,field_name)
 	{
-		var Collection = use("Runtime.Collection");
-		var Dict = use("Runtime.Dict");
+		var Vector = use("Runtime.Vector");
+		var Map = use("Runtime.Map");
 		return null;
 	},
 	getMethodsList: function(ctx)
 	{
 		var a=[
-			"translateProgramHeader",
-			"OpDeclareClassFooter",
 		];
-		return use("Runtime.Collection").from(a);
+		return use("Runtime.Vector").from(a);
 	},
 	getMethodInfoByName: function(ctx,field_name)
 	{

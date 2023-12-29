@@ -54,7 +54,7 @@ Object.assign(Bayrell.Lang.CoreParser,
 	reset: function(ctx, parser)
 	{
 		var __v0 = use("Bayrell.Lang.Caret");
-		return parser.copy(ctx, use("Runtime.Dict").from({"caret":new __v0(ctx, use("Runtime.Dict").from({})),"token":null}));
+		return parser.copy(ctx, use("Runtime.Map").from({"caret":new __v0(ctx, use("Runtime.Map").from({})),"token":null}));
 	},
 	/**
 	 * Set content
@@ -63,7 +63,7 @@ Object.assign(Bayrell.Lang.CoreParser,
 	{
 		var __v0 = use("Runtime.Reference");
 		var __v1 = use("Runtime.rs");
-		return parser.copy(ctx, use("Runtime.Dict").from({"content":new __v0(ctx, content),"content_sz":__v1.strlen(ctx, content)}));
+		return parser.copy(ctx, use("Runtime.Map").from({"content":new __v0(ctx, content),"content_sz":__v1.strlen(ctx, content)}));
 	},
 	/**
 	 * Parse file and convert to BaseOpCode
@@ -93,69 +93,29 @@ Object.assign(Bayrell.Lang.CoreParser,
 	},
 	getClassInfo: function(ctx)
 	{
-		var Collection = use("Runtime.Collection");
-		var Dict = use("Runtime.Dict");
-		return Dict.from({
-			"annotations": Collection.from([
+		var Vector = use("Runtime.Vector");
+		var Map = use("Runtime.Map");
+		return Map.from({
+			"annotations": Vector.from([
 			]),
 		});
 	},
 	getFieldsList: function(ctx)
 	{
 		var a = [];
-		a.push("tab_size");
-		a.push("file_name");
-		a.push("content");
-		a.push("content_sz");
-		a.push("caret");
-		a.push("find_ident");
-		return use("Runtime.Collection").from(a);
+		return use("Runtime.Vector").from(a);
 	},
 	getFieldInfoByName: function(ctx,field_name)
 	{
-		var Collection = use("Runtime.Collection");
-		var Dict = use("Runtime.Dict");
-		if (field_name == "tab_size") return Dict.from({
-			"t": "int",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "file_name") return Dict.from({
-			"t": "string",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "content") return Dict.from({
-			"t": "Runtime.Reference",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "content_sz") return Dict.from({
-			"t": "int",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "caret") return Dict.from({
-			"t": "Bayrell.Lang.Caret",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "find_ident") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
+		var Vector = use("Runtime.Vector");
+		var Map = use("Runtime.Map");
 		return null;
 	},
 	getMethodsList: function(ctx)
 	{
 		var a=[
-			"isEof",
-			"reset",
-			"setContent",
-			"parse",
 		];
-		return use("Runtime.Collection").from(a);
+		return use("Runtime.Vector").from(a);
 	},
 	getMethodInfoByName: function(ctx,field_name)
 	{

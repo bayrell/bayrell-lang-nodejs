@@ -79,7 +79,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP,
 		var __v4 = use("Bayrell.Lang.LangPHP.TranslatorPHPProgram");
 		var __v5 = use("Runtime.Collection");
 		var __v6 = use("Runtime.Collection");
-		return t.copy(ctx, use("Runtime.Dict").from({"value":"","current_namespace_name":"","modules":new __v0(ctx),"expression":new __v1(ctx),"html":new __v2(ctx),"operator":new __v3(ctx),"program":new __v4(ctx),"save_vars":new __v5(ctx),"save_op_codes":new __v6(ctx),"save_op_code_inc":0,"preprocessor_flags":use("Runtime.Dict").from({"PHP":true,"FRONTEND":t.frontend,"BACKEND":t.backend,"ENABLE_CONTEXT":t.enable_context,"ENABLE_CHECK_TYPES":t.enable_check_types})}));
+		return t.copy(ctx, use("Runtime.Map").from({"value":"","current_namespace_name":"","modules":new __v0(ctx),"expression":new __v1(ctx),"html":new __v2(ctx),"operator":new __v3(ctx),"program":new __v4(ctx),"save_vars":new __v5(ctx),"save_op_codes":new __v6(ctx),"save_op_code_inc":0,"preprocessor_flags":use("Runtime.Map").from({"PHP":true,"FRONTEND":t.frontend,"BACKEND":t.backend,"ENABLE_CONTEXT":t.enable_context,"ENABLE_CHECK_TYPES":t.enable_check_types})}));
 	},
 	/**
 	 * Translate BaseOpCode
@@ -103,7 +103,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP,
 	{
 		if (save_op_code_value == undefined) save_op_code_value = 0;
 		var content = "";
-		for (var i = 0;i < t.save_op_codes.count(ctx);i++)
+		for (var i = 0; i < t.save_op_codes.count(ctx); i++)
 		{
 			if (i < save_op_code_value)
 			{
@@ -130,10 +130,10 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP,
 	},
 	getClassInfo: function(ctx)
 	{
-		var Collection = use("Runtime.Collection");
-		var Dict = use("Runtime.Dict");
-		return Dict.from({
-			"annotations": Collection.from([
+		var Vector = use("Runtime.Vector");
+		var Map = use("Runtime.Map");
+		return Map.from({
+			"annotations": Vector.from([
 			]),
 		});
 	},
@@ -153,88 +153,19 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHP,
 		a.push("enable_context");
 		a.push("enable_check_types");
 		a.push("enable_introspection");
-		return use("Runtime.Collection").from(a);
+		return use("Runtime.Vector").from(a);
 	},
 	getFieldInfoByName: function(ctx,field_name)
 	{
-		var Collection = use("Runtime.Collection");
-		var Dict = use("Runtime.Dict");
-		if (field_name == "is_pipe") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "pipe_var_name") return Dict.from({
-			"t": "string",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "html_var_name") return Dict.from({
-			"t": "string",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "is_html") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "expression") return Dict.from({
-			"t": "Bayrell.Lang.LangPHP.TranslatorPHPExpression",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "html") return Dict.from({
-			"t": "Bayrell.Lang.LangPHP.TranslatorPHPHtml",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "operator") return Dict.from({
-			"t": "Bayrell.Lang.LangPHP.TranslatorPHPOperator",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "program") return Dict.from({
-			"t": "Bayrell.Lang.LangPHP.TranslatorPHPProgram",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "frontend") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "backend") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "enable_context") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "enable_check_types") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "enable_introspection") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
+		var Vector = use("Runtime.Vector");
+		var Map = use("Runtime.Map");
 		return null;
 	},
 	getMethodsList: function(ctx)
 	{
 		var a=[
-			"reset",
-			"translate",
-			"nextSaveOpCode",
-			"outputSaveOpCode",
 		];
-		return use("Runtime.Collection").from(a);
+		return use("Runtime.Vector").from(a);
 	},
 	getMethodInfoByName: function(ctx,field_name)
 	{

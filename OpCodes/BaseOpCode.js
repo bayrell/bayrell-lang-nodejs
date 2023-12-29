@@ -61,10 +61,10 @@ Object.assign(Bayrell.Lang.OpCodes.BaseOpCode,
 	},
 	getClassInfo: function(ctx)
 	{
-		var Collection = use("Runtime.Collection");
-		var Dict = use("Runtime.Dict");
-		return Dict.from({
-			"annotations": Collection.from([
+		var Vector = use("Runtime.Vector");
+		var Map = use("Runtime.Map");
+		return Map.from({
+			"annotations": Vector.from([
 			]),
 		});
 	},
@@ -73,29 +73,19 @@ Object.assign(Bayrell.Lang.OpCodes.BaseOpCode,
 		var a = [];
 		a.push("caret_start");
 		a.push("caret_end");
-		return use("Runtime.Collection").from(a);
+		return use("Runtime.Vector").from(a);
 	},
 	getFieldInfoByName: function(ctx,field_name)
 	{
-		var Collection = use("Runtime.Collection");
-		var Dict = use("Runtime.Dict");
-		if (field_name == "caret_start") return Dict.from({
-			"t": "Bayrell.Lang.Caret",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "caret_end") return Dict.from({
-			"t": "Bayrell.Lang.Caret",
-			"annotations": Collection.from([
-			]),
-		});
+		var Vector = use("Runtime.Vector");
+		var Map = use("Runtime.Map");
 		return null;
 	},
 	getMethodsList: function(ctx)
 	{
 		var a=[
 		];
-		return use("Runtime.Collection").from(a);
+		return use("Runtime.Vector").from(a);
 	},
 	getMethodInfoByName: function(ctx,field_name)
 	{

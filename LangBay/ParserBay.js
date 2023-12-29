@@ -71,7 +71,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 		var __v6 = use("Bayrell.Lang.LangBay.ParserBayOperator");
 		var __v7 = use("Bayrell.Lang.LangBay.ParserBayPreprocessor");
 		var __v8 = use("Bayrell.Lang.LangBay.ParserBayProgram");
-		return parser.copy(ctx, use("Runtime.Dict").from({"vars":new __v0(ctx),"uses":new __v1(ctx),"caret":new __v2(ctx, use("Runtime.Dict").from({})),"token":null,"parser_base":new __v3(ctx),"parser_expression":new __v4(ctx),"parser_html":new __v5(ctx),"parser_operator":new __v6(ctx),"parser_preprocessor":new __v7(ctx),"parser_program":new __v8(ctx)}));
+		return parser.copy(ctx, use("Runtime.Map").from({"vars":new __v0(ctx),"uses":new __v1(ctx),"caret":new __v2(ctx, use("Runtime.Map").from({})),"token":null,"parser_base":new __v3(ctx),"parser_expression":new __v4(ctx),"parser_html":new __v5(ctx),"parser_operator":new __v6(ctx),"parser_preprocessor":new __v7(ctx),"parser_program":new __v8(ctx)}));
 	},
 	/**
 	 * Parse file and convert to BaseOpCode
@@ -136,160 +136,29 @@ Object.assign(Bayrell.Lang.LangBay.ParserBay,
 	},
 	getClassInfo: function(ctx)
 	{
-		var Collection = use("Runtime.Collection");
-		var Dict = use("Runtime.Dict");
-		return Dict.from({
-			"annotations": Collection.from([
+		var Vector = use("Runtime.Vector");
+		var Map = use("Runtime.Map");
+		return Map.from({
+			"annotations": Vector.from([
 			]),
 		});
 	},
 	getFieldsList: function(ctx)
 	{
 		var a = [];
-		a.push("vars");
-		a.push("uses");
-		a.push("current_namespace");
-		a.push("current_class");
-		a.push("current_namespace_name");
-		a.push("current_class_name");
-		a.push("current_class_kind");
-		a.push("current_class_abstract");
-		a.push("current_class_declare");
-		a.push("find_identifier");
-		a.push("skip_comments");
-		a.push("pipe_kind");
-		a.push("is_pipe");
-		a.push("is_html");
-		a.push("is_local_css");
-		a.push("parser_base");
-		a.push("parser_expression");
-		a.push("parser_html");
-		a.push("parser_operator");
-		a.push("parser_preprocessor");
-		a.push("parser_program");
-		return use("Runtime.Collection").from(a);
+		return use("Runtime.Vector").from(a);
 	},
 	getFieldInfoByName: function(ctx,field_name)
 	{
-		var Collection = use("Runtime.Collection");
-		var Dict = use("Runtime.Dict");
-		if (field_name == "vars") return Dict.from({
-			"t": "Runtime.Dict",
-			"s": ["bool"],
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "uses") return Dict.from({
-			"t": "Runtime.Dict",
-			"s": ["string"],
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "current_namespace") return Dict.from({
-			"t": "Bayrell.Lang.OpCodes.OpNamespace",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "current_class") return Dict.from({
-			"t": "Bayrell.Lang.OpCodes.OpDeclareClass",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "current_namespace_name") return Dict.from({
-			"t": "string",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "current_class_name") return Dict.from({
-			"t": "string",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "current_class_kind") return Dict.from({
-			"t": "string",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "current_class_abstract") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "current_class_declare") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "find_identifier") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "skip_comments") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "pipe_kind") return Dict.from({
-			"t": "string",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "is_pipe") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "is_html") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "is_local_css") return Dict.from({
-			"t": "bool",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "parser_base") return Dict.from({
-			"t": "Bayrell.Lang.LangBay.ParserBayBase",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "parser_expression") return Dict.from({
-			"t": "Bayrell.Lang.LangBay.ParserBayExpression",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "parser_html") return Dict.from({
-			"t": "Bayrell.Lang.LangBay.ParserBayHtml",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "parser_operator") return Dict.from({
-			"t": "Bayrell.Lang.LangBay.ParserBayOperator",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "parser_preprocessor") return Dict.from({
-			"t": "Bayrell.Lang.LangBay.ParserBayPreprocessor",
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "parser_program") return Dict.from({
-			"t": "Bayrell.Lang.LangBay.ParserBayProgram",
-			"annotations": Collection.from([
-			]),
-		});
+		var Vector = use("Runtime.Vector");
+		var Map = use("Runtime.Map");
 		return null;
 	},
 	getMethodsList: function(ctx)
 	{
 		var a=[
-			"reset",
-			"parse",
-			"findModuleName",
 		];
-		return use("Runtime.Collection").from(a);
+		return use("Runtime.Vector").from(a);
 	},
 	getMethodInfoByName: function(ctx,field_name)
 	{
