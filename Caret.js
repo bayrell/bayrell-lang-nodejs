@@ -190,6 +190,26 @@ Object.assign(Bayrell.Lang.Caret.prototype,
 		}
 		this.readChar(ctx);
 	},
+	/**
+	 * Skip chars
+	 */
+	skipChar: function(ctx, ch)
+	{
+		if (this.nextChar(ctx) == ch)
+		{
+			this.readChar(ctx);
+		}
+	},
+	/**
+	 * Skip null chars
+	 */
+	skipNullChar: function(ctx)
+	{
+		while (!this.eof(ctx) && this.constructor.isSkipChar(ctx, this.nextChar(ctx)))
+		{
+			this.readChar(ctx);
+		}
+	},
 	_init: function(ctx)
 	{
 		use("Runtime.BaseObject").prototype._init.call(this,ctx);
@@ -205,6 +225,95 @@ Object.assign(Bayrell.Lang.Caret.prototype,
 Object.assign(Bayrell.Lang.Caret, use("Runtime.BaseObject"));
 Object.assign(Bayrell.Lang.Caret,
 {
+	/**
+	 * Return true if is char
+	 * @param char ch
+	 * @return boolean
+	 */
+	isChar: function(ctx, ch)
+	{
+		var __memorize_value = use("Runtime.rtl")._memorizeValue("Bayrell.Lang.Caret.isChar", arguments);
+		if (__memorize_value != use("Runtime.rtl")._memorize_not_found) return __memorize_value;
+		var __v0 = use("Runtime.rs");
+		var __v1 = use("Runtime.rs");
+		var __memorize_value = __v0.strpos(ctx, "qazwsxedcrfvtgbyhnujmikolp", __v1.strtolower(ctx, ch)) !== -1;
+		use("Runtime.rtl")._memorizeSave("Bayrell.Lang.Caret.isChar", arguments, __memorize_value);
+		return __memorize_value;
+	},
+	/**
+	 * Return true if is number
+	 * @param char ch
+	 * @return boolean
+	 */
+	isNumber: function(ctx, ch)
+	{
+		var __memorize_value = use("Runtime.rtl")._memorizeValue("Bayrell.Lang.Caret.isNumber", arguments);
+		if (__memorize_value != use("Runtime.rtl")._memorize_not_found) return __memorize_value;
+		var __v0 = use("Runtime.rs");
+		var __memorize_value = __v0.strpos(ctx, "0123456789", ch) !== -1;
+		use("Runtime.rtl")._memorizeSave("Bayrell.Lang.Caret.isNumber", arguments, __memorize_value);
+		return __memorize_value;
+	},
+	/**
+	 * Return true if char is number
+	 * @param char ch
+	 * @return boolean
+	 */
+	isHexChar: function(ctx, ch)
+	{
+		var __memorize_value = use("Runtime.rtl")._memorizeValue("Bayrell.Lang.Caret.isHexChar", arguments);
+		if (__memorize_value != use("Runtime.rtl")._memorize_not_found) return __memorize_value;
+		var __v0 = use("Runtime.rs");
+		var __v1 = use("Runtime.rs");
+		var __memorize_value = __v0.strpos(ctx, "0123456789abcdef", __v1.strtolower(ctx, ch)) !== -1;
+		use("Runtime.rtl")._memorizeSave("Bayrell.Lang.Caret.isHexChar", arguments, __memorize_value);
+		return __memorize_value;
+	},
+	/**
+	 * Return true if is string of numbers
+	 * @param string s
+	 * @return boolean
+	 */
+	isStringOfNumbers: function(ctx, s)
+	{
+		var __memorize_value = use("Runtime.rtl")._memorizeValue("Bayrell.Lang.Caret.isStringOfNumbers", arguments);
+		if (__memorize_value != use("Runtime.rtl")._memorize_not_found) return __memorize_value;
+		var __v0 = use("Runtime.rs");
+		var sz = __v0.strlen(ctx, s);
+		for (var i = 0; i < sz; i++)
+		{
+			var __v1 = use("Runtime.rs");
+			if (!this.isNumber(ctx, __v1.charAt(ctx, s, i)))
+			{
+				var __memorize_value = false;
+				use("Runtime.rtl")._memorizeSave("Bayrell.Lang.Caret.isStringOfNumbers", arguments, __memorize_value);
+				return __memorize_value;
+			}
+		}
+		var __memorize_value = true;
+		use("Runtime.rtl")._memorizeSave("Bayrell.Lang.Caret.isStringOfNumbers", arguments, __memorize_value);
+		return __memorize_value;
+	},
+	/**
+	 * Return true if char is system or space. ASCII code <= 32.
+	 * @param char ch
+	 * @return boolean
+	 */
+	isSkipChar: function(ctx, ch)
+	{
+		var __memorize_value = use("Runtime.rtl")._memorizeValue("Bayrell.Lang.Caret.isSkipChar", arguments);
+		if (__memorize_value != use("Runtime.rtl")._memorize_not_found) return __memorize_value;
+		var __v0 = use("Runtime.rs");
+		if (__v0.ord(ctx, ch) <= 32)
+		{
+			var __memorize_value = true;
+			use("Runtime.rtl")._memorizeSave("Bayrell.Lang.Caret.isSkipChar", arguments, __memorize_value);
+			return __memorize_value;
+		}
+		var __memorize_value = false;
+		use("Runtime.rtl")._memorizeSave("Bayrell.Lang.Caret.isSkipChar", arguments, __memorize_value);
+		return __memorize_value;
+	},
 	/* ======================= Class Init Functions ======================= */
 	getNamespace: function()
 	{
