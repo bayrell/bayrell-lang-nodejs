@@ -1,7 +1,7 @@
 /*!
- *  Bayrell Common Languages Transcompiler
+ *  Bayrell Language
  *
- *  (c) Copyright 2016-2018 "Ildar Bikmamatov" <support@bayrell.org>
+ *  (c) Copyright 2016-2023 "Ildar Bikmamatov" <support@bayrell.org>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
  */
 
 var exports = {
-	VERSION: '0.12.0',
 	MODULE_NAME: 'Bayrell.Lang',
 }
 
@@ -31,7 +30,7 @@ function add(name)
 	;
 	
 	var path = __dirname + "/" + name + ".js";
-	var obj = require(path);
+	return require(path);
 }
 
 add("Bayrell.Lang.Exceptions.ParserUnknownError");
@@ -99,6 +98,7 @@ add("Bayrell.Lang.OpCodes.OpFor");
 add("Bayrell.Lang.OpCodes.OpHtmlAttribute");
 add("Bayrell.Lang.OpCodes.OpHtmlContent");
 add("Bayrell.Lang.OpCodes.OpHtmlItems");
+add("Bayrell.Lang.OpCodes.OpHtmlStyle");
 add("Bayrell.Lang.OpCodes.OpHtmlTag");
 add("Bayrell.Lang.OpCodes.OpHtmlValue");
 add("Bayrell.Lang.OpCodes.OpIdentifier");
@@ -127,5 +127,10 @@ add("Bayrell.Lang.OpCodes.OpTypeConvert");
 add("Bayrell.Lang.OpCodes.OpTypeIdentifier");
 add("Bayrell.Lang.OpCodes.OpUse");
 add("Bayrell.Lang.OpCodes.OpWhile");
+add("Bayrell.Lang.OpCodes.OpWidget");
+add("Bayrell.Lang.OpCodes.OpWidgetData");
+
+var use = require('bay-lang').use;
+exports["VERSION"] = use("Bayrell.Lang.ModuleDescription").getModuleVersion();
 
 module.exports = exports;

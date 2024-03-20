@@ -139,6 +139,16 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 				var event_name = __v4.substr(ctx, attr_key, 7);
 				var __v5 = use("Runtime.rs");
 				attr_key = __v5.substr(ctx, attr_key, 7);
+				var __v6 = use("Runtime.rs");
+				if (__v6.substr(ctx, attr_key, 0, 2) != "on")
+				{
+					var __v7 = use("Runtime.rs");
+					var __v8 = use("Runtime.rs");
+					var first = __v7.upper(ctx, __v8.substr(ctx, attr_key, 0, 1));
+					var __v9 = use("Runtime.rs");
+					var second = __v9.substr(ctx, attr_key, 1);
+					attr_key = "on" + use("Runtime.rtl").toStr(first) + use("Runtime.rtl").toStr(second);
+				}
 			}
 			else if (attr_key == "@global")
 			{
@@ -180,7 +190,7 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Html,
 		{
 			res_attrs.pushValue(ctx, "\"key\":" + use("Runtime.rtl").toStr(attr_key_value));
 		}
-		if (attr_elem_name != "")
+		else if (attr_elem_name != "")
 		{
 			res_attrs.pushValue(ctx, "\"key\":" + use("Runtime.rtl").toStr(attr_elem_name));
 		}

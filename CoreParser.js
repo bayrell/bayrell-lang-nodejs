@@ -34,6 +34,13 @@ Object.assign(Bayrell.Lang.CoreParser.prototype,
 	{
 		return this.caret.pos >= this.content_sz;
 	},
+	/**
+	 * Returns caret
+	 */
+	getCaret: function(ctx)
+	{
+		return this.caret.clone(ctx, use("Runtime.Map").from({"file_name":this.file_name,"content":this.content,"content_sz":this.content_sz}));
+	},
 	_init: function(ctx)
 	{
 		use("Runtime.BaseStruct").prototype._init.call(this,ctx);

@@ -50,6 +50,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpDeclareClass.prototype,
 		this.is_static = false;
 		this.is_declare = false;
 		this.is_component = false;
+		this.is_model = false;
 	},
 	takeValue: function(ctx,k,d)
 	{
@@ -73,6 +74,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpDeclareClass.prototype,
 		else if (k == "is_static")return this.is_static;
 		else if (k == "is_declare")return this.is_declare;
 		else if (k == "is_component")return this.is_component;
+		else if (k == "is_model")return this.is_model;
 		return use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.takeValue.call(this,ctx,k,d);
 	},
 });
@@ -126,6 +128,7 @@ Object.assign(Bayrell.Lang.OpCodes.OpDeclareClass,
 		a.push("is_static");
 		a.push("is_declare");
 		a.push("is_component");
+		a.push("is_model");
 		return use("Runtime.Vector").from(a);
 	},
 	getFieldInfoByName: function(ctx,field_name)

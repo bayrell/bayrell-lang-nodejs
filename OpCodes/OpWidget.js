@@ -19,57 +19,46 @@ var use = require('bay-lang').use;
  */
 if (typeof Bayrell == 'undefined') Bayrell = {};
 if (typeof Bayrell.Lang == 'undefined') Bayrell.Lang = {};
-Bayrell.Lang.ModuleDescription = function(ctx)
+if (typeof Bayrell.Lang.OpCodes == 'undefined') Bayrell.Lang.OpCodes = {};
+Bayrell.Lang.OpCodes.OpWidget = function(ctx)
 {
+	use("Bayrell.Lang.OpCodes.BaseOpCode").apply(this, arguments);
 };
-Object.assign(Bayrell.Lang.ModuleDescription.prototype,
+Bayrell.Lang.OpCodes.OpWidget.prototype = Object.create(use("Bayrell.Lang.OpCodes.BaseOpCode").prototype);
+Bayrell.Lang.OpCodes.OpWidget.prototype.constructor = Bayrell.Lang.OpCodes.OpWidget;
+Object.assign(Bayrell.Lang.OpCodes.OpWidget.prototype,
 {
+	_init: function(ctx)
+	{
+		use("Bayrell.Lang.OpCodes.BaseOpCode").prototype._init.call(this,ctx);
+		this.op = "op_widget";
+		this.items = null;
+		this.settings = null;
+	},
+	takeValue: function(ctx,k,d)
+	{
+		if (d == undefined) d = null;
+		if (k == "op")return this.op;
+		else if (k == "items")return this.items;
+		else if (k == "settings")return this.settings;
+		return use("Bayrell.Lang.OpCodes.BaseOpCode").prototype.takeValue.call(this,ctx,k,d);
+	},
 });
-Object.assign(Bayrell.Lang.ModuleDescription,
+Object.assign(Bayrell.Lang.OpCodes.OpWidget, use("Bayrell.Lang.OpCodes.BaseOpCode"));
+Object.assign(Bayrell.Lang.OpCodes.OpWidget,
 {
-	/**
-	 * Returns module name
-	 * @return string
-	 */
-	getModuleName: function(ctx)
-	{
-		return "Bayrell.Lang";
-	},
-	/**
-	 * Returns module name
-	 * @return string
-	 */
-	getModuleVersion: function(ctx)
-	{
-		return "0.12.1";
-	},
-	/**
-	 * Returns required modules
-	 * @return Map<string>
-	 */
-	requiredModules: function(ctx)
-	{
-		return use("Runtime.Map").from({"Runtime":">=0.11 <1.0"});
-	},
-	/**
-	 * Returns enities
-	 */
-	entities: function(ctx)
-	{
-		return null;
-	},
 	/* ======================= Class Init Functions ======================= */
 	getNamespace: function()
 	{
-		return "Bayrell.Lang";
+		return "Bayrell.Lang.OpCodes";
 	},
 	getClassName: function()
 	{
-		return "Bayrell.Lang.ModuleDescription";
+		return "Bayrell.Lang.OpCodes.OpWidget";
 	},
 	getParentClassName: function()
 	{
-		return "";
+		return "Bayrell.Lang.OpCodes.BaseOpCode";
 	},
 	getClassInfo: function(ctx)
 	{
@@ -83,6 +72,9 @@ Object.assign(Bayrell.Lang.ModuleDescription,
 	getFieldsList: function(ctx)
 	{
 		var a = [];
+		a.push("op");
+		a.push("items");
+		a.push("settings");
 		return use("Runtime.Vector").from(a);
 	},
 	getFieldInfoByName: function(ctx,field_name)
@@ -101,5 +93,5 @@ Object.assign(Bayrell.Lang.ModuleDescription,
 	{
 		return null;
 	},
-});use.add(Bayrell.Lang.ModuleDescription);
-module.exports = Bayrell.Lang.ModuleDescription;
+});use.add(Bayrell.Lang.OpCodes.OpWidget);
+module.exports = Bayrell.Lang.OpCodes.OpWidget;

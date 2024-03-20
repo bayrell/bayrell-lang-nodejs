@@ -232,6 +232,50 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 		return use("Runtime.Vector").from([save_t,content]);
 	},
 	/**
+	 * Declare component functions
+	 */
+	OpDeclareComponentFunctions: function(ctx, t, op_code)
+	{
+		var content = "";
+		/* CSS */
+		content += use("Runtime.rtl").toStr(t.s(ctx, "static function css($vars)"));
+		content += use("Runtime.rtl").toStr(t.s(ctx, "{"));
+		t = t.levelInc(ctx);
+		content += use("Runtime.rtl").toStr(t.s(ctx, "var $res = \"\";"));
+		for (var i = 0; i < op_code.items.count(ctx); i++)
+		{
+			var item = op_code.items.get(ctx, i);
+			var __v0 = use("Bayrell.Lang.OpCodes.OpHtmlStyle");
+			if (!(item instanceof __v0))
+			{
+				continue;
+			}
+			var res = t.expression.constructor.Expression(ctx, t, item.value);
+			t = Runtime.rtl.attr(ctx, res, 0);
+			var s = Runtime.rtl.attr(ctx, res, 1);
+			content += use("Runtime.rtl").toStr(t.s(ctx, "$res .= \\Runtime\\rtl::toStr(" + use("Runtime.rtl").toStr(s) + use("Runtime.rtl").toStr(");")));
+		}
+		content += use("Runtime.rtl").toStr(t.s(ctx, "return $res;"));
+		t = t.levelDec(ctx);
+		content += use("Runtime.rtl").toStr(t.s(ctx, "}"));
+		/* Meta data */
+		var __v0 = use("Runtime.lib");
+		var op_code_meta = op_code.items.findItem(ctx, __v0.isInstance(ctx, "Bayrell.Lang.OpCodes.OpHtmlMeta"));
+		if (op_code_meta)
+		{
+			content += use("Runtime.rtl").toStr(t.s(ctx, "static function getMetaData()"));
+			content += use("Runtime.rtl").toStr(t.s(ctx, "{"));
+			t = t.levelInc(ctx);
+			var res = t.expression.constructor.Expression(ctx, t, op_code_meta.value);
+			t = Runtime.rtl.attr(ctx, res, 0);
+			var s = Runtime.rtl.attr(ctx, res, 1);
+			content += use("Runtime.rtl").toStr(t.s(ctx, "return " + use("Runtime.rtl").toStr(s) + use("Runtime.rtl").toStr(";")));
+			t = t.levelDec(ctx);
+			content += use("Runtime.rtl").toStr(t.s(ctx, "}"));
+		}
+		return use("Runtime.Vector").from([t,content]);
+	},
+	/**
 	 * OpDeclareClass
 	 */
 	OpDeclareClassBody: function(ctx, t, op_code)
@@ -336,8 +380,15 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 				}
 			}
 		}
+		/* Declare component functions */
+		if (op_code.is_model || op_code.is_component)
+		{
+			var res = this.OpDeclareComponentFunctions(ctx, t, op_code);
+			t = Runtime.rtl.attr(ctx, res, 0);
+			content += use("Runtime.rtl").toStr(Runtime.rtl.attr(ctx, res, 1));
+		}
 		var __v0 = use("Bayrell.Lang.OpCodes.OpDeclareClass");
-		if (class_kind != __v0.KIND_INTERFACE && op_code.is_component == false)
+		if (class_kind != __v0.KIND_INTERFACE)
 		{
 			content += use("Runtime.rtl").toStr(t.s(ctx, "/* ======================= Class Init Functions ======================= */"));
 		}
