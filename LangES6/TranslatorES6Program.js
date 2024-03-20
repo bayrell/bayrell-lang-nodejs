@@ -995,39 +995,26 @@ Object.assign(Bayrell.Lang.LangES6.TranslatorES6Program,
 		}
 		content += use("Runtime.rtl").toStr(t.s(ctx, "return res;"));
 		t = t.levelDec(ctx);
-		content += use("Runtime.rtl").toStr(t.s(ctx, "}"));
+		content += use("Runtime.rtl").toStr(t.s(ctx, "},"));
 		/* Widget data */
-		var __v0 = use("Runtime.lib");
-		var op_code_widget = op_code.items.findItem(ctx, __v0.isInstance(ctx, "Bayrell.Lang.OpCodes.OpWidget"));
-		var __v1 = use("Runtime.lib");
-		var op_code_meta = op_code.items.findItem(ctx, __v1.isInstance(ctx, "Bayrell.Lang.OpCodes.OpHtmlMeta"));
+		/*
+		OpWidget op_code_widget = op_code.items.findItem(lib::isInstance(classof OpWidget));
+		OpHtmlMeta op_code_meta = op_code.items.findItem(lib::isInstance(classof OpHtmlMeta));
 		if (op_code_widget)
 		{
-			content += use("Runtime.rtl").toStr(t.s(ctx, "getWidgetData: function()"));
-			content += use("Runtime.rtl").toStr(t.s(ctx, "{"));
-			t = t.levelInc(ctx);
-			content += use("Runtime.rtl").toStr(t.s(ctx, "return {"));
-			t = t.levelInc(ctx);
-			content += use("Runtime.rtl").toStr(t.s(ctx, "\"data\": null,"));
-			content += use("Runtime.rtl").toStr(t.s(ctx, "\"info\": null,"));
-			t = t.levelDec(ctx);
-			content += use("Runtime.rtl").toStr(t.s(ctx, "};"));
-			t = t.levelDec(ctx);
-			content += use("Runtime.rtl").toStr(t.s(ctx, "}"));
+			content ~= t.s("getWidgetData: function()");
+			content ~= t.s("{");
+			t = t.levelInc();
+			content ~= t.s("return {");
+			t = t.levelInc();
+			content ~= t.s("\"data\": null,");
+			content ~= t.s("\"info\": null,");
+			t = t.levelDec();
+			content ~= t.s("};");
+			t = t.levelDec();
+			content ~= t.s("}");
 		}
-		/* Meta data */
-		if (op_code_meta)
-		{
-			content += use("Runtime.rtl").toStr(t.s(ctx, "getMetaData: function()"));
-			content += use("Runtime.rtl").toStr(t.s(ctx, "{"));
-			t = t.levelInc(ctx);
-			var res = t.expression.constructor.Expression(ctx, t, op_code_meta.value);
-			t = Runtime.rtl.attr(ctx, res, 0);
-			var s = Runtime.rtl.attr(ctx, res, 1);
-			content += use("Runtime.rtl").toStr(t.s(ctx, "return " + use("Runtime.rtl").toStr(s) + use("Runtime.rtl").toStr(";")));
-			t = t.levelDec(ctx);
-			content += use("Runtime.rtl").toStr(t.s(ctx, "}"));
-		}
+		*/
 		return use("Runtime.Vector").from([t,content]);
 	},
 	/**
