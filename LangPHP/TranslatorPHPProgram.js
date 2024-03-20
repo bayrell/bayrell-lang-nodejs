@@ -241,7 +241,7 @@ Object.assign(Bayrell.Lang.LangPHP.TranslatorPHPProgram,
 		content += use("Runtime.rtl").toStr(t.s(ctx, "static function css($vars)"));
 		content += use("Runtime.rtl").toStr(t.s(ctx, "{"));
 		t = t.levelInc(ctx);
-		content += use("Runtime.rtl").toStr(t.s(ctx, "var $res = \"\";"));
+		content += use("Runtime.rtl").toStr(t.s(ctx, "$res = \"\";"));
 		for (var i = 0; i < op_code.items.count(ctx); i++)
 		{
 			var item = op_code.items.get(ctx, i);
