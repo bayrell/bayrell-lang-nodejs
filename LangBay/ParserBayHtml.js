@@ -287,12 +287,16 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayHtml,
 		{
 			return false;
 		}
-		while (!caret.eof(ctx) && ch != "," && ch != "(" && ch != "{" && ch != "}" && ch != "<")
+		while (!caret.eof(ctx) && ch != "{" && ch != "}" && ch != "<")
 		{
+			if (ch == ";" || ch == "(" || ch == ")")
+			{
+				return false;
+			}
 			caret.nextChar(ctx);
 			ch = caret.readChar(ctx);
 		}
-		if (ch == "{" || ch == ",")
+		if (ch == "{")
 		{
 			return true;
 		}
