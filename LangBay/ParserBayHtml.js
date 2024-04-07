@@ -187,7 +187,7 @@ Object.assign(Bayrell.Lang.LangBay.ParserBayHtml,
 		var start_pos = caret.pos;
 		/* Read selector */
 		var ch = caret.nextChar(ctx);
-		while (!caret.eof(ctx) && ch != " " && ch != "," && ch != "." && ch != ":" && ch != "[" && ch != "{")
+		while (!caret.eof(ctx) && ch != " " && ch != "," && ch != ":" && ch != "[" && ch != "{")
 		{
 			caret.readChar(ctx);
 			ch = caret.nextChar(ctx);
